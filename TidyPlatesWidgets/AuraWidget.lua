@@ -203,7 +203,7 @@ local function UpdateIconGrid(frame, unitid)
 			local aura = {}
 
 			do
-				local name, _, icon, stacks, auraType, duration, expiration, caster, _, _, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				local name, icon, stacks, auraType, duration, expiration, caster, _, _, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
 
 				aura.name = name
 				aura.texture = icon

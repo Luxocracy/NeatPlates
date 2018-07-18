@@ -74,7 +74,7 @@ local function UpdatePlayerRole()
 
 	-- Check Auras
 	for i = 1, 40 do
-		name, _, _, _, _, _, _, _, _, _, spellID = UnitBuff("player", i)	-- 11th
+		name, _, _, _, _, _, _, _, _, spellID = UnitBuff("player", i)	-- 11th
 		if TankAuras[tostring(spellID)] then
 			playerTankAura = true
 		end
@@ -155,10 +155,9 @@ end
 if not TankWatcher then TankWatcher = CreateFrame("Frame") end
 TankWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
 TankWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
-TankWatcher:RegisterEvent("PARTY_MEMBERS_CHANGED")
 TankWatcher:RegisterEvent("UNIT_PET")
 TankWatcher:RegisterEvent("PET_BAR_UPDATE_USABLE")
-TankWatcher:RegisterEvent("PARTY_CONVERTED_TO_RAID")
+-- TankWatcher:RegisterEvent("PARTY_CONVERTED_TO_RAID")
 TankWatcher:RegisterEvent("UNIT_AURA")
 TankWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 TankWatcher:SetScript("OnEvent", TankWatcherEvents)
