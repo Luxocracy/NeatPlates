@@ -1,0 +1,9 @@
+## Interface: 70100
+## Title: Tidy Plates: Neon Theme
+## Notes: It toasts your Eggo waffles, and butters your bread.
+## Author: Binny
+## Dependencies: TidyPlates, TidyPlatesHub
+
+Neon.lua
+
+

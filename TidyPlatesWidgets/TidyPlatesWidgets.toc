@@ -1,0 +1,6 @@
+## Interface: 70100
+## Title: Tidy Plates Widgets
+## Notes: Library of Widgets
+## Dependencies: TidyPlates
+
+Widgets.xml

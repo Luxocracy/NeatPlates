@@ -1,0 +1,23 @@
+## Interface: 70100
+## Title: Tidy Plates Hub
+## Notes: Provides a common configuration panel for supported themes.
+## Author: Daniel/Binbwen
+## Dependencies: TidyPlates, TidyPlatesWidgets
+## OptionalDeps: TidyPlatesHubDE, TidyPlatesHubES, TidyPlatesHubMX, TidyPlatesHubFR, TidyPlatesHubKR, TidyPlatesHubRU, TidyPlatesHubCN, TidyPlatesHubTW
+## SavedVariables: TidyPlatesHubCache, TidyPlatesHubGlobal
+## SavedVariablesPerCharacter: TidyPlatesHubSettings
+
+Defaults.lua
+Helpers.lua
+Templates.lua
+
+functions\Core.lua
+functions\Filter.lua
+functions\Style.lua
+functions\Alpha.lua
+functions\Scale.lua
+functions\Color.lua
+functions\Text.lua
+functions\Widgets.lua
+
+Hub.lua
