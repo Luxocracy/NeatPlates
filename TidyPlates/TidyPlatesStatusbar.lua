@@ -76,7 +76,7 @@ end
 
 
 local function SetMinMaxValues(self, minval, maxval)
-	if not (minval or maxval) then return end
+	if ( minval == nil or maxval == nil ) then return end
 	
 	if maxval > minval then
 		self.MinVal = minval
