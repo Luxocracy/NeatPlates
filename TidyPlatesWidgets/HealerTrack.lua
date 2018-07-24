@@ -305,7 +305,7 @@ function Events.UPDATE_BATTLEFIELD_SCORE()
 	return
 end
 
-function Events.COMBAT_LOG_EVENT_UNFILTERED(...)
+function Events.COMBAT_LOG_EVENT_UNFILTERED()
 	-- Combat Log Unfiltered
 	local timestamp, combatevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellid = CombatLogGetCurrentEventInfo()		-- WoW 8.0
 

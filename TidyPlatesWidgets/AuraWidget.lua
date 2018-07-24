@@ -68,6 +68,7 @@ local function IsAuraShown(widget, aura)
 		if widget and widget:IsShown() then
 			return true
 		end
+	return false
 end
 
 
@@ -203,7 +204,7 @@ local function UpdateIconGrid(frame, unitid)
 			local aura = {}
 
 			do
-				local name, icon, stacks, auraType, duration, expiration, caster, _, _, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
 
 				aura.name = name
 				aura.texture = icon

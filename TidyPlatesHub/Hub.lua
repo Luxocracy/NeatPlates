@@ -51,6 +51,7 @@ local cFriendly = "|cffc8e915"
 -- Generate Panel
 ------------------------------------------------------------------
 local function BuildHubPanel(panel)
+	panel:Hide()
 	local objectName = panel.objectName
 	local AlignmentColumn = panel.AlignmentColumn
 	local OffsetColumnB = 200						-- 240

@@ -624,12 +624,12 @@ local function CreateDropdownFrame(helpertable, reference, parent, menu, default
 		--print(self.Value, menu[self.buttonIndex].value, drawer:GetValue())
 
 		if drawer.OnValueChanged then drawer.OnValueChanged(drawer) end
-		PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOn" or 856);
+		PlaySound(856);
 		HideDropdownMenu()
 	end
 
 	local function OnClickDropdown()
-		PlaySound(PlaySoundKitID and "igMainMenuOptionCheckBoxOn" or 856);
+		PlaySound(856);
 		ShowDropdownMenu(drawer, menu, OnClickItem)
 	end
 
