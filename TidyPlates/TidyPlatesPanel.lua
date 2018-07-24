@@ -75,8 +75,22 @@ end
 TidyPlates.GetProfile = GetProfile
 
 
-function TidyPlatesPanel.AddProfile(self, profileName )
-	if  profileName then
+function TidyPlatesPanel.ProfileExists(self, profileName)
+	if profileName then
+		local exists = true
+		for i=1, #HubProfileList do
+			if profileName == HubProfileList[i].text then
+				exists = true
+				break
+			end
+		end
+		return exists
+	end
+end
+
+
+function TidyPlatesPanel.AddProfile(self, profileName)
+	if profileName then
 		HubProfileList[#HubProfileList+1] = { text = profileName, value = profileName, }
 	end
 end
