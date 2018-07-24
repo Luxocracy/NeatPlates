@@ -970,6 +970,10 @@ do
 		SetUpdateAll()
 	end
 
+	function CoreEvents:DISPLAY_SIZE_CHANGED()
+		SetUpdateAll()
+	end
+
 	function CoreEvents:UPDATE_MOUSEOVER_UNIT(...)
 		if UnitExists("mouseover") then
 			HasMouseover = true
