@@ -484,45 +484,31 @@ end
 
 
 -- Create Instances of Panels
-
-if not TidyPlatesPanel:ProfileExists("Tank") then
-	local TankPanel = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates" )
-	TidyPlatesPanel:AddProfile("Tank")
-	BuildHubPanel(TankPanel)
-	function ShowTidyPlatesHubTankPanel() TidyPlatesUtility.OpenInterfacePanel(TankPanel) end
-end
+local TankPanel = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates" )
+TidyPlatesPanel:AddProfile("Tank")
+BuildHubPanel(TankPanel)
+function ShowTidyPlatesHubTankPanel() TidyPlatesUtility.OpenInterfacePanel(TankPanel) end
 
 
-if not TidyPlatesPanel:ProfileExists("Damage") then
-	local DamagePanel = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates" )
-	TidyPlatesPanel:AddProfile("Damage")
-	BuildHubPanel(DamagePanel)
-	function ShowTidyPlatesHubDamagePanel() TidyPlatesUtility.OpenInterfacePanel(DamagePanel) end
-end
+local DamagePanel = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates" )
+TidyPlatesPanel:AddProfile("Damage")
+BuildHubPanel(DamagePanel)
+function ShowTidyPlatesHubDamagePanel() TidyPlatesUtility.OpenInterfacePanel(DamagePanel) end
 
 
-if not TidyPlatesPanel:ProfileExists("Healer") then
-	local HealerPanel = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates"  )
-	TidyPlatesPanel:AddProfile("Healer")
-	BuildHubPanel(HealerPanel)
-	function ShowTidyPlatesHubHealerPanel() TidyPlatesUtility.OpenInterfacePanel(HealerPanel) end
-end
+
+local HealerPanel = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates"  )
+TidyPlatesPanel:AddProfile("Healer")
+BuildHubPanel(HealerPanel)
+function ShowTidyPlatesHubHealerPanel() TidyPlatesUtility.OpenInterfacePanel(HealerPanel) end
 
 
-if not TidyPlatesPanel:ProfileExists("Gladiator") then
-	local GladiatorPanel = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates"  )
-	TidyPlatesPanel:AddProfile("Gladiator")
-	BuildHubPanel(GladiatorPanel)
-	function ShowTidyPlatesHubGladiatorPanel() TidyPlatesUtility.OpenInterfacePanel(GladiatorPanel) end
-end
+local GladiatorPanel = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates"  )
+TidyPlatesPanel:AddProfile("Gladiator")
+BuildHubPanel(GladiatorPanel)
+function ShowTidyPlatesHubGladiatorPanel() TidyPlatesUtility.OpenInterfacePanel(GladiatorPanel) end
 
--- Incase of window resize we want to force an update
 
-local PanelHandler = CreateFrame("Frame")
-PanelHandler:SetScript("OnEvent", function(self, event)
-	TidyPlates:ForceUpdate()
-end)
-PanelHandler:RegisterEvent("DISPLAY_SIZE_CHANGED")
 
 ---------------------------------------------
 -- Slash Commands
