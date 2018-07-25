@@ -1,7 +1,0 @@
-## Interface: 80000
-## Title: Tidy Plates: Grey Theme
-## Notes: Use apostrophes wisely.
-## Author: Binny
-## Dependencies: TidyPlates, TidyPlatesHub
-
-Grey.lua

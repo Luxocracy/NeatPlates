@@ -1,7 +1,0 @@
-## Interface: 80000
-## Title: Tidy Plates: Quatre Theme
-## Notes: It's the 4th!
-## Author: Binny
-## Dependencies: TidyPlates, TidyPlatesHub
-
-Quatre.lua

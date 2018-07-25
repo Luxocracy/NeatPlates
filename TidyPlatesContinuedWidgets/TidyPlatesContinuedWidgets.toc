@@ -1,0 +1,6 @@
+## Interface: 80000
+## Title: Tidy Plates Continued Widgets
+## Notes: Library of Widgets
+## Dependencies: TidyPlatesContinued
+
+Widgets.xml
