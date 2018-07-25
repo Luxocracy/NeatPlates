@@ -1,14 +1,14 @@
-package-as: TidyPlatesCondinued
+package-as: TidyPlatesContinued
 
 ignore:
     - README.md
 
 move-folders:
-    TidyPlatesCondinued/TidyPlatesContinued: TidyPlatesCondinued
-    TidyPlatesCondinued/TidyPlatesContinued_Classic: TidyPlatesContinued_Classic
-    TidyPlatesCondinued/TidyPlatesContinued_Graphite: TidyPlatesContinued_Graphite
-    TidyPlatesCondinued/TidyPlatesContinued_Grey: TidyPlatesContinued_Grey
-    TidyPlatesCondinued/TidyPlatesContinued_Neon: TidyPlatesContinued_Neon
-    TidyPlatesCondinued/TidyPlatesContinued_Quatre: TidyPlatesContinued_Quatre
-    TidyPlatesCondinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
-    TidyPlatesCondinued/TidyPlatesContinuedWidgets: TidyPlatesContinuedWidgets
+    TidyPlatesContinued/TidyPlatesContinued: TidyPlatesContinued
+    TidyPlatesContinued/TidyPlatesContinued_Classic: TidyPlatesContinued_Classic
+    TidyPlatesContinued/TidyPlatesContinued_Graphite: TidyPlatesContinued_Graphite
+    TidyPlatesContinued/TidyPlatesContinued_Grey: TidyPlatesContinued_Grey
+    TidyPlatesContinued/TidyPlatesContinued_Neon: TidyPlatesContinued_Neon
+    TidyPlatesContinued/TidyPlatesContinued_Quatre: TidyPlatesContinued_Quatre
+    TidyPlatesContinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
+    TidyPlatesContinued/TidyPlatesContinuedWidgets: TidyPlatesContinuedWidgets
