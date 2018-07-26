@@ -1,4 +1,4 @@
-# TidyPlates Continued
+# TidyPlatesContinued
 #### From the orginal Tidy Plates
 
 >Tidy Plates enhances World of Warcraft's nameplates.
@@ -12,4 +12,6 @@
 
 The primary reason for this github is to keep this addon working in the abscence of its authors. As such the likely hood of adding or improving features is relatively low.
 
-*Please do open an [issue](https://github.com/Luxocracy/TidyPlates_BFA/issues) if you come across any bugs.*
+*If you come across any bugs, don't hesitate to open up an [issue](https://github.com/Luxocracy/TidyPlates_BFA/issues)*
+  
+*To convert your settings over to TidyPlatesContinued refer to [this guide](https://github.com/Luxocracy/TidyPlatesContinued/issues/5).*
