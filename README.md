@@ -1,4 +1,4 @@
-# TidyPlates_BFA
+# TidyPlates Continued
 #### From the orginal Tidy Plates
 
 >Tidy Plates enhances World of Warcraft's nameplates.
