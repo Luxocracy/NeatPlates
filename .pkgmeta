@@ -5,6 +5,7 @@ ignore:
 
 move-folders:
     TidyPlatesContinued/TidyPlatesContinued: TidyPlatesContinued
+    TidyPlatesContinued/TidyPlatesContinued_BlizzardPlates: TidyPlatesContinued_BlizzardPlates
     TidyPlatesContinued/TidyPlatesContinued_Graphite: TidyPlatesContinued_Graphite
     TidyPlatesContinued/TidyPlatesContinued_Grey: TidyPlatesContinued_Grey
     TidyPlatesContinued/TidyPlatesContinued_Neon: TidyPlatesContinued_Neon
