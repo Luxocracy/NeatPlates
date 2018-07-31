@@ -919,20 +919,20 @@ do
 		local BlizzardFrame = plate:GetChildren()
 
 		-- hooksecurefunc([table,] "function", hookfunc)
-
-		--BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
-		--BlizzardFrame.Show = BlizzardFrame.Hide			-- Try this to keep the plate from showing up
-		-- --BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
+		BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
+		BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 		OnNewNameplate(plate)
 	 end
 
 	function CoreEvents:NAME_PLATE_UNIT_ADDED(...)
 		local unitid = ...
-		local plate = GetNamePlateForUnit(unitid);
+		local plate = GetNamePlateForUnit(unitid, issecure());
 
 		-- Personal Display
 		if UnitIsUnit("player", unitid) then
-			-- plate:GetChildren():_Show()
+			if (GetCVarBool("nameplateShowSelf") or false) == true then
+				plate:GetChildren():_Show()
+			end
 		-- Normal Plates
 		else
 			plate:GetChildren():Hide()

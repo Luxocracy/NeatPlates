@@ -13,6 +13,7 @@ local CreateClassWidget = WidgetLib.CreateClassWidget
 local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
 local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
+local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
 
 TidyPlatesContHubDefaults.WidgetsRangeMode = 1
 TidyPlatesContHubMenus.RangeModes = {
@@ -230,11 +231,13 @@ local function OnInitializeWidgets(plate, configTable)
 	local EnableComboWidget = LocalVars.WidgetsComboPoints
 	local EnableThreatWidget = LocalVars.WidgetsThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetsDebuff
+	local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
 
 	InitWidget( "ClassWidget", plate, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidget", plate, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
 	InitWidget( "ComboWidget", plate, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
 	InitWidget( "ThreatWidget", plate, configTable.ThreatLineWidget, CreateThreatLineWidget, EnableThreatWidget)
+	InitWidget( "AbsorbWidget", plate, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidget", plate, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -255,6 +258,9 @@ local function OnContextUpdateDelegate(plate, unit)
 
 	if LocalVars.WidgetsDebuff and widgets.AuraWidget then
 		widgets.AuraWidget:UpdateContext(unit) end
+	
+	if LocalVars.WidgetAbsorbIndicator and widgets.AbsorbWidget then
+		widgets.AbsorbWidget:UpdateContext(unit) end
 end
 
 local function OnUpdateDelegate(plate, unit)
@@ -315,6 +321,7 @@ local CreateClassWidget = WidgetLib.CreateClassWidget
 local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
 local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
+local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
 
 TidyPlatesContHubDefaults.WidgetsRangeMode = 1
 TidyPlatesContHubMenus.RangeModes = {
@@ -504,6 +511,9 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 	local widget = extended.widgets[widgetName]
 
 	if enabled and createFunction and config then
+		--[[ Data from Themes passed to parent ]] --
+		if config.h ~= nil then extended.widgetParent._height = config.h end
+		if config.h ~= nil then extended.widgetParent._width = config.w end
 
 		if widget then
 			if widget.UpdateConfig then widget:UpdateConfig() end
@@ -512,6 +522,7 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 			extended.widgets[widgetName] = widget
 		end
 
+		widget:ClearAllPoints()
 		widget:SetPoint(config.anchor or "TOP", extended, config.x or 0, config.y or 0)
 
 	elseif widget and widget.Hide then
@@ -532,11 +543,13 @@ local function OnInitializeWidgets(extended, configTable)
 	local EnableComboWidget = LocalVars.WidgetsComboPoints
 	local EnableThreatWidget = LocalVars.WidgetsThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetsDebuff
+	local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
 
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
 	InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
 	InitWidget( "ThreatWidgetHub", extended, configTable.ThreatLineWidget, CreateThreatLineWidget, EnableThreatWidget)
+	InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -557,6 +570,9 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if LocalVars.WidgetsDebuff and widgets.AuraWidgetHub then
 		widgets.AuraWidgetHub:UpdateContext(unit) end
+
+	if LocalVars.WidgetAbsorbIndicator and widgets.AbsorbWidgetHub then
+		widgets.AbsorbWidgetHub:UpdateContext(unit) end
 end
 
 local function OnUpdateDelegate(extended, unit)

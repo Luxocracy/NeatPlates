@@ -251,6 +251,7 @@ WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 31 ,y = 23 } -- "CENT
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = 24 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 12 }
 WidgetConfig.DebuffWidget = { anchor = "CENTER" , x = 15 ,y = 32 }
+WidgetConfig.AbsorbWidget =	{ anchor="TOP", x = -1 , y = 5, w = 100, h = 25 }
 if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
 	WidgetConfig.DebuffWidgetPlus = { anchor = "CENTER" , x = 15 ,y = 38 }
 end

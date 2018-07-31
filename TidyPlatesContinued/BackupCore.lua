@@ -954,7 +954,6 @@ do
 		-- hooksecurefunc([table,] "function", hookfunc)
 
 		BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
-		BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 		OnNewNameplate(plate)
 	 end
 

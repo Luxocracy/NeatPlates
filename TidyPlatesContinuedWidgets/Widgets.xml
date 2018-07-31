@@ -18,6 +18,7 @@
 	<Script file="ThreatLineWidget.lua"/>
 	<Script file="AuraWidget.lua"/>
 	<Script file="TotemIconWidget.lua"/>
+	<Script file="AbsorbWidget.lua"/>
 
 
 
