@@ -918,9 +918,10 @@ do
 		local plate = ...
 		local BlizzardFrame = plate:GetChildren()
 
+		-- These lines causes the variable to get tainted and throw an exception, not sure if they are necessary in any way.
 		-- hooksecurefunc([table,] "function", hookfunc)
-		BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
-		BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
+		-- BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
+		-- BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 		OnNewNameplate(plate)
 	 end
 
@@ -931,7 +932,7 @@ do
 		-- Personal Display
 		if UnitIsUnit("player", unitid) then
 			if (GetCVarBool("nameplateShowSelf") or false) == true then
-				plate:GetChildren():_Show()
+				plate:GetChildren():Show()
 			end
 		-- Normal Plates
 		else
