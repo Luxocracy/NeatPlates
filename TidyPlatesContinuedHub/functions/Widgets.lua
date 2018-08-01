@@ -23,6 +23,12 @@ TidyPlatesContHubMenus.RangeModes = {
 				{ text = "40 yards" } ,
 			}
 
+TidyPlatesContHubDefaults.WidgetAbsorbMode = 1
+TidyPlatesContHubMenus.AbsorbModes = {
+				{ text = "Blizzlike"} ,
+				{ text = "Overlay" } ,
+			}
+
 TidyPlatesContHubDefaults.WidgetsDebuffStyle = 1
 TidyPlatesContHubMenus.DebuffStyles = {
 				{ text = "Wide",  } ,
@@ -288,6 +294,10 @@ local function OnVariableChange(vars)
 		TidyPlatesContWidgets:EnableAuraWatcher()
 		TidyPlatesContWidgets.SetAuraFilter(DebuffFilter)
 	else TidyPlatesContWidgets:DisableAuraWatcher() end
+	
+	if LocalVars.WidgetAbsorbIndicator then
+		TidyPlatesContWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode)
+	end
 end
 HubData.RegisterCallback(OnVariableChange)
 
@@ -329,6 +339,12 @@ TidyPlatesContHubMenus.RangeModes = {
 				{ text = "15 yards" } ,
 				{ text = "28 yards" } ,
 				{ text = "40 yards" } ,
+			}
+
+TidyPlatesContHubDefaults.WidgetAbsorbMode = 1
+TidyPlatesContHubMenus.AbsorbModes = {
+				{ text = "Blizzlike"} ,
+				{ text = "Overlay" } ,
 			}
 
 TidyPlatesContHubDefaults.WidgetsDebuffStyle = 1
@@ -600,6 +616,10 @@ local function OnVariableChange(vars)
 		TidyPlatesContWidgets:EnableAuraWatcher()
 		TidyPlatesContWidgets.SetAuraFilter(DebuffFilter)
 	else TidyPlatesContWidgets:DisableAuraWatcher() end
+	
+	if LocalVars.WidgetAbsorbIndicator then
+		TidyPlatesContWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode)
+	end
 end
 HubData.RegisterCallback(OnVariableChange)
 

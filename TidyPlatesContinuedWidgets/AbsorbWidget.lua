@@ -6,7 +6,7 @@ local font = "FONTS\\arialn.ttf"
 local art = "Interface\\Addons\\TidyPlatesContinuedWidgets\\AbsorbWidget\\Absorbs"
 
 local WidgetList = {}
-local lastWidget = nil
+local WidgetMode = 1 -- 1 - Blizzard; 2 - Overlay
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
@@ -50,11 +50,23 @@ local function UpdateAbsorbs(frame, unitid)
     if (length < 0) then length = 0 end
     
 	if absorb > 0 and length > 0 then
-        local helper = _frameWidth * health/healthmax
-        local offset = helper - length 
-        anchor = "LEFT"
+		local helper = _frameWidth * health/healthmax
+		local width = max(1, min( _frameWidth, length))
+		local offset = helper - length
+
+		if WidgetMode == 1 then
+			offset = helper
+			if offset + width >= _frameWidth then
+				if _frameWidth == helper then
+					offset = offset - _frameWidth*0.015
+				end 
+
+				width = _frameWidth - offset
+			end
+		end
+		anchor = "LEFT"
 		frame.Line:ClearAllPoints()
-		frame.Line:SetWidth(max(1, min( _frameWidth, length)))
+		frame.Line:SetWidth(width)
 		frame.Line:SetPoint(anchor, frame, "LEFT", offset, -1)
 		frame:Show()
 	else
@@ -172,4 +184,11 @@ local function CreateWidgetFrame(parent)
 	return frame
 end
 
+local function SetAbsorbType(mode)
+	WidgetMode = mode
+	TidyPlatesCont:ForceUpdate()
+end
+
 TidyPlatesContWidgets.CreateAbsorbWidget = CreateWidgetFrame
+
+TidyPlatesContWidgets.SetAbsorbType = SetAbsorbType

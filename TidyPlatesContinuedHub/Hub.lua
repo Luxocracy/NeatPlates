@@ -43,6 +43,7 @@ local ArtModes = TidyPlatesContHubMenus.ArtModes
 local ThreatWarningModes = TidyPlatesContHubMenus.ThreatWarningModes
 local CustomTextModes = TidyPlatesContHubMenus.CustomTextModes
 local BasicTextModes = TidyPlatesContHubMenus.BasicTextModes
+local AbsorbModes = TidyPlatesContHubMenus.AbsorbModes
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
@@ -403,9 +404,10 @@ local function BuildHubPanel(panel)
 
 	--panel.WidgetsThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetsThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetsThreatIndicator, OffsetColumnB+16)
 	
-	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetsLabel,OffsetColumnB)
-	panel.WidgetsRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetsRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+16)
-	panel.WidgetsRangeMode =  CreateQuickDropdown(objectName.."WidgetsRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetsRangeIndicator, OffsetColumnB+32)
+	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetsLabel,OffsetColumnB+60)
+	panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", "Mode:", AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
+	panel.WidgetsRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetsRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+60)
+	panel.WidgetsRangeMode =  CreateQuickDropdown(objectName.."WidgetsRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetsRangeIndicator, OffsetColumnB+76)
 	------------------------------
 	-- Advanced
 	------------------------------

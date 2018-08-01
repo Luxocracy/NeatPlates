@@ -916,26 +916,18 @@ do
 
 	function CoreEvents:NAME_PLATE_CREATED(...)
 		local plate = ...
-		local BlizzardFrame = plate:GetChildren()
-
-		-- These lines causes the variable to get tainted and throw an exception, not sure if they are necessary in any way.
-		-- hooksecurefunc([table,] "function", hookfunc)
-		-- BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
-		-- BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 		OnNewNameplate(plate)
 	 end
 
 	function CoreEvents:NAME_PLATE_UNIT_ADDED(...)
 		local unitid = ...
-		local plate = GetNamePlateForUnit(unitid, issecure());
 
 		-- Personal Display
-		if UnitIsUnit("player", unitid) then
-			if (GetCVarBool("nameplateShowSelf") or false) == true then
-				plate:GetChildren():Show()
-			end
-		-- Normal Plates
-		else
+		if not UnitIsUnit("player", unitid) then
+			local plate = GetNamePlateForUnit(unitid, issecure());
+			local BlizzardFrame = plate:GetChildren()
+			BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
+			BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 			plate:GetChildren():Hide()
 			OnShowNameplate(plate, unitid)
 		end
