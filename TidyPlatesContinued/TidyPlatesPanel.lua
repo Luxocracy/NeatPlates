@@ -127,7 +127,6 @@ local function Role2Profile(spec)
 	local s = GetSpecializationInfo(spec)
 	if s ~= nil then	
 		local role = GetSpecializationRole(spec)
-		print(role)
 		if role == "DAMAGER" then return "Damage" end
 		if role == "TANK" then return "Tank" end
 		if role == "HEALER" then return "Healer" end
@@ -148,12 +147,6 @@ local function ApplyPanelSettings()
 	ActiveProfile = DefaultProfile
 
 	local currentSpec = GetSpecialization()
-	if not TidyPlatesContOptions.WelcomeShown then
-		TidyPlatesContOptions.FirstSpecProfile = Role2Profile(1)
-		TidyPlatesContOptions.SecondSpecProfile = Role2Profile(2)
-		TidyPlatesContOptions.ThirdSpecProfile = Role2Profile(3)
-		TidyPlatesContOptions.FourthSpecProfile = Role2Profile(4)
-	end
 
 	if currentSpec == 4 then
 		ActiveProfile = TidyPlatesContOptions.FourthSpecProfile
@@ -565,8 +558,12 @@ function panelevents:PLAYER_LOGIN()
 		SetCVar("nameplateShowEnemies", 1)
 		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
 		TidyPlatesContOptions.WelcomeShown = true
+		
+		TidyPlatesContOptions.FirstSpecProfile = Role2Profile(1)
+		TidyPlatesContOptions.SecondSpecProfile = Role2Profile(2)
+		TidyPlatesContOptions.ThirdSpecProfile = Role2Profile(3)
+		TidyPlatesContOptions.FourthSpecProfile = Role2Profile(4)
 	end
-
 end
 
 TidyPlatesContInterfacePanel:SetScript("OnEvent", function(self, event, ...) panelevents[event](self, ...) end)

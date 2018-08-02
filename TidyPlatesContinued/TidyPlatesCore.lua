@@ -923,7 +923,12 @@ do
 		local unitid = ...
 
 		-- Personal Display
-		if not UnitIsUnit("player", unitid) then
+		if UnitIsUnit("player", unitid) then
+			local plate = GetNamePlateForUnit(unitid, issecure());
+			if (GetCVarBool("nameplateShowSelf") or false) == true then
+				plate:GetChildren():Show()
+			end
+		else
 			local plate = GetNamePlateForUnit(unitid, issecure());
 			local BlizzardFrame = plate:GetChildren()
 			BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
