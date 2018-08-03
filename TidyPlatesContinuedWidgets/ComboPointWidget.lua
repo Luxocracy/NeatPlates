@@ -4,7 +4,11 @@
 
 local comboWidgetPath = "Interface\\Addons\\TidyPlatesContinuedWidgets\\ComboWidget\\"
 local artpath = "Interface\\Addons\\TidyPlatesContinuedWidgets\\ComboWidget\\"
-local artfile = artpath.."Powers.tga"
+local artstyle = 2 -- 1 - Blizzard; 2 - TidyPlates
+local artfile = {
+	artpath.."Powers.tga",
+	artpath.."PowersTidy.tga",
+}
 
 local t = { 
 	['DEATHKNIGHT'] = {
@@ -120,6 +124,14 @@ local function SelectPattern(maxPower)
 	return selectedPattern
 end
 
+-- Set the Combo Points Style
+local function SetComboPointsStyle(style)
+	artstyle = style
+	TidyPlatesCont:ForceUpdate()
+end
+
+TidyPlatesContWidgets.SetComboPointsStyle = SetComboPointsStyle
+
 -- Update Graphics
 local function UpdateWidgetFrame(frame)
 	local points, maxPoints = GetPlayerPower()
@@ -139,6 +151,8 @@ local function UpdateWidgetFrame(frame)
 		else
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
 		end
+
+		frame.Icon:SetTexture(artfile[artstyle])
 
 		frame:Show()
 		return
@@ -238,7 +252,7 @@ local function CreateWidgetFrame(parent)
 	frame.Icon:SetPoint("CENTER", frame, "CENTER")
 	frame.Icon:SetHeight(h)
 	frame.Icon:SetWidth(w)
-	frame.Icon:SetTexture(artfile)
+	frame.Icon:SetTexture(artfile[artstyle])
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext

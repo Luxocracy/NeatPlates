@@ -930,9 +930,6 @@ do
 			end
 		else
 			local plate = GetNamePlateForUnit(unitid, issecure());
-			local BlizzardFrame = plate:GetChildren()
-			BlizzardFrame._Show = BlizzardFrame.Show	-- Store this for later
-			BlizzardFrame.Show = BypassFunction			-- Try this to keep the plate from showing up
 			plate:GetChildren():Hide()
 			OnShowNameplate(plate, unitid)
 		end

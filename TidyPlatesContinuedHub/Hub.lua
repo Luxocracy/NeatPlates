@@ -44,6 +44,7 @@ local ThreatWarningModes = TidyPlatesContHubMenus.ThreatWarningModes
 local CustomTextModes = TidyPlatesContHubMenus.CustomTextModes
 local BasicTextModes = TidyPlatesContHubMenus.BasicTextModes
 local AbsorbModes = TidyPlatesContHubMenus.AbsorbModes
+local ComboPointsStyles = TidyPlatesContHubMenus.ComboPointsStyles
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
@@ -399,6 +400,7 @@ local function BuildHubPanel(panel)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", "Show Friendly Class Art", AlignmentColumn, panel.ClassEnemyIcon)
 	panel.WidgetsTotemIcon = CreateQuickCheckbutton(objectName.."WidgetsTotemIcon", "Show Totem Art", AlignmentColumn, panel.ClassPartyIcon)
 	panel.WidgetsComboPoints = CreateQuickCheckbutton(objectName.."WidgetsComboPoints", "Show Personal Resources on Target", AlignmentColumn, panel.WidgetsTotemIcon)
+	panel.WidgetsComboPointsStyle =  CreateQuickDropdown(objectName.."WidgetsComboPointsStyle", "Personal Resources Style:", ComboPointsStyles, 2, AlignmentColumn, panel.WidgetsComboPoints, OffsetColumnB+76)
 
 	--panel.WidgetsEnableExternal = CreateQuickCheckbutton(objectName.."WidgetsEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetsComboPoints)
 
@@ -411,7 +413,7 @@ local function BuildHubPanel(panel)
 	------------------------------
 	-- Advanced
 	------------------------------
-	panel.AdvancedLabel, F = CreateQuickHeadingLabel(nil, "Funky Stuff", AlignmentColumn, panel.WidgetsComboPoints, 0, 5)
+	panel.AdvancedLabel, F = CreateQuickHeadingLabel(nil, "Funky Stuff", AlignmentColumn, panel.WidgetsComboPointsStyle, 0, 5)
 	panel.TextUseBlizzardFont, F = CreateQuickCheckbutton(objectName.."TextUseBlizzardFont", "Use Blizzard Font", AlignmentColumn, F, 0)
 	panel.FocusAsTarget, F = CreateQuickCheckbutton(objectName.."FocusAsTarget", "Treat Focus as a Target", AlignmentColumn, F, 0)
 	panel.AdvancedEnableUnitCache, F = CreateQuickCheckbutton(objectName.."AdvancedEnableUnitCache", "Enable Title Caching ", AlignmentColumn, F)

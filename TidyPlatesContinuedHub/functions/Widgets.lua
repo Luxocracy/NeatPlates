@@ -35,6 +35,12 @@ TidyPlatesContHubMenus.DebuffStyles = {
 				{ text = "Compact (May require UI reload to take effect)",  } ,
 			}
 
+TidyPlatesContHubDefaults.WidgetsComboPointsStyle = 2
+TidyPlatesContHubMenus.ComboPointsStyles = {
+				{ text = "Blizzlike",  } ,
+				{ text = "TidyPlates",  } ,
+			}
+
 ------------------------------------------------------------------------------
 -- Aura Widget
 ------------------------------------------------------------------------------
@@ -298,6 +304,10 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetAbsorbIndicator then
 		TidyPlatesContWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode)
 	end
+
+	if LocalVars.WidgetsComboPoints then
+		TidyPlatesContWidgets.SetComboPointsStyle(LocalVars.WidgetsComboPointsStyle);
+	end
 end
 HubData.RegisterCallback(OnVariableChange)
 
@@ -351,6 +361,12 @@ TidyPlatesContHubDefaults.WidgetsDebuffStyle = 1
 TidyPlatesContHubMenus.DebuffStyles = {
 				{ text = "Wide",  } ,
 				{ text = "Compact (May require UI reload to take effect)",  } ,
+			}
+
+TidyPlatesContHubDefaults.WidgetsComboPointsStyle = 2
+TidyPlatesContHubMenus.ComboPointsStyles = {
+				{ text = "Blizzlike",  } ,
+				{ text = "TidyPlates",  } ,
 			}
 
 ------------------------------------------------------------------------------

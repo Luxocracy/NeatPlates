@@ -198,6 +198,7 @@ TidyPlatesContHubDefaults = {
 	ClassPartyIcon = false,
 	WidgetsTotemIcon = false,
 	WidgetsComboPoints = true,
+	WidgetsComboPointsStyle = 1,
 	WidgetsThreatIndicator = true,
 	WidgetsRangeIndicator = false,
 	WidgetsRangeMode = 1,
