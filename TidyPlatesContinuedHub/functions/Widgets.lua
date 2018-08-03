@@ -39,6 +39,7 @@ TidyPlatesContHubDefaults.WidgetsComboPointsStyle = 2
 TidyPlatesContHubMenus.ComboPointsStyles = {
 				{ text = "Blizzlike",  } ,
 				{ text = "TidyPlates",  } ,
+				{ text = "TidyPlatesTraditional",  } ,
 			}
 
 ------------------------------------------------------------------------------
@@ -367,6 +368,7 @@ TidyPlatesContHubDefaults.WidgetsComboPointsStyle = 2
 TidyPlatesContHubMenus.ComboPointsStyles = {
 				{ text = "Blizzlike",  } ,
 				{ text = "TidyPlates",  } ,
+				{ text = "TidyPlatesTraditional",  } ,
 			}
 
 ------------------------------------------------------------------------------

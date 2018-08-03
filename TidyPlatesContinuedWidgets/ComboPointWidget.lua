@@ -4,10 +4,11 @@
 
 local comboWidgetPath = "Interface\\Addons\\TidyPlatesContinuedWidgets\\ComboWidget\\"
 local artpath = "Interface\\Addons\\TidyPlatesContinuedWidgets\\ComboWidget\\"
-local artstyle = 2 -- 1 - Blizzard; 2 - TidyPlates
+local artstyle = 2 -- 1 - Blizzard; 2 - TidyPlates, 3 - TidyPlatesTraditional
 local artfile = {
 	artpath.."Powers.tga",
 	artpath.."PowersTidy.tga",
+	artpath.."PowersTrad.tga",
 }
 
 local t = { 
