@@ -6,9 +6,11 @@ ignore:
 move-folders:
     TidyPlatesContinued/TidyPlatesContinued: TidyPlatesContinued
     TidyPlatesContinued/TidyPlatesContinued_BlizzardPlates: TidyPlatesContinued_BlizzardPlates
+    TidyPlatesContinued/TidyPlatesContinued_ClassicPlates: TidyPlatesContinued_ClassicPlates
     TidyPlatesContinued/TidyPlatesContinued_Graphite: TidyPlatesContinued_Graphite
     TidyPlatesContinued/TidyPlatesContinued_Grey: TidyPlatesContinued_Grey
     TidyPlatesContinued/TidyPlatesContinued_Neon: TidyPlatesContinued_Neon
     TidyPlatesContinued/TidyPlatesContinued_Quatre: TidyPlatesContinued_Quatre
+    TidyPlatesContinued/TidyPlatesContinued_Roth: TidyPlatesContinued_Roth
     TidyPlatesContinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
     TidyPlatesContinued/TidyPlatesContinuedWidgets: TidyPlatesContinuedWidgets
