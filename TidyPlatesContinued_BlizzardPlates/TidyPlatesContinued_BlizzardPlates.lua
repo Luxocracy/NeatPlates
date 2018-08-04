@@ -211,13 +211,11 @@ WidgetConfig.ClassIcon =			{ anchor = "RIGHT", x = 40, y = -1 }
 WidgetConfig.TotemIcon =			{ anchor = "RIGHT", x = 25, y = -1 }
 WidgetConfig.ThreatLineWidget =		{ anchor="CENTER", x = 0 , y = 7 }
 WidgetConfig.ThreatWheelWidget =	{ anchor =  "CENTER", x = 36 ,y = 12 }
-WidgetConfig.ComboWidget =			{ anchor = "CENTER", x = 0, y = -10 }
+WidgetConfig.ComboWidget =			{ anchor = "CENTER", x = -6, y = -10 }
 WidgetConfig.RangeWidget =			{ anchor="BOTTOM", x = 0, y = 0 }
 WidgetConfig.DebuffWidget =			{ anchor = "TOP", x = 12, y = 26 }
 WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = -8 , y = 1.5, h = 16, w = 100 }
---if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
-	WidgetConfig.DebuffWidgetPlus = { anchor="TOP", x = 12 , y = 26 }
---end
+-- WidgetConfig.DebuffWidgetPlus = { anchor="TOP", x = 12 , y = 26 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig
