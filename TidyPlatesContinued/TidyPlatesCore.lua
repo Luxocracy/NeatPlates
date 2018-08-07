@@ -921,19 +921,13 @@ do
 
 	function CoreEvents:NAME_PLATE_UNIT_ADDED(...)
 		local unitid = ...
-
-		-- Personal Display
-		if UnitIsUnit("player", unitid) then
-			local plate = GetNamePlateForUnit(unitid, issecure());
-			if (GetCVarBool("nameplateShowSelf") or false) == true then
-				plate:GetChildren():Show()
-			end
-		else
-			local plate = GetNamePlateForUnit(unitid, issecure());
+		local plate = GetNamePlateForUnit(unitid);
+		
+		-- Ignore if plate is Personal Display
+		if plate and not UnitIsUnit("player", unitid) then
 			plate:GetChildren():Hide()
-			OnShowNameplate(plate, unitid)
-		end
-
+	 		OnShowNameplate(plate, unitid)
+	 	end
 	end
 
 	function CoreEvents:NAME_PLATE_UNIT_REMOVED(...)
