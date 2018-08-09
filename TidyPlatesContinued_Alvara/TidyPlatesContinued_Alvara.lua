@@ -157,7 +157,7 @@ WidgetConfig.ThreatLineWidget = { anchor =  "TOP", x = -16 ,y = 14, w = 10, h = 
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 33 ,y = 15 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "TOP" , x = 0 ,y = -2 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 0 }
-WidgetConfig.DebuffWidget = { anchor = "TOP" , x = 15 ,y = 26 }
+WidgetConfig.DebuffWidget = { anchor = "TOP" , x = 19 ,y = 32 }
 WidgetConfig.AbsorbWidget =	{ anchor="LEFT", x = 1, y = -2, w = 100, h = 8 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
