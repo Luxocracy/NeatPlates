@@ -1,0 +1,8 @@
+## Interface: 80000
+## Title: Tidy Plates Continued: |cffffffffSimple|r
+## Notes: Simple TidyPlates skin with some built-in Healer functionality.
+## Author: FunkyCold
+## Version: 7.3.0
+## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
+
+TidyPlatesContinued_Simple.lua
