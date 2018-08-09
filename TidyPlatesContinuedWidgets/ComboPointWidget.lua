@@ -14,43 +14,45 @@ local artfile = {
 local t = { 
 	['DEATHKNIGHT'] = {
 		["POWER"] = 5,
-		[250] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.25, ["o"] = 9}, -- blood
-		[251] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.25, ["r"] = 0.50, ["o"] = 9}, -- frost
-		[252] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.50, ["r"] = 0.75, ["o"] = 9}, -- unholy
+		[250] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 9}, -- blood
+		[251] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.250, ["o"] = 9}, -- frost
+		[252] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.250, ["r"] = 0.375, ["o"] = 9}, -- unholy
 	},
 	
 	['DRUID'] = {
 		["POWER"] = 4,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
-		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.75, ["r"] = 1, ["o"] = 5}, -- all, since you can cat all the time :P
-		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.75, ["r"] = 1, ["o"] = 9}, -- all, since you can cat all the time :P
+		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
+		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
 	},
 	
 	['ROGUE'] = {
 		["POWER"] = 4,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
-		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.75, ["r"] = 1, ["o"] = 5}, -- all, since you can combo all the time :P
-		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.75, ["r"] = 1, ["o"] = 9}, -- all, since you can combo all the time :P
+		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
+		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
 	},
 
 	['MAGE'] = {
 		["POWER"] = 16,
-		[62] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.25, ["o"] = 1}, -- all, since you can cat all the time :P
+		[62] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 1}, -- all, since you can cat all the time :P
 	},
 
 	['MONK'] = {
 		["POWER"] = 12,
-		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.50, ["r"] = 0.75, ["o"] = 5}, -- all, since you can cat all the time :P
+		["all"] = { ["w"] = 80, ["h"] = 20}, -- all, since you can cat all the time :P
+		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 5}, -- all, since you can combo all the time :P
+		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 9}, -- all, since you can combo all the time :P
 	},
 
 	['PALADIN'] = {
 		["POWER"] = 9,
-		[70] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.25, ["o"] = 5}, -- retribution
+		[70] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 5}, -- retribution
 	},
 
 	['WARLOCK'] = {
 		["POWER"] = 7,
-		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.25, ["r"] = 0.50, ["o"] = 5}, -- all
+		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.25, ["o"] = 5}, -- all
 	},
 };
 
@@ -107,7 +109,7 @@ local function SelectPattern(maxPower)
 	end
 	
 	-- Custom case if somehow the player should not have 5 but 6 combos
-	if PlayerClass == "DRUID" or PlayerClass == "ROGUE" then
+	if PlayerClass == "DRUID" or PlayerClass == "ROGUE" or PlayerClass == "MONK" then
 		selectedPattern = t[PlayerClass][tostring(maxPower)]
 	else
 		selectedPattern = t[PlayerClass][playerSpec]
@@ -243,7 +245,7 @@ local function CreateWidgetFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:Hide()
 
-	local _, maxPower = GetPlayerPower() -- Rogues and Druids are always an exception
+	local _, maxPower = GetPlayerPower() -- Rogues, Druids and Monks are always an exception
 	local pattern = SelectPattern(maxPower)
 	local w = pattern["w"] or 16
 	local h = pattern["h"] or 64
