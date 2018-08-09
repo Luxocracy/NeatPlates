@@ -14,5 +14,7 @@ move-folders:
     TidyPlatesContinued/TidyPlatesContinued_Roth: TidyPlatesContinued_Roth
     TidyPlatesContinued/TidyPlatesContinued_Renaitre: TidyPlatesContinued_Renaitre
     TidyPlatesContinued/TidyPlatesContinued_Simple: TidyPlatesContinued_Simple
+    TidyPlatesContinued/TidyPlatesContinued_Slim_Horizontal: TidyPlatesContinued_Slim_Horizontal
+    TidyPlatesContinued/TidyPlatesContinued_Slim_Vertical: TidyPlatesContinued_Slim_Vertical
     TidyPlatesContinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
     TidyPlatesContinued/TidyPlatesContinuedWidgets: TidyPlatesContinuedWidgets
