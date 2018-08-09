@@ -1,4 +1,4 @@
-## Interface: 60100
+## Interface: 80000
 ## Title: Tidy Plates Continued: Slim Vertical|r
 ## Author: Dotfix
 ## Version: 2.2
