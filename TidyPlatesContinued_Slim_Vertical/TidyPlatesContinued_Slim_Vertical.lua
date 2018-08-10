@@ -237,7 +237,7 @@ Theme["NameOnly"] = StyleTextOnly
 local WidgetConfig = {}
 WidgetConfig.ClassIcon = { anchor = "TOP" , x = 15 ,y = VerticalAdjustment -1 }
 WidgetConfig.TotemIcon = { anchor = "TOP" , x = 0 ,y = VerticalAdjustment + 2 }
-WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = 0 ,y = VerticalAdjustment + 4 }
+WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = -8 ,y = VerticalAdjustment + 15 }
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 36 ,y = VerticalAdjustment + 12 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment - 35 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment }
