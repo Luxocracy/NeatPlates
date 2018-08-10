@@ -44,6 +44,7 @@ local ThreatWarningModes = TidyPlatesContHubMenus.ThreatWarningModes
 local CustomTextModes = TidyPlatesContHubMenus.CustomTextModes
 local BasicTextModes = TidyPlatesContHubMenus.BasicTextModes
 local AbsorbModes = TidyPlatesContHubMenus.AbsorbModes
+local AbsorbUnits = TidyPlatesContHubMenus.AbsorbUnits
 local ComboPointsStyles = TidyPlatesContHubMenus.ComboPointsStyles
 
 local cEnemy = "|cffff5544"
@@ -399,16 +400,17 @@ local function BuildHubPanel(panel)
 	panel.ClassEnemyIcon = CreateQuickCheckbutton(objectName.."ClassEnemyIcon", "Show Enemy Class Art", AlignmentColumn, panel.WidgetEliteIndicator)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", "Show Friendly Class Art", AlignmentColumn, panel.ClassEnemyIcon)
 	panel.WidgetsTotemIcon = CreateQuickCheckbutton(objectName.."WidgetsTotemIcon", "Show Totem Art", AlignmentColumn, panel.ClassPartyIcon)
-	panel.WidgetsComboPoints = CreateQuickCheckbutton(objectName.."WidgetsComboPoints", "Show Personal Resources on Target", AlignmentColumn, panel.WidgetsTotemIcon)
-	panel.WidgetsComboPointsStyle =  CreateQuickDropdown(objectName.."WidgetsComboPointsStyle", "Personal Resources Style:", ComboPointsStyles, 2, AlignmentColumn, panel.WidgetsComboPoints, OffsetColumnB+76)
+	panel.WidgetsComboPoints = CreateQuickCheckbutton(objectName.."WidgetsComboPoints", "Show Personal Resource on Target", AlignmentColumn, panel.WidgetsTotemIcon)
+	panel.WidgetsComboPointsStyle =  CreateQuickDropdown(objectName.."WidgetsComboPointsStyle", "Personal Resource Style:", ComboPointsStyles, 2, AlignmentColumn, panel.WidgetsComboPoints, 16)
 
 	--panel.WidgetsEnableExternal = CreateQuickCheckbutton(objectName.."WidgetsEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetsComboPoints)
 
 	--panel.WidgetsThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetsThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetsThreatIndicator, OffsetColumnB+16)
 	
-	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetsLabel,OffsetColumnB+60)
+	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetsLabel, OffsetColumnB+60)
 	panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", "Mode:", AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
-	panel.WidgetsRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetsRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+60)
+	panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", "Show on:", AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
+	panel.WidgetsRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetsRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
 	panel.WidgetsRangeMode =  CreateQuickDropdown(objectName.."WidgetsRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetsRangeIndicator, OffsetColumnB+76)
 	------------------------------
 	-- Advanced

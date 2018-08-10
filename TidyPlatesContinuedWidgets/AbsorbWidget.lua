@@ -7,6 +7,7 @@ local art = "Interface\\Addons\\TidyPlatesContinuedWidgets\\AbsorbWidget\\Absorb
 
 local WidgetList = {}
 local WidgetMode = 1 -- 1 - Blizzard; 2 - Overlay
+local WidgetUnits = 1 -- 1 - Target Only; 2 - All Units
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
@@ -102,7 +103,7 @@ local function UpdateWidgetContext(frame, unit)
 	--[[ Update Widget Frame ]]--
 	frame:UnregisterAllEvents()
 
-	if UnitGUID("target") == guid then
+	if WidgetUnits == 2 or (WidgetUnits == 1 and UnitGUID("target") == guid) then
 		frame:RegisterUnitEvent("UNIT_ABSORB_AMOUNT_CHANGED", unitid)
 		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unitid)
 		frame:RegisterUnitEvent("UNIT_HEALTH", unitid)
@@ -169,7 +170,8 @@ local function CreateWidgetFrame(parent)
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
-	frame.Update = UpdateWidgetTarget
+	-- frame.Update = UpdateWidgetTarget
+	frame.Update = UpdateWidget
 	frame.UpdateConfig = UpdateWidgetConfig
 	frame._Hide = frame.Hide
 	frame.Hide = function() 
@@ -184,8 +186,9 @@ local function CreateWidgetFrame(parent)
 	return frame
 end
 
-local function SetAbsorbType(mode)
+local function SetAbsorbType(mode, units)
 	WidgetMode = mode
+	WidgetUnits = units
 	TidyPlatesCont:ForceUpdate()
 end
 

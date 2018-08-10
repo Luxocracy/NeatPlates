@@ -29,6 +29,12 @@ TidyPlatesContHubMenus.AbsorbModes = {
 				{ text = "Overlay" } ,
 			}
 
+TidyPlatesContHubDefaults.WidgetAbsorbUnits = 1
+TidyPlatesContHubMenus.AbsorbUnits = {
+				{ text = "Target Only"} ,
+				{ text = "All Units" } ,
+			}
+
 TidyPlatesContHubDefaults.WidgetsDebuffStyle = 1
 TidyPlatesContHubMenus.DebuffStyles = {
 				{ text = "Wide",  } ,
@@ -310,9 +316,9 @@ local function OnVariableChange(vars)
 	else TidyPlatesContWidgets:DisableAuraWatcher() end
 	
 	if LocalVars.WidgetAbsorbIndicator then
-		TidyPlatesContWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode)
+		TidyPlatesContWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode, LocalVars.WidgetAbsorbUnits)
 	end
-	
+
 	if LocalVars.WidgetsComboPoints then
 		TidyPlatesContWidgets.SetComboPointsStyle(LocalVars.WidgetsComboPointsStyle);
 	end
