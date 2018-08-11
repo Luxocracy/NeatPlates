@@ -245,7 +245,7 @@ WidgetConfig.DebuffWidget = { anchor = "CENTER" , x = 15 ,y = VerticalAdjustment
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
 	WidgetConfig.DebuffWidgetPlus = { anchor = "CENTER" , x = 15 ,y = VerticalAdjustment + 28 }
 --end
-WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = -47 , y = 6, h = 16, w = 100 }
+WidgetConfig.AbsorbWidget =	{ anchor="BOTTOM", x = -5 , y = VerticalAdjustment + 5, h = 14, w = 35, o = "VERTICAL", }	-- width is still the longer side even with "VERTICAL"
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig

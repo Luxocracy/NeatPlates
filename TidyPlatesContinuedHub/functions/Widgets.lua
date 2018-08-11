@@ -225,6 +225,7 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 		--[[ Data from Themes passed to parent ]] --
 		if config.h ~= nil then extended.widgetParent._height = config.h end
 		if config.h ~= nil then extended.widgetParent._width = config.w end
+		if config.o ~= nil then extended.widgetParent._orientation = config.o else extended.widgetParent._orientation = "HORIZONTAL" end
 
 		if widget then
 			if widget.UpdateConfig then widget:UpdateConfig() end
