@@ -20,12 +20,6 @@ local function UpdateWidgetConfig(frame)
 	local width = frame:GetParent()._width or 100;
 	local orientation = frame:GetParent()._orientation or "HORIZONTAL";
 
-	if orientation == "VERTICAL" then
-		frame._frameWidth = height
-	else
-		frame._frameWidth = width
-	end
-
 	frame:SetHeight(32)
 	frame:SetWidth(width)
 	frame.Line:SetHeight(height)
@@ -34,6 +28,17 @@ local function UpdateWidgetConfig(frame)
 	-- frame:SetWidth(width)
 	-- frame.Line:SetHeight(height)
 	frame.Line:SetTexture(art[orientation], "REPEAT", "REPEAT")
+	frame.Line:SetTexCoord(0,1,0,1)
+
+	if orientation == "VERTICAL" then
+		frame._frameWidth = height
+		frame.Line:SetHorizTile(false)
+		frame.Line:SetVertTile(true)
+	else
+		frame._frameWidth = width
+		frame.Line:SetVertTile(false)
+		frame.Line:SetHorizTile(true)
+	end
 end
 
 --[[ Actual Absorb update ]]--
@@ -202,10 +207,12 @@ local function CreateWidgetFrame(parent)
 
 	if orientation == "VERTICAL" then
 		frame._frameWidth = height
+		frame.Line:SetHorizTile(false)
 		frame.Line:SetVertTile(true)
 	else
-		frame.Line:SetHorizTile(true)
 		frame._frameWidth = width
+		frame.Line:SetVertTile(false)
+		frame.Line:SetHorizTile(true)
 	end
 
 	-- Required Widget Code
