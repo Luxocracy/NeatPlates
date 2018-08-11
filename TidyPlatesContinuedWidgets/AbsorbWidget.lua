@@ -16,19 +16,13 @@ local WidgetUnits = 1 -- 1 - Target Only; 2 - All Units
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
-	local height
-	local width
+	local height = frame:GetParent()._height or 12;
+	local width = frame:GetParent()._width or 100;
 	local orientation = frame:GetParent()._orientation or "HORIZONTAL";
 
 	if orientation == "VERTICAL" then
-		height = frame:GetParent()._width or 100;
-		width = frame:GetParent()._height or 12;
-
 		frame._frameWidth = height
 	else
-		height = frame:GetParent()._height or 12;
-		width = frame:GetParent()._width or 100;
-
 		frame._frameWidth = width
 	end
 
@@ -47,7 +41,7 @@ local function UpdateAbsorbs(frame, unitid)
 	local _frameWidth = frame._frameWidth
 	local _orientation = frame._orientation
 	local length = 0
-	local anchor = "RIGHT"
+	-- local anchor = "RIGHT"
 	local absorb = UnitGetTotalAbsorbs(unitid) or 0	
   local health = UnitHealth(unitid) or 0
 	local healthmax = UnitHealthMax(unitid) or 1
@@ -190,36 +184,29 @@ local function CreateWidgetFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
 
 	--[[ Widget Config can now pass width or height data from theme config ]]--
-	local height
-	local width
+	local height = frame:GetParent()._height or 12;
+	local width = frame:GetParent()._width or 100;
 	local orientation = parent._orientation or "HORIZONTAL"
-
-	if orientation == "VERTICAL" then
-		height = frame:GetParent()._width or 100;
-		width = frame:GetParent()._height or 12;
-
-		frame._frameWidth = height
-	else
-		height = frame:GetParent()._height or 12;
-		width = frame:GetParent()._width or 100;
-
-		frame._frameWidth = width
-	end
 
 	-- frame._frameWidth = width
 	frame._orientation = orientation
 	frame:Hide()
-	-- frame:SetWidth(width)
 	frame:SetWidth(width)
 	frame:SetHeight(32)
 	frame.Line = frame:CreateTexture(nil, "OVERLAY")
-	frame.Line:SetHorizTile(true)
 	frame.Line:SetTexture(art[orientation], "REPEAT", "REPEAT")
 	frame.Line:SetTexCoord(0,1,0,1)
-	-- frame.Line:SetHeight(height)
 	frame.Line:SetHeight(height)
 	frame.Line:SetWidth(width)
 	frame:SetAlpha(1)
+
+	if orientation == "VERTICAL" then
+		frame._frameWidth = height
+		frame.Line:SetVertTile(true)
+	else
+		frame.Line:SetHorizTile(true)
+		frame._frameWidth = width
+	end
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
