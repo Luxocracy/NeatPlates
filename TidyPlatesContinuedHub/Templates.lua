@@ -753,6 +753,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	-- Button Handlers
 	-----------------
 	panel.okay = ClosePanel --function() OnPanelItemChange(panel) end
+	panel.cancel = TidyPlatesCont.Update
 	panel.refresh = RefreshPanel
         panel:SetScript("OnShow", RefreshPanel)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
