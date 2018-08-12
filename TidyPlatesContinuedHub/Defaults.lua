@@ -205,6 +205,7 @@ TidyPlatesContHubDefaults = {
 	WidgetsEnableExternal = true,
 	WidgetAbsorbIndicator = false,
 	WidgetAbsorbMode = 1,
+	WidgetQuestIcon = false,
 
 	-- Aura Widget
 	---------------------------------------

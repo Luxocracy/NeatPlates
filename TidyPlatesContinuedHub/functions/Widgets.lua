@@ -14,6 +14,7 @@ local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
 local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
 local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
+local CreateQuestWidget = WidgetLib.CreateQuestWidget
 
 TidyPlatesContHubDefaults.WidgetsRangeMode = 1
 TidyPlatesContHubMenus.RangeModes = {
@@ -256,12 +257,14 @@ local function OnInitializeWidgets(extended, configTable)
 	local EnableThreatWidget = LocalVars.WidgetsThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetsDebuff
 	local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
+	local EnableQuestWidget = LocalVars.WidgetQuestIcon
 
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
 	InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
 	InitWidget( "ThreatWidgetHub", extended, configTable.ThreatLineWidget, CreateThreatLineWidget, EnableThreatWidget)
 	InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
+	InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -295,6 +298,10 @@ local function OnUpdateDelegate(extended, unit)
 
 	if widgets.ClassWidgetHub and ( (LocalVars.ClassEnemyIcon and unit.reaction ~= "FRIENDLY") or (LocalVars.ClassPartyIcon and unit.reaction == "FRIENDLY")) then
 		widgets.ClassWidgetHub:Update(unit, LocalVars.ClassPartyIcon)
+	end
+
+	if widgets.QuestWidgetHub and LocalVars.WidgetQuestIcon then
+		widgets.QuestWidgetHub:Update(unit)
 	end
 
 	if LocalVars.WidgetsTotemIcon and widgets.TotemWidgetHub then
