@@ -19,7 +19,7 @@ end
 
 local function CreateQuestWidget(parent)
 	local frame = CreateFrame("Frame", nil, parent)
-	frame:SetWidth(16); frame:SetHeight(16)
+	frame:SetWidth(18); frame:SetHeight(18)
 
 	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	frame.Icon:SetAllPoints(frame)

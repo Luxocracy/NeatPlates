@@ -159,6 +159,7 @@ WidgetConfig.ComboWidget = { anchor = "TOP" , x = 0 ,y = -2 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 0 }
 WidgetConfig.DebuffWidget = { anchor = "TOP" , x = 19 ,y = 35 }
 WidgetConfig.AbsorbWidget =	{ anchor="LEFT", x = 10, y = -2, w = 100, h = 8 }
+WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 5,y = 3 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig
