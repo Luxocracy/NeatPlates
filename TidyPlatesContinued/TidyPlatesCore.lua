@@ -925,7 +925,8 @@ do
 		
 		-- Ignore if plate is Personal Display
 		if plate and not UnitIsUnit("player", unitid) then
-			plate:GetChildren():Hide()
+			local children = plate:GetChildren()
+			if children then children:Hide() end --Avoids errors incase the plate has no children
 	 		OnShowNameplate(plate, unitid)
 	 	end
 	end
