@@ -166,8 +166,9 @@ local function BuildHubPanel(panel)
 
 	panel.WidgetsMyDebuff = CreateQuickCheckbutton(objectName.."WidgetsMyDebuff", "Include My Debuffs", AlignmentColumn, panel.WidgetsDebuff, 16)
 	panel.WidgetsMyBuff = CreateQuickCheckbutton(objectName.."WidgetsMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetsMyDebuff, 16)
+	panel.WidgetsBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetsBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetsMyBuff, 16)
 
-	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsMyBuff, 16)
+	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsBuffPurgeable, 16)
 	panel.WidgetsDebuffTrackList = CreateQuickEditbox(objectName.."WidgetsDebuffTrackList", AlignmentColumn, panel.WidgetsDebuffListLabel, 16)
 
 	panel.WidgetsDebuffStyle =  CreateQuickDropdown(objectName.."WidgetsDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetsDebuffTrackList, 16)
@@ -420,6 +421,7 @@ local function BuildHubPanel(panel)
 	panel.TextUseBlizzardFont, F = CreateQuickCheckbutton(objectName.."TextUseBlizzardFont", "Use Blizzard Font", AlignmentColumn, F, 0)
 	panel.FocusAsTarget, F = CreateQuickCheckbutton(objectName.."FocusAsTarget", "Treat Focus as a Target", AlignmentColumn, F, 0)
 	panel.AdvancedEnableUnitCache, F = CreateQuickCheckbutton(objectName.."AdvancedEnableUnitCache", "Enable Title Caching ", AlignmentColumn, F)
+	panel.NameplateMaxDistance, F = CreateQuickSlider(objectName.."NameplateMaxDistance", "Nameplate Distance (Default: 60)", AlignmentColumn, F, 0, 4)
 	panel.FrameVerticalPosition, F = CreateQuickSlider(objectName.."FrameVerticalPosition", "Vertical Position of Artwork: (May cause targeting problems)", AlignmentColumn, F, 0, 4)
 	panel.FrameBarWidth, F = CreateQuickSlider(objectName.."FrameBarWidth", "Health Bar Width (%)", AlignmentColumn, F, 0, 4)
 
@@ -466,6 +468,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.ScaleStandard, 1, .5, 2.2, .01)
 	SetSliderMechanics(panel.ScaleSpotlight, 1, .5, 2.2, .01)
 
+	SetSliderMechanics(panel.NameplateMaxDistance, 1, 0.1, 1, .01)
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)
 
@@ -486,6 +489,8 @@ local function BuildHubPanel(panel)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
+
+		SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100))
 	end
 
 	--panel:Hide()

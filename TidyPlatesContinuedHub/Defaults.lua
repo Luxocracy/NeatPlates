@@ -214,6 +214,7 @@ TidyPlatesContHubDefaults = {
 	--WidgetsAuraMode = 1,
 	WidgetsMyDebuff = true,
 	WidgetsMyBuff = false,
+	WidgetsBuffPurgeable = false,
 	WidgetsDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetsDebuffLookup = {},
 	WidgetsDebuffPriority = {},
@@ -229,6 +230,7 @@ TidyPlatesContHubDefaults = {
 	AdvancedEnableUnitCache = true,
 	FocusAsTarget = false,
 	FrameBarWidth = 1,
+	NameplateMaxDistance = GetCVar("nameplateMaxDistance") or 60
 	--AdvancedHealthTextList = [[return unit.health]],
 }
 
