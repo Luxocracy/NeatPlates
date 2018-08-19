@@ -97,7 +97,16 @@ local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
 
 local AURA_TYPE = { "Buff", "Curse", "Disease", "Magic", "Poison", "Debuff", }
-local AURA_TYPE_COLORS = { nil, {1,0,1}, {.5, .2, 0}, {0,.4,1}, {0,1,0}, nil, }
+-- local AURA_TYPE_COLORS = { nil, {1,0,1}, {.5, .2, 0}, {0,.4,1}, {0,1,0}, nil, }
+local AURA_TYPE_COLORS = {
+	["Buff"] = nil,
+	["Curse"] = {1,0,1},
+	["Disease"] = {.5, .2, 0},
+	["Magic"] = {0,.4,1},
+	["Poison"] = {0,1,0},
+	["Debuff"] = nil,
+}
+
 
 
 
@@ -144,7 +153,7 @@ local DebuffPrefixModes = {
 local function SmartFilterMode(aura)
 	local ShowThisAura = false
 	local AuraPriority = 20
-	local ShowBuffAura = (LocalVars.WidgetsBuffPurgeable and aura.effect == "HELPFUL" and aura.dispellable)
+	local ShowBuffAura = (LocalVars.WidgetsBuffPurgeable and aura.effect == "HELPFUL" and aura.purgeable)
 	-- My own Buffs and Debuffs
 	if (aura.caster == "player" or aura.caster == "pet" or ShowBuffAura) and aura.duration and aura.duration < 150 then
 		if (LocalVars.WidgetsMyBuff or ShowBuffAura) and aura.effect == "HELPFUL" then
@@ -204,8 +213,9 @@ local function TrackDispelType(dispelType)
 end
 
 local function DebuffFilter(aura)
-	if LocalVars.WidgetAuraTrackDispelFriendly and aura.reaction == AURA_TARGET_FRIENDLY then
-		if aura.effect == "HARMFUL" and TrackDispelType(aura.type) then
+	local ShowBuffAura = (LocalVars.WidgetsBuffPurgeable and aura.effect == "HELPFUL" and aura.purgeable)
+	if (LocalVars.WidgetAuraTrackDispelFriendly and aura.reaction == AURA_TARGET_FRIENDLY) or ShowBuffAura then
+		if (aura.effect == "HARMFUL" and TrackDispelType(aura.type)) or ShowBuffAura then
 		local r, g, b = GetAuraColor(aura)
 		return true, 10, r, g, b end
 	end

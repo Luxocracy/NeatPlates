@@ -210,7 +210,7 @@ local function UpdateIconGrid(frame, unitid)
 				aura.name = name
 				aura.texture = icon
 				aura.stacks = stacks
-				aura.dispellable = canStealOrPurge
+				aura.purgeable = canStealOrPurge
 				aura.type = auraType
 				aura.effect = auraFilter
 				aura.duration = duration
@@ -312,10 +312,11 @@ local function UpdateIconGrid(frame, unitid)
 			-- Loop through buffs and call function to display them
 			local rowOffset = DebuffColumns * (math.floor((DebuffCount-1)/DebuffColumns)+2)
 			for k, aura in ipairs(BuffAuras) do
-				-- Make sure we aren't overwriting any debuffs
-				if rowOffset+1-k > DebuffCount then
-					UpdateIcon(AuraIconFrames[rowOffset+1-k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
-					AuraSlots[rowOffset+1-k] = true
+				local index = rowOffset+1-k
+				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
+				if index > DebuffCount and index > 0 then
+						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
+						AuraSlots[index] = true
 				end
 			end
 
