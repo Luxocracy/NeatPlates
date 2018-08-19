@@ -11,11 +11,12 @@
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+      <h2 class="project-tagline">Latest Release: {{ site.github.latest_release.assets[0].name }}</h2>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
       {% endif %}
       {% if site.github.show_downloads %}
-        <a href="{{ site.github.latest_release }}" class="btn">Download</a>
+        <a href="{{ site.github.latest_release.assets[0].browser_download_url }}" class="btn">Download Latest Release</a>
       {% endif %}
     </header>
 
