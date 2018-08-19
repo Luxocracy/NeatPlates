@@ -213,11 +213,15 @@ local function TrackDispelType(dispelType)
 end
 
 local function DebuffFilter(aura)
-	local ShowBuffAura = (LocalVars.WidgetsBuffPurgeable and aura.effect == "HELPFUL" and aura.purgeable)
-	if (LocalVars.WidgetAuraTrackDispelFriendly and aura.reaction == AURA_TARGET_FRIENDLY) or ShowBuffAura then
-		if (aura.effect == "HARMFUL" and TrackDispelType(aura.type)) or ShowBuffAura then
-		local r, g, b = GetAuraColor(aura)
-		return true, 10, r, g, b end
+	if LocalVars.WidgetsBuffPurgeable and aura.effect == "HELPFUL" and aura.purgeable then
+		local color = LocalVars.ColorBuffPurgeable
+		return true, 10, color.r, color.g, color.b, color.a
+	end
+	if (LocalVars.WidgetAuraTrackDispelFriendly and aura.reaction == AURA_TARGET_FRIENDLY) then
+		if (aura.effect == "HARMFUL" and TrackDispelType(aura.type)) then
+			local r, g, b = GetAuraColor(aura)
+			return true, 10, r, g, b, a
+		end
 	end
 
 	return SmartFilterMode(aura)

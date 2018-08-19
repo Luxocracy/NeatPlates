@@ -167,6 +167,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetsMyDebuff = CreateQuickCheckbutton(objectName.."WidgetsMyDebuff", "Include My Debuffs", AlignmentColumn, panel.WidgetsDebuff, 16)
 	panel.WidgetsMyBuff = CreateQuickCheckbutton(objectName.."WidgetsMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetsMyDebuff, 16)
 	panel.WidgetsBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetsBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetsMyBuff, 16)
+	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "Purgeable Border Color", AlignmentColumn, panel.WidgetsMyBuff , OffsetColumnB + 16)
 
 	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsBuffPurgeable, 16)
 	panel.WidgetsDebuffTrackList = CreateQuickEditbox(objectName.."WidgetsDebuffTrackList", AlignmentColumn, panel.WidgetsDebuffListLabel, 16)

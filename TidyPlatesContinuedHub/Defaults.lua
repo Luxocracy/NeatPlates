@@ -215,6 +215,7 @@ TidyPlatesContHubDefaults = {
 	WidgetsMyDebuff = true,
 	WidgetsMyBuff = false,
 	WidgetsBuffPurgeable = false,
+	ColorBuffPurgeable = {r = 0, g = 0.4, b = 1, a = 1}, -- Medium Blue
 	WidgetsDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetsDebuffLookup = {},
 	WidgetsDebuffPriority = {},

@@ -137,7 +137,7 @@ local function UpdateWidgetTime(frame, expiration)
 end
 
 
-local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b)
+local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b, a)
 	if frame and texture and expiration then
 		-- Icon
 		frame.Icon:SetTexture(texture)
@@ -148,7 +148,7 @@ local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b)
 
 		-- Highlight Coloring
 		if r then
-			frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1)
+			frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
 			frame.BorderHighlight:Show()
 			frame.Border:Hide()
 		else frame.BorderHighlight:Hide(); frame.Border:Show()	end
@@ -226,14 +226,14 @@ local function UpdateIconGrid(frame, unitid)
 			-- Auras are evaluated by an external function
 			-- Pre-filtering before the icon grid is populated
 			if aura.name then
-				local show, priority, r, g, b = AuraFilterFunction(aura)
+				local show, priority, r, g, b, a = AuraFilterFunction(aura)
 				--print(aura.name, show, priority)
 				--show = true
 				-- Store Order/Priority
 				if show then
 
 					aura.priority = priority or 10
-					aura.r, aura.g, aura.b = r, g, b
+					aura.r, aura.g, aura.b, aura.a = r, g, b, a
 
 					storedAuraCount = storedAuraCount + 1
 					storedAuras[storedAuraCount] = aura
@@ -305,7 +305,7 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Loop through debuffs and call function to display them
 			for k, aura in ipairs(DebuffAuras) do
-				UpdateIcon(AuraIconFrames[k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
+				UpdateIcon(AuraIconFrames[k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b, aura.a)
 				AuraSlots[k] = true
 			end
 
@@ -315,7 +315,7 @@ local function UpdateIconGrid(frame, unitid)
 				local index = rowOffset+1-k
 				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
 				if index > DebuffCount and index > 0 then
-						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
+						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b, aura.a)
 						AuraSlots[index] = true
 				end
 			end
