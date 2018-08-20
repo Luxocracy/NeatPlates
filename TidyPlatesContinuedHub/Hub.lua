@@ -168,8 +168,10 @@ local function BuildHubPanel(panel)
 	panel.WidgetsMyBuff = CreateQuickCheckbutton(objectName.."WidgetsMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetsMyDebuff, 16)
 	panel.WidgetsBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetsBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetsMyBuff, 16)
 	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "Purgeable Border Color", AlignmentColumn, panel.WidgetsMyBuff , OffsetColumnB + 16)
+	panel.WidgetsBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetsBuffEnrage", "Include Enrage Buffs", AlignmentColumn, panel.WidgetsBuffPurgeable, 16)
+	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "Enrage Border Color", AlignmentColumn, panel.WidgetsBuffPurgeable , OffsetColumnB + 16)
 
-	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsBuffPurgeable, 16)
+	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsBuffEnrage, 16)
 	panel.WidgetsDebuffTrackList = CreateQuickEditbox(objectName.."WidgetsDebuffTrackList", AlignmentColumn, panel.WidgetsDebuffListLabel, 16)
 
 	panel.WidgetsDebuffStyle =  CreateQuickDropdown(objectName.."WidgetsDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetsDebuffTrackList, 16)
@@ -491,7 +493,7 @@ local function BuildHubPanel(panel)
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
 
-		SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100))
+		SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100)) -- Causes an error if changed in combat
 	end
 
 	--panel:Hide()

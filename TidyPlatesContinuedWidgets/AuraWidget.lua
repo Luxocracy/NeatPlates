@@ -210,7 +210,6 @@ local function UpdateIconGrid(frame, unitid)
 				aura.name = name
 				aura.texture = icon
 				aura.stacks = stacks
-				aura.purgeable = canStealOrPurge
 				aura.type = auraType
 				aura.effect = auraFilter
 				aura.duration = duration
