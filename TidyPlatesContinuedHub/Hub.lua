@@ -492,8 +492,12 @@ local function BuildHubPanel(panel)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
-
-		SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100)) -- Causes an error if changed in combat
+		-- If the setting can't be stored during combat
+		if InCombatLockdown() == false then
+			SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100))
+		else
+			print("TidyPlatesContinued: Some settings could not be set due to combat restrictions.")
+		end
 	end
 
 	--panel:Hide()
