@@ -7,7 +7,15 @@ local art = "Interface\\Addons\\TidyPlatesContinuedWidgets\\QuestWidget\\QuestIn
 local function UpdateQuestWidget(self, unit, showFriendly)
 	if unit and unit.type == "NPC" then
 		local questName, questObjective = GetUnitQuestInfo(unit)
-		if questObjective or questName then
+		if questName and questObjective then
+			local questProgress, questTotal = string.match(questObjective, "([0-9]+)\/([0-9]+)")
+			if questProgress < questTotal then
+				self.Icon:SetTexture(art)
+				self:Show()
+			else
+				self:Hide()
+			end
+		elseif questName then
 			self.Icon:SetTexture(art)
 			self:Show()
 		else
