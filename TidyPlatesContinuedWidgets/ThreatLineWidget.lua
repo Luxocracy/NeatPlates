@@ -1,5 +1,5 @@
 
---local GetRelativeThreat = TidyPlatesContUtility.GetRelativeThreat
+local GetRelativeThreat = TidyPlatesContUtility.GetRelativeThreat
 local GetGroupInfo = TidyPlatesContUtility.GetGroupInfo
 
 
@@ -7,68 +7,68 @@ local GetGroupInfo = TidyPlatesContUtility.GetGroupInfo
 -- Threat Function
 ------------------------
 
-local function GetGroupThreatLeader(enemyUnitid)
-	-- tempUnitid, tempThreat
-	local friendlyUnitid, friendlyThreatval = nil, 0
-	local tempUnitid, tempThreat
-	local groupType, groupSize, startAt = nil, nil, 1
+-- local function GetGroupThreatLeader(enemyUnitid)
+-- 	-- tempUnitid, tempThreat
+-- 	local friendlyUnitid, friendlyThreatval = nil, 0
+-- 	local tempUnitid, tempThreat
+-- 	local groupType, groupSize, startAt = nil, nil, 1
 
-	-- Get Group Type
-	if UnitInRaid("player") then
-		groupType = "raid"
-		groupSize = TidyPlatesContUtility:GetNumRaidMembers()
-		startAt = 2
-	elseif UnitInParty("player") then
-		groupType = "party"
-		groupSize = TidyPlatesContUtility:GetNumPartyMembers()
-	else
-		groupType = nil
-	end
+-- 	-- Get Group Type
+-- 	if UnitInRaid("player") then
+-- 		groupType = "raid"
+-- 		groupSize = TidyPlatesContUtility:GetNumRaidMembers()
+-- 		startAt = 2
+-- 	elseif UnitInParty("player") then
+-- 		groupType = "party"
+-- 		groupSize = TidyPlatesContUtility:GetNumPartyMembers()
+-- 	else
+-- 		groupType = nil
+-- 	end
 
-	-- Cycle through Party/Raid, picking highest threat holder
-	if groupType then
-		for allyIndex = startAt, groupSize do
-			tempUnitid = groupType..allyIndex
-			tempThreat = select(3, UnitDetailedThreatSituation(tempUnitid, enemyUnitid))
-			if tempThreat and tempThreat > friendlyThreatval then
-				friendlyThreatval = tempThreat
-				friendlyUnitid = tempUnitid
-			end
-		end
-	end
+-- 	-- Cycle through Party/Raid, picking highest threat holder
+-- 	if groupType then
+-- 		for allyIndex = startAt, groupSize do
+-- 			tempUnitid = groupType..allyIndex
+-- 			tempThreat = select(3, UnitDetailedThreatSituation(tempUnitid, enemyUnitid))
+-- 			if tempThreat and tempThreat > friendlyThreatval then
+-- 				friendlyThreatval = tempThreat
+-- 				friendlyUnitid = tempUnitid
+-- 			end
+-- 		end
+-- 	end
 
-	-- Request Pet Threat (if possible)
-	if HasPetUI() and UnitExists("pet") then
-		tempThreat = select(3, UnitDetailedThreatSituation("pet", enemyUnitid)) or 0
-		if tempThreat > friendlyThreatval then
-			friendlyThreatval = tempThreat
-			friendlyUnitid = "pet"
-		end
-	end
+-- 	-- Request Pet Threat (if possible)
+-- 	if HasPetUI() and UnitExists("pet") then
+-- 		tempThreat = select(3, UnitDetailedThreatSituation("pet", enemyUnitid)) or 0
+-- 		if tempThreat > friendlyThreatval then
+-- 			friendlyThreatval = tempThreat
+-- 			friendlyUnitid = "pet"
+-- 		end
+-- 	end
 
-	return friendlyUnitid, friendlyThreatval
+-- 	return friendlyUnitid, friendlyThreatval
 
-end
+-- end
 
 
-local function GetRelativeThreat(enemyUnitid)		-- 'enemyUnitid' is a target/enemy
-	if not UnitExists(enemyUnitid) then return end
+-- local function GetRelativeThreat(enemyUnitid)		-- 'enemyUnitid' is a target/enemy
+-- 	if not UnitExists(enemyUnitid) then return end
 
-	local playerIsTanking, playerSituation, playerThreat = UnitDetailedThreatSituation("player", enemyUnitid)
-	if not playerThreat then return end
+-- 	local playerIsTanking, playerSituation, playerThreat = UnitDetailedThreatSituation("player", enemyUnitid)
+-- 	if not playerThreat then return end
 
-	local friendlyUnitid, friendlyThreat = GetGroupThreatLeader(enemyUnitid)
+-- 	local friendlyUnitid, friendlyThreat = GetGroupThreatLeader(enemyUnitid)
 
-	-- Return the appropriate value
-	if playerThreat and friendlyThreat and friendlyUnitid then
-		if playerThreat >= 100 then 	-- The enemy is attacking you. You are tanking. 	Returns: 1. Your threat, plus your lead over the next highest person, 2. Your Unitid (since you're tanking)
-			return tonumber(playerThreat + (100-friendlyThreat)), "player"
-		else 	-- The enemy is not attacking you.  Returns: 1. Your scaled threat percent, 2. Who is On Top
-			return tonumber(playerThreat), friendlyUnitid
-		end
-	end
+-- 	-- Return the appropriate value
+-- 	if playerThreat and friendlyThreat and friendlyUnitid then
+-- 		if playerThreat >= 100 then 	-- The enemy is attacking you. You are tanking. 	Returns: 1. Your threat, plus your lead over the next highest person, 2. Your Unitid (since you're tanking)
+-- 			return tonumber(playerThreat + (100-friendlyThreat)), "player"
+-- 		else 	-- The enemy is not attacking you.  Returns: 1. Your scaled threat percent, 2. Who is On Top
+-- 			return tonumber(playerThreat), friendlyUnitid
+-- 		end
+-- 	end
 
-end
+-- end
 
 
 ---------------------------------------------------------------------

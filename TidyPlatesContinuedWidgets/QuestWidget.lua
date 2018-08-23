@@ -9,7 +9,6 @@ local function UpdateQuestWidget(self, unit, showFriendly)
 		local questName, questObjective = GetUnitQuestInfo(unit)
 		if questObjective or questName then
 			self.Icon:SetTexture(art)
-			-- self.Icon:SetTexCoord(0,1,0,1)
 			self:Show()
 		else
 			self:Hide()
@@ -29,3 +28,5 @@ local function CreateQuestWidget(parent)
 end
 
 TidyPlatesContWidgets.CreateQuestWidget = CreateQuestWidget
+
+

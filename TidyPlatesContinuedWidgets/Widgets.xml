@@ -20,6 +20,7 @@
 	<Script file="TotemIconWidget.lua"/>
 	<Script file="AbsorbWidget.lua"/>
 	<Script file="QuestWidget.lua"/>
+	<Script file="ThreatPercentageWidget.lua"/>
 
 
 

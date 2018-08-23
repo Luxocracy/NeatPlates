@@ -160,23 +160,23 @@ local function BuildHubPanel(panel)
 	-- Aura (Buff and Debuff) Widget
 	------------------------------
 	panel.DebuffsLabel = CreateQuickHeadingLabel(nil, "Buffs & Debuffs", AlignmentColumn, F, 0, 5)
-	panel.WidgetsDebuff = CreateQuickCheckbutton(objectName.."WidgetsDebuff", "Enable Aura Widget", AlignmentColumn, panel.DebuffsLabel)
+	panel.WidgetDebuff = CreateQuickCheckbutton(objectName.."WidgetDebuff", "Enable Aura Widget", AlignmentColumn, panel.DebuffsLabel)
 
-	--panel.WidgetsAuraMode =  CreateQuickDropdown(objectName.."WidgetsAuraMode", "Filter Mode:", AuraWidgetModes, 1, AlignmentColumn, panel.WidgetsDebuffStyle, 16)		-- used to be WidgetsDebuffMode
+	--panel.WidgetAuraMode =  CreateQuickDropdown(objectName.."WidgetAuraMode", "Filter Mode:", AuraWidgetModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)		-- used to be WidgetDebuffMode
 
-	panel.WidgetsMyDebuff = CreateQuickCheckbutton(objectName.."WidgetsMyDebuff", "Include My Debuffs", AlignmentColumn, panel.WidgetsDebuff, 16)
-	panel.WidgetsMyBuff = CreateQuickCheckbutton(objectName.."WidgetsMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetsMyDebuff, 16)
-	panel.WidgetsBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetsBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetsMyBuff, 16)
-	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "Purgeable Border Color", AlignmentColumn, panel.WidgetsMyBuff , OffsetColumnB + 16)
-	panel.WidgetsBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetsBuffEnrage", "Include Enrage Buffs", AlignmentColumn, panel.WidgetsBuffPurgeable, 16)
-	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "Enrage Border Color", AlignmentColumn, panel.WidgetsBuffPurgeable , OffsetColumnB + 16)
+	panel.WidgetMyDebuff = CreateQuickCheckbutton(objectName.."WidgetMyDebuff", "Include My Debuffs", AlignmentColumn, panel.WidgetDebuff, 16)
+	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetMyDebuff, 16)
+	panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetMyBuff, 16)
+	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "Purgeable Border Color", AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 16)
+	panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", "Include Enrage Buffs", AlignmentColumn, panel.WidgetBuffPurgeable, 16)
+	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "Enrage Border Color", AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 16)
 
-	panel.WidgetsDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetsBuffEnrage, 16)
-	panel.WidgetsDebuffTrackList = CreateQuickEditbox(objectName.."WidgetsDebuffTrackList", AlignmentColumn, panel.WidgetsDebuffListLabel, 16)
+	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetBuffEnrage, 16)
+	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", AlignmentColumn, panel.WidgetDebuffListLabel, 16)
 
-	panel.WidgetsDebuffStyle =  CreateQuickDropdown(objectName.."WidgetsDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetsDebuffTrackList, 16)
+	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetDebuffTrackList, 16)
 
-	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", "Include Dispellable Debuffs on Friendly Units", AlignmentColumn, panel.WidgetsDebuffStyle, 16, 4)
+	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", "Include Dispellable Debuffs on Friendly Units", AlignmentColumn, panel.WidgetDebuffStyle, 16, 4)
 	panel.WidgetAuraTrackCurse = CreateQuickCheckbutton(objectName.."WidgetAuraTrackCurse", "Curse", AlignmentColumn, panel.WidgetAuraTrackDispelFriendly, 16+16, -2)
 	panel.WidgetAuraTrackDisease = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDisease", "Disease", AlignmentColumn, panel.WidgetAuraTrackCurse, 16+16, -2)
 	panel.WidgetAuraTrackMagic = CreateQuickCheckbutton(objectName.."WidgetAuraTrackMagic", "Magic", AlignmentColumn, panel.WidgetAuraTrackDisease, 16+16, -2)
@@ -187,7 +187,7 @@ local function BuildHubPanel(panel)
 	-- Debuff Help Tip
 	panel.DebuffHelpTip = CreateQuickItemLabel(nil, "Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. "..
 		"You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' "..
-		"may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones.", AlignmentColumn, panel.WidgetsDebuffListLabel, 225+40) -- 210, 275, )
+		"may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones.", AlignmentColumn, panel.WidgetDebuffListLabel, 225+40) -- 210, 275, )
 	panel.DebuffHelpTip:SetHeight(150)
 	panel.DebuffHelpTip:SetWidth(200)
 	panel.DebuffHelpTip.Text:SetJustifyV("TOP")
@@ -336,7 +336,8 @@ local function BuildHubPanel(panel)
 	panel.ColorThreatTransition = CreateQuickColorbox(objectName.."ColorThreatTransition", "Transition", AlignmentColumn, panel.ColorThreatWarning , 16)
 	panel.ColorThreatSafe = CreateQuickColorbox(objectName.."ColorThreatSafe", "Safe", AlignmentColumn, panel.ColorThreatTransition, 16)
 
-	panel.WidgetsThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetsThreatIndicator", "Show Tug-o-Threat Indicator", AlignmentColumn, panel.ColorThreatSafe, 0, 2)
+	panel.WidgetThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetThreatIndicator", "Show Tug-o-Threat Indicator", AlignmentColumn, panel.ColorThreatSafe, 0, 2)
+	panel.WidgetThreatPercentage, F = CreateQuickCheckbutton(objectName.."WidgetThreatPercentage", "Show Threat Percentage", AlignmentColumn, panel.WidgetThreatIndicator, 0, 2)
 
 	--[[
 	-- Warning Border Glow
@@ -355,7 +356,7 @@ local function BuildHubPanel(panel)
 	------------------------------
 	-- Health
 	------------------------------
-	panel.HealthLabel, F = CreateQuickHeadingLabel(nil, "Health", AlignmentColumn, panel.WidgetsThreatIndicator, 0, 5)
+	panel.HealthLabel, F = CreateQuickHeadingLabel(nil, "Health", AlignmentColumn, panel.WidgetThreatPercentage, 0, 5)
 	panel.EnableHealerWarning, F = CreateQuickCheckbutton(objectName.."EnableHealerWarning", "Enable Healer Warning Glow", AlignmentColumn, F)
 	panel.HighHealthThreshold = CreateQuickSlider(objectName.."HighHealthThreshold", "High Health Threshold:", AlignmentColumn, F, 0, 2)
 	panel.LowHealthThreshold =  CreateQuickSlider(objectName.."LowHealthThreshold", "Low Health Threshold:", AlignmentColumn, panel.HighHealthThreshold, 0, 2)
@@ -398,29 +399,29 @@ local function BuildHubPanel(panel)
 	------------------------------
 	--Widgets
 	------------------------------
-	panel.WidgetsLabel, F = CreateQuickHeadingLabel(nil, "Other Widgets", AlignmentColumn, F, 0, 5)
-	panel.WidgetTargetHighlight = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", "Show Target Highlight", AlignmentColumn, panel.WidgetsLabel)
+	panel.WidgetLabel, F = CreateQuickHeadingLabel(nil, "Other Widgets", AlignmentColumn, F, 0, 5)
+	panel.WidgetTargetHighlight = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", "Show Target Highlight", AlignmentColumn, panel.WidgetLabel)
 	panel.WidgetEliteIndicator = CreateQuickCheckbutton(objectName.."WidgetEliteIndicator", "Show Elite Icon", AlignmentColumn, panel.WidgetTargetHighlight)
 	panel.ClassEnemyIcon = CreateQuickCheckbutton(objectName.."ClassEnemyIcon", "Show Enemy Class Art", AlignmentColumn, panel.WidgetEliteIndicator)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", "Show Friendly Class Art", AlignmentColumn, panel.ClassEnemyIcon)
-	panel.WidgetsTotemIcon = CreateQuickCheckbutton(objectName.."WidgetsTotemIcon", "Show Totem Art", AlignmentColumn, panel.ClassPartyIcon)
-	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", "Show Quest Icon on Units", AlignmentColumn, panel.WidgetsTotemIcon)
-	panel.WidgetsComboPoints = CreateQuickCheckbutton(objectName.."WidgetsComboPoints", "Show Personal Resource on Target", AlignmentColumn, panel.WidgetQuestIcon)
-	panel.WidgetsComboPointsStyle =  CreateQuickDropdown(objectName.."WidgetsComboPointsStyle", "Personal Resource Style:", ComboPointsStyles, 2, AlignmentColumn, panel.WidgetsComboPoints, 16)
+	panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", "Show Totem Art", AlignmentColumn, panel.ClassPartyIcon)
+	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", "Show Quest Icon on Units", AlignmentColumn, panel.WidgetTotemIcon)
+	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", "Show Personal Resource on Target", AlignmentColumn, panel.WidgetQuestIcon)
+	panel.WidgetComboPointsStyle =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", "Personal Resource Style:", ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
 
-	--panel.WidgetsEnableExternal = CreateQuickCheckbutton(objectName.."WidgetsEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetsComboPoints)
+	--panel.WidgetEnableExternal = CreateQuickCheckbutton(objectName.."WidgetEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetComboPoints)
 
-	--panel.WidgetsThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetsThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetsThreatIndicator, OffsetColumnB+16)
+	--panel.WidgetThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetThreatIndicator, OffsetColumnB+16)
 	
-	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetsLabel, OffsetColumnB+60)
+	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", "Show Absorb Bars", AlignmentColumn, panel.WidgetLabel, OffsetColumnB+60)
 	panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", "Mode:", AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
 	panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", "Show on:", AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
-	panel.WidgetsRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetsRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
-	panel.WidgetsRangeMode =  CreateQuickDropdown(objectName.."WidgetsRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetsRangeIndicator, OffsetColumnB+76)
+	panel.WidgetRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
+	panel.WidgetRangeMode =  CreateQuickDropdown(objectName.."WidgetRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetRangeIndicator, OffsetColumnB+76)
 	------------------------------
 	-- Advanced
 	------------------------------
-	panel.AdvancedLabel, F = CreateQuickHeadingLabel(nil, "Funky Stuff", AlignmentColumn, panel.WidgetsComboPointsStyle, 0, 5)
+	panel.AdvancedLabel, F = CreateQuickHeadingLabel(nil, "Funky Stuff", AlignmentColumn, panel.WidgetComboPointsStyle, 0, 5)
 	panel.TextUseBlizzardFont, F = CreateQuickCheckbutton(objectName.."TextUseBlizzardFont", "Use Blizzard Font", AlignmentColumn, F, 0)
 	panel.FocusAsTarget, F = CreateQuickCheckbutton(objectName.."FocusAsTarget", "Treat Focus as a Target", AlignmentColumn, F, 0)
 	panel.AdvancedEnableUnitCache, F = CreateQuickCheckbutton(objectName.."AdvancedEnableUnitCache", "Enable Title Caching ", AlignmentColumn, F)
@@ -460,7 +461,7 @@ local function BuildHubPanel(panel)
 	panel.MainFrame:SetHeight(2800)
 
 	panel.OpacityFilterList:SetWidth(200)
-	panel.WidgetsDebuffTrackList:SetWidth(200)
+	panel.WidgetDebuffTrackList:SetWidth(200)
 
 	SetSliderMechanics(panel.OpacityTarget, 1, 0, 1, .01)
 	SetSliderMechanics(panel.OpacityNonTarget, 1, 0, 1, .01)
@@ -488,7 +489,7 @@ local function BuildHubPanel(panel)
 		--print("RefreshSettings", panel:IsShown())
 		CallForStyleUpdate()
 		-- Convert Debuff Filter Strings
-		ConvertDebuffListTable(LocalVars.WidgetsDebuffTrackList, LocalVars.WidgetsDebuffLookup, LocalVars.WidgetsDebuffPriority)
+		ConvertDebuffListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
