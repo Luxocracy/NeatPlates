@@ -11,9 +11,11 @@ local function UpdateQuestWidget(self, unit, showFriendly)
 
 		if questObjective then
 			questProgress, questTotal = string.match(questObjective, "([0-9]+)\/([0-9]+)")
+			questProgress = tonumber(questProgress)
+			questTotal = tonumber(questTotal)
 		end
 
-		if (questName and not(questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal) then
+		if (questName and not (questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal) then
 			self.Icon:SetTexture(art)
 			self:Show()
 		else
