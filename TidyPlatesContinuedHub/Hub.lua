@@ -496,8 +496,6 @@ local function BuildHubPanel(panel)
 		-- If the setting can't be stored during combat
 		if InCombatLockdown() == false then
 			SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100))
-		else
-			print("TidyPlatesContinued: Some settings could not be set due to combat restrictions.")
 		end
 	end
 
