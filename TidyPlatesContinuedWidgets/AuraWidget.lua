@@ -157,6 +157,8 @@ local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b,
 		if duration and duration > 0 and expiration and expiration > 0 then
 			SetCooldown(frame.Cooldown, expiration-duration, duration+.25)
 			--frame.Cooldown:SetCooldown(expiration-duration, duration+.25)
+		else
+			SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown
 		end
 		--]]
 
