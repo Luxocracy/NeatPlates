@@ -141,7 +141,7 @@ local function CallbackUpdate()
 end
 
 local function EnableWatchers()
-	if LocalVars.WidgetDebuffStyle == 2 then TidyPlatesContWidgets.UseSquareDebuffIcon() else TidyPlatesContWidget.UseWideDebuffIcon()end
+	if LocalVars.WidgetDebuffStyle == 2 then TidyPlatesContWidgets.UseSquareDebuffIcon() else TidyPlatesContWidgets.UseWideDebuffIcon()end
 	--TidyPlatesContUtility:EnableGroupWatcher()
 	TidyPlatesContUtility:EnableHealerTrack()
 	--TidyPlatesContWidgets:EnableTankWatch()
