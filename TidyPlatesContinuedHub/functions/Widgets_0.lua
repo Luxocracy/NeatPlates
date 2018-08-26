@@ -14,7 +14,7 @@ local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
 local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
 
-TidyPlatesContHubDefaults.WidgetsRangeMode = 1
+TidyPlatesContHubDefaults.WidgetRangeMode = 1
 TidyPlatesContHubMenus.RangeModes = {
 				{ text = "9 yards"} ,
 				{ text = "15 yards" } ,
@@ -22,7 +22,7 @@ TidyPlatesContHubMenus.RangeModes = {
 				{ text = "40 yards" } ,
 			}
 
-TidyPlatesContHubDefaults.WidgetsDebuffStyle = 1
+TidyPlatesContHubDefaults.WidgetDebuffStyle = 1
 TidyPlatesContHubMenus.DebuffStyles = {
 				{ text = "Wide",  } ,
 				{ text = "Compact (May require UI reload to take effect)",  } ,
@@ -84,8 +84,8 @@ local function GetPrefixPriority(aura)
 	local spellid = tostring(aura.spellid)
 	local name = aura.name
 	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.WidgetsDebuffLookup[spellid] or LocalVars.WidgetsDebuffLookup[name]
-	local priority = LocalVars.WidgetsDebuffPriority[spellid] or LocalVars.WidgetsDebuffPriority[name]
+	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name]
+	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name]
 
 	return prefix, priority
 end
@@ -127,9 +127,9 @@ local function SmartFilterMode(aura)
 
 	-- My own Buffs and Debuffs
 	if (aura.caster == "player" or aura.caster == "pet") and aura.duration and aura.duration < 150 then
-		if LocalVars.WidgetsMyBuff and aura.effect == "HELPFUL" then
+		if LocalVars.WidgetMyBuff and aura.effect == "HELPFUL" then
 			ShowThisAura = true
-		elseif LocalVars.WidgetsMyDebuff and aura.effect == "HARMFUL" then
+		elseif LocalVars.WidgetMyDebuff and aura.effect == "HARMFUL" then
 			ShowThisAura = true
 		end
 	end
@@ -325,37 +325,37 @@ end
 
 local function OnInitializeWidgets(plate, configTable)
 	AddClassIcon(plate, ((LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon)) , configTable.ClassIcon)
-	AddTotemIcon(plate,  LocalVars.WidgetsTotemIcon, configTable.TotemIcon)
-	--AddThreatWheelWidget(plate, LocalVars.WidgetsThreatIndicator and (LocalVars.WidgetsThreatIndicatorMode == 2), configTable.ThreatWheelWidget)
-	AddThreatLineWidget(plate, LocalVars.WidgetsThreatIndicator, configTable.ThreatLineWidget)		-- Tug-o-Threat
-	AddComboPoints(plate, LocalVars.WidgetsComboPoints, configTable.ComboWidget )
-	--AddRangeWidget(plate, LocalVars.WidgetsRangeIndicator, configTable.RangeWidget )
-	if LocalVars.WidgetsComboPoints and configTable.DebuffWidgetPlus then -- If the combo widget is active, it often overlaps the debuff widget "DebuffWidgetPlus" will provide an alternative
-		AddDebuffWidget(plate, LocalVars.WidgetsDebuff, configTable.DebuffWidgetPlus )
-	else AddDebuffWidget(plate, LocalVars.WidgetsDebuff, configTable.DebuffWidget ) end
+	AddTotemIcon(plate,  LocalVars.WidgetTotemIcon, configTable.TotemIcon)
+	--AddThreatWheelWidget(plate, LocalVars.WidgetThreatIndicator and (LocalVars.WidgetThreatIndicatorMode == 2), configTable.ThreatWheelWidget)
+	AddThreatLineWidget(plate, LocalVars.WidgetThreatIndicator, configTable.ThreatLineWidget)		-- Tug-o-Threat
+	AddComboPoints(plate, LocalVars.WidgetComboPoints, configTable.ComboWidget )
+	--AddRangeWidget(plate, LocalVars.WidgetRangeIndicator, configTable.RangeWidget )
+	if LocalVars.WidgetComboPoints and configTable.DebuffWidgetPlus then -- If the combo widget is active, it often overlaps the debuff widget "DebuffWidgetPlus" will provide an alternative
+		AddDebuffWidget(plate, LocalVars.WidgetDebuff, configTable.DebuffWidgetPlus )
+	else AddDebuffWidget(plate, LocalVars.WidgetDebuff, configTable.DebuffWidget ) end
 
 
-	if LocalVars.WidgetsEnableExternal and TidyPlatesContGlobal_OnInitialize then TidyPlatesContGlobal_OnInitialize(plate) end
+	if LocalVars.WidgetEnableExternal and TidyPlatesContGlobal_OnInitialize then TidyPlatesContGlobal_OnInitialize(plate) end
 end
 
 local function OnContextUpdateDelegate(plate, unit)
 	local Widgets = plate.widgets
-	if LocalVars.WidgetsComboPoints and Widgets.ComboWidget then Widgets.ComboWidget:UpdateContext(plate, unit) end
-	-- if (LocalVars.WidgetsThreatIndicatorMode == 1) and LocalVars.WidgetsThreatIndicator then Widgets.ThreatLineWidget:UpdateContext(unit) end		-- Tug-O-Threat
-	if LocalVars.WidgetsThreatIndicator and Widgets.ThreatLineWidget then Widgets.ThreatLineWidget:UpdateContext(unit) end		-- Tug-O-Threat
-	if LocalVars.WidgetsDebuff and Widgets.DebuffWidget then Widgets.DebuffWidget:UpdateContext(unit) end
+	if LocalVars.WidgetComboPoints and Widgets.ComboWidget then Widgets.ComboWidget:UpdateContext(plate, unit) end
+	-- if (LocalVars.WidgetThreatIndicatorMode == 1) and LocalVars.WidgetThreatIndicator then Widget.ThreatLineWidget:UpdateContext(unit) end		-- Tug-O-Threat
+	if LocalVars.WidgetThreatIndicator and Widgets.ThreatLineWidget then Widgets.ThreatLineWidget:UpdateContext(unit) end		-- Tug-O-Threat
+	if LocalVars.WidgetDebuff and Widgets.DebuffWidget then Widgets.DebuffWidget:UpdateContext(unit) end
 
-	if LocalVars.WidgetsEnableExternal and TidyPlatesContGlobal_OnContextUpdate then TidyPlatesContGlobal_OnContextUpdate(plate, unit) end
+	if LocalVars.WidgetEnableExternal and TidyPlatesContGlobal_OnContextUpdate then TidyPlatesContGlobal_OnContextUpdate(plate, unit) end
 end
 
 local function OnUpdateDelegate(plate, unit)
 	local Widgets = plate.widgets
-	--if LocalVars.WidgetsRangeIndicator then Widgets.RangeWidget:Update(unit,RangeModeRef[LocalVars.RangeMode])  end
+	--if LocalVars.WidgetRangeIndicator then Widget.RangeWidget:Update(unit,RangeModeRef[LocalVars.RangeMode])  end
 	if (LocalVars.ClassEnemyIcon and unit.reaction ~= "FRIENDLY") or (LocalVars.ClassPartyIcon and unit.reaction == "FRIENDLY") then Widgets.ClassIcon:Update(unit, LocalVars.ClassPartyIcon) end
-	if LocalVars.WidgetsTotemIcon and Widgets.TotemIcon then Widgets.TotemIcon:Update(unit)  end
-	--if (LocalVars.WidgetsThreatIndicatorMode == 2) and LocalVars.WidgetsThreatIndicator then plate.widgets.ThreatWheelWidget:Update(unit) end 		-- Threat Wheel
+	if LocalVars.WidgetTotemIcon and Widgets.TotemIcon then Widgets.TotemIcon:Update(unit)  end
+	--if (LocalVars.WidgetThreatIndicatorMode == 2) and LocalVars.WidgetThreatIndicator then plate.widgets.ThreatWheelWidget:Update(unit) end 		-- Threat Wheel
 
-	if LocalVars.WidgetsEnableExternal and TidyPlatesContGlobal_OnUpdate then TidyPlatesContGlobal_OnUpdate(plate, unit) end
+	if LocalVars.WidgetEnableExternal and TidyPlatesContGlobal_OnUpdate then TidyPlatesContGlobal_OnUpdate(plate, unit) end
 end
 
 
@@ -367,13 +367,13 @@ local function OnVariableChange(vars)
 
 	LocalVars = vars
 
-	if LocalVars.WidgetsDebuff then
+	if LocalVars.WidgetDebuff then
 		TidyPlatesContWidgets:EnableAuraWatcher()
 		TidyPlatesContWidgets.SetAuraFilter(DebuffFilter)
 	else TidyPlatesContWidgets:DisableAuraWatcher() end
 
 --[[
-	if LocalVars.WidgetsAuraMode == 3 then
+	if LocalVars.WidgetAuraMode == 3 then
 		TidyPlatesContWidgets.SetAuraPrefilter(Prefilter)		-- Filter out some unecessary stuff
 	else TidyPlatesContWidgets.SetAuraPrefilter(nil) end
 	--]]
