@@ -154,11 +154,10 @@ local DebuffPrefixModes = {
 local function SmartFilterMode(aura)
 	local ShowThisAura = false
 	local AuraPriority = 20
-	local ShowBuffAura = LocalVars.WidgetBuffPurgeable and aura.type == "Magic" and aura.effect == "HELPFUL" and aura.reaction == 1
-	local ShowEnrageAura = LocalVars.WidgetBuffEnrage and aura.type == "" and aura.effect == "HELPFUL" and aura.reaction == 1
+
 	-- My own Buffs and Debuffs
-	if (aura.caster == "player" or aura.caster == "pet" or ShowBuffAura or ShowEnrageAura) and aura.duration and aura.duration < 150 then
-		if (LocalVars.WidgetMyBuff or ShowBuffAura or ShowEnrageAura) and aura.effect == "HELPFUL" then
+	if (aura.caster == "player" or aura.caster == "pet") and aura.duration and aura.duration < 150 then
+		if LocalVars.WidgetMyBuff and aura.effect == "HELPFUL" then
 			ShowThisAura = true
 		elseif LocalVars.WidgetMyDebuff and aura.effect == "HARMFUL" then
 			ShowThisAura = true
