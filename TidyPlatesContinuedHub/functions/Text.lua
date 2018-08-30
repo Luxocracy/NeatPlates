@@ -6,7 +6,7 @@ local LocalVars = TidyPlatesContHubDefaults
 ------------------------------------------------------------------
 -- References
 ------------------------------------------------------------------
-local RaidClassColors = RAID_CLASS_COLORS
+local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 local GetFriendlyThreat = TidyPlatesContUtility.GetFriendlyThreat
 

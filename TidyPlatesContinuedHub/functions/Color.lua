@@ -7,7 +7,7 @@ local LocalVars = TidyPlatesContHubDefaults
 ------------------------------------------------------------------
 -- Color Definitions
 ------------------------------------------------------------------
-local RaidClassColors = RAID_CLASS_COLORS
+local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 local RaidIconColors = {
 	["STAR"] = {r = 251/255, g = 240/255, b = 85/255,},

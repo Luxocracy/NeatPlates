@@ -86,7 +86,7 @@ local PaleBlue = {r = 0, g = 130/255, b = 225/255,}
 local PaleBlueText = {r = 194/255, g = 253/255, b = 1,}
 local DarkRed = {r = .9, g = 0.08, b = .08,}
 
-local RaidClassColors = RAID_CLASS_COLORS
+local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 ------------------------------------------------------------------------------------
 
