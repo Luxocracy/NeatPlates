@@ -73,6 +73,7 @@ end
 
 
 local function ConvertDebuffListTable(source, target, order)
+	if source == nil then return end
 	local temp = ListToTable(strsplit("\n", source))
 	target = wipe(target)
 	if order then order = wipe(order) end
