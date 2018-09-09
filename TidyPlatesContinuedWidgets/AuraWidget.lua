@@ -254,7 +254,8 @@ local function UpdateIconGrid(frame, unitid)
 
 		-- Display Auras
 		------------------------------------------------------------------------------------------------------
-		local AuraSlotCount = 1
+		local DebuffSlotCount = 0
+		local BuffSlotCount = 0
 		local AuraSlots = {}
 		local BuffAuras = {}
 		local DebuffAuras = {}
@@ -264,14 +265,14 @@ local function UpdateIconGrid(frame, unitid)
 		-- 	sort(storedAuras, AuraSortFunction)
 
 		-- 	for index = 1, storedAuraCount do
-		-- 		if AuraSlotCount > DebuffLimit then break end
+		-- 		if DebuffSlotCount > DebuffLimit then break end
 		-- 		local aura = storedAuras[index]
 		-- 		if aura.spellid and aura.expiration then
 
 		-- 			-- Call function to display the aura
-		-- 			UpdateIcon(AuraIconFrames[AuraSlotCount], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
+		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
 
-		-- 			AuraSlotCount = AuraSlotCount + 1
+		-- 			DebuffSlotCount = DebuffSlotCount + 1
 		-- 			frame.currentAuraCount = index
 		-- 		end
 		-- 	end
@@ -279,30 +280,29 @@ local function UpdateIconGrid(frame, unitid)
 		-- end
 
 		-- -- Clear Extra Slots
-		-- for AuraSlotEmpty = AuraSlotCount, DebuffLimit do UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
+		-- for AuraSlotEmpty = DebuffSlotCount, DebuffLimit do UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 
 		if storedAuraCount > 0 then
 			frame:Show()
 			sort(storedAuras, AuraSortFunction)
 
 			for index = 1, storedAuraCount do
-				if AuraSlotCount > AuraLimit then break end
+				if (DebuffSlotCount+BuffSlotCount) > AuraLimit then break end
 				local aura = storedAuras[index]
 				if aura.spellid and aura.expiration then
 
 					-- Sort buffs and debuffs
 					if aura.effect == "HELPFUL" then 
 						table.insert(BuffAuras, aura)
-					elseif AuraSlotCount <= DebuffLimit then
+						BuffSlotCount = BuffSlotCount + 1
+					elseif DebuffSlotCount < DebuffLimit then
 						table.insert(DebuffAuras, aura)
+						DebuffSlotCount = DebuffSlotCount + 1
 					end
 
-					AuraSlotCount = AuraSlotCount + 1
 					frame.currentAuraCount = index
 				end
 			end
-
-			DebuffCount = table.getn(DebuffAuras)
 
 			-- Loop through debuffs and call function to display them
 			for k, aura in ipairs(DebuffAuras) do
@@ -311,7 +311,7 @@ local function UpdateIconGrid(frame, unitid)
 			end
 
 			-- Loop through buffs and call function to display them
-			local rowOffset = DebuffColumns * (math.floor((DebuffCount-1)/DebuffColumns)+2)
+			local rowOffset = DebuffColumns * (math.floor((DebuffSlotCount-1)/DebuffColumns)+2)
 			for k, aura in ipairs(BuffAuras) do
 				local index = rowOffset+1-k
 				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
@@ -468,8 +468,8 @@ local function CreateAuraIcon(parent)
 	-- Text
 	--frame.TimeLeft = frame:CreateFontString(nil, "OVERLAY")
 	frame.TimeLeft = frame.Cooldown:CreateFontString(nil, "OVERLAY")
-	--frame.Stacks = frame:CreateFontString(nil, "OVERLAY")
 	frame.Stacks = frame:CreateFontString(nil, "OVERLAY")
+	-- frame.Stacks = frame.Cooldown:CreateFontString(nil, "OVERLAY")
 
 	-- Information about the currently displayed aura
 	frame.AuraInfo = {
