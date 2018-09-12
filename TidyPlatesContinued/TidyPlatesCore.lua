@@ -410,7 +410,7 @@ do
 		unitid = PlatesVisible[plate]
 		UpdateReferences(plate)
 
-		UpdateUnitIdentity(unitid)
+		UpdateUnitIdentity(plate, unitid)
 		UpdateUnitContext(plate, unitid)
 		ProcessUnitChanges()
 		OnUpdateCastMidway(plate, unitid)
@@ -497,7 +497,7 @@ do
 	-- UpdateUnitIdentity: Updates Low-volatility Unit Data
 	-- (This is essentially static data)
 	--------------------------------------------------------
-	function UpdateUnitIdentity(unitid)
+	function UpdateUnitIdentity(plate, unitid)
 
 		unit.unitid = unitid
 		unit.name = UnitName(unitid)
@@ -520,6 +520,11 @@ do
 		else
 			unit.class = ""
 			unit.type = "NPC"
+		end
+
+		-- Incase we attempted to grab unit info before the unit has been fully loaded into the world, attempt this again next cycle.
+		if unit.name == UNKNOWNOBJECT then
+			plate.UpdateMe = true
 		end
 	end
 
