@@ -215,6 +215,8 @@ TidyPlatesContHubDefaults = {
 	--WidgetAuraMode = 1,
 	WidgetMyDebuff = true,
 	WidgetMyBuff = false,
+	WidgetPandemic = false,
+	ColorPandemic = {r = 0.9, g = 0.15, b = 0.15, a = 1}, -- Red
 	WidgetBuffPurgeable = false,
 	ColorBuffPurgeable = {r = 0, g = 0.4, b = 1, a = 1}, -- Medium Blue
 	WidgetBuffEnrage = false,

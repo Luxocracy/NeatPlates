@@ -356,6 +356,10 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetComboPoints then
 		TidyPlatesContWidgets.SetComboPointsStyle(LocalVars.WidgetComboPointsStyle);
 	end
+
+	if LocalVars.WidgetPandemic then
+		TidyPlatesContWidgets.SetPandemic(LocalVars.WidgetPandemic, LocalVars.ColorPandemic)
+	end
 end
 HubData.RegisterCallback(OnVariableChange)
 

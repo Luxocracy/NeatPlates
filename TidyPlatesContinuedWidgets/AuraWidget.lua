@@ -26,6 +26,9 @@ local AuraLimit = 9
 local inArena = false
 local useWideIcons = true
 
+local PandemicEnabled = false
+local PandemicColor = {}
+
 local function DummyFunction() end
 
 local function DefaultPreFilterFunction() return true end
@@ -137,7 +140,7 @@ local function UpdateWidgetTime(frame, expiration)
 end
 
 
-local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b, a)
+local function UpdateIcon(frame, texture, duration, expiration, stacks, effect, r, g, b, a)
 	if frame and texture and expiration then
 		-- Icon
 		frame.Icon:SetTexture(texture)
@@ -146,12 +149,16 @@ local function UpdateIcon(frame, texture, duration, expiration, stacks, r, g, b,
 		if stacks and stacks > 1 then frame.Stacks:SetText(stacks)
 		else frame.Stacks:SetText("") end
 
-		-- Highlight Coloring
-		if r then
+		-- Pandemic and other Hightlighting
+		if PandemicEnabled and duration and expiration and effect == "HARMFUL" and expiration-GetTime() <= duration*0.3 then
+			frame.BorderHighlight:SetVertexColor(PandemicColor.r,PandemicColor.g,PandemicColor.b,PandemicColor.a)
+			frame.BorderHighlight:Show()
+			frame.Border:Hide()
+		elseif r then
 			frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
 			frame.BorderHighlight:Show()
 			frame.Border:Hide()
-		else frame.BorderHighlight:Hide(); frame.Border:Show()	end
+		else frame.BorderHighlight:Hide(); frame.Border:Show() end
 
 		-- [[ Cooldown
 		if duration and duration > 0 and expiration and expiration > 0 then
@@ -270,7 +277,7 @@ local function UpdateIconGrid(frame, unitid)
 		-- 		if aura.spellid and aura.expiration then
 
 		-- 			-- Call function to display the aura
-		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b)
+		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b)
 
 		-- 			DebuffSlotCount = DebuffSlotCount + 1
 		-- 			frame.currentAuraCount = index
@@ -306,7 +313,7 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Loop through debuffs and call function to display them
 			for k, aura in ipairs(DebuffAuras) do
-				UpdateIcon(AuraIconFrames[k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b, aura.a)
+				UpdateIcon(AuraIconFrames[k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b, aura.a)
 				AuraSlots[k] = true
 			end
 
@@ -316,7 +323,7 @@ local function UpdateIconGrid(frame, unitid)
 				local index = rowOffset+1-k
 				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
 				if index > DebuffCount and index > 0 then
-						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.r, aura.g, aura.b, aura.a)
+						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b, aura.a)
 						AuraSlots[index] = true
 				end
 			end
@@ -584,6 +591,11 @@ local function SetAuraFilter(func)
 	end
 end
 
+local function SetPandemic(enabled, color)
+	PandemicEnabled = enabled
+	PandemicColor = color
+end
+
 
 -----------------------------------------------------
 -- External
@@ -596,6 +608,7 @@ TidyPlatesContWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 
 TidyPlatesContWidgets.SetAuraFilter = SetAuraFilter
 
+TidyPlatesContWidgets.SetPandemic = SetPandemic
 
 TidyPlatesContWidgets.CreateAuraWidget = CreateAuraWidget
 
