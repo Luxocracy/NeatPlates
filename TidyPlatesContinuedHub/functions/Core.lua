@@ -43,9 +43,16 @@ local function IsOffTanked(unit)
 
 	local unitid = unit.unitid
 	if unitid then
-		local targetOf = unitid.."target"
-		local statueName = GetSpellInfo(163177) -- Get name of Ox Statue for different localizations
-		local targetIsTank = UnitIsUnit(targetOf, "pet") or UnitName(targetOf) == statueName or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
+		local targetOf = unitid.."target"	
+		local targetGUID = UnitGUID(targetOf)
+		local targetIsGuardian = false
+
+		if targetGUID then
+			targetGUID = select(6, strsplit("-", UnitGUID(targetOf)))
+			targetIsGuardian = targetGUID == "61146" or targetGUID == "103822" -- Treant(103822), Black Ox Statue(61146)
+		end
+		
+		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
 
 		--if LocalVars.EnableOffTankHighlight and IsEnemyTanked(unit) then
 		if LocalVars.EnableOffTankHighlight and targetIsTank then
