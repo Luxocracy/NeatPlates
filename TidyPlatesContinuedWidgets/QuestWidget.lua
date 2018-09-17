@@ -8,6 +8,7 @@ local function UpdateQuestWidget(self, unit, showFriendly)
 	if unit and unit.type == "NPC" then
 		local questName, questObjective = GetUnitQuestInfo(unit)
 		local questProgress, questTotal
+		local isDungeon = IsInInstance()
 
 		if questObjective then
 			questProgress, questTotal = string.match(questObjective, "([0-9]+)\/([0-9]+)")
@@ -15,7 +16,7 @@ local function UpdateQuestWidget(self, unit, showFriendly)
 			questTotal = tonumber(questTotal)
 		end
 
-		if (questName and not (questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal) then
+		if (questName and not (questProgress and questTotal) and not isDungeon) or (questProgress and questTotal and questProgress < questTotal and not isDungeon) then
 			self.Icon:SetTexture(art)
 			self:Show()
 		else
