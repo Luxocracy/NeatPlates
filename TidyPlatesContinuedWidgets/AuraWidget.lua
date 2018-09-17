@@ -161,6 +161,7 @@ local function UpdateIcon(frame, texture, duration, expiration, stacks, effect, 
 		else frame.BorderHighlight:Hide(); frame.Border:Show() end
 
 		-- [[ Cooldown
+		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
 		if duration and duration > 0 and expiration and expiration > 0 then
 			SetCooldown(frame.Cooldown, expiration-duration, duration+.25)
 			--frame.Cooldown:SetCooldown(expiration-duration, duration+.25)
