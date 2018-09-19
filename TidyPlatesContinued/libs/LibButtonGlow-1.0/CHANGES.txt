@@ -1,0 +1,12 @@
+tag 163c5ed9dccfe1e9e9e195941525ebbb80f924c6 1.2.9
+Author:	Hendrik Leppkes <h.leppkes@gmail.com>
+Date:	Tue Jul 17 14:48:41 2018 +0200
+
+Tag as 1.2.9
+
+commit 46dc183fee8ee3f4d27588056195bb18bc83c88f
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Tue Jul 17 14:48:30 2018 +0200
+
+    Update TOC for 8.0
+

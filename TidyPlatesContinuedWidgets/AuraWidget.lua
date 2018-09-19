@@ -43,6 +43,13 @@ local AURA_TARGET_FRIENDLY = 2
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
 
+local ButtonGlow = LibStub("LibButtonGlow-1.0")
+local ButtonGlowEnabled = {
+		["Pandemic"] = false,
+		["Magic"] = false,
+		[""] = false, -- Enrage
+	}
+
 -- Get a clean version of the function...  Avoid OmniCC interference
 local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
 local SetCooldown = CooldownNative.SetCooldown
@@ -140,17 +147,28 @@ local function UpdateWidgetTime(frame, expiration)
 end
 
 
-local function UpdateIcon(frame, texture, duration, expiration, stacks, effect, r, g, b, a)
-	if frame and texture and expiration then
+local function UpdateIcon(frame, aura)
+	if frame and aura and aura.texture and aura.expiration then
+		local r, g, b, a = aura.r, aura.g, aura.b, aura.a
+		local glowType = aura.type
+		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.expiration-GetTime() <= aura.duration*0.3
+		local removeGlow = true
+
 		-- Icon
-		frame.Icon:SetTexture(texture)
+		frame.Icon:SetTexture(aura.texture)
 
 		-- Stacks
-		if stacks and stacks > 1 then frame.Stacks:SetText(stacks)
+		if aura.stacks and aura.stacks > 1 then frame.Stacks:SetText(aura.stacks)
 		else frame.Stacks:SetText("") end
 
 		-- Pandemic and other Hightlighting
-		if PandemicEnabled and duration and expiration and effect == "HARMFUL" and expiration-GetTime() <= duration*0.3 then
+		if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
+			removeGlow = false
+			frame.BorderHighlight:Hide()
+			frame.Border:Hide()
+			ButtonGlow.ShowOverlayGlow(frame)
+			frame.__LBGoverlay:SetFrameLevel(frame:GetFrameLevel() or 65)
+		elseif PandemicEnabled and pandemicThreshold then
 			frame.BorderHighlight:SetVertexColor(PandemicColor.r,PandemicColor.g,PandemicColor.b,PandemicColor.a)
 			frame.BorderHighlight:Show()
 			frame.Border:Hide()
@@ -160,20 +178,23 @@ local function UpdateIcon(frame, texture, duration, expiration, stacks, effect, 
 			frame.Border:Hide()
 		else frame.BorderHighlight:Hide(); frame.Border:Show() end
 
+		-- Remove ButtonGlow if appropriate
+		if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
+
 		-- [[ Cooldown
 		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
-		if duration and duration > 0 and expiration and expiration > 0 then
-			SetCooldown(frame.Cooldown, expiration-duration, duration+.25)
-			--frame.Cooldown:SetCooldown(expiration-duration, duration+.25)
+		if aura.duration and aura.duration > 0 and aura.expiration and aura.expiration > 0 then
+			SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)
+			--frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
 		else
 			SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown
 		end
 		--]]
 
 		-- Expiration
-		UpdateWidgetTime(frame, expiration)
+		UpdateWidgetTime(frame, aura.expiration)
 		frame:Show()
-		if expiration ~= 0 then PolledHideIn(frame, expiration) end
+		if aura.expiration ~= 0 then PolledHideIn(frame, aura.expiration) end
 
 	elseif frame then
 		PolledHideIn(frame, 0)
@@ -278,7 +299,7 @@ local function UpdateIconGrid(frame, unitid)
 		-- 		if aura.spellid and aura.expiration then
 
 		-- 			-- Call function to display the aura
-		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b)
+		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura)
 
 		-- 			DebuffSlotCount = DebuffSlotCount + 1
 		-- 			frame.currentAuraCount = index
@@ -314,7 +335,7 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Loop through debuffs and call function to display them
 			for k, aura in ipairs(DebuffAuras) do
-				UpdateIcon(AuraIconFrames[k], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b, aura.a)
+				UpdateIcon(AuraIconFrames[k], aura)
 				AuraSlots[k] = true
 			end
 
@@ -324,7 +345,7 @@ local function UpdateIconGrid(frame, unitid)
 				local index = rowOffset+1-k
 				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
 				if index > DebuffCount and index > 0 then
-						UpdateIcon(AuraIconFrames[index], aura.texture, aura.duration, aura.expiration, aura.stacks, aura.effect, aura.r, aura.g, aura.b, aura.a)
+						UpdateIcon(AuraIconFrames[index], aura)
 						AuraSlots[index] = true
 				end
 			end
@@ -597,6 +618,17 @@ local function SetPandemic(enabled, color)
 	PandemicColor = color
 end
 
+local function SetBorderTypes(pandemic, magic, enrage)
+	if pandemic == 2 then pandemic = true else pandemic = false end
+	if magic == 2 then magic = true else magic = false end
+	if enrage == 2 then enrage = true else enrage = false end
+	ButtonGlowEnabled = {
+		["Pandemic"] = pandemic,
+		["Magic"] = magic,
+		[""] = enrage,
+	}
+end
+
 
 -----------------------------------------------------
 -- External
@@ -610,6 +642,7 @@ TidyPlatesContWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 TidyPlatesContWidgets.SetAuraFilter = SetAuraFilter
 
 TidyPlatesContWidgets.SetPandemic = SetPandemic
+TidyPlatesContWidgets.SetBorderTypes = SetBorderTypes
 
 TidyPlatesContWidgets.CreateAuraWidget = CreateAuraWidget
 

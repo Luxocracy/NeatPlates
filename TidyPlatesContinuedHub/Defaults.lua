@@ -217,10 +217,13 @@ TidyPlatesContHubDefaults = {
 	WidgetMyBuff = false,
 	WidgetPandemic = false,
 	ColorPandemic = {r = 0.9, g = 0.15, b = 0.15, a = 1}, -- Red
+	BorderPandemic = 1,
 	WidgetBuffPurgeable = false,
 	ColorBuffPurgeable = {r = 0, g = 0.4, b = 1, a = 1}, -- Medium Blue
+	BorderBuffPurgeable = 1,
 	WidgetBuffEnrage = false,
 	ColorBuffEnrage = {r = 1, g = 0, b = 0.2, a = 1}, -- Medium Red
+	BorderBuffEnrage = 1,
 	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetDebuffLookup = {},
 	WidgetDebuffPriority = {},

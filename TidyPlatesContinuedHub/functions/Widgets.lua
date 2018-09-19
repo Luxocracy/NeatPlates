@@ -50,6 +50,14 @@ TidyPlatesContHubMenus.ComboPointsStyles = {
 				{ text = "TidyPlatesTraditional",  } ,
 			}
 
+TidyPlatesContHubDefaults.BorderPandemic = 1
+TidyPlatesContHubDefaults.BorderBuffPurgeable = 1
+TidyPlatesContHubDefaults.BorderBuffEnrage = 1
+TidyPlatesContHubMenus.BorderTypes = {
+				{ text = "Border Color",  },
+				{ text = "Glow",  },
+			}
+
 ------------------------------------------------------------------------------
 -- Aura Widget
 ------------------------------------------------------------------------------
@@ -359,6 +367,10 @@ local function OnVariableChange(vars)
 
 	if LocalVars.WidgetPandemic then
 		TidyPlatesContWidgets.SetPandemic(LocalVars.WidgetPandemic, LocalVars.ColorPandemic)
+	end
+
+	if LocalVars.WidgetPandemic or LocalVars.WidgetBuffPurgeable or LocalVars.WidgetBuffEnrage then
+		TidyPlatesContWidgets.SetBorderTypes(LocalVars.BorderPandemic, LocalVars.BorderBuffPurgeable, LocalVars.BorderBuffEnrage)
 	end
 end
 HubData.RegisterCallback(OnVariableChange)

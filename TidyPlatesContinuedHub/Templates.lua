@@ -152,7 +152,11 @@ local function CreateQuickSlider(name, label, ... ) --, neighborFrame, xOffset, 
 
 		local frame = PanelHelpers:CreateDropdownFrame(name, columnFrame, dropdownTable, initialValue, label)		--- ADD the new valueMethod  (2 for Token)
 		-- Margins	-- Bottom/Left are supposed to be negative
-		frame.Margins = { Left = -12, Right = 2, Top = 22, Bottom = 0,}
+		if label == "" then
+			frame.Margins = { Left = -16, Right = 0, Top = 1, Bottom = 0,}
+		else
+			frame.Margins = { Left = -12, Right = 2, Top = 22, Bottom = 0,}
+		end
 		-- Set Positions
 		QuickSetPoints(frame, ...)
 		-- Set Feedback Function

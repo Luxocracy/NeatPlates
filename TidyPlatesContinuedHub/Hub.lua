@@ -46,6 +46,7 @@ local BasicTextModes = TidyPlatesContHubMenus.BasicTextModes
 local AbsorbModes = TidyPlatesContHubMenus.AbsorbModes
 local AbsorbUnits = TidyPlatesContHubMenus.AbsorbUnits
 local ComboPointsStyles = TidyPlatesContHubMenus.ComboPointsStyles
+local BorderTypes = TidyPlatesContHubMenus.BorderTypes
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
@@ -166,12 +167,18 @@ local function BuildHubPanel(panel)
 
 	panel.WidgetMyDebuff = CreateQuickCheckbutton(objectName.."WidgetMyDebuff", "Include My Debuffs", AlignmentColumn, panel.WidgetDebuff, 16)
 	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetMyDebuff, 16)
+
 	panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", "Enable Pandemic Highlighting", AlignmentColumn, panel.WidgetMyBuff, 16)
-	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "Pandemic Border Color", AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
+	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
+	panel.BorderPandemic = CreateQuickDropdown(objectName.."BorderPandemic", "", BorderTypes, 1, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 90)
+
 	panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetPandemic, 16)
-	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "Purgeable Border Color", AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
+	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
+	panel.BorderBuffPurgeable = CreateQuickDropdown(objectName.."BorderBuffPurgeable", "", BorderTypes, 1, AlignmentColumn, panel.WidgetPandemic, OffsetColumnB + 90)
+
 	panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", "Include Enrage Buffs", AlignmentColumn, panel.WidgetBuffPurgeable, 16)
-	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "Enrage Border Color", AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
+	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
+	panel.BorderBuffEnrage = CreateQuickDropdown(objectName.."BorderBuffEnrage", "", BorderTypes, 1, AlignmentColumn, panel.WidgetBuffPurgeable, OffsetColumnB + 90)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.WidgetBuffEnrage, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", AlignmentColumn, panel.WidgetDebuffListLabel, 16)
