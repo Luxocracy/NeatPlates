@@ -280,6 +280,23 @@ local function UpdateIconGrid(frame, unitid)
 
 		until (searchedDebuffs and searchedBuffs)
 
+		--[[ Debug, add custom Buff
+		storedAuraCount = storedAuraCount+1
+		storedAuras[storedAuraCount] = {
+			["type"] = "Magic",
+			["effect"] = "HELPFUL",
+			["duration"] = 10,
+			["unit"] = "nameplate4",
+			["caster"] = "player",
+			["stacks"] = 0,
+			["reaction"] = 1,
+			["name"] = "Debug",
+			["expiration"] = 0,
+			["priority"] = 20,
+			["spellid"] = 234153,
+			["texture"] = 136069,
+		}
+		--]]
 
 		-- Display Auras
 		------------------------------------------------------------------------------------------------------
@@ -339,8 +356,15 @@ local function UpdateIconGrid(frame, unitid)
 				AuraSlots[k] = true
 			end
 
+			-- Calculate Buff Offset
+			local rowOffset
+			if DebuffColumns - ((DebuffSlotCount + BuffSlotCount) % DebuffColumns) > 0 then
+				rowOffset = math.max(DebuffColumns * (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1), DebuffColumns)
+			else
+				rowOffset = DebuffColumns * (math.floor((DebuffSlotCount-1)/DebuffColumns)+2)
+			end
+
 			-- Loop through buffs and call function to display them
-			local rowOffset = DebuffColumns * (math.floor((DebuffSlotCount-1)/DebuffColumns)+2)
 			for k, aura in ipairs(BuffAuras) do
 				local index = rowOffset+1-k
 				-- Make sure we aren't overwriting any debuffs and that we're not trying to apply buffs to slots that don't exist
