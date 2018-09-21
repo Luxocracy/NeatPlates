@@ -503,7 +503,7 @@ local function BuildHubPanel(panel)
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
 		-- If the setting can't be stored during combat
-		if InCombatLockdown() == false and LocalVars.NamePlateMaxDistance ~= nil then
+		if InCombatLockdown() == false and LocalVars.NameplateMaxDistance ~= nil then
 			SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance*100))
 		end
 	end

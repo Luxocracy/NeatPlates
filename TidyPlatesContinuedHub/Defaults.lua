@@ -239,7 +239,7 @@ TidyPlatesContHubDefaults = {
 	AdvancedEnableUnitCache = true,
 	FocusAsTarget = false,
 	FrameBarWidth = 1,
-	NameplateMaxDistance = GetCVar("nameplateMaxDistance") or 60
+	NameplateMaxDistance = 60,
 	--AdvancedHealthTextList = [[return unit.health]],
 }
 
