@@ -43,10 +43,10 @@ local function QuickSetPoints(frame, columnFrame, neighborFrame, xOffset, yOffse
 		frame:SetPoint("LEFT", columnFrame, "LEFT", LeftOffset, 0)
 end
 
-local function CreateQuickSlider(name, label, ... ) --, neighborFrame, xOffset, yOffset)
+local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFrame, xOffset, yOffset)
 		local columnFrame = ...
-		local frame = PanelHelpers:CreateSliderFrame(name, columnFrame, label, .5, 0, 1, .1)
-		frame:SetWidth(250)
+		local frame = PanelHelpers:CreateSliderFrame(name, columnFrame, label, .5, 0, 1, .1, mode)
+		frame:SetWidth(width or 250)
 		--frame.Label:SetFont("FONTS/ARIALN.TTF", 14)
 		-- Margins	-- Bottom/Left are negative
 		frame.Margins = { Left = 12, Right = 8, Top = 20, Bottom = 13,}
@@ -80,6 +80,11 @@ local function CreateQuickSlider(name, label, ... ) --, neighborFrame, xOffset, 
 		slider:SetMinMaxValues(minimum, maximum)
 		slider:SetValueStep(increment)
 		slider:SetValue(value)
+
+		if slider.isActual then
+			slider.Low:SetText(minimum)
+			slider.High:SetText(maximum)
+		end
 	end
 
 	local function CreateQuickEditbox(name, ...)

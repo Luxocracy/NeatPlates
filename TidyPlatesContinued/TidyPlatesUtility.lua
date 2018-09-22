@@ -486,6 +486,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		end)
 		slider.Low:SetText(ceil(minval or 0))
 		slider.High:SetText(ceil(maxval or 1))
+		slider.isActual = true
 	else
 		slider.Value:SetText(tostring(ceil(100*(val or .5))))
 		slider:SetScript("OnValueChanged", function()
@@ -493,6 +494,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		end)
 		slider.Low:SetText(ceil((minval or 0)*100).."%")
 		slider.High:SetText(ceil((maxval or 1)*100).."%")
+		slider.isActual = false
 	end
 
 	--slider.tooltipText = "Slider"

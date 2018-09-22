@@ -25,6 +25,7 @@ local DebuffLimit = 6
 local AuraLimit = 9
 local inArena = false
 local useWideIcons = true
+local SpacerSlots = 0 -- math.min(15, DebuffColumns-1)
 
 local PandemicEnabled = false
 local PandemicColor = {}
@@ -286,8 +287,6 @@ local function UpdateIconGrid(frame, unitid)
 			["type"] = "Magic",
 			["effect"] = "HELPFUL",
 			["duration"] = 10,
-			["unit"] = "nameplate4",
-			["caster"] = "player",
 			["stacks"] = 0,
 			["reaction"] = 1,
 			["name"] = "Debug",
@@ -295,6 +294,9 @@ local function UpdateIconGrid(frame, unitid)
 			["priority"] = 20,
 			["spellid"] = 234153,
 			["texture"] = 136069,
+			["r"] = 0.2,
+			["g"] = 0,
+			["b"] = 1,
 		}
 		--]]
 
@@ -306,27 +308,6 @@ local function UpdateIconGrid(frame, unitid)
 		local BuffAuras = {}
 		local DebuffAuras = {}
 		local DebuffCount = 0
-		-- if storedAuraCount > 0 then
-		-- 	frame:Show()
-		-- 	sort(storedAuras, AuraSortFunction)
-
-		-- 	for index = 1, storedAuraCount do
-		-- 		if DebuffSlotCount > DebuffLimit then break end
-		-- 		local aura = storedAuras[index]
-		-- 		if aura.spellid and aura.expiration then
-
-		-- 			-- Call function to display the aura
-		-- 			UpdateIcon(AuraIconFrames[DebuffSlotCount], aura)
-
-		-- 			DebuffSlotCount = DebuffSlotCount + 1
-		-- 			frame.currentAuraCount = index
-		-- 		end
-		-- 	end
-
-		-- end
-
-		-- -- Clear Extra Slots
-		-- for AuraSlotEmpty = DebuffSlotCount, DebuffLimit do UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 
 		if storedAuraCount > 0 then
 			frame:Show()
@@ -358,10 +339,12 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Calculate Buff Offset
 			local rowOffset
-			if DebuffColumns - ((DebuffSlotCount + BuffSlotCount) % DebuffColumns) > 0 then
-				rowOffset = math.max(DebuffColumns * (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1), DebuffColumns)
+			local rowCount = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
+			-- print(DebuffColumns * rowCount - (DebuffSlotCount + BuffSlotCount))
+			if DebuffColumns * rowCount - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
+				rowOffset = math.max(DebuffColumns * rowCount, DebuffColumns) -- Same Row with space between
 			else
-				rowOffset = DebuffColumns * (math.floor((DebuffSlotCount-1)/DebuffColumns)+2)
+				rowOffset = DebuffColumns * (rowCount + 1)	-- Seperate Row
 			end
 
 			-- Loop through buffs and call function to display them
@@ -653,6 +636,10 @@ local function SetBorderTypes(pandemic, magic, enrage)
 	}
 end
 
+local function SetSpacerSlots(amount)
+	SpacerSlots = math.min(amount, DebuffColumns-1)
+end
+
 
 -----------------------------------------------------
 -- External
@@ -667,6 +654,7 @@ TidyPlatesContWidgets.SetAuraFilter = SetAuraFilter
 
 TidyPlatesContWidgets.SetPandemic = SetPandemic
 TidyPlatesContWidgets.SetBorderTypes = SetBorderTypes
+TidyPlatesContWidgets.SetSpacerSlots = SetSpacerSlots
 
 TidyPlatesContWidgets.CreateAuraWidget = CreateAuraWidget
 
