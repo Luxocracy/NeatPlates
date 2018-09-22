@@ -499,19 +499,13 @@ local function BuildHubPanel(panel)
 	local CallForStyleUpdate = TidyPlatesContHubHelpers.CallForStyleUpdate
 
 	function panel.RefreshSettings(LocalVars)
-		--print("RefreshSettings", panel:IsShown())
+		-- print("RefreshSettings", panel:IsShown())
 		CallForStyleUpdate()
 		-- Convert Debuff Filter Strings
 		ConvertDebuffListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
-		-- Set Space Between Buffs & Debuffs
-		TidyPlatesContWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
-		-- If the setting can't be stored during combat
-		if InCombatLockdown() == false and LocalVars.NameplateMaxDistance ~= nil then
-			SetCVar("nameplateMaxDistance", math.ceil(LocalVars.NameplateMaxDistance))
-		end
 	end
 
 	--panel:Hide()
