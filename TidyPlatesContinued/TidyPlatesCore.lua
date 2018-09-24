@@ -521,11 +521,7 @@ do
 			unit.class = ""
 			unit.type = "NPC"
 		end
-
-		-- Incase we attempted to grab unit info before the unit has been fully loaded into the world, attempt this again next cycle.
-		if unit.name == UNKNOWNOBJECT then
-			plate.UpdateMe = true
-		end
+		
 	end
 
 
@@ -917,6 +913,12 @@ do
 	----------------------------------------
 	function CoreEvents:PLAYER_ENTERING_WORLD()
 		TidyPlatesContCore:SetScript("OnUpdate", OnUpdate);
+	end
+
+	function CoreEvents:UNIT_NAME_UPDATE(...)
+		local unitid = ...
+		local plate = GetNamePlateForUnit(unitid);
+		SetUpdateMe(plate)
 	end
 
 	function CoreEvents:NAME_PLATE_CREATED(...)
