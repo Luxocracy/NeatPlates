@@ -2,7 +2,7 @@
 ## Title: Tidy Plates Continued
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Binbwen and Friends
-## Version: 6.21.7
+## Version: 6.21.7c
 ## SavedVariablesPerCharacter: TidyPlatesContOptions
 
 TidyPlatesContinued.xml

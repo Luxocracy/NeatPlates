@@ -918,7 +918,10 @@ do
 	function CoreEvents:UNIT_NAME_UPDATE(...)
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
-		SetUpdateMe(plate)
+		
+		if plate then
+			SetUpdateMe(plate)
+		end
 	end
 
 	function CoreEvents:NAME_PLATE_CREATED(...)
