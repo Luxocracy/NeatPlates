@@ -255,6 +255,7 @@
             </Frames>
     </Frame>
 
+    <Script file="libs\LibButtonGlow-1.0\LibStub\LibStub.lua"/>
     <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
 	<Script file="TidyPlatesStatusbar.lua"/>
 	<Script file="TidyPlatesCore.lua"/>
