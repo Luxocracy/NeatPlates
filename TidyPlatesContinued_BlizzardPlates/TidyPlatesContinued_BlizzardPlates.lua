@@ -15,6 +15,14 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 local Theme = {}
 local StyleDefault = {}
 
+
+StyleDefault.hitbox = {
+	width = 140,
+	height = 14,
+	x = 0,
+	y = -5,
+}
+
 StyleDefault.highlight = {
 	texture = 					"Interface\\Tooltips\\Nameplate-Glow",
 }

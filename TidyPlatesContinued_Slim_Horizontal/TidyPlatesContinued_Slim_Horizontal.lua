@@ -24,6 +24,13 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 local Theme = {}
 local DefaultStyle = {}
 
+DefaultStyle.hitbox = {
+	width = 114,
+	height = 8,
+	x = 0,
+	y = 6,
+}
+
 DefaultStyle.highlight = {
 	texture =					ArtworkPath.."Slim_Highlight",
 	width = 128,

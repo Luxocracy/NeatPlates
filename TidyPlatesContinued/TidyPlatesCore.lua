@@ -79,6 +79,19 @@ local OnUpdate
 local OnNewNameplate
 local ForEachPlate
 
+-- UpdateNameplateSize
+local function UpdateNameplateSize(plate)
+	local scaleStandard = TidyPlatesContHubFunctions.SetScale(plate)
+	local themeWidth, themeHeight, themeX, themeY = activetheme.Default.hitbox.width, activetheme.Default.hitbox.height, activetheme.Default.hitbox.x, activetheme.Default.hitbox.y
+	local nameplateWidth, nameplateHeight = themeWidth * scaleStandard, themeHeight * scaleStandard
+
+	C_NamePlate.SetNamePlateEnemySize(nameplateWidth, nameplateHeight) -- Clickable area of the nameplate
+	C_NamePlate.SetNamePlateFriendlySize(nameplateWidth, nameplateHeight) -- Clickable area of the nameplate
+	-- table.foreach(activetheme.Default.hitbox, print)
+	carrier:SetPoint("CENTER", plate, "CENTER", (themeX*-1) * scaleStandard, (themeY*-1) * scaleStandard)
+	-- table.foreach(plate.extended.unit, print)
+end
+
 -- UpdateReferences
 local function UpdateReferences(plate)
 	nameplate = plate
@@ -92,6 +105,7 @@ local function UpdateReferences(plate)
 	visual = extended.visual
 	style = extended.style
 	threatborder = visual.threatborder
+	UpdateNameplateSize(plate)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -176,7 +190,7 @@ do
 		plate.carrier = carrier
 		plate.extended = extended
 
-        -- Add Graphical Elements
+    -- Add Graphical Elements
 		local visual = {}
 		-- Status Bars
 		local healthbar = CreateTidyPlatesContStatusbar(extended)
@@ -1228,6 +1242,8 @@ function TidyPlatesCont:EnableCastBars() ShowCastBars = true end
 function TidyPlatesCont:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function TidyPlatesCont:ResetWidgets() ForEachPlate(OnResetWidgets) end
 function TidyPlatesCont:Update() SetUpdateAll() end
+
+function TidyPlatesCont:UpdateNameplateSize() UpdateNameplateSize() end
 
 function TidyPlatesCont:RequestUpdate(plate) if plate then SetUpdateMe(plate) else SetUpdateAll() end end
 

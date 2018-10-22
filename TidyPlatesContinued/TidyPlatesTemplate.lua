@@ -17,6 +17,8 @@ local EMPTY_TEXTURE = defaultArtPath.."\\Empty"
 TemplateTheme.hitbox = {
 	width = 160,
 	height = 45,
+	x = 0,
+	y = 0,
 }
 
 TemplateTheme.highlight = {

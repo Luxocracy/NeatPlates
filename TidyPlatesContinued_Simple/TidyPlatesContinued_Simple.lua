@@ -8,6 +8,13 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 local Theme = {}
 local SimpleBar = {}
 
+SimpleBar.hitbox = {
+	width = 120,
+	height = 8,
+	x = 0,
+	y = -10,
+}
+
 SimpleBar.healthborder = {
 	texture 				= path.."\\empty.tga",
 	width = 10,

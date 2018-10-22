@@ -15,9 +15,11 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 local Theme = {}
 local StyleDefault = {}
 
-StyleDefault.hitbox = { 
-	width = 128, 
-	height = 64, 
+StyleDefault.hitbox = {
+	width = 120,
+	height = 13,
+	x = 5,
+	y = -2,
 }
 
 StyleDefault.frame = {
