@@ -21,8 +21,8 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 local StyleDefault = {}
 
 StyleDefault.hitbox = {
-	width = 116,
-	height = 24,
+	width = 130,
+	height = 30,
 	x = 0,
 	y = 0,
 }

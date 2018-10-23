@@ -9,10 +9,10 @@ local Theme = {}
 local SimpleBar = {}
 
 SimpleBar.hitbox = {
-	width = 120,
-	height = 8,
+	width = 135,
+	height = 20,
 	x = 0,
-	y = -10,
+	y = -8,
 }
 
 SimpleBar.healthborder = {

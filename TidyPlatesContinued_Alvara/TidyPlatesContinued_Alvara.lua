@@ -9,10 +9,10 @@ local Theme = {}
 local Alvara = {}
 
 Alvara.hitbox = {
-	width = 105,
-	height = 10,
+	width = 120,
+	height = 20,
 	x = 0,
-	y = -6,
+	y = -4,
 }
 Alvara.frame = {
 	width = 128,

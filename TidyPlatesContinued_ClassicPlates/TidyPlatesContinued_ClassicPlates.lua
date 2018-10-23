@@ -16,10 +16,10 @@ local Theme = {}
 local StyleDefault = {}
 
 StyleDefault.hitbox = {
-	width = 120,
-	height = 13,
+	width = 130,
+	height = 26,
 	x = 5,
-	y = -2,
+	y = 0,
 }
 
 StyleDefault.frame = {

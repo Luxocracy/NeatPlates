@@ -19,10 +19,10 @@ local StyleDefault = {}
 
 -- [[
 StyleDefault.hitbox = {
-	width = 110,
-	height = 10,
+	width = 125,
+	height = 20,
 	x = 0,
-	y = -4,
+	y = -2,
 }
 
 --]]

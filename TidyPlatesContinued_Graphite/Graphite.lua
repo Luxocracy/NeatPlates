@@ -27,10 +27,10 @@ local heightfactor = 1.2
 local StyleDefault = {}
 
 StyleDefault.hitbox = {
-	width = 100,
-	height = 8,
+	width = 115,
+	height = 20,
 	x = 0,
-	y = -4,
+	y = -2,
 }
 
 StyleDefault.frame = {

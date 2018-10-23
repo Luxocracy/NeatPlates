@@ -49,7 +49,7 @@ local function IsOffTanked(unit)
 
 		if targetGUID then
 			targetGUID = select(6, strsplit("-", UnitGUID(targetOf)))
-			targetIsGuardian = targetGUID == "61146" or targetGUID == "103822" -- Treant(103822), Black Ox Statue(61146)
+			targetIsGuardian = targetGUID == "61146" or targetGUID == "103822" or targetGUID == "61056" or targetGUID == "95072" -- Black Ox Statue(61146), Treant(103822), Primal Earth Elemental(61056), Greater Earth Elemental(95072)
 		end
 		
 		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or ("TANK" ==  UnitGroupRolesAssigned(targetOf))

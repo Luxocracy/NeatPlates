@@ -17,10 +17,10 @@ local StyleDefault = {}
 
 
 StyleDefault.hitbox = {
-	width = 140,
-	height = 14,
+	width = 150,
+	height = 28,
 	x = 0,
-	y = -5,
+	y = -3,
 }
 
 StyleDefault.highlight = {

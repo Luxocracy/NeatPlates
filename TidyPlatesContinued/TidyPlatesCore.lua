@@ -14,6 +14,9 @@ local select, pairs, tostring  = select, pairs, tostring 			    -- Local functio
 local CreateTidyPlatesContStatusbar = CreateTidyPlatesContStatusbar			    -- Local function copy
 local WorldFrame, UIParent = WorldFrame, UIParent
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
@@ -82,14 +85,19 @@ local ForEachPlate
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate)
 	local scaleStandard = TidyPlatesContHubFunctions.SetScale(plate)
-	local themeWidth, themeHeight, themeX, themeY = activetheme.Default.hitbox.width, activetheme.Default.hitbox.height, activetheme.Default.hitbox.x, activetheme.Default.hitbox.y
-	local nameplateWidth, nameplateHeight = themeWidth * scaleStandard, themeHeight * scaleStandard
+	local hitbox = {
+		width = activetheme.Default.hitbox.width * scaleStandard,
+		height = activetheme.Default.hitbox.height * scaleStandard,
+		x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
+		y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
+	}
 
-	C_NamePlate.SetNamePlateEnemySize(nameplateWidth, nameplateHeight) -- Clickable area of the nameplate
-	C_NamePlate.SetNamePlateFriendlySize(nameplateWidth, nameplateHeight) -- Clickable area of the nameplate
-	-- table.foreach(activetheme.Default.hitbox, print)
-	carrier:SetPoint("CENTER", plate, "CENTER", (themeX*-1) * scaleStandard, (themeY*-1) * scaleStandard)
-	-- table.foreach(plate.extended.unit, print)
+	if not InCombatLockdown() then
+		SetNamePlateEnemySize(hitbox.width, hitbox.height) -- Clickable area of the nameplate
+		SetNamePlateFriendlySize(hitbox.width, hitbox.height) -- Clickable area of the nameplate
+	end
+
+	plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
 end
 
 -- UpdateReferences
@@ -105,7 +113,6 @@ local function UpdateReferences(plate)
 	visual = extended.visual
 	style = extended.style
 	threatborder = visual.threatborder
-	UpdateNameplateSize(plate)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -178,9 +185,9 @@ do
 	-- ApplyPlateExtesion
 	function OnNewNameplate(plate, plateid)
 
-        -- Tidy Plates Frame
-        --------------------------------
-        local bars, regions = {}, {}
+    -- Tidy Plates Frame
+    --------------------------------
+    local bars, regions = {}, {}
 		local carrier
 		local frameName = "TidyPlatesContCarrier"..numChildren
 
@@ -264,6 +271,8 @@ do
 		extended.stylename = ""
 
 		carrier:SetPoint("CENTER", plate, "CENTER")
+
+		UpdateNameplateSize(plate)
 	end
 
 end
@@ -428,6 +437,7 @@ do
 		UpdateUnitContext(plate, unitid)
 		ProcessUnitChanges()
 		OnUpdateCastMidway(plate, unitid)
+
 	end
 
 	-- OnHealthUpdate
@@ -1242,8 +1252,6 @@ function TidyPlatesCont:EnableCastBars() ShowCastBars = true end
 function TidyPlatesCont:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function TidyPlatesCont:ResetWidgets() ForEachPlate(OnResetWidgets) end
 function TidyPlatesCont:Update() SetUpdateAll() end
-
-function TidyPlatesCont:UpdateNameplateSize() UpdateNameplateSize() end
 
 function TidyPlatesCont:RequestUpdate(plate) if plate then SetUpdateMe(plate) else SetUpdateAll() end end
 
