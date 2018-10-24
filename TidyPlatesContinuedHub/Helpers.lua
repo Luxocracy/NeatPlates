@@ -25,6 +25,8 @@ local function GetPanelValues(panel, targetTable)
 	-- Update with values
 	if panel and targetTable then
 		local index
+		targetTable["Theme"] = TidyPlatesCont:GetThemeName() -- Store active theme
+
 		for index in pairs(targetTable) do
 			if panel[index] then
 				local value = panel[index]:GetValue()

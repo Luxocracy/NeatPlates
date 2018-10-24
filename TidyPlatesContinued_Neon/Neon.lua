@@ -28,7 +28,7 @@ local StyleDefault = {}
 
 StyleDefault.hitbox = {
 	width = 130,
-	height = 20,
+	height = 30,
 	x = 0,
 	y = 6,
 }

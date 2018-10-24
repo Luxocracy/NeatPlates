@@ -457,6 +457,7 @@ do
 		extended.stylename = ""
 		unitid = PlatesVisible[plate]
 
+		UpdateNameplateSize(plate)
 		OnShowNameplate(plate, unitid)
 	end
 

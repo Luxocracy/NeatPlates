@@ -777,3 +777,4 @@ end
 TidyPlatesContHubRapidPanel.CreateInterfacePanel = CreateInterfacePanel
 TidyPlatesContHubRapidPanel.CreateVariableSet = CreateVariableSet
 
+TidyPlatesContUtility.GetCacheSet = GetCacheSet

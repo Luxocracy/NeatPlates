@@ -42,7 +42,7 @@ local ActiveProfile = "None"
 
 TidyPlatesContOptions = {
 
-	ActiveTheme = FirstTryTheme,
+	ActiveTheme = nil,
 
 	FirstSpecProfile = DefaultProfile,
 	SecondSpecProfile = DefaultProfile,
@@ -135,9 +135,8 @@ local function Role2Profile(spec)
 end
 
 local function ApplyPanelSettings()
-
 	-- Theme
-	SetTheme(TidyPlatesContOptions.ActiveTheme or FirstTryTheme)
+	SetTheme(TidyPlatesContOptions.ActiveTheme or TidyPlatesContUtility.GetCacheSet("SavedTemplate")["Theme"] or FirstTryTheme)
 
 	-- This is here in case the theme couldn't be loaded, and the core falls back to defaults
 	--TidyPlatesContOptions.ActiveTheme = TidyPlatesContInternal.activeThemeName
