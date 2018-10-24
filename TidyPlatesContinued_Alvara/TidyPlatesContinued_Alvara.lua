@@ -32,6 +32,15 @@ Alvara.threatcolor = {
 	MEDIUM = { r = 1, g = 1, b = 0, a = 1, },
 	HIGH = { r = 1, g = 0, b = 0, a = 1, },
 }
+Alvara.eliteicon = {
+	texture = path.."\\EliteIcon",
+	width = 14,
+	height = 14,
+	x = -51,
+	y = 17,
+	anchor = "CENTER",
+	show = true,
+}
 Alvara.healthborder = {
 	texture = path.."\\Shade",
 	glowtexture = path.."\\Highlight",
