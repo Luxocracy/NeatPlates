@@ -176,6 +176,38 @@ local function HealthFunctionLevelHealth(unit)
 	--return "|cffffffff"..HealthFunctionApprox(unit).."  |r"..level, unit.levelcolorRed, unit.levelcolorGreen, unit.levelcolorBlue, .9
 end
 
+-- Arena ID
+local function HealthFunctionArenaIDOnly(unit)
+	local powercolor = White
+	local arenastring = ""
+	local arenaindex = GetArenaIndex(unit.rawName)
+
+	arenaindex = 2	-- Tester
+	if unit.type == "PLAYER" then
+
+		if arenaindex and arenaindex > 0 then
+			arenastring = "|cffffcc00["..(tostring(arenaindex)).."]  |r"
+		end
+	end
+
+--[[
+-- Test Strings
+	--arenastring = "|cffffcc00["..(tostring(2)).."]  |r"
+	arenastring = "|cffffcc00#"..(tostring(2)).."  |r"
+	--powercolor = White
+--]]
+
+	return arenastring, powercolor.r, powercolor.g, powercolor.b, 1
+
+	--[[
+	Arena ID, HealthFraction, ManaPercent
+	#1  65%  75%
+
+	Arena ID, HealthK, ManaFraction
+	#2  300k  75%
+
+	--]]
+end
 
 -- Arena Vitals (ID, Mana, Health
 local function HealthFunctionArenaID(unit)
@@ -320,6 +352,7 @@ AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, Health
 AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, HealthFunctionTargetOf, "Target Of", "HealthFunctionTargetOf")
 AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, HealthFunctionLevel, "Level", "HealthFunctionLevel")
 AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, HealthFunctionLevelHealth, "Level and Approx Health", "HealthFunctionLevelHealth")
+AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, HealthFunctionArenaIDOnly, "Arena ID", "HealthFunctionArenaIDOnly")
 AddHubFunction(HealthTextModeFunctions, TidyPlatesContHubMenus.TextModes, HealthFunctionArenaID, "Arena ID, Health, and Power", "HealthFunctionArenaID")
 
 

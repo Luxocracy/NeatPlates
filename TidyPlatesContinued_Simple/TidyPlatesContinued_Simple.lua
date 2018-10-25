@@ -164,6 +164,17 @@ SimpleBar.raidicon = {
 	show = true,
 }
 
+SimpleBar.customtext = {
+	typeface = font,
+	width = 90,
+	x = -3,
+	y = -2,
+	align = "CENTER",
+	shadow = false,
+	show = true,
+}
+
+
 local CopyTable = TidyPlatesContUtility.copyTable
 
 -- No Bar

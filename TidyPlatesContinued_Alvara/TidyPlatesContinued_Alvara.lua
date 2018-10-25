@@ -42,6 +42,15 @@ Alvara.healthborder = {
 	y = 0,
 	anchor = "CENTER",
 }
+Alvara.eliteicon = {
+	texture = path.."\\EliteIcon",
+	width = 10,
+	height = 10,
+	x = -43,
+	y = -4,
+	anchor = "CENTER",
+	show = true,
+}
 Alvara.healthbar = {
 	texture = path.."\\Statusbar",
 	width = 128,
@@ -131,6 +140,15 @@ Alvara.options = {
 	showSpecialText = true,
 	showDangerSkull = true,
 	showspellIcon = true,
+}
+Alvara.customtext = {
+	typeface =					font,
+	width = 90,
+	x = -3,
+	y = 1.5,
+	align = "CENTER",
+	shadow = false,
+	show = true,
 }
 
 local CopyTable = TidyPlatesContUtility.copyTable

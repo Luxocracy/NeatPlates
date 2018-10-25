@@ -174,8 +174,13 @@ StyleDefault.spellicon = {
 }
 
 StyleDefault.eliteicon = {
-	show = false,
-	texture = EmptyTexture,
+	texture = path.."EliteIcon",
+	width = 10,
+	height = 10,
+	x = -46,
+	y = -4,
+	anchor = "CENTER",
+	show = true,
 }
 
 StyleDefault.raidicon = {
