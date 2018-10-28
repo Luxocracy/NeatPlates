@@ -481,19 +481,19 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	if mode and mode == "ACTUAL" then
 		slider.Value:SetText(tostring(ceil(val)))
 		slider:SetScript("OnValueChanged", function()
-			local v = tostring(ceil(slider:GetValue()))
+			local v = tostring(ceil(slider:GetValue()-0.5))
 			slider.Value:SetText(v)
 		end)
-		slider.Low:SetText(ceil(minval or 0))
-		slider.High:SetText(ceil(maxval or 1))
+		slider.Low:SetText(ceil((minval or 0)-0.5))
+		slider.High:SetText(ceil((maxval or 1)-0.5))
 		slider.isActual = true
 	else
-		slider.Value:SetText(tostring(ceil(100*(val or .5))))
+		slider.Value:SetText(tostring(ceil(100*(val or .5)-0.5)))
 		slider:SetScript("OnValueChanged", function()
-			slider.Value:SetText(tostring(ceil(100*slider:GetValue())).."%")
+			slider.Value:SetText(tostring(ceil(100*slider:GetValue()-0.5)).."%")
 		end)
-		slider.Low:SetText(ceil((minval or 0)*100).."%")
-		slider.High:SetText(ceil((maxval or 1)*100).."%")
+		slider.Low:SetText(ceil((minval or 0)*100-0.5).."%")
+		slider.High:SetText(ceil((maxval or 1)*100-0.5).."%")
 		slider.isActual = false
 	end
 
