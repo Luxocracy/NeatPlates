@@ -113,6 +113,19 @@ local function ConvertDebuffListTable(source, target, order)
 
 end
 
+local function ConvertColorListTable(source, target)
+	local temp = ListToTable(strsplit("\n", source))
+	target = wipe(target)
+
+	for index = 1, #source do
+		if temp[index] then
+			local hex, str = select(3, string.find(temp[index], "(#%x+)[%s%p]*(.*)"))
+			--local str = temp[index]
+			if hex and str then target[str] = hex end
+		end
+	end
+end
+
 local function AddHubFunction(functionTable, menuTable, functionPointer, functionDescription, functionKey )
 	if functionTable then
 		functionTable[functionKey or (#functionTable+1)] = functionPointer
@@ -131,6 +144,7 @@ TidyPlatesContHubHelpers.MergeProfileValues = MergeProfileValues
 TidyPlatesContHubHelpers.ListToTable = ListToTable
 TidyPlatesContHubHelpers.ConvertStringToTable = ConvertStringToTable
 TidyPlatesContHubHelpers.ConvertDebuffListTable = ConvertDebuffListTable
+TidyPlatesContHubHelpers.ConvertColorListTable = ConvertColorListTable
 TidyPlatesContHubHelpers.AddHubFunction = AddHubFunction
 
 

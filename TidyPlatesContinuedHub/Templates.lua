@@ -87,17 +87,18 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		end
 	end
 
-	local function CreateQuickEditbox(name, ...)
+	local function CreateQuickEditbox(name, width, height, ...)
 		local columnFrame = ...
 		local frame = CreateFrame("ScrollFrame", name, columnFrame, "UIPanelScrollFrameTemplate")
 		frame.BorderFrame = CreateFrame("Frame", nil, frame )
 		local EditBox = CreateFrame("EditBox", nil, frame)
 		-- Margins	-- Bottom/Left are supposed to be negative
 		frame.Margins = {Left = 4, Right = 24, Top = 8, Bottom = 8, }
+		width, height = width or 150, height or 100
 
 		-- Frame Size
-		frame:SetWidth(165)
-		frame:SetHeight(125)
+		frame:SetWidth(width+15)
+		frame:SetHeight(height+25)
 		-- Border
 		frame.BorderFrame:SetPoint("TOPLEFT", 0, 5)
 		frame.BorderFrame:SetPoint("BOTTOMRIGHT", 3, -5)
@@ -112,8 +113,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		EditBox:SetPoint("TOPLEFT")
 		EditBox:SetPoint("BOTTOMLEFT")
-		EditBox:SetHeight(100)
-		EditBox:SetWidth(150)
+		EditBox:SetHeight(height)
+		EditBox:SetWidth(width)
 		EditBox:SetMultiLine(true)
 
 		EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
@@ -139,9 +140,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
-	local function CreateQuickColorbox(name, label, ...)
+	local function CreateQuickColorbox(name, label, onOkay, ...)
 		local columnFrame = ...
-		local frame = PanelHelpers:CreateColorBox(name, columnFrame, label, 0, .5, 1, 1)
+		local frame = PanelHelpers:CreateColorBox(name, columnFrame, label, onOkay, 0, .5, 1, 1)
 		-- Margins	-- Bottom/Left are supposed to be negative
 		frame.Margins = { Left = 5, Right = 100, Top = 3, Bottom = 2,}
 		-- Set Positions

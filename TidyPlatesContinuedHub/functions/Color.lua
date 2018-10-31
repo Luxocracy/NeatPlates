@@ -31,6 +31,7 @@ local GetFriendlyThreat = TidyPlatesContUtility.GetFriendlyThreat
 local IsFriend = TidyPlatesContUtility.IsFriend
 local IsHealer = TidyPlatesContUtility.IsHealer
 local IsGuildmate = TidyPlatesContUtility.IsGuildmate
+local HexToRGB = TidyPlatesContUtility.HexToRGB
 
 local IsOffTanked = TidyPlatesContHubFunctions.IsOffTanked
 local IsTankingAuraActive = TidyPlatesContWidgets.IsPlayerTank
@@ -210,6 +211,10 @@ local function HealthColorDelegate(unit)
 	-- Tapped Color Priority
 	elseif unit.isTapped then
 		color = LocalVars.ColorTapped
+	end
+	-- Custom Color by Unit Name
+	if LocalVars.CustomColorLookup[unit.name] then
+		color = HexToRGB(LocalVars.CustomColorLookup[unit.name])
 	end
 
 	-- Color Mode / Color Spotlight

@@ -169,21 +169,21 @@ local function BuildHubPanel(panel)
 	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", "Include My Buffs", AlignmentColumn, panel.WidgetMyDebuff, 16)
 
 	panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", "Enable Pandemic Highlighting", AlignmentColumn, panel.WidgetMyBuff, 16)
-	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
+	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", nil, AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
 	panel.BorderPandemic = CreateQuickDropdown(objectName.."BorderPandemic", "", BorderTypes, 1, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 90)
 
 	panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", "Include Purgeable Buffs", AlignmentColumn, panel.WidgetPandemic, 16)
-	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
+	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", nil, AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
 	panel.BorderBuffPurgeable = CreateQuickDropdown(objectName.."BorderBuffPurgeable", "", BorderTypes, 1, AlignmentColumn, panel.WidgetPandemic, OffsetColumnB + 90)
 
 	panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", "Include Enrage Buffs", AlignmentColumn, panel.WidgetBuffPurgeable, 16)
-	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
+	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", nil, AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
 	panel.BorderBuffEnrage = CreateQuickDropdown(objectName.."BorderBuffEnrage", "", BorderTypes, 1, AlignmentColumn, panel.WidgetBuffPurgeable, OffsetColumnB + 90)
 
 	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", "Space Between buffs & debuffs:", "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.SpacerSlots, 16)
-	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", AlignmentColumn, panel.WidgetDebuffListLabel, 16)
+	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
 
 	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetDebuffTrackList, 16)
 
@@ -268,10 +268,10 @@ local function BuildHubPanel(panel)
 	panel.UnitSpotlightOpacity = CreateQuickSlider(objectName.."UnitSpotlightOpacity", "Spotlight Opacity:", nil, nil, AlignmentColumn, panel.UnitSpotlightLabel, 0, 2)
 	panel.UnitSpotlightScale = CreateQuickSlider(objectName.."UnitSpotlightScale", "Spotlight Scale:", nil, nil, AlignmentColumn, panel.UnitSpotlightOpacity, 0, 2)
 	panel.UnitSpotlightColorLabel = CreateQuickItemLabel(nil, "Spotlight Color:", AlignmentColumn, panel.UnitSpotlightScale, 0, 0)
-	panel.UnitSpotlightColor = CreateQuickColorbox(objectName.."UnitSpotlightColor", "Bar & Glow Color", AlignmentColumn, panel.UnitSpotlightColorLabel , 6, 2)
+	panel.UnitSpotlightColor = CreateQuickColorbox(objectName.."UnitSpotlightColor", "Bar & Glow Color", nil, AlignmentColumn, panel.UnitSpotlightColorLabel , 6, 2)
 
 	panel.UnitSpotlightListLabel = CreateQuickItemLabel(nil, "Unit Name:", AlignmentColumn, panel.UnitSpotlightColor, 0, 4)
-	panel.UnitSpotlightList = CreateQuickEditbox(objectName.."UnitSpotlightList", AlignmentColumn, panel.UnitSpotlightListLabel, 0)
+	panel.UnitSpotlightList = CreateQuickEditbox(objectName.."UnitSpotlightList", nil, nil, AlignmentColumn, panel.UnitSpotlightListLabel, 0)
 
 	-- Boss NPC units
 
@@ -302,7 +302,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityFilterMini = CreateQuickCheckbutton(objectName.."OpacityFilterMini", "Filter Mini-Mobs", AlignmentColumn, panel.OpacityFilterInactive, OffsetColumnB)
 
 	panel.OpacityCustomFilterLabel = CreateQuickItemLabel(nil, "Filter By Unit Name:", AlignmentColumn, F, 8, 4)
-	panel.OpacityFilterList, L = CreateQuickEditbox(objectName.."OpacityFilterList", AlignmentColumn, panel.OpacityCustomFilterLabel, 8)
+	panel.OpacityFilterList, L = CreateQuickEditbox(objectName.."OpacityFilterList", nil, nil, AlignmentColumn, panel.OpacityCustomFilterLabel, 8)
 
 
 -- [[
@@ -313,24 +313,29 @@ local function BuildHubPanel(panel)
 	-- Health Bar Color
     panel.ReactionLabel = CreateQuickHeadingLabel(nil, "Reaction", AlignmentColumn, L, 0, 5)
 	panel.ReactionColorLabel = CreateQuickItemLabel(nil, "Health Bar Color:", AlignmentColumn, panel.ReactionLabel, 0, 2)
-	panel.ColorFriendlyNPC = CreateQuickColorbox(objectName.."ColorFriendlyNPC", "Friendly NPC", AlignmentColumn, panel.ReactionColorLabel , 16)
-	panel.ColorFriendlyPlayer = CreateQuickColorbox(objectName.."ColorFriendlyPlayer", "Friendly Player", AlignmentColumn, panel.ColorFriendlyNPC , 16)
-	panel.ColorNeutral= CreateQuickColorbox(objectName.."ColorNeutral", "Neutral", AlignmentColumn, panel.ColorFriendlyPlayer , 16)
-	panel.ColorHostileNPC = CreateQuickColorbox(objectName.."ColorHostileNPC", "Hostile NPC", AlignmentColumn, panel.ColorNeutral , 16)
-	panel.ColorHostilePlayer = CreateQuickColorbox(objectName.."ColorHostilePlayer", "Hostile Player", AlignmentColumn, panel.ColorHostileNPC , 16)
-	panel.ColorGuildMember = CreateQuickColorbox(objectName.."ColorGuildMember", "Guild Member", AlignmentColumn, panel.ColorHostilePlayer , 16)
+	panel.ColorFriendlyNPC = CreateQuickColorbox(objectName.."ColorFriendlyNPC", "Friendly NPC", nil, AlignmentColumn, panel.ReactionColorLabel , 16)
+	panel.ColorFriendlyPlayer = CreateQuickColorbox(objectName.."ColorFriendlyPlayer", "Friendly Player", nil, AlignmentColumn, panel.ColorFriendlyNPC , 16)
+	panel.ColorNeutral= CreateQuickColorbox(objectName.."ColorNeutral", "Neutral", nil, AlignmentColumn, panel.ColorFriendlyPlayer , 16)
+	panel.ColorHostileNPC = CreateQuickColorbox(objectName.."ColorHostileNPC", "Hostile NPC", nil, AlignmentColumn, panel.ColorNeutral , 16)
+	panel.ColorHostilePlayer = CreateQuickColorbox(objectName.."ColorHostilePlayer", "Hostile Player", nil, AlignmentColumn, panel.ColorHostileNPC , 16)
+	panel.ColorGuildMember = CreateQuickColorbox(objectName.."ColorGuildMember", "Guild Member", nil, AlignmentColumn, panel.ColorHostilePlayer , 16)
     -- Text Color
     panel.TextReactionColorLabel = CreateQuickItemLabel(nil, "Text Color:", AlignmentColumn, panel.ReactionLabel, OffsetColumnB )
-	panel.TextColorFriendlyNPC = CreateQuickColorbox(objectName.."TextColorFriendlyNPC", "Friendly NPC", AlignmentColumn, panel.ReactionColorLabel , OffsetColumnB + 16)
-	panel.TextColorFriendlyPlayer = CreateQuickColorbox(objectName.."TextColorFriendlyPlayer", "Friendly Player", AlignmentColumn, panel.TextColorFriendlyNPC , OffsetColumnB + 16)
-	panel.TextColorNeutral= CreateQuickColorbox(objectName.."TextColorNeutral", "Neutral", AlignmentColumn, panel.TextColorFriendlyPlayer , OffsetColumnB + 16)
-	panel.TextColorHostileNPC = CreateQuickColorbox(objectName.."TextColorHostileNPC", "Hostile NPC", AlignmentColumn, panel.TextColorNeutral , OffsetColumnB + 16)
-	panel.TextColorHostilePlayer = CreateQuickColorbox(objectName.."TextColorHostilePlayer", "Hostile Player", AlignmentColumn, panel.TextColorHostileNPC , OffsetColumnB + 16)
-	panel.TextColorGuildMember = CreateQuickColorbox(objectName.."TextColorGuildMember", "Guild Member", AlignmentColumn, panel.TextColorHostilePlayer , OffsetColumnB + 16)
+	panel.TextColorFriendlyNPC = CreateQuickColorbox(objectName.."TextColorFriendlyNPC", "Friendly NPC", nil, AlignmentColumn, panel.ReactionColorLabel , OffsetColumnB + 16)
+	panel.TextColorFriendlyPlayer = CreateQuickColorbox(objectName.."TextColorFriendlyPlayer", "Friendly Player", nil, AlignmentColumn, panel.TextColorFriendlyNPC , OffsetColumnB + 16)
+	panel.TextColorNeutral= CreateQuickColorbox(objectName.."TextColorNeutral", "Neutral", nil, AlignmentColumn, panel.TextColorFriendlyPlayer , OffsetColumnB + 16)
+	panel.TextColorHostileNPC = CreateQuickColorbox(objectName.."TextColorHostileNPC", "Hostile NPC", nil, AlignmentColumn, panel.TextColorNeutral , OffsetColumnB + 16)
+	panel.TextColorHostilePlayer = CreateQuickColorbox(objectName.."TextColorHostilePlayer", "Hostile Player", nil, AlignmentColumn, panel.TextColorHostileNPC , OffsetColumnB + 16)
+	panel.TextColorGuildMember = CreateQuickColorbox(objectName.."TextColorGuildMember", "Guild Member", nil, AlignmentColumn, panel.TextColorHostilePlayer , OffsetColumnB + 16)
 	-- Other
 	panel.OtherColorLabel = CreateQuickItemLabel(nil, "Other Colors:", AlignmentColumn, panel.ColorGuildMember, 0, 2)
-	panel.ColorTapped, L = CreateQuickColorbox(objectName.."ColorTapped", "Tapped Unit", AlignmentColumn, panel.OtherColorLabel , 16)
-	--panel.ColorTotem = CreateQuickColorbox(objectName.."ColorTotem", "Totem", AlignmentColumn, panel.ColorTapped , 16)
+	panel.ColorTapped = CreateQuickColorbox(objectName.."ColorTapped", "Tapped Unit", nil, AlignmentColumn, panel.OtherColorLabel , 16)
+	--panel.ColorTotem = CreateQuickColorbox(objectName.."ColorTotem", "Totem", nil, AlignmentColumn, panel.ColorTapped , 16)
+	-- Custom Colors
+	panel.CustomColorLabel = CreateQuickItemLabel(nil, "Color By Unit Name:", AlignmentColumn, panel.ColorTapped, 0, 2)
+	panel.CustomColorList, L = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
+	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", "Color Select", function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
+	panel.CustomColorInfo = CreateQuickItemLabel(nil, "|cffCCCCCCColor value in Hex(#) followed by the Unit Name", AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
 
 --]]
 
@@ -343,9 +348,9 @@ local function BuildHubPanel(panel)
 	panel.ThreatGlowEnable = CreateQuickCheckbutton(objectName.."ThreatGlowEnable", "Enable Warning Glow", AlignmentColumn, panel.ThreatWarningMode,0)
 
 	panel.ColorThreatColorLabels = CreateQuickItemLabel(nil, "Threat Colors:", AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
-	panel.ColorThreatWarning = CreateQuickColorbox(objectName.."ColorThreatWarning", "Warning", AlignmentColumn, panel.ColorThreatColorLabels , 16)
-	panel.ColorThreatTransition = CreateQuickColorbox(objectName.."ColorThreatTransition", "Transition", AlignmentColumn, panel.ColorThreatWarning , 16)
-	panel.ColorThreatSafe = CreateQuickColorbox(objectName.."ColorThreatSafe", "Safe", AlignmentColumn, panel.ColorThreatTransition, 16)
+	panel.ColorThreatWarning = CreateQuickColorbox(objectName.."ColorThreatWarning", "Warning", nil, AlignmentColumn, panel.ColorThreatColorLabels , 16)
+	panel.ColorThreatTransition = CreateQuickColorbox(objectName.."ColorThreatTransition", "Transition", nil, AlignmentColumn, panel.ColorThreatWarning , 16)
+	panel.ColorThreatSafe = CreateQuickColorbox(objectName.."ColorThreatSafe", "Safe", nil, AlignmentColumn, panel.ColorThreatTransition, 16)
 
 	panel.WidgetThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetThreatIndicator", "Show Tug-o-Threat Indicator", AlignmentColumn, panel.ColorThreatSafe, 0, 2)
 	panel.WidgetThreatPercentage, F = CreateQuickCheckbutton(objectName.."WidgetThreatPercentage", "Show Threat Percentage", AlignmentColumn, panel.WidgetThreatIndicator, 0, 2)
@@ -356,10 +361,10 @@ local function BuildHubPanel(panel)
 
     -- Column 2
 	panel.EnableOffTankHighlight = CreateQuickCheckbutton(objectName.."EnableOffTankHighlight", "Highlight Mobs on Off-Tanks", AlignmentColumn, panel.ThreatLabel, OffsetColumnB)
-	panel.ColorAttackingOtherTank = CreateQuickColorbox(objectName.."ColorAttackingOtherTank", "Attacking another Tank", AlignmentColumn, panel.EnableOffTankHighlight , 16+OffsetColumnB)
+	panel.ColorAttackingOtherTank = CreateQuickColorbox(objectName.."ColorAttackingOtherTank", "Attacking another Tank", nil, AlignmentColumn, panel.EnableOffTankHighlight , 16+OffsetColumnB)
 
 	panel.ColorShowPartyAggro = CreateQuickCheckbutton(objectName.."ColorShowPartyAggro", "Highlight Group Members holding Aggro", AlignmentColumn, panel.ColorAttackingOtherTank, OffsetColumnB)
-	panel.ColorPartyAggro = CreateQuickColorbox(objectName.."ColorPartyAggro", "Group Member Aggro", AlignmentColumn, panel.ColorShowPartyAggro , 14+OffsetColumnB)
+	panel.ColorPartyAggro = CreateQuickColorbox(objectName.."ColorPartyAggro", "Group Member Aggro", nil, AlignmentColumn, panel.ColorShowPartyAggro , 14+OffsetColumnB)
 	panel.ColorPartyAggroBar = CreateQuickCheckbutton(objectName.."ColorPartyAggroBar", "Health Bar Color", AlignmentColumn, panel.ColorPartyAggro, 16+OffsetColumnB)
 	panel.ColorPartyAggroGlow = CreateQuickCheckbutton(objectName.."ColorPartyAggroGlow", "Border/Warning Glow", AlignmentColumn, panel.ColorPartyAggroBar, 16+OffsetColumnB)
 	panel.ColorPartyAggroText = CreateQuickCheckbutton(objectName.."ColorPartyAggroText", "Name Text Color", AlignmentColumn, panel.ColorPartyAggroGlow, 16+OffsetColumnB)
@@ -372,9 +377,9 @@ local function BuildHubPanel(panel)
 	panel.HighHealthThreshold = CreateQuickSlider(objectName.."HighHealthThreshold", "High Health Threshold:", nil, nil, AlignmentColumn, F, 0, 2)
 	panel.LowHealthThreshold =  CreateQuickSlider(objectName.."LowHealthThreshold", "Low Health Threshold:", nil, nil, AlignmentColumn, panel.HighHealthThreshold, 0, 2)
 	panel.HealthColorLabels = CreateQuickItemLabel(nil, "Health Colors:", AlignmentColumn, panel.LowHealthThreshold, 0)
-	panel.ColorHighHealth = CreateQuickColorbox(objectName.."ColorHighHealth", "High Health", AlignmentColumn, panel.HealthColorLabels , 16)
-	panel.ColorMediumHealth = CreateQuickColorbox(objectName.."ColorMediumHealth", "Medium Health", AlignmentColumn, panel.ColorHighHealth , 16)
-	panel.ColorLowHealth, F = CreateQuickColorbox(objectName.."ColorLowHealth", "Low Health", AlignmentColumn, panel.ColorMediumHealth , 16)
+	panel.ColorHighHealth = CreateQuickColorbox(objectName.."ColorHighHealth", "High Health", nil, AlignmentColumn, panel.HealthColorLabels , 16)
+	panel.ColorMediumHealth = CreateQuickColorbox(objectName.."ColorMediumHealth", "Medium Health", nil, AlignmentColumn, panel.ColorHighHealth , 16)
+	panel.ColorLowHealth, F = CreateQuickColorbox(objectName.."ColorLowHealth", "Low Health", nil, AlignmentColumn, panel.ColorMediumHealth , 16)
 	-- [ ]  Highlight Enemy Healers
 
 
@@ -384,8 +389,8 @@ local function BuildHubPanel(panel)
     panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, "Cast Bars", AlignmentColumn, F, 0, 5)
     panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", "Show Friendly Cast Bars", AlignmentColumn, F)
 	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, "Cast Bar Colors:", AlignmentColumn, F, 0, 2)
-	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", "Normal", AlignmentColumn, F , 16)
-	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", "Un-interruptible", AlignmentColumn, F , 16)
+	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", "Normal", nil, AlignmentColumn, F , 16)
+	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", "Un-interruptible", nil, AlignmentColumn, F , 16)
 
 	--[[
 	------------------------------
@@ -441,7 +446,7 @@ local function BuildHubPanel(panel)
 	panel.FrameBarWidth, F = CreateQuickSlider(objectName.."FrameBarWidth", "Health Bar Width (%)", nil, nil, AlignmentColumn, F, 0, 4)
 
 	--panel.AdvancedCustomCodeLabel = CreateQuickItemLabel(nil, "Custom Theme Code:", AlignmentColumn, panel.FrameVerticalPosition, 0, 4)
-	--panel.AdvancedCustomCodeTextbox = CreateQuickEditbox(objectName.."AdvancedCustomCodeTextbox", AlignmentColumn, panel.AdvancedHealthTextLabel, 8)
+	--panel.AdvancedCustomCodeTextbox = CreateQuickEditbox(objectName.."AdvancedCustomCodeTextbox", nil, nil, AlignmentColumn, panel.AdvancedHealthTextLabel, 8)
 
 
 	--[[
@@ -496,6 +501,7 @@ local function BuildHubPanel(panel)
 
 	local ConvertStringToTable = TidyPlatesContHubHelpers.ConvertStringToTable
 	local ConvertDebuffListTable = TidyPlatesContHubHelpers.ConvertDebuffListTable
+	local ConvertColorListTable = TidyPlatesContHubHelpers.ConvertColorListTable
 	local CallForStyleUpdate = TidyPlatesContHubHelpers.CallForStyleUpdate
 
 	function panel.RefreshSettings(LocalVars)
@@ -506,6 +512,7 @@ local function BuildHubPanel(panel)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
+		ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
 	end
 
 	--panel:Hide()

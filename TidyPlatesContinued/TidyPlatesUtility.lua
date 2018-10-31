@@ -101,10 +101,57 @@ local function valueToString(value)
     end
 end
 
+-- Hex conversion functions
+local function HexToRGB(hex)
+    hex = hex:gsub("#","")
+		
+		-- Incase of shorthand hex
+    if string.len(hex) == 3 then
+    	str = "";
+    	for i=1,3 do str = str..hex:sub(i,i)..hex:sub(i,i) end
+    	hex = str
+    end
+
+    return {
+    	r = tonumber("0x"..hex:sub(1,2))/255,
+    	g = tonumber("0x"..hex:sub(3,4))/255,
+    	b = tonumber("0x"..hex:sub(5,6))/255
+    }
+end
+
+local function RGBToHex(r,g,b)
+	local hexadecimal = '#'
+	local rgb = {r*255,g*255,b*255}
+
+	for key, value in pairs(rgb) do
+		local hex = ''
+
+		while(value > 0)do
+			local index = math.fmod(value, 16) + 1
+			value = math.floor(value / 16)
+			hex = string.sub('0123456789ABCDEF', index, index) .. hex			
+		end
+
+		if(string.len(hex) == 0)then
+			hex = '00'
+
+		elseif(string.len(hex) == 1)then
+			hex = '0' .. hex
+		end
+
+		hexadecimal = hexadecimal .. hex
+	end
+
+	return hexadecimal
+end
+
+
 TidyPlatesContUtility.abbrevNumber = valueToString
 TidyPlatesContUtility.copyTable = copytable
 TidyPlatesContUtility.mergeTable = mergetable
 TidyPlatesContUtility.updateTable = updatetable
+TidyPlatesContUtility.HexToRGB = HexToRGB
+TidyPlatesContUtility.RGBToHex = RGBToHex
 
 ------------------------------------------
 -- GameTooltipScanner
@@ -477,6 +524,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
 	slider.Value:SetPoint("BOTTOM", 0, -10)
 	slider.Value:SetWidth(50)
+
 	--slider.Value
 	if mode and mode == "ACTUAL" then
 		slider.Value:SetText(tostring(ceil(val)))
@@ -729,10 +777,10 @@ do
 		end
 	end
 
-	local function ShowColorPicker(frame)
+	local function ShowColorPicker(frame, onOkay)
 		local r,g,b,a = frame:GetBackdropColor()
 		workingFrame = frame
-		ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 	ChangeColor, ChangeColor, ChangeColor;
+		ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 	ChangeColor, function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end, ChangeColor;
 		ColorPickerFrame.startingval  = {r,g,b,a}
 		ColorPickerFrame:SetColorRGB(r,g,b);
 		ColorPickerFrame.hasOpacity = true
@@ -742,7 +790,7 @@ do
 		ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
 	end
 
-	function CreateColorBox(self, reference, parent, label, r, g, b, a)
+	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
 		local colorbox = CreateFrame("Button", reference, parent)
 		colorbox:SetWidth(24)
 		colorbox:SetHeight(24)
@@ -751,7 +799,7 @@ do
 												tile = false, tileSize = 16, edgeSize = 8,
 												insets = { left = 1, right = 1, top = 1, bottom = 1 }});
 		colorbox:SetBackdropColor(r, g, b, a);
-		colorbox:SetScript("OnClick",function() ShowColorPicker(colorbox) end)
+		colorbox:SetScript("OnClick",function() ShowColorPicker(colorbox, onOkay) end)
 		--
 		colorbox.Label = colorbox:CreateFontString(nil, 'ARTWORK', 'GameFontWhiteSmall')
 		colorbox.Label:SetPoint("TOPLEFT", colorbox, "TOPRIGHT", 4, -7)
