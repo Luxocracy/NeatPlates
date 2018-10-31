@@ -336,6 +336,9 @@ local function BuildHubPanel(panel)
 	panel.CustomColorList, L = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", "Color Select", function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
 	panel.CustomColorInfo = CreateQuickItemLabel(nil, "|cffCCCCCCColor value in Hex(#) followed by the Unit Name", AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
+	panel.CustomColorInfo:SetHeight(150)
+	panel.CustomColorInfo:SetWidth(200)
+	panel.CustomColorInfo.Text:SetJustifyV("TOP")
 
 --]]
 
