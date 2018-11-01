@@ -182,7 +182,7 @@ local function HealthFunctionArenaIDOnly(unit)
 	local arenastring = ""
 	local arenaindex = GetArenaIndex(unit.rawName)
 
-	arenaindex = 2	-- Tester
+	--arenaindex = 2	-- Tester
 	if unit.type == "PLAYER" then
 
 		if arenaindex and arenaindex > 0 then
