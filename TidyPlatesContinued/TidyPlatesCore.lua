@@ -724,7 +724,7 @@ do
 			if unitcache.name ~= unit.name then UpdateIndicator_Name() end
 			if unitcache.level ~= unit.level then UpdateIndicator_Level() end
 			UpdateIndicator_RaidIcon()
-			if unitcache.isElite ~= unit.isElite then UpdateIndicator_EliteIcon() end
+			if unitcache.isElite ~= unit.isElite or unitcache.isRare ~= unit.isRare then UpdateIndicator_EliteIcon() end
 		end
 	end
 
