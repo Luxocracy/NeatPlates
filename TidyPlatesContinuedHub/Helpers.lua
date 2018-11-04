@@ -114,6 +114,7 @@ local function ConvertDebuffListTable(source, target, order)
 end
 
 local function ConvertColorListTable(source, target)
+	if source == nil then return end
 	local temp = ListToTable(strsplit("\n", source))
 	target = wipe(target)
 
