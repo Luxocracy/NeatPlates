@@ -219,7 +219,7 @@ local function HealthColorDelegate(unit)
 	end
 
 	-- Custom Color by Buff
-	if not color then
+	if not color and unit.unitid then
 		local spellName
 		for i = 1, 40 do
 			spellName = UnitAura(unit.unitid, i, "HELPFUL")
