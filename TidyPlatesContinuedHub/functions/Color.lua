@@ -212,9 +212,37 @@ local function HealthColorDelegate(unit)
 	elseif unit.isTapped then
 		color = LocalVars.ColorTapped
 	end
+
 	-- Custom Color by Unit Name
-	if LocalVars.CustomColorLookup[unit.name] then
+	if not color and LocalVars.CustomColorLookup[unit.name] and unit.type ~= "PLAYER" then
 		color = HexToRGB(LocalVars.CustomColorLookup[unit.name])
+	end
+
+	-- Custom Color by Buff
+	if not color then
+		local spellName
+		for i = 1, 40 do
+			spellName = UnitAura(unit.unitid, i, "HELPFUL")
+			if not spellName then break elseif LocalVars.CustomColorLookup[spellName] then
+				color = HexToRGB(LocalVars.CustomColorLookup[spellName])
+				break
+			end
+		end
+	end
+
+	-- Custom Color by Unit Threshold
+	if not color then
+		local threshold, current, lowest
+		local health = (unit.health/unit.healthmax)*100
+		for k, v in pairs(LocalVars.CustomColorLookup) do
+			current = string.gsub(k, "%%$", "")
+			current = tonumber(current)
+			if current and (not lowest or lowest > current) and health <= current then
+				lowest = current
+				threshold = k
+			end
+		end
+		if threshold then color = HexToRGB(LocalVars.CustomColorLookup[threshold]) end
 	end
 
 	-- Color Mode / Color Spotlight
