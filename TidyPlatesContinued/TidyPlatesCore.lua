@@ -698,7 +698,7 @@ do
 	-- UpdateIndicator_EliteIcon: Updates the border overlay art and threat glow to Elite or Non-Elite art
 	function UpdateIndicator_EliteIcon()
 		threatborder = visual.threatborder
-		if (unit.isElite or unit.isRare) and style.eliteicon.show then visual.eliteicon:Show() else visual.eliteicon:Hide() end
+		if (unit.isElite or unit.isRare) and not unit.isBoss and style.eliteicon.show then visual.eliteicon:Show() else visual.eliteicon:Hide() end
 		visual.eliteicon:SetDesaturated(unit.isRare) -- Desaturate if rare elite
 	end
 
@@ -1193,7 +1193,7 @@ do
 			SetFontGroupObject(object, objectstyle)
 		end
 		-- Hide Stuff
-		if not unit.isElite then visual.eliteicon:Hide() end
+		if not unit.isElite and not unit.isRare then visual.eliteicon:Hide() end
 		if not unit.isBoss then visual.skullicon:Hide() end
 
 		if not unit.isTarget then visual.target:Hide() end
