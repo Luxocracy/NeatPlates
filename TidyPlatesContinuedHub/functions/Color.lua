@@ -218,15 +218,31 @@ local function HealthColorDelegate(unit)
 		color = HexToRGB(LocalVars.CustomColorLookup[unit.name])
 	end
 
-	-- Custom Color by Buff
-	if not color and unit.unitid then
-		local spellName,spellID
-		for i = 1, 40 do
-			spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HELPFUL|HARMFUL")
-			spellId = tostring(spellId)
-			if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
-				color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
-				break
+	-- Custom Color by Buff/Debuff
+	if unit.unitid then
+		-- Buffs
+		if not color then
+			local spellName,spellID
+			for i = 1, 40 do
+				spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HELPFUL")
+				spellId = tostring(spellId)
+				if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
+					color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
+					break
+				end
+			end
+		end
+
+		-- Debuffs
+		if not color then
+			local spellName,spellID
+			for i = 1, 40 do
+				spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HARMFUL")
+				spellId = tostring(spellId)
+				if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
+					color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
+					break
+				end
 			end
 		end
 	end
