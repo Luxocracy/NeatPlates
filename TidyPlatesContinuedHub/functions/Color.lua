@@ -220,11 +220,12 @@ local function HealthColorDelegate(unit)
 
 	-- Custom Color by Buff
 	if not color and unit.unitid then
-		local spellName
+		local spellName,spellID
 		for i = 1, 40 do
-			spellName = UnitAura(unit.unitid, i, "HELPFUL")
-			if not spellName then break elseif LocalVars.CustomColorLookup[spellName] then
-				color = HexToRGB(LocalVars.CustomColorLookup[spellName])
+			spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HELPFUL|HARMFUL")
+			spellId = tostring(spellId)
+			if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
+				color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
 				break
 			end
 		end
@@ -235,8 +236,7 @@ local function HealthColorDelegate(unit)
 		local threshold, current, lowest
 		local health = (unit.health/unit.healthmax)*100
 		for k, v in pairs(LocalVars.CustomColorLookup) do
-			current = string.gsub(k, "%%$", "")
-			current = tonumber(current)
+			current = tonumber((strmatch(k, "(.*)(%%)")))
 			if current and (not lowest or lowest > current) and health <= current then
 				lowest = current
 				threshold = k
