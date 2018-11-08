@@ -209,23 +209,25 @@ local function CustomColorDelegate(unit)
 	local temp = {strsplit("\n", LocalVars.CustomColorList)}
 	for index=1, #temp do
 		local key = select(3, string.find(temp[index], "#%x+[%s%p]*(.*)"))
+		
+		if key then
+			--Custom Color by Unit Name
+			if not color and key == unit.name and unit.type ~= "PLAYER" then
+				color = HexToRGB(LocalVars.CustomColorLookup[unit.name]); break
 
-	 --Custom Color by Unit Name
-		if not color and key == unit.name and unit.type ~= "PLAYER" then
-			color = HexToRGB(LocalVars.CustomColorLookup[unit.name]); break
+		--Custom Color by Buff/Debuff
+			elseif not color and aura and aura[key] then
+				color = HexToRGB(LocalVars.CustomColorLookup[key]); break
 
-	--Custom Color by Buff/Debuff
-		elseif not color and aura and aura[key] then
-			color = HexToRGB(LocalVars.CustomColorLookup[key]); break
-
-	-- Custom Color by Unit Threshold
-		else
-			current = tonumber((strmatch(key, "(.*)(%%)")))
-			if current and (not lowest or lowest > current) and health <= current then
-				lowest = current
-				threshold = key
+		-- Custom Color by Unit Threshold
+			else
+				current = tonumber((strmatch(key, "(.*)(%%)")))
+				if current and (not lowest or lowest > current) and health <= current then
+					lowest = current
+					threshold = key
+				end
+				if threshold then color = HexToRGB(LocalVars.CustomColorLookup[threshold]) end
 			end
-			if threshold then color = HexToRGB(LocalVars.CustomColorLookup[threshold]) end
 		end
 	end
 
