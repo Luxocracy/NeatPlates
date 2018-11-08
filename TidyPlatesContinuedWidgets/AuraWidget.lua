@@ -37,6 +37,7 @@ local function DefaultFilterFunction(aura, unit) if aura and aura.duration and (
 
 local AuraFilterFunction = DefaultFilterFunction
 local AuraHookFunction
+local AuraCache = {}
 
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
@@ -230,6 +231,8 @@ local function UpdateIconGrid(frame, unitid)
 		local searchedDebuffs, searchedBuffs = false, false
 		local auraFilter = "HARMFUL"
 
+		AuraCache[unitid] = {} -- Clear cache for unit
+
 		repeat
 
 			auraIndex = auraIndex + 1
@@ -260,6 +263,7 @@ local function UpdateIconGrid(frame, unitid)
 				local show, priority, r, g, b, a = AuraFilterFunction(aura)
 				--print(aura.name, show, priority)
 				--show = true
+				AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = true, true -- Used by Custom Color Conditions
 				-- Store Order/Priority
 				if show then
 
@@ -280,6 +284,8 @@ local function UpdateIconGrid(frame, unitid)
 			end
 
 		until (searchedDebuffs and searchedBuffs)
+
+		TidyPlatesContWidgets.AuraCache = AuraCache
 
 		--[[ Debug, add custom Buff
 		storedAuraCount = storedAuraCount+1

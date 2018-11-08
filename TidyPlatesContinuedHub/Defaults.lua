@@ -164,7 +164,7 @@ TidyPlatesContHubDefaults = {
 
 	ColorTapped = {r = 110/255, g = 110/255, b = 110/255,},
 
-	CustomColorList = "#0080FF Ex Spawn of G'huun\n#FFE100 Ex Explosives",
+	CustomColorList = "",
 	CustomColorLookup = {},
 
 	-- Casting

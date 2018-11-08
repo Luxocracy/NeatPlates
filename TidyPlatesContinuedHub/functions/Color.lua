@@ -199,6 +199,40 @@ AddHubFunction(FriendlyBarFunctions, TidyPlatesContHubMenus.FriendlyBarModes, Co
 
 
 ------------------
+local function CustomColorDelegate(unit)
+	-- Functions is a bit messy because it attempts to use the order of items as a priority...
+	local color, aura, threshold, current, lowest
+	local health = (unit.health/unit.healthmax)*100
+
+	if TidyPlatesContWidgets.AuraCache then aura = TidyPlatesContWidgets.AuraCache[unit.unitid] end
+
+	local temp = {strsplit("\n", LocalVars.CustomColorList)}
+	for index=1, #temp do
+		local key = select(3, string.find(temp[index], "#%x+[%s%p]*(.*)"))
+
+	 --Custom Color by Unit Name
+		if not color and key == unit.name and unit.type ~= "PLAYER" then
+			color = HexToRGB(LocalVars.CustomColorLookup[unit.name]); break
+
+	--Custom Color by Buff/Debuff
+		elseif not color and aura and aura[key] then
+			color = HexToRGB(LocalVars.CustomColorLookup[key]); break
+
+	-- Custom Color by Unit Threshold
+		else
+			current = tonumber((strmatch(key, "(.*)(%%)")))
+			if current and (not lowest or lowest > current) and health <= current then
+				lowest = current
+				threshold = key
+			end
+			if threshold then color = HexToRGB(LocalVars.CustomColorLookup[threshold]) end
+		end
+	end
+
+	return color
+end
+
+
 local function HealthColorDelegate(unit)
 
 	local color, class
@@ -213,53 +247,8 @@ local function HealthColorDelegate(unit)
 		color = LocalVars.ColorTapped
 	end
 
-	-- Custom Color by Unit Name
-	if not color and LocalVars.CustomColorLookup[unit.name] and unit.type ~= "PLAYER" then
-		color = HexToRGB(LocalVars.CustomColorLookup[unit.name])
-	end
-
-	-- Custom Color by Buff/Debuff
-	if unit.unitid then
-		-- Buffs
-		if not color then
-			local spellName,spellID
-			for i = 1, 40 do
-				spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HELPFUL")
-				spellId = tostring(spellId)
-				if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
-					color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
-					break
-				end
-			end
-		end
-
-		-- Debuffs
-		if not color then
-			local spellName,spellID
-			for i = 1, 40 do
-				spellName,_,_,_,_,_,_,_,_,spellId = UnitAura(unit.unitid, i, "HARMFUL")
-				spellId = tostring(spellId)
-				if not spellName then break elseif LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId] then
-					color = HexToRGB(LocalVars.CustomColorLookup[spellName] or LocalVars.CustomColorLookup[spellId])
-					break
-				end
-			end
-		end
-	end
-
-	-- Custom Color by Unit Threshold
-	if not color then
-		local threshold, current, lowest
-		local health = (unit.health/unit.healthmax)*100
-		for k, v in pairs(LocalVars.CustomColorLookup) do
-			current = tonumber((strmatch(k, "(.*)(%%)")))
-			if current and (not lowest or lowest > current) and health <= current then
-				lowest = current
-				threshold = k
-			end
-		end
-		if threshold then color = HexToRGB(LocalVars.CustomColorLookup[threshold]) end
-	end
+	-- Custom Color
+	if not color then color = CustomColorDelegate(unit) end
 
 	-- Color Mode / Color Spotlight
 	if not color then

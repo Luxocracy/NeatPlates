@@ -115,10 +115,11 @@ end
 
 local function ConvertColorListTable(source, target)
 	if source == nil then return end
-	local temp = ListToTable(strsplit("\n", source))
+	--local temp = ListToTable(strsplit("\n", source))
+	local temp = {strsplit("\n", source)}
 	target = wipe(target)
 
-	for index = 1, #source do
+	for index = 1, #temp do
 		if temp[index] then
 			local hex, str = select(3, string.find(temp[index], "(#%x+)[%s%p]*(.*)"))
 			--local str = temp[index]
