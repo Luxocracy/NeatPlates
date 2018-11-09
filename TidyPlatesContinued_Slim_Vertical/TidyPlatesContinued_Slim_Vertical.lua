@@ -113,10 +113,19 @@ DefaultStyle.raidicon = {
 
 DefaultStyle.eliteicon = {
 	texture =                    ArtworkPath.."Slim_EliteIcon",
-	width = 14,
-	height = 14,
-	x = 0,
-	y = VerticalAdjustment - 12,
+	width = 10,
+	height = 10,
+	x = -6,
+	y = VerticalAdjustment - 15,
+	anchor = "CENTER",
+	show = true,
+}
+
+DefaultStyle.skullicon = {
+	width = 10,
+	height = 10,
+	x = -6,
+	y = VerticalAdjustment - 15,
 	anchor = "CENTER",
 	show = true,
 }

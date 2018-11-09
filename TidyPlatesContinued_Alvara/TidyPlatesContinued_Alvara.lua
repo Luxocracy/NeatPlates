@@ -51,6 +51,13 @@ Alvara.eliteicon = {
 	anchor = "CENTER",
 	show = true,
 }
+Alvara.skullicon = {
+	width = 12,
+	height = 12,
+	x = -43,
+	y = -4,
+	anchor = "CENTER",
+}
 Alvara.healthbar = {
 	texture = path.."\\Statusbar",
 	width = 92,
@@ -100,13 +107,6 @@ Alvara.level = {
 	anchor = "RIGHT",
 	vertical = "TOP",
 	shadow = true,
-}
-Alvara.dangerskull = {
-	width = 12,
-	height = 12,
-	x = 0,
-	y = 0,
-	anchor = "RIGHT",
 }
 Alvara.spellicon = {
 	width = 12,

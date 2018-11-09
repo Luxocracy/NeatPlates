@@ -120,6 +120,15 @@ DefaultStyle.eliteicon = {
 	show = true,
 }
 
+DefaultStyle.skullicon = {
+	width = 14,
+	height = 14,
+	x = -42,
+	y = VerticalAdjustment + 3,
+	anchor = "CENTER",
+	show = true,
+}
+
 DefaultStyle.name = {
 	typeface = font,
 	size = fontsize,

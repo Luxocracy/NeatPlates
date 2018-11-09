@@ -47,9 +47,17 @@ StyleDefault.eliteicon = {
 	width = 14,
 	height = 14,
 	x = -45,
-	y = 17,
+	y = 22+nameplate_verticalOffset,
 	anchor = "CENTER",
 	show = true,
+}
+
+StyleDefault.skullicon = {
+	width = 14,
+	height = 14,
+	x = -45,
+	y = 22+nameplate_verticalOffset,
+	anchor = "CENTER",
 }
 
 StyleDefault.target = {
@@ -191,14 +199,6 @@ StyleDefault.raidicon = {
 	top = 0,
 	bottom = 1,
 	--show = false,
-}
-
-StyleDefault.skullicon = {
-	width = 14,
-	height = 14,
-	x = 44,
-	y = 8+nameplate_verticalOffset,
-	anchor = "CENTER",
 }
 
 StyleDefault.frame = {
