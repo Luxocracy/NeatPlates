@@ -84,7 +84,7 @@ local ForEachPlate
 
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate)
-	local scaleStandard = activetheme.SetScale(plate)
+	local scaleStandard = activetheme.SetScale()
 	local hitbox = {
 		width = activetheme.Default.hitbox.width * scaleStandard,
 		height = activetheme.Default.hitbox.height * scaleStandard,
