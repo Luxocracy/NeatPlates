@@ -146,7 +146,7 @@ local function ScaleDelegate(...)
 		filterScale = LocalVars.ScaleFiltered
 	else
 		local func = ScaleFunctionsUniversal[LocalVars.ScaleFunctionMode] or DummyFunction
-		if func then filterScale = func(...) end
+		if func then scale = func(...) end
 	end
 
 	if (LocalVars.ScaleTargetSpotlight and (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus))) then scale = LocalVars.ScaleSpotlight
