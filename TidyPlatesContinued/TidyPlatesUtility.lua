@@ -503,8 +503,56 @@ local function CreateRadioButtons(self, reference, parent, numberOfButtons, defa
 	return radioButtonSet
 end
 
+--local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode)
+--	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+--	slider:SetWidth(100)
+--	slider:SetHeight(15)
+--	--
+--	slider:SetMinMaxValues(minval or 0, maxval or 1)
+--	slider:SetValueStep(step or .1)
+--	slider:SetValue(val or .5)
+--	slider:SetOrientation("HORIZONTAL")
+--	slider:Enable()
+--	-- Labels
+--	slider.Label = slider:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+--	slider.Label:SetPoint("TOPLEFT", -5, 18)
+--	slider.Low = _G[reference.."Low"]
+--	slider.High = _G[reference.."High"]
+--	slider.Label:SetText(label or "")
+
+--	-- Value
+--	slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
+--	slider.Value:SetPoint("BOTTOM", 0, -10)
+--	slider.Value:SetWidth(50)
+
+--	--slider.Value
+--	if mode and mode == "ACTUAL" then
+--		slider.Value:SetText(tostring(ceil(val)))
+--		slider:SetScript("OnValueChanged", function()
+--			local v = tostring(ceil(slider:GetValue()-0.5))
+--			slider.Value:SetText(v)
+--		end)
+--		slider.Low:SetText(ceil((minval or 0)-0.5))
+--		slider.High:SetText(ceil((maxval or 1)-0.5))
+--		slider.isActual = true
+--	else
+--		slider.Value:SetText(tostring(ceil(100*(val or .5)-0.5)))
+--		slider:SetScript("OnValueChanged", function()
+--			slider.Value:SetText(tostring(ceil(100*slider:GetValue()-0.5)).."%")
+--		end)
+--		slider.Low:SetText(ceil((minval or 0)*100-0.5).."%")
+--		slider.High:SetText(ceil((maxval or 1)*100-0.5).."%")
+--		slider.isActual = false
+--	end
+
+--	--slider.tooltipText = "Slider"
+--	return slider
+--end
+
 local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode)
+	local value, multiplier
 	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+
 	slider:SetWidth(100)
 	slider:SetHeight(15)
 	--
@@ -525,25 +573,17 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.Value:SetPoint("BOTTOM", 0, -10)
 	slider.Value:SetWidth(50)
 
-	--slider.Value
-	if mode and mode == "ACTUAL" then
-		slider.Value:SetText(tostring(ceil(val)))
-		slider:SetScript("OnValueChanged", function()
-			local v = tostring(ceil(slider:GetValue()-0.5))
-			slider.Value:SetText(v)
-		end)
-		slider.Low:SetText(ceil((minval or 0)-0.5))
-		slider.High:SetText(ceil((maxval or 1)-0.5))
-		slider.isActual = true
-	else
-		slider.Value:SetText(tostring(ceil(100*(val or .5)-0.5)))
-		slider:SetScript("OnValueChanged", function()
-			slider.Value:SetText(tostring(ceil(100*slider:GetValue()-0.5)).."%")
-		end)
-		slider.Low:SetText(ceil((minval or 0)*100-0.5).."%")
-		slider.High:SetText(ceil((maxval or 1)*100-0.5).."%")
-		slider.isActual = false
-	end
+	slider.isActual = (mode and mode == "ACTUAL")
+	slider.ceil = function(v) return ceil(v*100-.5) end
+
+	slider.Value:SetText(tostring(slider.ceil(val)))
+	slider:SetScript("OnValueChanged", function()
+		local ext = "%"
+		if slider.isActual then ext = "" end
+		slider.Value:SetText(tostring(slider.ceil(slider:GetValue())..ext))
+	end)
+	slider.Low:SetText((minval or 0))
+	slider.High:SetText((maxval or 1))
 
 	--slider.tooltipText = "Slider"
 	return slider

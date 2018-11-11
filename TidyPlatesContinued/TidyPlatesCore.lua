@@ -17,7 +17,6 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 
-
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
 local PlatesByUnit = {}
@@ -85,9 +84,10 @@ local ForEachPlate
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate)
 	local scaleStandard = activetheme.SetScale()
+	local clickableWidth, clickableHeight = activetheme.GetClickableArea()
 	local hitbox = {
-		width = activetheme.Default.hitbox.width * scaleStandard,
-		height = activetheme.Default.hitbox.height * scaleStandard,
+		width = activetheme.Default.hitbox.width * scaleStandard * clickableWidth,
+		height = activetheme.Default.hitbox.height * scaleStandard * clickableHeight,
 		x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
 		y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
 	}

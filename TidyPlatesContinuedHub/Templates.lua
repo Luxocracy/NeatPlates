@@ -82,8 +82,15 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		slider:SetValue(value)
 
 		if slider.isActual then
+			local multiplier = 1
+			if increment < 1 and increment >= .1 then multiplier = 10 elseif increment < .1 then multiplier = 100 end
+			slider.ceil = function(v) return ceil(v*multiplier-.5)/multiplier end
+			
 			slider.Low:SetText(minimum)
 			slider.High:SetText(maximum)
+		else
+			slider.Low:SetText(tostring(minimum*100).."%")
+			slider.High:SetText(tostring(maximum*100).."%")
 		end
 	end
 

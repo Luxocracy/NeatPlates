@@ -243,8 +243,17 @@ TidyPlatesContHubDefaults = {
 	AdvancedEnableUnitCache = true,
 	FocusAsTarget = false,
 	FrameBarWidth = 1,
-	NameplateMaxDistance = 60,
 	--AdvancedHealthTextList = [[return unit.health]],
+
+	-- Nameplate Behaviour
+	---------------------------------------
+	NameplateTargetClamp = GetCVar("nameplateTargetRadialPosition") or false,
+	NameplateStacking = GetCVar("nameplateMotion") or false,
+	NameplateMaxDistance = GetCVar("nameplateMaxDistance") or 60,
+	NameplateOverlapH = GetCVar("nameplateOverlapH") or 0.8,
+	NameplateOverlapV = GetCVar("nameplateOverlapV") or 1.1,
+	NameplateClickableWidth = 1,
+	NameplateClickableHeight = 1,
 }
 
 TidyPlatesContHubGlobal = CopyTable(TidyPlatesContHubDefaults)

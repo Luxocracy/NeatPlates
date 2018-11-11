@@ -32,7 +32,7 @@ local function GetPanelValues(panel, targetTable)
 				local value = panel[index]:GetValue()
 				if tonumber(value) ~= nil then
 					if panel[index].isActual then
-						value = math.ceil(value-0.5)	-- Round to whole number
+						value = panel[index].ceil(value)	-- Use slider rounding method
 					else
 						value = math.ceil(value*100-0.5)/100	-- Round to 2 decimals
 					end
