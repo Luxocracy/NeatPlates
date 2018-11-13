@@ -388,6 +388,7 @@ do
 
 		-- Graphics
 		unit.isCasting = false
+		unit.interrupted = false
 		visual.castbar:Hide()
 		visual.highlight:Hide()
 
@@ -417,6 +418,7 @@ do
 		visual.castbar:Hide()
 		visual.castbar:SetScript("OnUpdate", nil)
 		unit.isCasting = false
+		unit.interrupted = false
 
 		-- Remove anything from the function queue
 		plate.UpdateMe = false
@@ -855,19 +857,77 @@ do
 
 	end
 
+	function fade(intervals, duration, delay, onUpdate, onDone, timer)
+		if not timer then timer = 0 end
+		local interval = duration/intervals
+		timer = timer+interval
+		if duration > timer then
+			delay = delay-1
+			if delay < 0 then onUpdate() end
+			C_Timer.After(interval, function() fade(intervals, duration, delay, onUpdate, onDone, timer) end)
+		else onDone() end
+	end
+
+	-- OnInterruptedCasting
+	function OnInterruptedCast(plate)
+		UpdateReferences(plate)
+
+		if not extended:IsShown() or unit.interrupted then return end
+		unit.interrupted = true
+
+		local castBar = extended.visual.castbar
+
+		castBar:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		castBar:SetScript("OnEvent", function(self, event)
+			local eventType, text
+			local _,type,_,_,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
+
+			if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then 
+				if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then eventType = "Interrupted" else eventType = "Failed" end
+
+				castBar:SetStatusBarColor(1,0,0)
+
+				if sourceName then
+					text = eventType.." |cff0080ff("..sourceName..")"
+				else
+					text = eventType
+				end
+
+				visual.spelltext:SetText(text)
+
+				local alpha, ticks, delay = 1, 20, 5
+				local perTick = alpha/(ticks-5)
+				fade(ticks, 1.2, 5, function()
+					alpha = alpha - perTick
+					castBar:SetAlpha(alpha)
+				end, function()
+					unit.interrupted = false
+					castBar:Hide()
+					
+					UpdateIndicator_CustomScaleText()
+					UpdateIndicator_CustomAlpha()
+				end)
+
+				castBar:SetScript("OnUpdate", nil)
+				castBar:SetScript("OnEvent", nil)
+				castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			end
+		end);
+		unit.isCasting = false
+	end
 
 	-- OnHideCastbar
 	function OnStopCasting(plate)
-
 		UpdateReferences(plate)
 
-		if not extended:IsShown() then return end
+		if not extended:IsShown() or unit.interrupted then return end
 		local castBar = extended.visual.castbar
 
 		castBar:Hide()
 		castBar:SetScript("OnUpdate", nil)
 
 		unit.isCasting = false
+		unit.interrupted = false
 		UpdateIndicator_CustomScaleText()
 		UpdateIndicator_CustomAlpha()
 	end
@@ -925,6 +985,17 @@ do
 		if plate then
 			OnUpdateCastMidway(plate, unitid)
 		end
+	 end
+
+	 -- Update spell that was interrupted/cancelled
+	 local function UnitSpellcastInterrupted(...)
+	 	local event, unitid = ...
+
+	 	if UnitIsUnit("player", unitid) or not ShowCastBars then return end
+
+	 	local plate = GetNamePlateForUnit(unitid)
+
+	 	if plate then OnInterruptedCast(plate) end
 	 end
 
 
@@ -1051,6 +1122,9 @@ do
 			OnStopCasting(plate)
 		end
 	end
+
+	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
+	CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
 
 	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
