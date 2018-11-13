@@ -538,31 +538,39 @@ end
 
 
 -- Create Instances of Panels
-local TankPanel = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates Continued" )
+local Panels = {}
+
+Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates Continued" )
 TidyPlatesContPanel:AddProfile("Tank")
-BuildHubPanel(TankPanel)
-function ShowTidyPlatesContHubTankPanel() TidyPlatesContUtility.OpenInterfacePanel(TankPanel) end
+BuildHubPanel(Panels.Tank)
+function ShowTidyPlatesContHubTankPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Tank) end
 
 
-local DamagePanel = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates Continued" )
+Panels.Damage = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates Continued" )
 TidyPlatesContPanel:AddProfile("Damage")
-BuildHubPanel(DamagePanel)
-function ShowTidyPlatesContHubDamagePanel() TidyPlatesContUtility.OpenInterfacePanel(DamagePanel) end
+BuildHubPanel(Panels.Damage)
+function ShowTidyPlatesContHubDamagePanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Damage) end
 
 
 
-local HealerPanel = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates Continued"  )
+Panels.Healer = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates Continued"  )
 TidyPlatesContPanel:AddProfile("Healer")
-BuildHubPanel(HealerPanel)
-function ShowTidyPlatesContHubHealerPanel() TidyPlatesContUtility.OpenInterfacePanel(HealerPanel) end
+BuildHubPanel(Panels.Healer)
+function ShowTidyPlatesContHubHealerPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Healer) end
 
 
-local GladiatorPanel = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates Continued"  )
+Panels.Gladiator = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates Continued"  )
 TidyPlatesContPanel:AddProfile("Gladiator")
-BuildHubPanel(GladiatorPanel)
-function ShowTidyPlatesContHubGladiatorPanel() TidyPlatesContUtility.OpenInterfacePanel(GladiatorPanel) end
+BuildHubPanel(Panels.Gladiator)
+function ShowTidyPlatesContHubGladiatorPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Gladiator) end
 
 
+local function RefreshPanel(name)
+	local panel = Panels[name]
+	if panel then panel:refresh() end
+end
+
+TidyPlatesContHubMenus.RefreshPanel = RefreshPanel
 
 ---------------------------------------------
 -- Slash Commands

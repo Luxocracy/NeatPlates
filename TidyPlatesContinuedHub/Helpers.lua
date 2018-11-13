@@ -18,6 +18,48 @@ local function CallForStyleUpdate()
 
 end
 
+local CachedVars = {}
+local function UpdateCVars(LocalVars, profile)
+	local activeProfile = "HubPanelSettings"..TidyPlatesCont.GetProfile()
+	local combatLockdown = InCombatLockdown()
+	local CVarChanged = false
+	local CVars = {
+		["NameplateMaxDistance"] = "nameplateMaxDistance",
+		["NameplateTargetClamp"] = "nameplateTargetRadialPosition",
+		["NameplateStacking"] = "nameplateMotion",
+		["NameplateOverlapH"] = "nameplateOverlapH",
+		["NameplateOverlapV"] = "nameplateOverlapV",
+	}
+
+	local function tobool(number) if number and (number == 1 or number == true) then return true else return false end end
+
+	if profile and profile == activeProfile then
+		--print(profile)
+		CachedVars = CachedVars[profile] or TidyPlatesContUtility.GetCacheSet(profile)
+
+		for TPName, actualName in pairs(CVars) do
+			local currentCVar = tonumber(GetCVar(actualName))
+			if CachedVars[TPName] == true or CachedVars[TPName] == false then currentCVar = tobool(currentCVar) end --Check if Boolean, If yes, convert current to boolean.
+
+			-- If Tidyplates CVar didn't change,
+			if CachedVars[TPName] == LocalVars[TPName] then
+				-- but actual CVar did
+				if LocalVars[TPName] ~= currentCVar then
+					LocalVars[TPName], CachedVars[TPName] = currentCVar, currentCVar
+					CVarChanged = true
+				end
+			-- Else set CVar normally
+			else
+				if not combatLockdown then
+					SetCVar(actualName, LocalVars[TPName])
+					CachedVars[TPName] = LocalVars[TPName]
+				end
+			end
+		end
+		if CVarChanged then TidyPlatesContHubMenus.RefreshPanel(TidyPlatesCont.GetProfile()) end -- Refresh Settings Panel
+	end
+end
+
 local function GetPanelValues(panel, targetTable)
 	-- First, clean up the target table
 	-- Not yet implemented
@@ -140,6 +182,7 @@ end
 
 TidyPlatesContHubHelpers = {}
 TidyPlatesContHubHelpers.CallForStyleUpdate = CallForStyleUpdate
+TidyPlatesContHubHelpers.UpdateCVars = UpdateCVars
 TidyPlatesContHubHelpers.GetPanelValues = GetPanelValues
 TidyPlatesContHubHelpers.SetPanelValues = SetPanelValues
 TidyPlatesContHubHelpers.MergeProfileValues = MergeProfileValues

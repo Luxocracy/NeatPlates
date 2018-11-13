@@ -23,6 +23,7 @@ local WidgetLib = TidyPlatesContWidgets
 local valueToString = TidyPlatesContUtility.abbrevNumber
 
 local MergeProfileValues = TidyPlatesContHubHelpers.MergeProfileValues
+local UpdateCVars = TidyPlatesContHubHelpers.UpdateCVars
 
 local EnableTankWatch = TidyPlatesContWidgets.EnableTankWatch
 local DisableTankWatch = TidyPlatesContWidgets.DisableTankWatch
@@ -228,7 +229,7 @@ local function ApplyStyleCustomization(style, defaults)
 end
 
 
-local function ApplyProfileSettings(theme, ...)
+local function ApplyProfileSettings(theme, source, ...)
 	-- When nil is passed, the theme is being deactivated
 	if not theme then return end
 
@@ -250,14 +251,8 @@ local function ApplyProfileSettings(theme, ...)
 
 	-- Set Space Between Buffs & Debuffs
 	TidyPlatesContWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
-	-- If the setting can't be stored during combat
-	if InCombatLockdown() == false and LocalVars.NameplateMaxDistance ~= nil then
-		SetCVar("nameplateMaxDistance", LocalVars.NameplateMaxDistance)
-		SetCVar("nameplateTargetRadialPosition", LocalVars.NameplateTargetClamp)
-		SetCVar("nameplateMotion", LocalVars.NameplateStacking)
-		SetCVar("nameplateOverlapH", LocalVars.NameplateOverlapH)
-		SetCVar("nameplateOverlapV", LocalVars.NameplateOverlapV)
-	end
+
+	if source == "From OnChangeProfile" then UpdateCVars(LocalVars, "HubPanelSettings"..TidyPlatesCont.GetProfile()) end
 
 	TidyPlatesCont:ForceUpdate()
 	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
