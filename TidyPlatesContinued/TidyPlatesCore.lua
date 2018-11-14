@@ -828,6 +828,7 @@ do
 		if isTradeSkill then return end
 
 		unit.isCasting = true
+		unit.interrupted = false
 		unit.spellIsShielded = notInterruptible
 		unit.spellInterruptible = not unit.spellIsShielded
 
@@ -862,8 +863,7 @@ do
 		local interval = duration/intervals
 		timer = timer+interval
 		if duration > timer then
-			delay = delay-1
-			if delay < 0 then onUpdate() end
+			if timer > delay then onUpdate() end
 			C_Timer.After(interval, function() fade(intervals, duration, delay, onUpdate, onDone, timer) end)
 		else onDone() end
 	end
@@ -895,17 +895,19 @@ do
 
 				visual.spelltext:SetText(text)
 
-				local alpha, ticks, delay = 1, 20, 5
-				local perTick = alpha/(ticks-5)
-				fade(ticks, 1.2, 5, function()
+				local alpha, ticks, duration, delay = 1, 25, 2, 0.8
+				local perTick = alpha/(ticks-(delay/(duration/ticks)))
+				fade(ticks, duration, delay, function()
 					alpha = alpha - perTick
-					castBar:SetAlpha(alpha)
+					if not unit.isCasting then castBar:SetAlpha(alpha) end
 				end, function()
-					unit.interrupted = false
-					castBar:Hide()
-					
-					UpdateIndicator_CustomScaleText()
-					UpdateIndicator_CustomAlpha()
+					if not unit.isCasting then
+						unit.interrupted = false
+						castBar:Hide()
+
+						UpdateIndicator_CustomScaleText()
+						UpdateIndicator_CustomAlpha()
+					end
 				end)
 
 				castBar:SetScript("OnUpdate", nil)
