@@ -284,7 +284,9 @@ end
 ------------------------------------------------------------------------------
 local function CastBarDelegate(unit)
 	local color, alpha
-	if unit.spellInterruptible then
+	if unit.interrupted then
+		color = LocalVars.ColorIntpellCast
+	elseif unit.spellInterruptible then
 		color = LocalVars.ColorNormalSpellCast
 	else color = LocalVars.ColorUnIntpellCast end
 

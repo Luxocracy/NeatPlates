@@ -394,6 +394,7 @@ local function BuildHubPanel(panel)
 	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, "Cast Bar Colors:", AlignmentColumn, F, 0, 2)
 	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", "Normal", nil, AlignmentColumn, F , 16)
 	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", "Un-interruptible", nil, AlignmentColumn, F , 16)
+	panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", "Interrupted", nil, AlignmentColumn, F , 16)
 
 	--[[
 	------------------------------

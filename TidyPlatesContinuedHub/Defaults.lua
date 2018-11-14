@@ -171,6 +171,7 @@ TidyPlatesContHubDefaults = {
 	---------------------------------------
 	ColorNormalSpellCast = { r = 252/255, g = 140/255, b = 0, },
 	ColorUnIntpellCast = { r = 0.5137243866920471, g = 0.7529395222663879, b = 0.7647042274475098, },
+	ColorIntpellCast = { r = 1, g = 0, b = 0, },
 	SpellCastEnableFriendly = false,
 
 	-- Status Text

@@ -16,6 +16,7 @@ local WorldFrame, UIParent = WorldFrame, UIParent
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
@@ -832,6 +833,10 @@ do
 		unit.spellIsShielded = notInterruptible
 		unit.spellInterruptible = not unit.spellIsShielded
 
+		-- Clear registered events incase they weren't
+		castBar:SetScript("OnEvent", nil)
+		castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+
 		visual.spelltext:SetText(text)
 		visual.spellicon:SetTexture(texture)
 		castBar:SetMinMaxValues( startTime, endTime )
@@ -873,22 +878,32 @@ do
 		UpdateReferences(plate)
 
 		if not extended:IsShown() or unit.interrupted then return end
+
 		unit.interrupted = true
+		unit.isCasting = false
 
 		local castBar = extended.visual.castbar
+		local _unit = unit -- Store this reference as the event is slightly delayed, and the global unit reference might have been changed
 
 		castBar:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		castBar:SetScript("OnEvent", function(self, event)
-			local eventType, text
-			local _,type,_,_,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
+			local eventType, text, color
+			local _,type,_,sourceGUID,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
 
-			if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then 
-				if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then eventType = "Interrupted" else eventType = "Failed" end
+			if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then eventType = "Interrupted" end
+			if eventType and sourceGUID ~= destGUID and unit.guid == destGUID then
 
-				castBar:SetStatusBarColor(1,0,0)
+				if activetheme.SetCastbarColor then
+					r, g, b, a = activetheme.SetCastbarColor(unit)
+					if not (r and g and b and a) then return end
+				end
+				castBar:SetStatusBarColor(r, g, b)
+
+				local _, engClass = GetPlayerInfoByGUID(sourceGUID)
+				if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
 
 				if sourceName then
-					text = eventType.." |cff0080ff("..sourceName..")"
+					text = eventType.." |c"..color.."("..sourceName..")"
 				else
 					text = eventType
 				end
@@ -899,10 +914,10 @@ do
 				local perTick = alpha/(ticks-(delay/(duration/ticks)))
 				fade(ticks, duration, delay, function()
 					alpha = alpha - perTick
-					if not unit.isCasting then castBar:SetAlpha(alpha) end
+					if not _unit.isCasting then castBar:SetAlpha(alpha) end
 				end, function()
-					if not unit.isCasting then
-						unit.interrupted = false
+					if not _unit.isCasting then
+						_unit.interrupted = false
 						castBar:Hide()
 
 						UpdateIndicator_CustomScaleText()
@@ -915,7 +930,6 @@ do
 				castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 			end
 		end);
-		unit.isCasting = false
 	end
 
 	-- OnHideCastbar
@@ -1126,7 +1140,7 @@ do
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
-	CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
+	--CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
 
 	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
