@@ -28,6 +28,8 @@ local activetheme = {}                                                          
 local InCombat, HasTarget, HasMouseover = false, false, false					    -- Player State Data
 local EnableFadeIn = true
 local ShowCastBars = true
+local ShowIntCast = true
+local ShowIntWhoCast = true
 local EMPTY_TEXTURE = "Interface\\Addons\\TidyPlatesContinued\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -877,7 +879,7 @@ do
 	function OnInterruptedCast(plate)
 		UpdateReferences(plate)
 
-		if not extended:IsShown() or unit.interrupted then return end
+		if not extended:IsShown() or unit.interrupted or not ShowIntCast then return end
 
 		unit.interrupted = true
 		unit.isCasting = false
@@ -899,10 +901,12 @@ do
 				end
 				castBar:SetStatusBarColor(r, g, b)
 
-				local _, engClass = GetPlayerInfoByGUID(sourceGUID)
-				if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
+				if ShowIntWhoCast then
+					local _, engClass = GetPlayerInfoByGUID(sourceGUID)
+					if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
+				end
 
-				if sourceName then
+				if sourceName and color then
 					text = eventType.." |c"..color.."("..sourceName..")"
 				else
 					text = eventType
@@ -1340,6 +1344,8 @@ end
 --------------------------------------------------------------------------------------------------------------
 function TidyPlatesCont:DisableCastBars() ShowCastBars = false end
 function TidyPlatesCont:EnableCastBars() ShowCastBars = true end
+
+function TidyPlatesCont:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 
 function TidyPlatesCont:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function TidyPlatesCont:ResetWidgets() ForEachPlate(OnResetWidgets) end

@@ -391,6 +391,8 @@ local function BuildHubPanel(panel)
 	------------------------------
     panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, "Cast Bars", AlignmentColumn, F, 0, 5)
     panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", "Show Friendly Cast Bars", AlignmentColumn, F)
+    panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", "Show Interrupted Cast Bar", AlignmentColumn, F)
+    panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", "Show who Interrupted Cast", AlignmentColumn, F)
 	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, "Cast Bar Colors:", AlignmentColumn, F, 0, 2)
 	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", "Normal", nil, AlignmentColumn, F , 16)
 	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", "Un-interruptible", nil, AlignmentColumn, F , 16)

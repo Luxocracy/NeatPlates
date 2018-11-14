@@ -254,6 +254,8 @@ local function ApplyProfileSettings(theme, source, ...)
 
 	if source == "From OnChangeProfile" then UpdateCVars(LocalVars, "HubPanelSettings"..TidyPlatesCont.GetProfile()) end
 
+	TidyPlatesCont:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)
+
 	TidyPlatesCont:ForceUpdate()
 	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 end
