@@ -53,6 +53,7 @@ TidyPlatesContOptions = {
 	EnemyAutomation = NO_AUTOMATION,
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
+	HealthFrequent = true,
 	WelcomeShown = false,
 }
 
@@ -182,6 +183,7 @@ local function GetPanelValues(panel)
 	TidyPlatesContOptions.EnemyAutomation = panel.AutoShowEnemy:GetValue()
 	TidyPlatesContOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	TidyPlatesContOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
+	TidyPlatesContOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	TidyPlatesContOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
 
 	TidyPlatesContOptions.FirstSpecProfile = panel.FirstSpecDropdown:GetValue()
@@ -201,6 +203,7 @@ local function SetPanelValues(panel)
 
 	panel.DisableCastBars:SetChecked(TidyPlatesContOptions.DisableCastBars)
 	panel.ForceBlizzardFont:SetChecked(TidyPlatesContOptions.ForceBlizzardFont)
+	panel.HealthFrequent:SetChecked(TidyPlatesContOptions.HealthFrequent or true)
 	panel.AutoShowFriendly:SetValue(TidyPlatesContOptions.FriendlyAutomation)
 	panel.AutoShowEnemy:SetValue(TidyPlatesContOptions.EnemyAutomation)
 end
@@ -454,6 +457,11 @@ local function BuildInterfacePanel(panel)
 	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_ForceBlizzardFont", panel, "Force Multi-Lingual Font (Requires /reload)")
 	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -35)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) TidyPlatesCont.OverrideFonts( self:GetChecked()); end)
+
+	-- Frequent Health Updates
+	panel.HealthFrequent = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_HealthFrequent", panel, "Use Frequent Health Updates")
+	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -35)
+	panel.HealthFrequent:SetScript("OnClick", function(self) TidyPlatesCont.SetHealthUpdateMethod(self:GetChecked()); end)
 
 	-- Reset
 	ResetButton = CreateFrame("Button", "TidyPlatesContOptions_ResetButton", panel, "TidyPlatesContPanelButtonTemplate")

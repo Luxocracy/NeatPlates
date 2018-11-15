@@ -17,10 +17,12 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local FrequentHealthUpdate = true
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
 local PlatesByUnit = {}
+local PlatesByGUID = {}
 local nameplate, extended, bars, regions, visual, carrier, plateid			    	-- Temp/Local References
 local unit, unitcache, style, stylename, unitchanged				    			-- Temp/Local References
 local numChildren = -1                                                              -- Cache the current number of plates
@@ -366,6 +368,7 @@ do
 
 		PlatesVisible[plate] = unitid
 		PlatesByUnit[unitid] = plate
+		PlatesByGUID[UnitGUID(unitid)] = plate
 
 		unit.frame = extended
 		unit.alpha = 0
@@ -391,7 +394,6 @@ do
 
 		-- Graphics
 		unit.isCasting = false
-		unit.interrupted = false
 		visual.castbar:Hide()
 		visual.highlight:Hide()
 
@@ -417,11 +419,11 @@ do
 
 		PlatesVisible[plate] = nil
 		PlatesByUnit[unitid] = nil
+		PlatesByGUID[unit.guid] = nil
 
 		visual.castbar:Hide()
 		visual.castbar:SetScript("OnUpdate", nil)
 		unit.isCasting = false
-		unit.interrupted = false
 
 		-- Remove anything from the function queue
 		plate.UpdateMe = false
@@ -832,6 +834,7 @@ do
 
 		unit.isCasting = true
 		unit.interrupted = false
+		unit.interruptLogged = false
 		unit.spellIsShielded = notInterruptible
 		unit.spellInterruptible = not unit.spellIsShielded
 
@@ -865,10 +868,12 @@ do
 
 	end
 
-	function fade(intervals, duration, delay, onUpdate, onDone, timer)
+	function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
 		if not timer then timer = 0 end
+
 		local interval = duration/intervals
 		timer = timer+interval
+
 		if duration > timer then
 			if timer > delay then onUpdate() end
 			C_Timer.After(interval, function() fade(intervals, duration, delay, onUpdate, onDone, timer) end)
@@ -876,64 +881,72 @@ do
 	end
 
 	-- OnInterruptedCasting
-	function OnInterruptedCast(plate)
+	function OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
 		UpdateReferences(plate)
 
-		if not extended:IsShown() or unit.interrupted or not ShowIntCast then return end
+		local function setSpellText()
+			local spellString, color
+			local eventText = "Interrupted"
 
-		unit.interrupted = true
-		unit.isCasting = false
-
-		local castBar = extended.visual.castbar
-		local _unit = unit -- Store this reference as the event is slightly delayed, and the global unit reference might have been changed
-
-		castBar:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-		castBar:SetScript("OnEvent", function(self, event)
-			local eventType, text, color
-			local _,type,_,sourceGUID,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
-
-			if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then eventType = "Interrupted" end
-			if eventType and sourceGUID ~= destGUID and unit.guid == destGUID then
-
-				if activetheme.SetCastbarColor then
-					r, g, b, a = activetheme.SetCastbarColor(unit)
-					if not (r and g and b and a) then return end
-				end
-				castBar:SetStatusBarColor(r, g, b)
-
-				if ShowIntWhoCast then
-					local _, engClass = GetPlayerInfoByGUID(sourceGUID)
-					if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
-				end
-
-				if sourceName and color then
-					text = eventType.." |c"..color.."("..sourceName..")"
-				else
-					text = eventType
-				end
-
-				visual.spelltext:SetText(text)
-
-				local alpha, ticks, duration, delay = 1, 25, 2, 0.8
-				local perTick = alpha/(ticks-(delay/(duration/ticks)))
-				fade(ticks, duration, delay, function()
-					alpha = alpha - perTick
-					if not _unit.isCasting then castBar:SetAlpha(alpha) end
-				end, function()
-					if not _unit.isCasting then
-						_unit.interrupted = false
-						castBar:Hide()
-
-						UpdateIndicator_CustomScaleText()
-						UpdateIndicator_CustomAlpha()
-					end
-				end)
-
-				castBar:SetScript("OnUpdate", nil)
-				castBar:SetScript("OnEvent", nil)
-				castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			if sourceGUID and sourceGUID ~= "" and ShowIntWhoCast then
+				local _, engClass = GetPlayerInfoByGUID(sourceGUID)
+				if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
 			end
-		end);
+
+			if sourceName and color then
+				spellString = eventText.." |c"..color.."("..sourceName..")"
+			else
+				spellString = eventText
+			end	
+			visual.spelltext:SetText(spellString)
+		end
+
+		-- Main function
+		if unit.interrupted and type and sourceGUID and sourceName and destGUID then
+			setSpellText()
+		else
+			if unit.interrupted or not ShowIntCast then return end --not extended:IsShown() or 
+
+			unit.interrupted = true
+			unit.isCasting = false
+
+			local castBar = extended.visual.castbar
+			local _unit = unit -- Store this reference as the unit might have change once the fade function uses it.
+
+			castBar:Show()
+
+			if activetheme.SetCastbarColor then
+				r, g, b, a = activetheme.SetCastbarColor(unit)
+				if not (r and g and b and a) then return end
+			end
+			castBar:SetStatusBarColor(r, g, b)
+			castBar:SetMinMaxValues(1, 1)
+
+			setSpellText()
+
+			-- Fade out the castbar
+			local alpha, ticks, duration, delay = 1, 25, 2, 0.8
+			local perTick = alpha/(ticks-(delay/(duration/ticks)))
+			local stopFade = false
+			fade(ticks, duration, delay, function()
+				alpha = alpha - perTick
+				if not _unit.isCasting and not stopFade then
+					castBar:SetAlpha(alpha)
+				else
+					stopFade = true
+				end
+			end, function()
+				if not _unit.isCasting and not stopFade then
+					_unit.interrupted = false
+					castBar:Hide()
+
+					--UpdateIndicator_CustomScaleText()
+					--UpdateIndicator_CustomAlpha()
+				end
+			end)
+
+			castBar:SetScript("OnUpdate", nil)
+		end
 	end
 
 	-- OnHideCastbar
@@ -1070,7 +1083,16 @@ do
 		SetUpdateAll()
 	end
 
+	function CoreEvents:UNIT_HEALTH(...)
+		if FrequentHealthUpdate then return end
+		local unitid = ...
+		local plate = PlatesByUnit[unitid]
+
+		if plate then OnHealthUpdate(plate) end
+	end
+
 	function CoreEvents:UNIT_HEALTH_FREQUENT(...)
+		if not FrequentHealthUpdate then return end
 		local unitid = ...
 		local plate = PlatesByUnit[unitid]
 
@@ -1137,14 +1159,27 @@ do
 		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
 
 		local plate = GetNamePlateForUnit(unitid)
-
 		if plate then
 			OnStopCasting(plate)
 		end
 	end
 
+	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
+		if not ShowIntCast then return end
+		local _,type,_,sourceGUID,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
+
+		if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then
+			local plate = PlatesByGUID[destGUID]
+
+			if plate and (type == "SPELL_INTERRUPT" or (type == "SPELL_AURA_APPLIED" and plate.extended.unit.interrupted and not plate.extended.unit.interruptLogged)) then
+				plate.extended.unit.interruptLogged = true
+				OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
+			end
+		end
+	end
+
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
-	--CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
+	CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
 
 	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
@@ -1346,6 +1381,7 @@ function TidyPlatesCont:DisableCastBars() ShowCastBars = false end
 function TidyPlatesCont:EnableCastBars() ShowCastBars = true end
 
 function TidyPlatesCont:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
+function TidyPlatesCont:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 
 function TidyPlatesCont:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function TidyPlatesCont:ResetWidgets() ForEachPlate(OnResetWidgets) end
