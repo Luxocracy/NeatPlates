@@ -128,6 +128,7 @@ local ThemeDropdownMenuItems = {}
 local function ApplyAutomationSettings()
 	SetCastBars(not TidyPlatesContOptions.DisableCastBars)
 	TidyPlatesCont.OverrideFonts( TidyPlatesContOptions.ForceBlizzardFont)
+	TidyPlatesCont:SetHealthUpdateMethod(TidyPlatesContOptions.HealthFrequent)
 
 	if TidyPlatesContOptions._EnableMiniButton then
 		TidyPlatesContUtility:CreateMinimapButton()
