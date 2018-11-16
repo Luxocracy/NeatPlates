@@ -327,23 +327,23 @@ local function WarningBorderFunctionByEnemyHealer(unit)
 	end
 end
 
--- "By Threat (High) Damage"
-local function WarningBorderFunctionByThreatDamage(unit)
-	if InCombatLockdown and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
-		if unit.threatValue > 0 then
-			return ColorFunctionDamage(unit)
-		end
-	end
-end
+---- "By Threat (High) Damage"
+--local function WarningBorderFunctionByThreatDamage(unit)
+--	if InCombatLockdown and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+--		if unit.threatValue > 0 then
+--			return ColorFunctionDamage(unit)
+--		end
+--	end
+--end
 
--- "By Threat (Low) Tank"
-local function WarningBorderFunctionByThreatTank(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
-		if unit.threatValue < 3 then
-			if IsOffTanked(unit) then return else	return ColorFunctionRawTank(unit) end
-		end
-	end
-end
+---- "By Threat (Low) Tank"
+--local function WarningBorderFunctionByThreatTank(unit)
+--	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+--		if unit.threatValue < 3 then
+--			if IsOffTanked(unit) then return else	return ColorFunctionRawTank(unit) end
+--		end
+--	end
+--end
 
 
 -- Warning Glow (Auto Detect)
@@ -353,7 +353,7 @@ local function WarningBorderFunctionByThreat(unit)
 
 		if (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 			or LocalVars.ThreatWarningMode == "Tank" then
-				if IsOffTanked(unit) then return
+				if not unit.isInCombat or IsOffTanked(unit) then return
 				elseif unit.threatValue == 2 then return LocalVars.ColorThreatTransition
 				elseif unit.threatValue < 2 then return LocalVars.ColorThreatWarning	end
 		elseif unit.threatValue > 0 then return ColorFunctionDamage(unit) end

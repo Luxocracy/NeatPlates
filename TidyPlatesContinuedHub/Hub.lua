@@ -440,17 +440,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", "Show on:", AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
 	panel.WidgetRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetRangeIndicator", "Show Party Range Warning", AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
 	panel.WidgetRangeMode =  CreateQuickDropdown(objectName.."WidgetRangeMode", "Range:", RangeModes, 1, AlignmentColumn, panel.WidgetRangeIndicator, OffsetColumnB+76)
-	------------------------------
-	-- Nameplate Behaviour
-	------------------------------
-	panel.NameplateBehaviourLabel, F = CreateQuickHeadingLabel(nil, "Nameplate Behaviour", AlignmentColumn, F, 0, 5)
-	panel.NameplateTargetClamp, F = CreateQuickCheckbutton(objectName.."NameplateTargetClamp", "Always keep Target Nameplate on Screen", AlignmentColumn, F, 0)
-	panel.NameplateStacking, F = CreateQuickCheckbutton(objectName.."NameplateStacking", "Stacking Nameplates", AlignmentColumn, F, 0)
-	panel.NameplateMaxDistance, F = CreateQuickSlider(objectName.."NameplateMaxDistance", "Nameplate Max Distance", "ACTUAL", nil, AlignmentColumn, F, 0)
-	panel.NameplateOverlapH = CreateQuickSlider(objectName.."NameplateOverlapH", "Nameplate Horizontal Overlap", "ACTUAL", 150, AlignmentColumn, F, 0)
-	panel.NameplateOverlapV, F = CreateQuickSlider(objectName.."NameplateOverlapV", "Nameplate Vertical Overlap", "ACTUAL", 150, AlignmentColumn, F, 200)
-	panel.NameplateClickableWidth = CreateQuickSlider(objectName.."NameplateClickableWidth", "Clickable Width of Nameplates", nil, 150, AlignmentColumn, F, 0)
-	panel.NameplateClickableHeight, F = CreateQuickSlider(objectName.."NameplateClickableHeight", "Clickable Height of Nameplates", nil, 150, AlignmentColumn, F, 200)
+
 	------------------------------
 	-- Advanced
 	------------------------------
@@ -511,12 +501,6 @@ local function BuildHubPanel(panel)
 
 	SetSliderMechanics(panel.HighHealthThreshold, .7, .01, 1, .01)
 	SetSliderMechanics(panel.LowHealthThreshold, .3, .01, 1, .01)
-
-	SetSliderMechanics(panel.NameplateMaxDistance, 0, 10, 100, 1)
-	SetSliderMechanics(panel.NameplateOverlapH, 0, 0, 10, .1)
-	SetSliderMechanics(panel.NameplateOverlapV, 0, 0, 10, .1)
-	SetSliderMechanics(panel.NameplateClickableWidth, 1, .1, 2, .01)
-	SetSliderMechanics(panel.NameplateClickableHeight, 1, .1, 2, .01)
 
 	-- "RefreshSettings" is called; A) When PLAYER_ENTERING_WORLD is called, and; B) When changes are made to settings
 

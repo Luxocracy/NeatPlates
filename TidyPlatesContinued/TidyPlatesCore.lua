@@ -89,7 +89,7 @@ local ForEachPlate
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate)
 	local scaleStandard = activetheme.SetScale()
-	local clickableWidth, clickableHeight = activetheme.GetClickableArea()
+	local clickableWidth, clickableHeight = TidyPlatesContPanel.GetClickableArea()
 	local hitbox = {
 		width = activetheme.Default.hitbox.width * scaleStandard * clickableWidth,
 		height = activetheme.Default.hitbox.height * scaleStandard * clickableHeight,
@@ -360,7 +360,7 @@ do
 
 	-- OnShowNameplate
 	function OnShowNameplate(plate, unitid)
-
+		local unitGUID = UnitGUID(unitid)
 		-- or unitid = plate.namePlateUnitToken
 		UpdateReferences(plate)
 
@@ -368,7 +368,7 @@ do
 
 		PlatesVisible[plate] = unitid
 		PlatesByUnit[unitid] = plate
-		PlatesByGUID[UnitGUID(unitid)] = plate
+		if unitGUID then PlatesByGUID[unitGUID] = plate end
 
 		unit.frame = extended
 		unit.alpha = 0
@@ -410,6 +410,7 @@ do
 
 	-- OnHideNameplate
 	function OnHideNameplate(plate, unitid)
+		local unitGUID = UnitGUID(unitid)
 		--plate.extended:Hide()
 		plate.carrier:Hide()
 
@@ -419,7 +420,7 @@ do
 
 		PlatesVisible[plate] = nil
 		PlatesByUnit[unitid] = nil
-		PlatesByGUID[unit.guid] = nil
+		if unitGUID then PlatesByGUID[unitGUID] = nil end
 
 		visual.castbar:Hide()
 		visual.castbar:SetScript("OnUpdate", nil)

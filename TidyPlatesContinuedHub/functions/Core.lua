@@ -252,8 +252,6 @@ local function ApplyProfileSettings(theme, source, ...)
 	-- Set Space Between Buffs & Debuffs
 	TidyPlatesContWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
 
-	if source == "From OnChangeProfile" then UpdateCVars(LocalVars, "HubPanelSettings"..TidyPlatesCont.GetProfile()) end
-
 	TidyPlatesCont:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)
 
 	TidyPlatesCont:ForceUpdate()

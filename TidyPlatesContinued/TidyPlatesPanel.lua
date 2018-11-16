@@ -54,6 +54,9 @@ TidyPlatesContOptions = {
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
+
+	NameplateClickableHeight = 1,
+	NameplateClickableWidth = 1,
 	WelcomeShown = false,
 }
 
@@ -98,6 +101,15 @@ local function SetNameplateVisibility(cvar, mode, combat)
 	end
 end
 
+local function GetClickableArea()
+	return TidyPlatesContOptions.NameplateClickableWidth or 1, TidyPlatesContOptions.NameplateClickableHeight or 1
+end
+
+--local function SetClickableArea(width, height)
+--	if width then TidyPlatesContOptions.NameplateClickableWidth = width end
+--	if height then TidyPlatesContOptions.NameplateClickableHeight = height end
+--end
+
 --[[
 function TidyPlatesCont:ReloadTheme()
 	SetTheme(TidyPlatesContInternal.activeThemeName)
@@ -106,6 +118,7 @@ function TidyPlatesCont:ReloadTheme()
 end
 --]]
 
+TidyPlatesContPanel.GetClickableArea = GetClickableArea
 
 -------------------------------------------------------------------------------------
 -- Panel
@@ -184,6 +197,8 @@ local function GetPanelValues(panel)
 	TidyPlatesContOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	TidyPlatesContOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	TidyPlatesContOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
+	TidyPlatesContOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
+	TidyPlatesContOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
 	TidyPlatesContOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
 
 	TidyPlatesContOptions.FirstSpecProfile = panel.FirstSpecDropdown:GetValue()
@@ -194,18 +209,27 @@ end
 
 
 local function SetPanelValues(panel)
-	panel.ActiveThemeDropdown:SetValue(TidyPlatesContOptions.ActiveTheme)
+	panel.ActiveThemeDropdown:SetValue(TidyPlatesContOptions.ActiveTheme or TidyPlatesContOptionsDefaults.ActiveTheme)
 
-	panel.FirstSpecDropdown:SetValue(TidyPlatesContOptions.FirstSpecProfile)
-	panel.SecondSpecDropdown:SetValue(TidyPlatesContOptions.SecondSpecProfile)
-	panel.ThirdSpecDropdown:SetValue(TidyPlatesContOptions.ThirdSpecProfile)
-	panel.FourthSpecDropdown:SetValue(TidyPlatesContOptions.FourthSpecProfile)
+	panel.FirstSpecDropdown:SetValue(TidyPlatesContOptions.FirstSpecProfile or TidyPlatesContOptionsDefaults.FirstSpecProfile)
+	panel.SecondSpecDropdown:SetValue(TidyPlatesContOptions.SecondSpecProfile or TidyPlatesContOptionsDefaults.SecondSpecProfile)
+	panel.ThirdSpecDropdown:SetValue(TidyPlatesContOptions.ThirdSpecProfile or TidyPlatesContOptionsDefaults.ThirdSpecProfile)
+	panel.FourthSpecDropdown:SetValue(TidyPlatesContOptions.FourthSpecProfile or TidyPlatesContOptionsDefaults.FourthSpecProfile)
 
-	panel.DisableCastBars:SetChecked(TidyPlatesContOptions.DisableCastBars)
-	panel.ForceBlizzardFont:SetChecked(TidyPlatesContOptions.ForceBlizzardFont)
-	panel.HealthFrequent:SetChecked(TidyPlatesContOptions.HealthFrequent or true)
-	panel.AutoShowFriendly:SetValue(TidyPlatesContOptions.FriendlyAutomation)
-	panel.AutoShowEnemy:SetValue(TidyPlatesContOptions.EnemyAutomation)
+	panel.DisableCastBars:SetChecked(TidyPlatesContOptions.DisableCastBars or TidyPlatesContOptionsDefaults.DisableCastBars)
+	panel.ForceBlizzardFont:SetChecked(TidyPlatesContOptions.ForceBlizzardFont or TidyPlatesContOptionsDefaults.ForceBlizzardFont)
+	panel.HealthFrequent:SetChecked(TidyPlatesContOptions.HealthFrequent or TidyPlatesContOptionsDefaults.HealthFrequent)
+	panel.NameplateClickableWidth:SetValue(TidyPlatesContOptions.NameplateClickableWidth or TidyPlatesContOptionsDefaults.NameplateClickableWidth)
+	panel.NameplateClickableHeight:SetValue(TidyPlatesContOptions.NameplateClickableHeight or TidyPlatesContOptionsDefaults.NameplateClickableHeight)
+	panel.AutoShowFriendly:SetValue(TidyPlatesContOptions.FriendlyAutomation or TidyPlatesContOptionsDefaults.FriendlyAutomation)
+	panel.AutoShowEnemy:SetValue(TidyPlatesContOptions.EnemyAutomation or TidyPlatesContOptionsDefaults.EnemyAutomation)
+	
+	-- CVars
+	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
+	panel.NameplateStacking:SetChecked((function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)())
+	panel.NameplateMaxDistance:SetValue(GetCVar("nameplateMaxDistance"))
+	panel.NameplateOverlapH:SetValue(GetCVar("nameplateOverlapH"))
+	panel.NameplateOverlapV:SetValue(GetCVar("nameplateOverlapV"))
 end
 
 
@@ -218,6 +242,7 @@ end
 
 
 local function OnOkay(panel)
+	panel = panel.MainFrame
 	GetPanelValues(panel)
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
@@ -226,7 +251,7 @@ end
 
 -- Loads values from the saved vars, and preps for display of the panel
 local function OnRefresh(panel)
-
+	panel = panel.MainFrame
 	if not panel then return end
 
 	SetPanelValues(panel)
@@ -304,7 +329,19 @@ local function CreateMenuTables()
 
 end
 
+local function OnMouseWheelScrollFrame(frame, value, name)
+	local scrollbar = _G[frame:GetName() .. "ScrollBar"];
+	local currentPosition = scrollbar:GetValue()
+	local increment = 50
+
+	-- Spin Up
+	if ( value > 0 ) then scrollbar:SetValue(currentPosition - increment);
+	-- Spin Down
+	else scrollbar:SetValue(currentPosition + increment); end
+end
+
 local function BuildInterfacePanel(panel)
+	local _panel = panel
 	panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 	panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
 
@@ -326,13 +363,43 @@ local function BuildInterfacePanel(panel)
 	panel.DividerLine:SetSize( 500, 12)
 	panel.DividerLine:SetPoint("TOPLEFT", panel.Label, "BOTTOMLEFT", -6, -12)
 
+	-- Main Scrolled Frame
+	------------------------------
+	panel.MainFrame = CreateFrame("Frame")
+	panel.MainFrame:SetWidth(412)
+	panel.MainFrame:SetHeight(100) 		-- If the items inside the frame overflow, it automatically adjusts the height.
+
+	-- Scrollable Panel Window
+	------------------------------
+	panel.ScrollFrame = CreateFrame("ScrollFrame","TidyPlatesCont_Scrollframe", panel, "UIPanelScrollFrameTemplate")
+	panel.ScrollFrame:SetPoint("LEFT", 16 )
+	panel.ScrollFrame:SetPoint("TOP", panel.DividerLine, "BOTTOM", 0, -8 )
+	panel.ScrollFrame:SetPoint("BOTTOMRIGHT", -32 , 16 )
+	panel.ScrollFrame:SetScrollChild(panel.MainFrame)
+	panel.ScrollFrame:SetScript("OnMouseWheel", OnMouseWheelScrollFrame)
+
+	-- Scroll Frame Border
+	------------------------------
+	panel.ScrollFrameBorder = CreateFrame("Frame", "TidyPlatesContScrollFrameBorder", panel.ScrollFrame )
+	panel.ScrollFrameBorder:SetPoint("TOPLEFT", -4, 5)
+	panel.ScrollFrameBorder:SetPoint("BOTTOMRIGHT", 3, -5)
+	panel.ScrollFrameBorder:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+												edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+												--tile = true, tileSize = 16,
+												edgeSize = 16,
+												insets = { left = 4, right = 4, top = 4, bottom = 4 }
+												});
+	panel.ScrollFrameBorder:SetBackdropColor(0.05, 0.05, 0.05, 0)
+	panel.ScrollFrameBorder:SetBackdropBorderColor(0.2, 0.2, 0.2, 0)
+
+	panel = panel.MainFrame
 	----------------------------------------------
 	-- Theme
 	----------------------------------------------
 	panel.ThemeCategoryTitle = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ThemeCategoryTitle:SetFont(font, 22)
 	panel.ThemeCategoryTitle:SetText("Theme")
-	panel.ThemeCategoryTitle:SetPoint("TOPLEFT", 20, -70)
+	panel.ThemeCategoryTitle:SetPoint("TOPLEFT", 20, -10)
 	panel.ThemeCategoryTitle:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Dropdown
@@ -378,7 +445,7 @@ local function BuildInterfacePanel(panel)
 	---------------
 	-- Spec 2
 	panel.SecondSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.SecondSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecLabel,"TOPLEFT", 180, 0)
+	panel.SecondSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecLabel,"TOPLEFT", 150, 0)
 	panel.SecondSpecLabel:SetWidth(170)
 	panel.SecondSpecLabel:SetJustifyH("LEFT")
 	panel.SecondSpecLabel:SetText("Second Spec")
@@ -428,7 +495,7 @@ local function BuildInterfacePanel(panel)
 	---------------
 	-- Friendly Visibility
 	panel.AutoShowFriendlyLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.AutoShowFriendlyLabel:SetPoint("TOPLEFT", panel.AutoShowEnemyLabel,"TOPLEFT", 180, 0)
+	panel.AutoShowFriendlyLabel:SetPoint("TOPLEFT", panel.AutoShowEnemyLabel,"TOPLEFT", 150, 0)
 	panel.AutoShowFriendlyLabel:SetWidth(170)
 	panel.AutoShowFriendlyLabel:SetJustifyH("LEFT")
 	panel.AutoShowFriendlyLabel:SetText("Friendly Nameplates:")
@@ -441,37 +508,72 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	-- Other Options
 	----------------------------------------------
-	-- Blizz Button
-	local BlizzOptionsButton = CreateFrame("Button", "TidyPlatesContOptions_BlizzOptionsButton", panel, "TidyPlatesContPanelButtonTemplate")
-	--BlizzOptionsButton:SetPoint("TOPRIGHT", ResetButton, "TOPLEFT", -8, 0)
-	BlizzOptionsButton:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 16, -55)
-	BlizzOptionsButton:SetWidth(260)
-	BlizzOptionsButton:SetText("Nameplate Motion & Visibility")
-
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_DisableCastBars", panel, "Disable Cast Bars")
-	panel.DisableCastBars:SetPoint("TOPLEFT", BlizzOptionsButton, "TOPLEFT", 0, -35)
+	panel.DisableCastBars:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 16, -50)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont
 	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_ForceBlizzardFont", panel, "Force Multi-Lingual Font (Requires /reload)")
-	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -35)
+	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) TidyPlatesCont.OverrideFonts( self:GetChecked()); end)
 
 	-- Frequent Health Updates
 	panel.HealthFrequent = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_HealthFrequent", panel, "Use Frequent Health Updates")
-	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -35)
+	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
 	panel.HealthFrequent:SetScript("OnClick", function(self) TidyPlatesCont.SetHealthUpdateMethod(self:GetChecked()); end)
+
+	-- Nameplate Behaviour
+	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.CVarsLabel:SetFont(font, 22)
+	panel.CVarsLabel:SetText("CVars")
+	panel.CVarsLabel:SetPoint("TOPLEFT", panel.HealthFrequent, "BOTTOMLEFT", 0, -20)
+	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
+
+	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_NameplateTargetClamp", panel, "Always keep Target Nameplate on Screen")
+	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.CVarsLabel, "TOPLEFT", 0, -25)
+	panel.NameplateTargetClamp:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateTargetRadialPosition", 1) else SetCVar("nameplateTargetRadialPosition", 0) end end)
+
+	panel.NameplateStacking = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_NameplateStacking", panel, "Stacking Nameplates")
+	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
+	panel.NameplateStacking:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateMotion", 1) else SetCVar("nameplateMotion", 0) end end)
+
+	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("TidyPlatesContOptions_NameplateMaxDistance", panel, "Nameplate Max Distance", 60, 10, 100, 1, "ACTUAL", 250)
+	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -45)
+	panel.NameplateMaxDistance:SetScript("OnMouseUp", function(self) SetCVar("nameplateMaxDistance", self.ceil(self:GetValue())) end)
+
+	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("TidyPlatesContOptions_NameplateOverlapH", panel, "Nameplate Horizontal Overlap", 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -45)
+	panel.NameplateOverlapH:SetScript("OnMouseUp", function(self) SetCVar("nameplateOverlapH", self.ceil(self:GetValue())) end)
+
+	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("TidyPlatesContOptions_NameplateOverlapV", panel, "Nameplate Vertical Overlap", 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -45)
+	panel.NameplateOverlapV:SetScript("OnMouseUp", function(self) SetCVar("nameplateOverlapV", self.ceil(self:GetValue())) end)
+
+	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("TidyPlatesContOptions_NameplateClickableWidth", panel, "Clickable Width of Nameplates", 1, .1, 2, .01, nil, 170)
+	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -45)
+	--panel.NameplateClickableWidth:SetScript("OnMouseUp", function(self) print(self.ceil(self:GetValue())) end)
+
+	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("TidyPlatesContOptions_NameplateClickableHeight", panel, "Clickable Height of Nameplates", 1, .1, 2, .01, nil, 170)
+	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -45)
+	--panel.NameplateClickableHeight:SetScript("OnMouseUp", function(self) print("clickableheight", self.ceil(self:GetValue())) end)
+
+	-- Blizz Button
+	local BlizzOptionsButton = CreateFrame("Button", "TidyPlatesContOptions_BlizzOptionsButton", panel, "TidyPlatesContPanelButtonTemplate")
+	--BlizzOptionsButton:SetPoint("TOPRIGHT", ResetButton, "TOPLEFT", -8, 0)
+	BlizzOptionsButton:SetPoint("TOPLEFT", panel.NameplateClickableWidth, "TOPLEFT", 0, -70)
+	BlizzOptionsButton:SetWidth(260)
+	BlizzOptionsButton:SetText("Nameplate Motion & Visibility")
 
 	-- Reset
 	ResetButton = CreateFrame("Button", "TidyPlatesContOptions_ResetButton", panel, "TidyPlatesContPanelButtonTemplate")
-	ResetButton:SetPoint("BOTTOMRIGHT", -16, 8)
+	ResetButton:SetPoint("LEFT", BlizzOptionsButton, "RIGHT", 130, 0)
 	ResetButton:SetWidth(155)
 	ResetButton:SetText("Reset Configuration")
 
 	-- Update Functions
-	panel.okay = OnOkay
-	panel.refresh = OnRefresh
+	_panel.okay = OnOkay
+	_panel.refresh = OnRefresh
 	panel.ActiveThemeDropdown.OnValueChanged = OnValueChange
 
 	panel.FirstSpecDropdown.OnValueChanged = OnValueChange
@@ -500,7 +602,7 @@ local function BuildInterfacePanel(panel)
 		else
 			TidyPlatesContOptions = wipe(TidyPlatesContOptions)
 			for i, v in pairs(TidyPlatesContOptionsDefaults) do TidyPlatesContOptions[i] = v end
-			OnRefresh(panel)
+			OnRefresh(_panel)
 			ApplyPanelSettings()
 			print(yellow.."Resetting "..orange.."Tidy Plates Continued"..yellow.." Theme Selection to Default")
 			print(yellow.."Holding down "..blue.."Shift"..yellow.." while clicking "..red.."Reset Configuration"..yellow.." will clear your saved settings, AND reload the user interface.")

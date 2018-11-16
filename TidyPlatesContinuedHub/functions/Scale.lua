@@ -166,10 +166,6 @@ local function ScaleDelegate(...)
 	end
 end
 
-local function GetClickableArea()
-	return LocalVars.NameplateClickableWidth, LocalVars.NameplateClickableHeight
-end
-
 
 ------------------------------------------------------------------------------
 -- Local Variable
@@ -189,5 +185,4 @@ HubData.RegisterCallback(OnVariableChange)
 -- Add References
 ------------------------------------------------------------------------------
 TidyPlatesContHubFunctions.SetScale = ScaleDelegate
-TidyPlatesContHubFunctions.GetClickableArea = GetClickableArea
 
