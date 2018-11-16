@@ -148,6 +148,14 @@ local function Role2Profile(spec)
 	return "Damage"
 end
 
+local function VerifyPanelSettings()
+	for k, v in pairs(TidyPlatesContOptionsDefaults) do
+		if TidyPlatesContOptions[k] == nil then
+			TidyPlatesContOptions[k] = TidyPlatesContOptionsDefaults[k]
+		end
+	end
+end
+
 local function ApplyPanelSettings()
 	-- Theme
 	SetTheme(TidyPlatesContOptions.ActiveTheme or TidyPlatesContUtility.GetCacheSet("SavedTemplate")["Theme"] or FirstTryTheme)
@@ -185,10 +193,6 @@ local function ApplyPanelSettings()
 	TidyPlatesCont:ForceUpdate()
 end
 
-
-
-
-
 local function GetPanelValues(panel)
 	TidyPlatesContOptions.ActiveTheme = panel.ActiveThemeDropdown:GetValue()
 
@@ -209,20 +213,20 @@ end
 
 
 local function SetPanelValues(panel)
-	panel.ActiveThemeDropdown:SetValue(TidyPlatesContOptions.ActiveTheme or TidyPlatesContOptionsDefaults.ActiveTheme)
+	panel.ActiveThemeDropdown:SetValue(TidyPlatesContOptions.ActiveTheme)
 
-	panel.FirstSpecDropdown:SetValue(TidyPlatesContOptions.FirstSpecProfile or TidyPlatesContOptionsDefaults.FirstSpecProfile)
-	panel.SecondSpecDropdown:SetValue(TidyPlatesContOptions.SecondSpecProfile or TidyPlatesContOptionsDefaults.SecondSpecProfile)
-	panel.ThirdSpecDropdown:SetValue(TidyPlatesContOptions.ThirdSpecProfile or TidyPlatesContOptionsDefaults.ThirdSpecProfile)
-	panel.FourthSpecDropdown:SetValue(TidyPlatesContOptions.FourthSpecProfile or TidyPlatesContOptionsDefaults.FourthSpecProfile)
+	panel.FirstSpecDropdown:SetValue(TidyPlatesContOptions.FirstSpecProfile)
+	panel.SecondSpecDropdown:SetValue(TidyPlatesContOptions.SecondSpecProfile)
+	panel.ThirdSpecDropdown:SetValue(TidyPlatesContOptions.ThirdSpecProfile)
+	panel.FourthSpecDropdown:SetValue(TidyPlatesContOptions.FourthSpecProfile)
 
-	panel.DisableCastBars:SetChecked(TidyPlatesContOptions.DisableCastBars or TidyPlatesContOptionsDefaults.DisableCastBars)
-	panel.ForceBlizzardFont:SetChecked(TidyPlatesContOptions.ForceBlizzardFont or TidyPlatesContOptionsDefaults.ForceBlizzardFont)
-	panel.HealthFrequent:SetChecked(TidyPlatesContOptions.HealthFrequent or TidyPlatesContOptionsDefaults.HealthFrequent)
-	panel.NameplateClickableWidth:SetValue(TidyPlatesContOptions.NameplateClickableWidth or TidyPlatesContOptionsDefaults.NameplateClickableWidth)
-	panel.NameplateClickableHeight:SetValue(TidyPlatesContOptions.NameplateClickableHeight or TidyPlatesContOptionsDefaults.NameplateClickableHeight)
-	panel.AutoShowFriendly:SetValue(TidyPlatesContOptions.FriendlyAutomation or TidyPlatesContOptionsDefaults.FriendlyAutomation)
-	panel.AutoShowEnemy:SetValue(TidyPlatesContOptions.EnemyAutomation or TidyPlatesContOptionsDefaults.EnemyAutomation)
+	panel.DisableCastBars:SetChecked(TidyPlatesContOptions.DisableCastBars)
+	panel.ForceBlizzardFont:SetChecked(TidyPlatesContOptions.ForceBlizzardFont)
+	panel.HealthFrequent:SetChecked(TidyPlatesContOptions.HealthFrequent)
+	panel.NameplateClickableWidth:SetValue(TidyPlatesContOptions.NameplateClickableWidth)
+	panel.NameplateClickableHeight:SetValue(TidyPlatesContOptions.NameplateClickableHeight)
+	panel.AutoShowFriendly:SetValue(TidyPlatesContOptions.FriendlyAutomation)
+	panel.AutoShowEnemy:SetValue(TidyPlatesContOptions.EnemyAutomation)
 	
 	-- CVars
 	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
@@ -516,12 +520,12 @@ local function BuildInterfacePanel(panel)
 	-- ForceBlizzardFont
 	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_ForceBlizzardFont", panel, "Force Multi-Lingual Font (Requires /reload)")
 	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
-	panel.ForceBlizzardFont:SetScript("OnClick", function(self) TidyPlatesCont.OverrideFonts( self:GetChecked()); end)
+	panel.ForceBlizzardFont:SetScript("OnClick", function(self) TidyPlatesCont.OverrideFonts( self:GetChecked()) end)
 
 	-- Frequent Health Updates
 	panel.HealthFrequent = PanelHelpers:CreateCheckButton("TidyPlatesContOptions_HealthFrequent", panel, "Use Frequent Health Updates")
 	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
-	panel.HealthFrequent:SetScript("OnClick", function(self) TidyPlatesCont.SetHealthUpdateMethod(self:GetChecked()); end)
+	panel.HealthFrequent:SetScript("OnClick", function(self) TidyPlatesCont:SetHealthUpdateMethod(self:GetChecked()) end)
 
 	-- Nameplate Behaviour
 	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
@@ -560,14 +564,13 @@ local function BuildInterfacePanel(panel)
 
 	-- Blizz Button
 	local BlizzOptionsButton = CreateFrame("Button", "TidyPlatesContOptions_BlizzOptionsButton", panel, "TidyPlatesContPanelButtonTemplate")
-	--BlizzOptionsButton:SetPoint("TOPRIGHT", ResetButton, "TOPLEFT", -8, 0)
-	BlizzOptionsButton:SetPoint("TOPLEFT", panel.NameplateClickableWidth, "TOPLEFT", 0, -70)
+	BlizzOptionsButton:SetPoint("TOPLEFT", panel.NameplateClickableWidth, "TOPLEFT", -10, -70)
 	BlizzOptionsButton:SetWidth(260)
 	BlizzOptionsButton:SetText("Nameplate Motion & Visibility")
 
 	-- Reset
 	ResetButton = CreateFrame("Button", "TidyPlatesContOptions_ResetButton", panel, "TidyPlatesContPanelButtonTemplate")
-	ResetButton:SetPoint("LEFT", BlizzOptionsButton, "RIGHT", 130, 0)
+	ResetButton:SetPoint("TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -10)
 	ResetButton:SetWidth(155)
 	ResetButton:SetText("Reset Configuration")
 
@@ -638,6 +641,7 @@ function panelevents:PLAYER_ENTERING_WORLD()
 	if not TidyPlatesContThemeList[TidyPlatesContOptions.ActiveTheme] then
 		TidyPlatesContOptions.ActiveTheme = fallBackTheme end
 
+	VerifyPanelSettings()
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
 end
