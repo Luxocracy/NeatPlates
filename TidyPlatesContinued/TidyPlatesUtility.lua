@@ -208,7 +208,44 @@ local function GetUnitSubtitle(unit)
 
 end
 
+local OwnerGUID = {}
+local function GetPetOwner(petName)
+	TooltipScanner:ClearLines()
+	TooltipScanner:SetUnit(petName)
+	local ownerText = _G[ScannerName.."TextLeft2"]:GetText()
+	if not ownerText then return nil, nil end
+	local owner, _ = string.split("'",ownerText)
+
+	if not OwnerGUID[owner] then
+		local index = 0
+		local unitGUID, unitName, groupType
+
+		if IsInRaid() then
+			index = index+1
+			groupType = "raid"
+			unitGUID = UnitGUID(groupType..index)
+			unitName = GetUnitName(groupType..index, true)
+		else
+			groupType = "party"
+			unitGUID = UnitGUID("player")
+			unitName = GetUnitName("player")
+		end
+
+		while(unitGUID) do
+			index = index+1
+
+			OwnerGUID[unitName] = unitGUID
+
+			unitGUID = UnitGUID(groupType..index)
+			unitName = GetUnitName(groupType..index, true)
+		end
+	end
+
+	return OwnerGUID[owner], owner -- This is the pet's owner
+end
+
 TidyPlatesContUtility.GetUnitSubtitle = GetUnitSubtitle
+TidyPlatesContUtility.GetPetOwner = GetPetOwner
 
 ------------------------------------------
 -- Quest Info

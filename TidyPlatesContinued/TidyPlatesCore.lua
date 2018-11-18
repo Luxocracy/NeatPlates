@@ -5,6 +5,8 @@
 ---------------------------------------------------------------------------------------------------------------------
 local addonName, TidyPlatesContInternal = ...
 local TidyPlatesContCore = CreateFrame("Frame", nil, WorldFrame)
+local FrequentHealthUpdate = true
+local GetPetOwner = TidyPlatesContUtility.GetPetOwner
 TidyPlatesCont = {}
 
 -- Local References
@@ -17,7 +19,6 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-local FrequentHealthUpdate = true
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
@@ -1169,10 +1170,18 @@ do
 		if not ShowIntCast then return end
 		local _,type,_,sourceGUID,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
 
+		-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
+		-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
 		if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then
 			local plate = PlatesByGUID[destGUID]
 
 			if plate and (type == "SPELL_INTERRUPT" or (type == "SPELL_AURA_APPLIED" and plate.extended.unit.interrupted and not plate.extended.unit.interruptLogged)) then
+				local unitType = strsplit("-", sourceGUID)
+				-- If a pet interrupted, we need to change the source from the pet to the owner
+				if unitType == "Pet" then
+						sourceGUID, sourceName = GetPetOwner(sourceName)
+				end
+
 				plate.extended.unit.interruptLogged = true
 				OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
 			end
