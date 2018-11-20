@@ -214,6 +214,7 @@ local function GetPetOwner(petName)
 	local ownerText = _G[ScannerName.."TextLeft2"]:GetText()
 	if not ownerText then return nil, nil end
 	local owner, _ = string.split("'",ownerText)
+	owner = string.split("-",owner)
 	local ownerGUID = UnitGUID(owner)
 
 	return ownerGUID, owner -- This is the pet's owner

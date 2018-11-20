@@ -532,7 +532,6 @@ do
 	-- (This is essentially static data)
 	--------------------------------------------------------
 	function UpdateUnitIdentity(plate, unitid)
-
 		unit.unitid = unitid
 		unit.name = UnitName(unitid)
 		unit.pvpname = UnitPVPName(unitid)
@@ -900,6 +899,7 @@ do
 			else
 				spellString = eventText
 			end	
+
 			visual.spelltext:SetText(spellString)
 		end
 
@@ -1030,7 +1030,7 @@ do
 
 	 	local plate = GetNamePlateForUnit(unitid)
 
-	 	if plate then OnInterruptedCast(plate) end
+	 	if plate and not plate.extended.unit.interrupted then OnInterruptedCast(plate) end
 	 end
 
 
@@ -1172,10 +1172,12 @@ do
 
 		-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
 		-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
-		if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" then
+		-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
+		if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED" then
 			local plate = PlatesByGUID[destGUID]
 
-			if plate and (type == "SPELL_INTERRUPT" or (type == "SPELL_AURA_APPLIED" and plate.extended.unit.interrupted and not plate.extended.unit.interruptLogged)) then
+			if plate then
+				if (type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
 				local unitType = strsplit("-", sourceGUID)
 				-- If a pet interrupted, we need to change the source from the pet to the owner
 				if unitType == "Pet" then
@@ -1189,7 +1191,7 @@ do
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
-	CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
+	--CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
 
 	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
