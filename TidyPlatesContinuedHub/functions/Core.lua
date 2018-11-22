@@ -163,14 +163,14 @@ local CreateVariableSet = TidyPlatesContHubRapidPanel.CreateVariableSet
 
 local function UseVariables(profileName)
 
-	local suffix = profileName or "Damage"
+	local suffix = profileName or "Default"
 	if suffix then
 
 		if CurrentProfileName ~= suffix then 	-- Stop repeat loading
 
-			local objectName = "HubPanelSettings"..suffix
+			local objectName = "HubPanelProfile"..suffix
 
-			LocalVars = TidyPlatesContHubSettings[objectName] or CreateVariableSet(objectName)
+			LocalVars = TidyPlatesContHubProfile[objectName] or CreateVariableSet(objectName)
 
 			MergeProfileValues(LocalVars, TidyPlatesContHubDefaults)		-- If the value doesn't exist in the settings, create it.
 

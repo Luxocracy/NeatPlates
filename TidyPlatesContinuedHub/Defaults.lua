@@ -3,6 +3,7 @@ local CopyTable = TidyPlatesContUtility.copyTable
 
 TidyPlatesContHubCache = {}
 TidyPlatesContHubSettings = {}
+TidyPlatesContHubProfile = {}
 
 TidyPlatesContHubDefaults = {
 	-- Profile

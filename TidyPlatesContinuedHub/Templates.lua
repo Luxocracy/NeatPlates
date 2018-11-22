@@ -182,7 +182,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		local columnFrame = ...
 		local frame = CreateFrame("Frame", name, columnFrame)
 		-- Heading Appearance
-		frame:SetHeight(26)
+		frame:SetHeight(32)
 		frame:SetWidth(500)
 		frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 		frame.Text:SetFont(font, 26)
@@ -330,7 +330,8 @@ end
 
 local function CheckVariableIntegrity(objectName)
 	for i,v in pairs(TidyPlatesContHubDefaults) do
-		if TidyPlatesContHubSettings[objectName][i] == nil then TidyPlatesContHubSettings[objectName][i] = v end
+		--if TidyPlatesContHubSettings[objectName][i] == nil then TidyPlatesContHubSettings[objectName][i] = v end
+		if TidyPlatesContHubProfile[objectName][i] == nil then TidyPlatesContHubProfile[objectName][i] = v end
 	end
 end
 
@@ -352,12 +353,14 @@ local function CreateVariableSet(objectName)
 	--print("CreateVariableSet", objectName)
 	-- New Behavior: Check for a template
 	local cacheSet = GetCacheSet("SavedTemplate")
-	TidyPlatesContHubSettings[objectName] = CopyTable(cacheSet or TidyPlatesContHubDefaults)
+	--TidyPlatesContHubSettings[objectName] = CopyTable(cacheSet or TidyPlatesContHubDefaults)
+	TidyPlatesContHubProfile[objectName] = CopyTable(cacheSet or TidyPlatesContHubDefaults)
 
 	-- Old Behavior: Just load defaults
 	--TidyPlatesContHubSettings[objectName] = CopyTable( TidyPlatesContHubDefaults)
 
-	return TidyPlatesContHubSettings[objectName]
+	--return TidyPlatesContHubSettings[objectName]
+	return TidyPlatesContHubProfile[objectName]
 end
 
 local function GetVariableSet(panel)
@@ -365,7 +368,8 @@ local function GetVariableSet(panel)
 
 		local objectName = panel.objectName
 
-		local settings = TidyPlatesContHubSettings[objectName]
+		--local settings = TidyPlatesContHubSettings[objectName]
+		local settings = TidyPlatesContHubProfile[objectName]
 		if not settings then
 
 			settings = CreateVariableSet(objectName)
@@ -377,12 +381,19 @@ local function GetVariableSet(panel)
 	end
 end
 
-
-
 local function ClearVariableSet(panel)
-	for i, v in pairs(TidyPlatesContHubSettings[panel.objectName]) do TidyPlatesContHubSettings[panel.objectName][i] = nil end
-	TidyPlatesContHubSettings[panel.objectName] = nil
+	--for i, v in pairs(TidyPlatesContHubSettings[panel.objectName]) do TidyPlatesContHubSettings[panel.objectName][i] = nil end
+	for i, v in pairs(TidyPlatesContHubProfile[panel.objectName]) do TidyPlatesContHubProfile[panel.objectName][i] = nil end
+	--TidyPlatesContHubSettings[panel.objectName] = nil
+	TidyPlatesContHubProfile[panel.objectName] = nil
 	ReloadUI()
+end
+
+local function RemoveVariableSet(panel)
+	if panel and panel.objectName then
+		TidyPlatesContHubProfile[panel.objectName] = nil
+		TidyPlatesContHubProfile.profiles[panel.objectName:gsub("HubPanelProfile", "")] = nil
+	end
 end
 
 local function OnPanelItemChange(panel)
@@ -444,6 +455,21 @@ local function ResetSettings(panel)
 		print(yellow.."Resetting "..orange..panel.name..yellow.." Configuration to Default")
 		print(yellow.."Holding down "..blue.."Shift"..yellow.." while clicking "..red.."Reset"..yellow.." will clear all saved settings, cached data, and reload the user interface.")
 	end
+end
+
+local function RemoveProfile(panel)
+	if panel.objectName == "HubPanelProfileDefault" then print(red.."Sorry, can't delete the Default profile :("); return end
+
+	panel:Hide()	-- Hide panel, as it cannot be deleted
+
+	-- Remove interface category for profile
+	table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
+		if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
+	end)
+
+	RemoveVariableSet(panel)	-- Remove stored variables
+	TidyPlatesContPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
+	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
 end
 
 local function AddDropdownTitle(title)
@@ -583,7 +609,6 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	-- Config Management Buttons
 	-----------------
 
-
 	-- Paste
 	local PasteThemeDataButton = CreateFrame("Button", objectName.."PasteThemeDataButton", panel, "TidyPlatesContPanelButtonTemplate")
 	PasteThemeDataButton.tooltipText = "Loads settings from the stored template"
@@ -615,6 +640,18 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
 	ReloadThemeDataButton:SetScript("OnClick", function()
 		PlaySound(856); ResetSettings(panel);
+	end)
+
+	-- Remove
+	local RemoveProfileButton = CreateFrame("Button", objectName.."RemoveProfileButton", panel, "TidyPlatesContPanelButtonTemplate")
+	RemoveProfileButton.tooltipText = "Deletes the current profile"
+	RemoveProfileButton:SetPoint("TOP", PasteThemeDataButton, "BOTTOM", 0, -4)
+	RemoveProfileButton:SetWidth(110)
+	RemoveProfileButton:SetScale(.85)
+	RemoveProfileButton:SetText("Delete Profile")
+
+	RemoveProfileButton:SetScript("OnClick", function()
+		PlaySound(856); RemoveProfile(panel);
 	end)
 
 -- [[

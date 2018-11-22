@@ -4,7 +4,7 @@
 ## Author: Daniel/Binbwen
 ## Dependencies: TidyPlatesContinued, TidyPlatesContinuedWidgets
 ## OptionalDeps: TidyPlatesContHubDE, TidyPlatesContHubES, TidyPlatesContHubMX, TidyPlatesContHubFR, TidyPlatesContHubKR, TidyPlatesContHubRU, TidyPlatesContHubCN, TidyPlatesContHubTW
-## SavedVariables: TidyPlatesContHubCache, TidyPlatesContHubGlobal
+## SavedVariables: TidyPlatesContHubCache, TidyPlatesContHubGlobal, TidyPlatesContHubProfile
 ## SavedVariablesPerCharacter: TidyPlatesContHubSettings
 
 Defaults.lua

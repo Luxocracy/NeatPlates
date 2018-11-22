@@ -4,6 +4,7 @@
 
 local addonName, TidyPlatesContInternal = ...
 TidyPlatesContPanel = {}
+TidyPlatesContHubMenus = TidyPlatesContHubMenus or {}
 
 local SetTheme = TidyPlatesContInternal.SetTheme	-- Use the protected version
 
@@ -16,6 +17,7 @@ InterfaceOptions_AddCategory(TidyPlatesContInterfacePanel);
 local CallIn = TidyPlatesContUtility.CallIn
 local copytable = TidyPlatesContUtility.copyTable
 local PanelHelpers = TidyPlatesContUtility.PanelHelpers
+local RGBToHex = TidyPlatesContUtility.RGBToHex
 
 local NO_AUTOMATION = "No Automation"
 local DURING_COMBAT = "Show during Combat, Hide when Combat ends"
@@ -36,7 +38,7 @@ end
 -------------------------------------------------------------------------------------
 
 local FirstTryTheme = "Neon"
-local DefaultProfile = "Damage"
+local DefaultProfile = "Default"
 
 local ActiveProfile = "None"
 
@@ -80,9 +82,15 @@ TidyPlatesCont.GetProfile = GetProfile
 
 
 function TidyPlatesContPanel.AddProfile(self, profileName )
-	if  profileName then
+	if profileName then
 		HubProfileList[#HubProfileList+1] = { text = profileName, value = profileName, }
 	end
+end
+
+function TidyPlatesContPanel.RemoveProfile(self, profileName )
+	table.foreach(HubProfileList, function(i, profile)
+		if profile.value == profileName then HubProfileList[i] = nil end
+	end)
 end
 
 local function SetNameplateVisibility(cvar, mode, combat)
@@ -138,16 +146,16 @@ local function ApplyAutomationSettings()
 	TidyPlatesCont:ForceUpdate()
 end
 
-local function Role2Profile(spec)
-	local s = GetSpecializationInfo(spec)
-	if s ~= nil then	
-		local role = GetSpecializationRole(spec)
-		if role == "DAMAGER" then return "Damage" end
-		if role == "TANK" then return "Tank" end
-		if role == "HEALER" then return "Healer" end
-	end
-	return "Damage"
-end
+--local function Role2Profile(spec)
+--	local s = GetSpecializationInfo(spec)
+--	if s ~= nil then	
+--		local role = GetSpecializationRole(spec)
+--		if role == "DAMAGER" then return "Damage" end
+--		if role == "TANK" then return "Tank" end
+--		if role == "HEALER" then return "Healer" end
+--	end
+--	return "Damage"
+--end
 
 local function VerifyPanelSettings()
 	for k, v in pairs(TidyPlatesContOptionsDefaults) do
@@ -570,10 +578,38 @@ local function BuildInterfacePanel(panel)
 	BlizzOptionsButton:SetText("Nameplate Motion & Visibility")
 
 	-- Reset
-	ResetButton = CreateFrame("Button", "TidyPlatesContOptions_ResetButton", panel, "TidyPlatesContPanelButtonTemplate")
+	local ResetButton = CreateFrame("Button", "TidyPlatesContOptions_ResetButton", panel, "TidyPlatesContPanelButtonTemplate")
 	ResetButton:SetPoint("TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -10)
 	ResetButton:SetWidth(155)
 	ResetButton:SetText("Reset Configuration")
+
+	-- Profile settings
+	local ProfileEditLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	ProfileEditLabel:SetPoint("TOPLEFT", ResetButton, "BOTTOMLEFT", 5, -50)
+	ProfileEditLabel:SetWidth(170)
+	ProfileEditLabel:SetJustifyH("LEFT")
+	ProfileEditLabel:SetText("Profile Name")
+
+	local ProfileEditBox = CreateFrame("EditBox", "TidyPlatesContOptions_ProfileEditBox", panel, "InputBoxTemplate")
+	ProfileEditBox:SetWidth(150)
+	ProfileEditBox:SetHeight(25)
+	ProfileEditBox:SetPoint("TOP", ProfileEditLabel, "BOTTOM", -8, 0)
+	ProfileEditBox:SetAutoFocus(false)
+	ProfileEditBox:SetFont("media\\DefaultFont.TTF", 11, "NONE")
+	ProfileEditBox:SetFrameStrata("DIALOG")
+
+	-- Profile Color picker
+	local ProfileColorBox = PanelHelpers:CreateColorBox("ProfileColor", panel, "", nil, 0, .5, 1, 1)
+	ProfileColorBox:SetPoint("LEFT", ProfileEditBox, "RIGHT")
+
+	-- Add Profile
+	local AddProfileButton = CreateFrame("Button", "TidyPlatesContOptions_AddProfileButton", panel, "TidyPlatesContPanelButtonTemplate")
+	AddProfileButton:SetPoint("TOPLEFT", ProfileEditBox, "BOTTOMLEFT", -5, 0)
+	AddProfileButton:SetWidth(155)
+	AddProfileButton:SetText("Add Profile")
+	AddProfileButton:SetScript("OnClick", function(self) TidyPlatesContUtility.OpenInterfacePanel(TidyPlatesContHubMenus.CreateProfile(ProfileEditBox:GetText(), RGBToColorCode(ProfileColorBox:GetBackdropColor()))); ProfileEditBox:SetText("") end)
+
+
 
 	-- Update Functions
 	_panel.okay = OnOkay
@@ -673,10 +709,14 @@ function panelevents:PLAYER_LOGIN()
 		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
 		TidyPlatesContOptions.WelcomeShown = true
 		
-		TidyPlatesContOptions.FirstSpecProfile = Role2Profile(1)
-		TidyPlatesContOptions.SecondSpecProfile = Role2Profile(2)
-		TidyPlatesContOptions.ThirdSpecProfile = Role2Profile(3)
-		TidyPlatesContOptions.FourthSpecProfile = Role2Profile(4)
+		--TidyPlatesContOptions.FirstSpecProfile = Role2Profile(1)
+		--TidyPlatesContOptions.SecondSpecProfile = Role2Profile(2)
+		--TidyPlatesContOptions.ThirdSpecProfile = Role2Profile(3)
+		--TidyPlatesContOptions.FourthSpecProfile = Role2Profile(4)
+		TidyPlatesContOptions.FirstSpecProfile = "Default"
+		TidyPlatesContOptions.SecondSpecProfile = "Default"
+		TidyPlatesContOptions.ThirdSpecProfile = "Default"
+		TidyPlatesContOptions.FourthSpecProfile = "Default"
 	end
 end
 

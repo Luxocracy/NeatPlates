@@ -527,29 +527,58 @@ end
 -- Create Instances of Panels
 local Panels = {}
 
-Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates Continued" )
-TidyPlatesContPanel:AddProfile("Tank")
-BuildHubPanel(Panels.Tank)
-function ShowTidyPlatesContHubTankPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Tank) end
+local function CreateProfile(label, color)
+	color = color:gsub("|c","")
+	if not TidyPlatesContHubProfile.profiles[label] then TidyPlatesContHubProfile.profiles[label] = color end  -- If profile doesn't exist, create it
+	Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile", "Tidy Plates Continued" )	-- Create the basic settings panel
+	TidyPlatesContPanel:AddProfile(label)	-- Add profile to profile list
+	BuildHubPanel(Panels[label])	-- Fill the settings panel with options
+	InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
+	--OnPanelItemChange(panel)
+	return Panels[label]
+end
+
+--local Profiles = {
+--	["Tank"] = "FF3782D1",
+--	["Damage"] = "FFFF1100",
+--	["Healer"] = "FF44DD55",
+--	["Gladiator"] = "FFAA6600",
+--}
+
+local function LoadProfiles(profiles)
+	if next(profiles) == nil then profiles = {["Default"] = "FFFFFFFF"} end -- Make sure at least something is loaded
+	for k, v in pairs(profiles) do
+		CreateProfile(k, v)
+	end
+end
+
+local HubHandler = CreateFrame("Frame")
+HubHandler:SetScript("OnEvent", function(...) local _,_,name = ...; if name == "TidyPlatesContinuedHub" then LoadProfiles(TidyPlatesContHubProfile.profiles) end end)
+HubHandler:RegisterEvent("ADDON_LOADED")
+
+--Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Tidy Plates Continued" )
+--TidyPlatesContPanel:AddProfile("Tank")
+--BuildHubPanel(Panels.Tank)
+--function ShowTidyPlatesContHubTankPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Tank) end
 
 
-Panels.Damage = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates Continued" )
-TidyPlatesContPanel:AddProfile("Damage")
-BuildHubPanel(Panels.Damage)
-function ShowTidyPlatesContHubDamagePanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Damage) end
+--Panels.Damage = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Tidy Plates Continued" )
+--TidyPlatesContPanel:AddProfile("Damage")
+--BuildHubPanel(Panels.Damage)
+--function ShowTidyPlatesContHubDamagePanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Damage) end
 
 
 
-Panels.Healer = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates Continued"  )
-TidyPlatesContPanel:AddProfile("Healer")
-BuildHubPanel(Panels.Healer)
-function ShowTidyPlatesContHubHealerPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Healer) end
+--Panels.Healer = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Tidy Plates Continued"  )
+--TidyPlatesContPanel:AddProfile("Healer")
+--BuildHubPanel(Panels.Healer)
+--function ShowTidyPlatesContHubHealerPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Healer) end
 
 
-Panels.Gladiator = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates Continued"  )
-TidyPlatesContPanel:AddProfile("Gladiator")
-BuildHubPanel(Panels.Gladiator)
-function ShowTidyPlatesContHubGladiatorPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Gladiator) end
+--Panels.Gladiator = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Tidy Plates Continued"  )
+--TidyPlatesContPanel:AddProfile("Gladiator")
+--BuildHubPanel(Panels.Gladiator)
+--function ShowTidyPlatesContHubGladiatorPanel() TidyPlatesContUtility.OpenInterfacePanel(Panels.Gladiator) end
 
 
 local function RefreshPanel(name)
@@ -558,6 +587,7 @@ local function RefreshPanel(name)
 end
 
 TidyPlatesContHubMenus.RefreshPanel = RefreshPanel
+TidyPlatesContHubMenus.CreateProfile = CreateProfile
 
 ---------------------------------------------
 -- Slash Commands
@@ -565,15 +595,20 @@ TidyPlatesContHubMenus.RefreshPanel = RefreshPanel
 
 function ShowTidyPlatesContHubPanel()
 	local profile = TidyPlatesContOptions.ActiveProfile
-	if profile == "Tank" then
-		ShowTidyPlatesContHubTankPanel()
-	elseif profile == "Healer" then
-		ShowTidyPlatesContHubHealerPanel()
-	elseif profile == "Gladiator" then
-		ShowTidyPlatesContHubGladiatorPanel()
+	if profile then
+		TidyPlatesContUtility.OpenInterfacePanel(Panels[profile])
 	else
-		ShowTidyPlatesContHubDamagePanel()
+		TidyPlatesContUtility.OpenInterfacePanel(Panels["Damage"])
 	end
+	--if profile == "Tank" then
+	--	ShowTidyPlatesContHubTankPanel()
+	--elseif profile == "Healer" then
+	--	ShowTidyPlatesContHubHealerPanel()
+	--elseif profile == "Gladiator" then
+	--	ShowTidyPlatesContHubGladiatorPanel()
+	--else
+	--	ShowTidyPlatesContHubDamagePanel()
+	--end
 
 end
 
