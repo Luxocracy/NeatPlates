@@ -24,3 +24,5 @@ $RECYCLE.BIN/
 *.zip
 *.bat
 TODO.txt
+*.sublime-project
+*.sublime-workspace
