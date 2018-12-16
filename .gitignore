@@ -1,3 +1,5 @@
 
 *.zip
 *.bat
+*.sublime-project
+*.sublime-workspace
