@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: Tidy Plates Continued: |cffffffffSimple|r
 ## Notes: Simple TidyPlates skin with some built-in Healer functionality.
 ## Author: FunkyCold

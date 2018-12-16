@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: TidyPlates Continued:|cffa335ee Renaitre|r
 ## Version: v7.0.3
 ## Notes: Renaitre's custom nameplates.
