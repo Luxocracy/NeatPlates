@@ -1,0 +1,8 @@
+## Interface: 80100
+## Title: Neat Plates: Roth
+## Notes: Vanilla-Style Plates.
+## Author: Reinhart
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_Roth.lua
+

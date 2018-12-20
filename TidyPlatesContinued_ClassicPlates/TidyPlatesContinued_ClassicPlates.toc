@@ -1,8 +1,0 @@
-## Interface: 80100
-## Title: Tidy Plates Continued: |cffff6060ClassicPlates
-## Notes: Vanilla-Style Plates.
-## Author: delabarra 
-## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
-
-TidyPlatesContinued_ClassicPlates.lua
-

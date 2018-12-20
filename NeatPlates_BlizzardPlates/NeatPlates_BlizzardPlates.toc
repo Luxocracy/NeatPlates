@@ -1,0 +1,9 @@
+## Interface: 80100
+## Title: Neat Plates: |cFF3782D1BlizzardPlates
+## Notes: Blizzard Vanilla´s Plates.
+## Author: delabarra.
+## Version: 1.5
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_BlizzardPlates.lua
+

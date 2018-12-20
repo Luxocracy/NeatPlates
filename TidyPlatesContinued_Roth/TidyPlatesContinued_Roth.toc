@@ -1,8 +1,0 @@
-## Interface: 80100
-## Title: Tidy Plates Continued: Roth
-## Notes: Vanilla-Style Plates.
-## Author: Reinhart
-## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
-
-TidyPlatesContinued_Roth.lua
-

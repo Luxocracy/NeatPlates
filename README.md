@@ -1,10 +1,10 @@
-# TidyPlatesContinued
+# Neat Plates
 #### From the orginal Tidy Plates
 
 >Tidy Plates enhances World of Warcraft's nameplates.
 >
 >#### Basic Configuration
->Use the command, `'/tidyplates'` as a shortcut to the interface panel for Tidy Plates. On that panel, you'll be able to select from a list of available themes. The theme you choose will affect both appearance and features.
+>Use the command, `'/tidyplates'` as a shortcut to the interface panel for Neat Plates. On that panel, you'll be able to select from a list of available themes. The theme you choose will affect both appearance and features.
 >
 >Use the command, `'/hub'` to configure the mechanics of those included themes. If you're using a custom theme, it might have a different config tool.
 
