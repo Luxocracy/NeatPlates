@@ -73,6 +73,7 @@ local function BuildHubPanel(panel)
 	panel.StyleEnemyBarsOnElite, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnElite", "Elite Units", AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnPlayers", "Players", AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnActive", "Active/Damaged Units", AlignmentColumn, F, 16, 0)
+	panel.StyleEnemyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsClickThrough", "Clickthrough", AlignmentColumn, F, 16, 0)
 
 	ColumnEnd = F
 
@@ -84,6 +85,7 @@ local function BuildHubPanel(panel)
 
 	panel.StyleFriendlyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnPlayers", "Players", AlignmentColumn, F, OffsetColumnB+16, 0)
 	panel.StyleFriendlyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnActive", "Active/Damaged Units", AlignmentColumn, F, OffsetColumnB+16, 0)
+	panel.StyleFriendlyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsClickThrough", "Clickthrough", AlignmentColumn, F, OffsetColumnB+16, 0)
 
 	F =  ColumnEnd
 	panel.HealthBarStyleLabel, F = CreateQuickItemLabel(nil, "Health Bar View:", AlignmentColumn, F, 0, 2)
@@ -552,9 +554,89 @@ local function LoadProfiles(profiles)
 	end
 end
 
+-- Temporary functions that imports settings from TPC
+local function ImportTPCSettings(frame)
+	local profileColor = {
+		["Tank"] = "FF3782D1",
+		["Damage"] = "FFFF1100",
+		["Healer"] = "FF44DD55",
+		["Gladiator"] = "FFAA6600",
+	}
+	local playerName = UnitName("player")
+
+	for k, v in pairs(TidyPlatesContHubSettings) do
+		local profile = k:gsub('HubPanelSettings', '')
+		local profileName = playerName.." "..profile
+
+		NeatPlatesHubProfile.profiles[profileName] = profileColor[profile] or "FFFFFFFF"
+		NeatPlatesHubProfile["HubPanelProfile"..profileName] = v
+	end
+
+	DisableAddOn("TidyPlatesContinued")
+	ReloadUI()
+
+end
+
+local function SettingsManager()
+	local frame = CreateFrame("Frame", "SettingsManager", UIParent)
+
+	frame:SetBackdrop({	bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 },})
+	frame:SetBackdropColor(.1, .1, .1, .6)
+	frame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1)
+
+	frame:SetWidth(500)
+	frame:SetHeight(140)
+
+	frame:SetPoint("CENTER",0,0)
+
+	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	frame.Text:SetFont(NeatPlatesHubLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 14)
+	frame.Text:SetTextColor(255/255, 105/255, 6/255)
+	frame.Text:SetPoint("TOPLEFT", 12, -12)
+	frame.Text:SetJustifyH("LEFT")
+	frame.Text:SetJustifyV("BOTTOM")
+
+
+	frame.Text:SetText("You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)")
+
+	local CancelButton = CreateFrame("Button", "SettingsManagerCancelButton", frame, "NeatPlatesPanelButtonTemplate")
+	CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
+	CancelButton:SetWidth(110)
+	CancelButton:SetText("Cancel")
+
+	CancelButton:SetScript("OnClick", function() frame:Hide(); LoadProfiles(NeatPlatesHubProfile.profiles); end)
+
+	local ImportButton = CreateFrame("Button", "SettingsManagerImportButton", frame, "NeatPlatesPanelButtonTemplate")
+	ImportButton.tooltipText = "Import Settings from TidyPlatesContinued."
+	ImportButton:SetPoint("RIGHT", CancelButton, "LEFT", -12, 0)
+	ImportButton:SetWidth(140)
+	ImportButton:SetText("Import TPC Settings")
+
+	ImportButton:SetScript("OnClick", function() ImportTPCSettings(frame); end)
+
+	frame:Show()
+end
+-- END --
+
 local HubHandler = CreateFrame("Frame")
-HubHandler:SetScript("OnEvent", function(...) local _,_,name = ...; if name == "NeatPlatesHub" then LoadProfiles(NeatPlatesHubProfile.profiles) end end)
+HubHandler:SetScript("OnEvent", function(...)
+	local _,_,name = ...
+	local _,_,_,TPCEnabled = GetAddOnInfo("TidyPlatesContinuedHub")
+
+	if name == "NeatPlatesHub" and not TPCEnabled then
+		LoadProfiles(NeatPlatesHubProfile.profiles)
+	end
+
+	-- Temporary function for transfering settings from old addon
+	if name == "TidyPlatesContinuedHub" then
+		SettingsManager()
+	end
+end)
 HubHandler:RegisterEvent("ADDON_LOADED")
+
+
+
+
 
 --Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Neat Plates" )
 --NeatPlatesPanel:AddProfile("Tank")

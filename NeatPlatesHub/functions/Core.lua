@@ -252,7 +252,11 @@ local function ApplyProfileSettings(theme, source, ...)
 	-- Set Space Between Buffs & Debuffs
 	NeatPlatesWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
 
-	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)
+	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
+
+	-- Manage ClickThrough option of nameplate bars.
+	C_NamePlate.SetNamePlateFriendlyClickThrough(LocalVars.StyleFriendlyBarsClickThrough or false)
+	C_NamePlate.SetNamePlateEnemyClickThrough(LocalVars.StyleEnemyBarsClickThrough or false)
 
 	NeatPlates:ForceUpdate()
 	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS

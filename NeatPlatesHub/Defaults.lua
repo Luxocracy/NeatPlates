@@ -24,12 +24,14 @@ NeatPlatesHubDefaults = {
 	StyleFriendlyBarsInstanceMode = false,
 	StyleFriendlyBarsOnPlayers = true,
 	StyleFriendlyBarsOnNPC = false,
+	StyleFriendlyBarsClickThrough = false,
 
 	StyleEnemyBarsOnActive = true,
 	StyleEnemyBarsOnElite = true,
 	StyleEnemyBarsInstanceMode = false,
 	StyleEnemyBarsOnPlayers = true,
 	StyleEnemyBarsOnNPC = true,
+	StyleEnemyBarsClickThrough = false,
 
 	StyleForceBarsOnTargets = false,
 
