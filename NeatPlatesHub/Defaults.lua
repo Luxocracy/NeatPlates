@@ -255,11 +255,3 @@ NeatPlatesHubDefaults = {
 	FrameBarWidth = 1,
 	--AdvancedHealthTextList = [[return unit.health]],
 }
-
-NeatPlatesHubGlobal = CopyTable(NeatPlatesHubDefaults)
-
-
-
-
-
-

@@ -4,7 +4,7 @@
 ## Author: Daniel/Binbwen
 ## Dependencies: NeatPlates, NeatPlatesWidgets
 ## OptionalDeps: NeatPlatesHubDE, NeatPlatesHubES, NeatPlatesHubMX, NeatPlatesHubFR, NeatPlatesHubKR, NeatPlatesHubRU, NeatPlatesHubCN, NeatPlatesHubTW
-## SavedVariables: NeatPlatesHubCache, NeatPlatesHubGlobal, NeatPlatesHubProfile
+## SavedVariables: NeatPlatesHubProfile
 ## SavedVariablesPerCharacter: NeatPlatesHubSettings
 
 Defaults.lua

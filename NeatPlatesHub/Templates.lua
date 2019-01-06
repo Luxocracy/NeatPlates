@@ -335,31 +335,9 @@ local function CheckVariableIntegrity(objectName)
 	end
 end
 
-local function CheckCacheSet(objectName)
-	for i,v in pairs(NeatPlatesHubDefaults) do
-		if NeatPlatesHubCache[objectName][i] == nil then NeatPlatesHubCache[objectName][i] = v end
-	end
-end
-
-local function GetCacheSet(objectName)
-	if not NeatPlatesHubCache[objectName] then
-		NeatPlatesHubCache[objectName] = {}
-	end
-	CheckCacheSet(objectName)
-	return NeatPlatesHubCache[objectName]
-end
-
 local function CreateVariableSet(objectName)
 	--print("CreateVariableSet", objectName)
-	-- New Behavior: Check for a template
-	local cacheSet = GetCacheSet("SavedTemplate")
-	--NeatPlatesHubSettings[objectName] = CopyTable(cacheSet or NeatPlatesHubDefaults)
-	NeatPlatesHubProfile[objectName] = CopyTable(cacheSet or NeatPlatesHubDefaults)
-
-	-- Old Behavior: Just load defaults
-	--NeatPlatesHubSettings[objectName] = CopyTable( NeatPlatesHubDefaults)
-
-	--return NeatPlatesHubSettings[objectName]
+	NeatPlatesHubProfile[objectName] = CopyTable(NeatPlatesHubDefaults)
 	return NeatPlatesHubProfile[objectName]
 end
 
@@ -404,73 +382,6 @@ end
 
 -- Colors
 local yellow, blue, red, orange = "|cffffff00", "|cFF5599EE", "|cFFFF1100", "|cFFFF9920"
-
-local function PasteSettings(panel)
-	local cacheName, LocalVars
-
-	print(blue.."Settings Retrieved")
-
-	cacheName = "SavedTemplate"
-
-	LocalVars = GetCacheSet(cacheName)
-
-	SetPanelValues(panel, LocalVars)
-	OnPanelItemChange(panel)
-	PlaySound(856)
-end
-
-local function CopySettings(panel)
-	local cacheName, LocalVars
-
---[[
-	if IsShiftKeyDown() then
-		cacheName = panel.objectName
-		--print(blue.."Settings copied to the "..yellow..panel.name..blue.." clipboard."..yellow.."  To use these values, hold down 'Shift' while clicking 'Paste'.")
-	else
-		cacheName = "GlobalClipboard"
-		--print(blue.."Settings copied to the clipboard.")
-	end
---]]
-
-	cacheName = "SavedTemplate"
-	print(blue.."Settings Stored")
-
-	-- Get a pointer for the cache set
-	LocalVars = GetCacheSet(cacheName)
-
-	-- Store the panel values into the LocalVars/Cache table
-	GetPanelValues(panel, LocalVars)
-
-	PlaySound(856)
-end
-
-local function ResetSettings(panel)
-	if IsShiftKeyDown() then
-		ClearVariableSet(panel)
-		CreateVariableSet(panel.objectName)
-		ReloadUI()
-	else
-		SetPanelValues(panel, NeatPlatesHubDefaults)
-		OnPanelItemChange(panel)
-		print(yellow.."Resetting "..orange..panel.name..yellow.." Configuration to Default")
-		print(yellow.."Holding down "..blue.."Shift"..yellow.." while clicking "..red.."Reset"..yellow.." will clear all saved settings, cached data, and reload the user interface.")
-	end
-end
-
-local function RemoveProfile(panel)
-	if panel.objectName == "HubPanelProfileDefault" then print(red.."Sorry, can't delete the Default profile :("); return end
-
-	panel:Hide()	-- Hide panel, as it cannot be deleted
-
-	-- Remove interface category for profile
-	table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
-		if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
-	end)
-
-	RemoveVariableSet(panel)	-- Remove stored variables
-	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
-	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
-end
 
 local function AddDropdownTitle(title)
 	local DropdownTitle, DropdownSpacer = {}, {}
@@ -609,55 +520,56 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	-- Config Management Buttons
 	-----------------
 
-	-- Paste
-	local PasteThemeDataButton = CreateFrame("Button", objectName.."PasteThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	PasteThemeDataButton.tooltipText = "Loads settings from the stored template"
-	PasteThemeDataButton:SetPoint("TOPRIGHT", -40, -22)
-	PasteThemeDataButton:SetWidth(110)
-	PasteThemeDataButton:SetScale(.85)
-	PasteThemeDataButton:SetText("Load Template")
+	---- Paste
+	--local PasteThemeDataButton = CreateFrame("Button", objectName.."PasteThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
+	--PasteThemeDataButton.tooltipText = "Loads settings from the stored template"
+	--PasteThemeDataButton:SetPoint("TOPRIGHT", -40, -22)
+	--PasteThemeDataButton:SetWidth(110)
+	--PasteThemeDataButton:SetScale(.85)
+	--PasteThemeDataButton:SetText("Load Template")
 
-	PasteThemeDataButton:SetScript("OnClick", function() PasteSettings(panel); end)
+	--PasteThemeDataButton:SetScript("OnClick", function() PasteSettings(panel); end)
 
-	-- Copy
-	local CopyThemeDataButton = CreateFrame("Button", objectName.."CopyThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	CopyThemeDataButton.tooltipText = "Set template using current settings"
-	---- This feature works between matching panel types (ie. Hub/Damage to Hub/Damage)
-	CopyThemeDataButton:SetPoint("TOPRIGHT", PasteThemeDataButton, "TOPLEFT", -4, 0)
-	CopyThemeDataButton:SetWidth(110)
-	CopyThemeDataButton:SetScale(.85)
-	CopyThemeDataButton:SetText("Save Template")
+	---- Copy
+	--local CopyThemeDataButton = CreateFrame("Button", objectName.."CopyThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
+	--CopyThemeDataButton.tooltipText = "Set template using current settings"
+	------ This feature works between matching panel types (ie. Hub/Damage to Hub/Damage)
+	--CopyThemeDataButton:SetPoint("TOPRIGHT", PasteThemeDataButton, "TOPLEFT", -4, 0)
+	--CopyThemeDataButton:SetWidth(110)
+	--CopyThemeDataButton:SetScale(.85)
+	--CopyThemeDataButton:SetText("Save Template")
 
-	CopyThemeDataButton:SetScript("OnClick", function() CopySettings(panel); end)
+	--CopyThemeDataButton:SetScript("OnClick", function() CopySettings(panel); end)
 
-	-- Reset
-	local ReloadThemeDataButton = CreateFrame("Button", objectName.."ReloadThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	ReloadThemeDataButton.tooltipText = "Resets the configuration to Default.  Holding down 'Shift' will also clear saved unit data, and restart your UI."
-	ReloadThemeDataButton:SetPoint("TOPRIGHT", CopyThemeDataButton, "TOPLEFT", -4, 0)
-	ReloadThemeDataButton:SetWidth(60)
-	ReloadThemeDataButton:SetScale(.85)
-	ReloadThemeDataButton:SetText("Reset")
+	---- Reset
+	--local ReloadThemeDataButton = CreateFrame("Button", objectName.."ReloadThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
+	--ReloadThemeDataButton.tooltipText = "Resets the configuration to Default.  Holding down 'Shift' will also clear saved unit data, and restart your UI."
+	--ReloadThemeDataButton:SetPoint("TOPRIGHT", CopyThemeDataButton, "TOPLEFT", -4, 0)
+	--ReloadThemeDataButton:SetWidth(60)
+	--ReloadThemeDataButton:SetScale(.85)
+	--ReloadThemeDataButton:SetText("Reset")
 
-	ReloadThemeDataButton:SetScript("OnClick", function()
-		PlaySound(856); ResetSettings(panel);
-	end)
+	--ReloadThemeDataButton:SetScript("OnClick", function()
+	--	PlaySound(856); ResetSettings(panel);
+	--end)
 
-	-- Remove
-	local RemoveProfileButton = CreateFrame("Button", objectName.."RemoveProfileButton", panel, "NeatPlatesPanelButtonTemplate")
-	RemoveProfileButton.tooltipText = "Deletes the current profile"
-	RemoveProfileButton:SetPoint("TOP", PasteThemeDataButton, "BOTTOM", 0, -4)
-	RemoveProfileButton:SetWidth(110)
-	RemoveProfileButton:SetScale(.85)
-	RemoveProfileButton:SetText("Delete Profile")
+	---- Remove
+	--local RemoveProfileButton = CreateFrame("Button", objectName.."RemoveProfileButton", panel, "NeatPlatesPanelButtonTemplate")
+	--RemoveProfileButton.tooltipText = "Deletes the current profile"
+	--RemoveProfileButton:SetPoint("TOP", RenameProfileButton, "BOTTOM", 0, -4)
+	--RemoveProfileButton:SetWidth(110)
+	--RemoveProfileButton:SetScale(.85)
+	--RemoveProfileButton:SetText("Delete Profile")
 
-	RemoveProfileButton:SetScript("OnClick", function()
-		PlaySound(856); RemoveProfile(panel);
-	end)
+	--RemoveProfileButton:SetScript("OnClick", function()
+	--	PlaySound(856); RemoveProfile(panel);
+	--end)
 
 -- [[
 	-- Bookmark/Table of Contents Button
 	local BookmarkButton = CreateFrame("Button", objectName.."BookmarkButton", panel, "NeatPlatesPanelButtonTemplate")
-	BookmarkButton:SetPoint("TOPRIGHT", ReloadThemeDataButton, "TOPLEFT", -4, 0)
+	--BookmarkButton:SetPoint("TOPRIGHT", ReloadThemeDataButton, "TOPLEFT", -4, 0)
+	BookmarkButton:SetPoint("TOPRIGHT", -40, -22)
 	BookmarkButton:SetWidth(110)
 	BookmarkButton:SetScale(.85)
 	BookmarkButton:SetText("Categories")
@@ -821,5 +733,4 @@ end
 
 NeatPlatesHubRapidPanel.CreateInterfacePanel = CreateInterfacePanel
 NeatPlatesHubRapidPanel.CreateVariableSet = CreateVariableSet
-
-NeatPlatesUtility.GetCacheSet = GetCacheSet
+NeatPlatesHubRapidPanel.RemoveVariableSet = RemoveVariableSet

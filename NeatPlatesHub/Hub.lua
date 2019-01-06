@@ -577,8 +577,8 @@ local function ImportTPCSettings(frame)
 
 end
 
-local function SettingsManager()
-	local frame = CreateFrame("Frame", "SettingsManager", UIParent)
+local function ImportSettingsPrompt()
+	local frame = CreateFrame("Frame", "ImportSettingsPrompt", UIParent)
 
 	frame:SetBackdrop({	bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 },})
 	frame:SetBackdropColor(.1, .1, .1, .6)
@@ -599,14 +599,14 @@ local function SettingsManager()
 
 	frame.Text:SetText("You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)")
 
-	local CancelButton = CreateFrame("Button", "SettingsManagerCancelButton", frame, "NeatPlatesPanelButtonTemplate")
+	local CancelButton = CreateFrame("Button", "ImportSettingsPromptCancelButton", frame, "NeatPlatesPanelButtonTemplate")
 	CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
 	CancelButton:SetWidth(110)
 	CancelButton:SetText("Cancel")
 
 	CancelButton:SetScript("OnClick", function() frame:Hide(); LoadProfiles(NeatPlatesHubProfile.profiles); end)
 
-	local ImportButton = CreateFrame("Button", "SettingsManagerImportButton", frame, "NeatPlatesPanelButtonTemplate")
+	local ImportButton = CreateFrame("Button", "ImportSettingsPromptImportButton", frame, "NeatPlatesPanelButtonTemplate")
 	ImportButton.tooltipText = "Import Settings from TidyPlatesContinued."
 	ImportButton:SetPoint("RIGHT", CancelButton, "LEFT", -12, 0)
 	ImportButton:SetWidth(140)
@@ -629,7 +629,7 @@ HubHandler:SetScript("OnEvent", function(...)
 
 	-- Temporary function for transfering settings from old addon
 	if name == "TidyPlatesContinuedHub" then
-		SettingsManager()
+		ImportSettingsPrompt()
 	end
 end)
 HubHandler:RegisterEvent("ADDON_LOADED")

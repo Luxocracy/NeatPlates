@@ -93,6 +93,21 @@ function NeatPlatesPanel.RemoveProfile(self, profileName )
 	end)
 end
 
+local function RemoveProfile(panel)
+	if panel.objectName == "HubPanelProfileDefault" then print(red.."Sorry, can't delete the Default profile :("); return end
+
+	panel:Hide()	-- Hide panel, as it cannot be deleted
+
+	-- Remove interface category for profile
+	table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
+		if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
+	end)
+
+	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
+	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
+	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
+end
+
 local function SetNameplateVisibility(cvar, mode, combat)
 	if mode == DURING_COMBAT then
 		if combat then
@@ -167,7 +182,7 @@ end
 
 local function ApplyPanelSettings()
 	-- Theme
-	SetTheme(NeatPlatesOptions.ActiveTheme or NeatPlatesUtility.GetCacheSet("SavedTemplate")["Theme"] or FirstTryTheme)
+	SetTheme(NeatPlatesOptions.ActiveTheme or FirstTryTheme)
 
 	-- This is here in case the theme couldn't be loaded, and the core falls back to defaults
 	--NeatPlatesOptions.ActiveTheme = NeatPlatesInternal.activeThemeName
@@ -424,7 +439,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	panel.ProfileLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ProfileLabel:SetFont(font, 22)
-	panel.ProfileLabel:SetText("Profile")
+	panel.ProfileLabel:SetText("Profile Selection")
 	panel.ProfileLabel:SetPoint("TOPLEFT", panel.ActiveThemeDropdown, "BOTTOMLEFT", 20, -20)
 	panel.ProfileLabel:SetTextColor(255/255, 105/255, 6/255)
 
@@ -480,12 +495,73 @@ local function BuildInterfacePanel(panel)
 
 
 	----------------------------------------------
+	-- Profile Management
+	----------------------------------------------
+
+	panel.ProfileManagementLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.ProfileManagementLabel:SetFont(font, 22)
+	panel.ProfileManagementLabel:SetText("Profile Management")
+	panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.ThirdSpecDropdown, "BOTTOMLEFT", 20, -20)
+	panel.ProfileManagementLabel:SetTextColor(255/255, 105/255, 6/255)
+
+	-- Profile Name
+	panel.ProfileName = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.ProfileName:SetPoint("TOPLEFT", panel.ProfileManagementLabel, "BOTTOMLEFT", 0, -20)
+	panel.ProfileName:SetWidth(170)
+	panel.ProfileName:SetJustifyH("LEFT")
+	panel.ProfileName:SetText("Profile Name")
+
+	panel.ProfileNameEditBox = CreateFrame("EditBox", "NeatPlatesOptions_ProfileNameEditBox", panel, "InputBoxTemplate")
+	panel.ProfileNameEditBox:SetWidth(124)
+	panel.ProfileNameEditBox:SetHeight(25)
+	panel.ProfileNameEditBox:SetPoint("TOPLEFT", panel.ProfileName, "BOTTOMLEFT", 4, 0)
+	panel.ProfileNameEditBox:SetAutoFocus(false)
+	panel.ProfileNameEditBox:SetFont("media\\DefaultFont.TTF", 11, "NONE")
+	panel.ProfileNameEditBox:SetFrameStrata("DIALOG")
+
+	-- Profile Color picker
+	panel.ProfileColorBox = PanelHelpers:CreateColorBox("ProfileColor", panel, "", nil, 0, .5, 1, 1)
+	panel.ProfileColorBox:SetPoint("LEFT", panel.ProfileNameEditBox, "RIGHT")
+	panel.ProfileColorBox:SetScale(0.85)
+
+	-- Create Profile Button
+	panel.CreateProfile = CreateFrame("Button", "NeatPlatesOptions_CreateProfile", panel, "NeatPlatesPanelButtonTemplate")
+	panel.CreateProfile:SetPoint("LEFT", panel.ProfileColorBox, "RIGHT", 3, 0)
+	panel.CreateProfile:SetWidth(100)
+	panel.CreateProfile:SetText("Add Profile")
+	panel.CreateProfile:SetScript("OnClick", function(self) NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(panel.ProfileNameEditBox:GetText(), RGBToColorCode(panel.ProfileColorBox:GetBackdropColor()))); panel.ProfileNameEditBox:SetText("") end)
+
+	-- Clone Profile Button
+	panel.CloneProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.CloneProfile:SetPoint("TOPLEFT", panel.ProfileNameEditBox, "BOTTOMLEFT", -3, -8)
+	panel.CloneProfile:SetWidth(170)
+	panel.CloneProfile:SetJustifyH("LEFT")
+	panel.CloneProfile:SetText("Clone Profile")
+
+	panel.CloneProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCloneProfileDropdown", panel, HubProfileList, nil, nil, true)
+	panel.CloneProfileDropdown.tooltipText = "Copies the selected profile into a new profile using the name set in 'Profile Name'"
+	panel.CloneProfileDropdown:SetPoint("TOPLEFT", panel.CloneProfile, "BOTTOMLEFT", -20, -2)
+	panel.CloneProfileDropdown.OnValueChanged = function(self) NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(panel.ProfileNameEditBox:GetText(), RGBToColorCode(panel.ProfileColorBox:GetBackdropColor()))); panel.ProfileNameEditBox:SetText("") end
+
+
+	-- Remove Profile Button
+	panel.RemoveProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.RemoveProfile:SetPoint("TOPLEFT", panel.CloneProfile, "TOPLEFT", 140, 0)
+	panel.RemoveProfile:SetWidth(170)
+	panel.RemoveProfile:SetJustifyH("LEFT")
+	panel.RemoveProfile:SetText("Remove Profile")
+
+	panel.RemoveProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesRemoveProfileDropdown", panel, HubProfileList, nil, nil, true)
+	panel.RemoveProfileDropdown:SetPoint("TOPLEFT", panel.RemoveProfile, "BOTTOMLEFT", -20, -2)
+	panel.RemoveProfileDropdown.OnValueChanged = function(self) RemoveProfile(_G["HubPanelProfile"..panel.RemoveProfileDropdown:GetValue().."_InterfaceOptionsPanel"]); panel.RemoveProfileDropdown:SetValue(nil) end
+
+	----------------------------------------------
 	-- Automation
 	----------------------------------------------
 	panel.AutomationLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.AutomationLabel:SetFont(font, 22)
 	panel.AutomationLabel:SetText("Automation")
-	panel.AutomationLabel:SetPoint("TOPLEFT", panel.ThirdSpecDropdown, "BOTTOMLEFT", 20, -20)
+	panel.AutomationLabel:SetPoint("TOPLEFT", panel.CloneProfileDropdown, "BOTTOMLEFT", 20, -20)
 	panel.AutomationLabel:SetTextColor(255/255, 105/255, 6/255)
 
 
@@ -582,33 +658,6 @@ local function BuildInterfacePanel(panel)
 	ResetButton:SetPoint("TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -10)
 	ResetButton:SetWidth(155)
 	ResetButton:SetText("Reset Configuration")
-
-	-- Profile settings
-	local ProfileEditLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	ProfileEditLabel:SetPoint("TOPLEFT", ResetButton, "BOTTOMLEFT", 5, -50)
-	ProfileEditLabel:SetWidth(170)
-	ProfileEditLabel:SetJustifyH("LEFT")
-	ProfileEditLabel:SetText("Profile Name")
-
-	local ProfileEditBox = CreateFrame("EditBox", "NeatPlatesOptions_ProfileEditBox", panel, "InputBoxTemplate")
-	ProfileEditBox:SetWidth(150)
-	ProfileEditBox:SetHeight(25)
-	ProfileEditBox:SetPoint("TOP", ProfileEditLabel, "BOTTOM", -8, 0)
-	ProfileEditBox:SetAutoFocus(false)
-	ProfileEditBox:SetFont("media\\DefaultFont.TTF", 11, "NONE")
-	ProfileEditBox:SetFrameStrata("DIALOG")
-
-	-- Profile Color picker
-	local ProfileColorBox = PanelHelpers:CreateColorBox("ProfileColor", panel, "", nil, 0, .5, 1, 1)
-	ProfileColorBox:SetPoint("LEFT", ProfileEditBox, "RIGHT")
-
-	-- Add Profile
-	local AddProfileButton = CreateFrame("Button", "NeatPlatesOptions_AddProfileButton", panel, "NeatPlatesPanelButtonTemplate")
-	AddProfileButton:SetPoint("TOPLEFT", ProfileEditBox, "BOTTOMLEFT", -5, 0)
-	AddProfileButton:SetWidth(155)
-	AddProfileButton:SetText("Add Profile")
-	AddProfileButton:SetScript("OnClick", function(self) NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(ProfileEditBox:GetText(), RGBToColorCode(ProfileColorBox:GetBackdropColor()))); ProfileEditBox:SetText("") end)
-
 
 
 	-- Update Functions
