@@ -335,9 +335,9 @@ local function CheckVariableIntegrity(objectName)
 	end
 end
 
-local function CreateVariableSet(objectName)
+local function CreateVariableSet(objectName, source)
 	--print("CreateVariableSet", objectName)
-	NeatPlatesHubProfile[objectName] = CopyTable(NeatPlatesHubDefaults)
+	NeatPlatesHubProfile[objectName] = CopyTable(NeatPlatesHubProfile[source] or NeatPlatesHubDefaults)
 	return NeatPlatesHubProfile[objectName]
 end
 

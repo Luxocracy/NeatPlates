@@ -81,20 +81,20 @@ end
 NeatPlates.GetProfile = GetProfile
 
 
-function NeatPlatesPanel.AddProfile(self, profileName )
+function NeatPlatesPanel.AddProfile(self, profileName)
 	if profileName then
 		HubProfileList[#HubProfileList+1] = { text = profileName, value = profileName, }
 	end
 end
 
-function NeatPlatesPanel.RemoveProfile(self, profileName )
+function NeatPlatesPanel.RemoveProfile(self, profileName)
 	table.foreach(HubProfileList, function(i, profile)
-		if profile.value == profileName then HubProfileList[i] = nil end
+		if profile.value == profileName then table.remove(HubProfileList, i) end
 	end)
 end
 
 local function RemoveProfile(panel)
-	if panel.objectName == "HubPanelProfileDefault" then print(red.."Sorry, can't delete the Default profile :("); return end
+	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red.."Sorry, can't delete the Default profile :("); return end
 
 	panel:Hide()	-- Hide panel, as it cannot be deleted
 
@@ -106,6 +106,18 @@ local function RemoveProfile(panel)
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
 	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
 	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
+end
+
+local function ValidateProfileName(name)
+	if not name or name == "" then
+		print(orange.."NeatPlates: "..red.."You need to specify a 'Profile Name'.")
+		return false -- Invalid name
+	elseif NeatPlatesHubProfile.profiles[name] then
+		print(orange.."NeatPlates: "..yellow.."The profile '"..name.."' already exists, try a different name.")
+		return false -- Name already exists, Invalid name
+	else
+		return true -- Valid name
+	end
 end
 
 local function SetNameplateVisibility(cvar, mode, combat)
@@ -529,7 +541,6 @@ local function BuildInterfacePanel(panel)
 	panel.CreateProfile:SetPoint("LEFT", panel.ProfileColorBox, "RIGHT", 3, 0)
 	panel.CreateProfile:SetWidth(100)
 	panel.CreateProfile:SetText("Add Profile")
-	panel.CreateProfile:SetScript("OnClick", function(self) NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(panel.ProfileNameEditBox:GetText(), RGBToColorCode(panel.ProfileColorBox:GetBackdropColor()))); panel.ProfileNameEditBox:SetText("") end)
 
 	-- Clone Profile Button
 	panel.CloneProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
@@ -539,10 +550,7 @@ local function BuildInterfacePanel(panel)
 	panel.CloneProfile:SetText("Clone Profile")
 
 	panel.CloneProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCloneProfileDropdown", panel, HubProfileList, nil, nil, true)
-	panel.CloneProfileDropdown.tooltipText = "Copies the selected profile into a new profile using the name set in 'Profile Name'"
 	panel.CloneProfileDropdown:SetPoint("TOPLEFT", panel.CloneProfile, "BOTTOMLEFT", -20, -2)
-	panel.CloneProfileDropdown.OnValueChanged = function(self) NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(panel.ProfileNameEditBox:GetText(), RGBToColorCode(panel.ProfileColorBox:GetBackdropColor()))); panel.ProfileNameEditBox:SetText("") end
-
 
 	-- Remove Profile Button
 	panel.RemoveProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
@@ -553,7 +561,6 @@ local function BuildInterfacePanel(panel)
 
 	panel.RemoveProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesRemoveProfileDropdown", panel, HubProfileList, nil, nil, true)
 	panel.RemoveProfileDropdown:SetPoint("TOPLEFT", panel.RemoveProfile, "BOTTOMLEFT", -20, -2)
-	panel.RemoveProfileDropdown.OnValueChanged = function(self) RemoveProfile(_G["HubPanelProfile"..panel.RemoveProfileDropdown:GetValue().."_InterfaceOptionsPanel"]); panel.RemoveProfileDropdown:SetValue(nil) end
 
 	----------------------------------------------
 	-- Automation
@@ -670,6 +677,36 @@ local function BuildInterfacePanel(panel)
 	panel.ThirdSpecDropdown.OnValueChanged = OnValueChange
 	panel.FourthSpecDropdown.OnValueChanged = OnValueChange
 
+
+	-- Profile Functions
+	panel.CreateProfile:SetScript("OnClick", function(self)
+		local name = panel.ProfileNameEditBox:GetText()
+		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
+
+		if ValidateProfileName(name) then
+			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(name, color))
+			panel.ProfileNameEditBox:SetText("")
+		end
+	end)
+
+	panel.CloneProfileDropdown.OnValueChanged = function(self)
+		local name = panel.ProfileNameEditBox:GetText()
+		local copy = panel.CloneProfileDropdown:GetValue()
+		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
+
+		if ValidateProfileName(name) then
+			NeatPlatesHubProfile.profiles[name] = color
+			NeatPlatesHubRapidPanel.CreateVariableSet("HubPanelProfile"..name, "HubPanelProfile"..copy)
+
+			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(name, color))
+			panel.ProfileNameEditBox:SetText("")
+		end
+	end
+
+	panel.RemoveProfileDropdown.OnValueChanged = function(self)
+		RemoveProfile(_G["HubPanelProfile"..panel.RemoveProfileDropdown:GetValue().."_InterfaceOptionsPanel"])
+		panel.RemoveProfileDropdown:SetValue(nil)
+	end
 
 
 	-- Blizzard Nameplate Options Button
