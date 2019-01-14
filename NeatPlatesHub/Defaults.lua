@@ -2,8 +2,7 @@
 local CopyTable = NeatPlatesUtility.copyTable
 
 NeatPlatesHubCache = {}
-NeatPlatesHubSettings = {}
-NeatPlatesHubProfile = {
+NeatPlatesHubSettings = {
 	profiles = {
 		["Default"] = "FFFFFFFF"
 	}

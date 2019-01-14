@@ -4,8 +4,7 @@
 ## Author: Luxocracy and friends
 ## Dependencies: NeatPlates, NeatPlatesWidgets
 ## OptionalDeps: NeatPlatesHubDE, NeatPlatesHubES, NeatPlatesHubMX, NeatPlatesHubFR, NeatPlatesHubKR, NeatPlatesHubRU, NeatPlatesHubCN, NeatPlatesHubTW
-## SavedVariables: NeatPlatesHubProfile
-## SavedVariablesPerCharacter: NeatPlatesHubSettings
+## SavedVariables: NeatPlatesHubSettings
 
 Defaults.lua
 Helpers.lua

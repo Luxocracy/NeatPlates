@@ -83,7 +83,7 @@ NeatPlates.GetProfile = GetProfile
 
 function NeatPlatesPanel.AddProfile(self, profileName)
 	if profileName then
-		HubProfileList[#HubProfileList+1] = { text = profileName, value = profileName, }
+		HubProfileList[#HubProfileList+1] = { text = profileName, value = profileName }
 	end
 end
 
@@ -108,15 +108,29 @@ local function RemoveProfile(panel)
 	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
 end
 
-local function ValidateProfileName(name)
+local function ValidateProfileName(name, callback)
 	if not name or name == "" then
+		-- Invalid Name
 		print(orange.."NeatPlates: "..red.."You need to specify a 'Profile Name'.")
-		return false -- Invalid name
-	elseif NeatPlatesHubProfile.profiles[name] then
-		print(orange.."NeatPlates: "..yellow.."The profile '"..name.."' already exists, try a different name.")
-		return false -- Name already exists, Invalid name
+	elseif NeatPlatesHubSettings.profiles[name] then
+		-- Profile name alredy exists, ask permission to overwrite.
+		StaticPopupDialogs["NeatPlates_OverwriteProfile"] = {
+		  text = "A profile with this name already exists, do you wish to overwrite it?",
+		  button1 = "Yes",
+		  button2 = "No",
+		  OnAccept = function()
+		  	print(orange.."NeatPlates: "..blue.."The profile '"..name.."' was successfully overwritten.")
+		  	callback(true)	-- Profile name exists, but it is okay to overwrite it.
+		  end,
+		  OnCancel = function() print(orange.."NeatPlates: "..yellow.."The profile '"..name.."' already exists, try a different name.") end,
+		  timeout = 0,
+		  whileDead = true,
+		  hideOnEscape = true,
+		  preferredIndex = 3,  -- avoid some UI taint, see http://www.wowace.com/announcements/how-to-avoid-some-ui-taint/
+		}
+		StaticPopup_Show("NeatPlates_OverwriteProfile")
 	else
-		return true -- Valid name
+		callback(false) -- Profile name doesn't exist, create it.
 	end
 end
 
@@ -683,10 +697,10 @@ local function BuildInterfacePanel(panel)
 		local name = panel.ProfileNameEditBox:GetText()
 		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
 
-		if ValidateProfileName(name) then
+		ValidateProfileName(name, function()
 			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(name, color))
 			panel.ProfileNameEditBox:SetText("")
-		end
+		end)
 	end)
 
 	panel.CloneProfileDropdown.OnValueChanged = function(self)
@@ -694,13 +708,11 @@ local function BuildInterfacePanel(panel)
 		local copy = panel.CloneProfileDropdown:GetValue()
 		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
 
-		if ValidateProfileName(name) then
-			NeatPlatesHubProfile.profiles[name] = color
+		ValidateProfileName(name, function()
 			NeatPlatesHubRapidPanel.CreateVariableSet("HubPanelProfile"..name, "HubPanelProfile"..copy)
-
 			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(name, color))
 			panel.ProfileNameEditBox:SetText("")
-		end
+		end)
 	end
 
 	panel.RemoveProfileDropdown.OnValueChanged = function(self)

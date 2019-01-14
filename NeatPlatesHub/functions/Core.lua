@@ -170,7 +170,7 @@ local function UseVariables(profileName)
 
 			local objectName = "HubPanelProfile"..suffix
 
-			LocalVars = NeatPlatesHubProfile[objectName] or CreateVariableSet(objectName)
+			LocalVars = NeatPlatesHubSettings[objectName] or CreateVariableSet(objectName)
 
 			MergeProfileValues(LocalVars, NeatPlatesHubDefaults)		-- If the value doesn't exist in the settings, create it.
 
@@ -335,48 +335,9 @@ end
 -- Function List
 ---------------------------------------------
 NeatPlatesHubFunctions.IsOffTanked = IsOffTanked
-NeatPlatesHubFunctions.UseDamageVariables = UseDamageVariables
-NeatPlatesHubFunctions.UseTankVariables = UseTankVariables
 NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions
-
-
-
----------------------------------------------
--- Old, will be removed
----------------------------------------------
-local function UseDamageVariables()
-	local objectName = "HubPanelSettingsDamage"
-	LocalVars = NeatPlatesHubSettings[objectName] or CreateVariableSet(objectName)
-
-	CallbackUpdate()
-
-	--EnableWatchers()
-	return LocalVars
-end
-
-local function UseTankVariables()
-	local objectName = "HubPanelSettingsTank"
-	LocalVars = NeatPlatesHubSettings[objectName] or CreateVariableSet(objectName)
-
-	CallbackUpdate()
-
-	--EnableWatchers()
-	return LocalVars
-end
-
-NeatPlatesHubFunctions.UseDamageVariables = UseDamageVariables
-NeatPlatesHubFunctions.UseTankVariables = UseTankVariables
-
-
-
-
-
-
-
-
-
 
 
 

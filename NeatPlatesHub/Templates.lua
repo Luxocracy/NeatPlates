@@ -330,15 +330,14 @@ end
 
 local function CheckVariableIntegrity(objectName)
 	for i,v in pairs(NeatPlatesHubDefaults) do
-		--if NeatPlatesHubSettings[objectName][i] == nil then NeatPlatesHubSettings[objectName][i] = v end
-		if NeatPlatesHubProfile[objectName][i] == nil then NeatPlatesHubProfile[objectName][i] = v end
+		if NeatPlatesHubSettings[objectName][i] == nil then NeatPlatesHubSettings[objectName][i] = v end
 	end
 end
 
 local function CreateVariableSet(objectName, source)
 	--print("CreateVariableSet", objectName)
-	NeatPlatesHubProfile[objectName] = CopyTable(NeatPlatesHubProfile[source] or NeatPlatesHubDefaults)
-	return NeatPlatesHubProfile[objectName]
+	NeatPlatesHubSettings[objectName] = CopyTable(NeatPlatesHubSettings[source] or NeatPlatesHubDefaults)
+	return NeatPlatesHubSettings[objectName]
 end
 
 local function GetVariableSet(panel)
@@ -346,8 +345,7 @@ local function GetVariableSet(panel)
 
 		local objectName = panel.objectName
 
-		--local settings = NeatPlatesHubSettings[objectName]
-		local settings = NeatPlatesHubProfile[objectName]
+		local settings = NeatPlatesHubSettings[objectName]
 		if not settings then
 
 			settings = CreateVariableSet(objectName)
@@ -360,17 +358,15 @@ local function GetVariableSet(panel)
 end
 
 local function ClearVariableSet(panel)
-	--for i, v in pairs(NeatPlatesHubSettings[panel.objectName]) do NeatPlatesHubSettings[panel.objectName][i] = nil end
-	for i, v in pairs(NeatPlatesHubProfile[panel.objectName]) do NeatPlatesHubProfile[panel.objectName][i] = nil end
-	--NeatPlatesHubSettings[panel.objectName] = nil
-	NeatPlatesHubProfile[panel.objectName] = nil
+	for i, v in pairs(NeatPlatesHubSettings[panel.objectName]) do NeatPlatesHubSettings[panel.objectName][i] = nil end
+	NeatPlatesHubSettings[panel.objectName] = nil
 	ReloadUI()
 end
 
 local function RemoveVariableSet(panel)
 	if panel and panel.objectName then
-		NeatPlatesHubProfile[panel.objectName] = nil
-		NeatPlatesHubProfile.profiles[panel.objectName:gsub("HubPanelProfile", "")] = nil
+		NeatPlatesHubSettings[panel.objectName] = nil
+		NeatPlatesHubSettings.profiles[panel.objectName:gsub("HubPanelProfile", "")] = nil
 	end
 end
 
@@ -519,51 +515,6 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	-----------------
 	-- Config Management Buttons
 	-----------------
-
-	---- Paste
-	--local PasteThemeDataButton = CreateFrame("Button", objectName.."PasteThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	--PasteThemeDataButton.tooltipText = "Loads settings from the stored template"
-	--PasteThemeDataButton:SetPoint("TOPRIGHT", -40, -22)
-	--PasteThemeDataButton:SetWidth(110)
-	--PasteThemeDataButton:SetScale(.85)
-	--PasteThemeDataButton:SetText("Load Template")
-
-	--PasteThemeDataButton:SetScript("OnClick", function() PasteSettings(panel); end)
-
-	---- Copy
-	--local CopyThemeDataButton = CreateFrame("Button", objectName.."CopyThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	--CopyThemeDataButton.tooltipText = "Set template using current settings"
-	------ This feature works between matching panel types (ie. Hub/Damage to Hub/Damage)
-	--CopyThemeDataButton:SetPoint("TOPRIGHT", PasteThemeDataButton, "TOPLEFT", -4, 0)
-	--CopyThemeDataButton:SetWidth(110)
-	--CopyThemeDataButton:SetScale(.85)
-	--CopyThemeDataButton:SetText("Save Template")
-
-	--CopyThemeDataButton:SetScript("OnClick", function() CopySettings(panel); end)
-
-	---- Reset
-	--local ReloadThemeDataButton = CreateFrame("Button", objectName.."ReloadThemeDataButton", panel, "NeatPlatesPanelButtonTemplate")
-	--ReloadThemeDataButton.tooltipText = "Resets the configuration to Default.  Holding down 'Shift' will also clear saved unit data, and restart your UI."
-	--ReloadThemeDataButton:SetPoint("TOPRIGHT", CopyThemeDataButton, "TOPLEFT", -4, 0)
-	--ReloadThemeDataButton:SetWidth(60)
-	--ReloadThemeDataButton:SetScale(.85)
-	--ReloadThemeDataButton:SetText("Reset")
-
-	--ReloadThemeDataButton:SetScript("OnClick", function()
-	--	PlaySound(856); ResetSettings(panel);
-	--end)
-
-	---- Remove
-	--local RemoveProfileButton = CreateFrame("Button", objectName.."RemoveProfileButton", panel, "NeatPlatesPanelButtonTemplate")
-	--RemoveProfileButton.tooltipText = "Deletes the current profile"
-	--RemoveProfileButton:SetPoint("TOP", RenameProfileButton, "BOTTOM", 0, -4)
-	--RemoveProfileButton:SetWidth(110)
-	--RemoveProfileButton:SetScale(.85)
-	--RemoveProfileButton:SetText("Delete Profile")
-
-	--RemoveProfileButton:SetScript("OnClick", function()
-	--	PlaySound(856); RemoveProfile(panel);
-	--end)
 
 -- [[
 	-- Bookmark/Table of Contents Button
@@ -731,6 +682,12 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	return panel
 end
 
+local function UpdateInterfacePanelName(panel, panelTitle)
+	panel.name = panelTitle
+	panel.MainLabel = CreateQuickHeadingLabel(nil, panelTitle, panel, nil, 16, 8)
+end
+
 NeatPlatesHubRapidPanel.CreateInterfacePanel = CreateInterfacePanel
+NeatPlatesHubRapidPanel.UpdateInterfacePanelName = UpdateInterfacePanelName
 NeatPlatesHubRapidPanel.CreateVariableSet = CreateVariableSet
 NeatPlatesHubRapidPanel.RemoveVariableSet = RemoveVariableSet

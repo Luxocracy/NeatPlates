@@ -55,7 +55,6 @@ local cFriendly = "|cffc8e915"
 -- Generate Panel
 ------------------------------------------------------------------
 local function BuildHubPanel(panel)
-	panel:Hide()
 	local objectName = panel.objectName
 	local AlignmentColumn = panel.AlignmentColumn
 	local OffsetColumnB = 200						-- 240
@@ -522,7 +521,7 @@ local function BuildHubPanel(panel)
 		ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
 	end
 
-	--panel:Hide()
+	panel:Hide()
 end
 
 
@@ -531,12 +530,18 @@ local Panels = {}
 
 local function CreateProfile(label, color)
 	color = color:gsub("|c","")
-	if not NeatPlatesHubProfile.profiles[label] then NeatPlatesHubProfile.profiles[label] = color end  -- If profile doesn't exist, create it
-	Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile", "Neat Plates" )	-- Create the basic settings panel
-	NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
-	BuildHubPanel(Panels[label])	-- Fill the settings panel with options
+
+	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
+	if not Panels[label] then -- If panel doesn't exist, create it
+		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile", "Neat Plates" )	-- Create the basic settings panel
+		NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
+		BuildHubPanel(Panels[label])	-- Fill the settings panel with options
+	else
+		Panels[label].RefreshSettings(NeatPlatesHubSettings["HubPanelProfile"..label])	-- Update existing profile
+	end
+
 	InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
-	--OnPanelItemChange(panel)
+
 	return Panels[label]
 end
 
@@ -568,8 +573,8 @@ local function ImportTPCSettings(frame)
 		local profile = k:gsub('HubPanelSettings', '')
 		local profileName = playerName.." "..profile
 
-		NeatPlatesHubProfile.profiles[profileName] = profileColor[profile] or "FFFFFFFF"
-		NeatPlatesHubProfile["HubPanelProfile"..profileName] = v
+		NeatPlatesHubSettings.profiles[profileName] = profileColor[profile] or "FFFFFFFF"
+		NeatPlatesHubSettings["HubPanelProfile"..profileName] = v
 	end
 
 	DisableAddOn("TidyPlatesContinued")
@@ -604,7 +609,7 @@ local function ImportSettingsPrompt()
 	CancelButton:SetWidth(110)
 	CancelButton:SetText("Cancel")
 
-	CancelButton:SetScript("OnClick", function() frame:Hide(); LoadProfiles(NeatPlatesHubProfile.profiles); end)
+	CancelButton:SetScript("OnClick", function() frame:Hide(); LoadProfiles(NeatPlatesHubSettings.profiles); end)
 
 	local ImportButton = CreateFrame("Button", "ImportSettingsPromptImportButton", frame, "NeatPlatesPanelButtonTemplate")
 	ImportButton.tooltipText = "Import Settings from TidyPlatesContinued."
@@ -624,7 +629,7 @@ HubHandler:SetScript("OnEvent", function(...)
 	local _,_,_,TPCEnabled = GetAddOnInfo("TidyPlatesContinuedHub")
 
 	if name == "NeatPlatesHub" and not TPCEnabled then
-		LoadProfiles(NeatPlatesHubProfile.profiles)
+		LoadProfiles(NeatPlatesHubSettings.profiles)
 	end
 
 	-- Temporary function for transfering settings from old addon
