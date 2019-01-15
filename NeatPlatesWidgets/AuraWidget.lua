@@ -36,6 +36,7 @@ local function DefaultPreFilterFunction() return true end
 local function DefaultFilterFunction(aura, unit) if aura and aura.duration and (aura.duration < 30) then return true end end
 
 local AuraFilterFunction = DefaultFilterFunction
+local EmphasizedAuraFilterFunction = function() end
 local AuraHookFunction
 local AuraCache = {}
 
@@ -130,6 +131,8 @@ local function AuraEventHandler(frame, event, ...)
 
 end
 
+
+
 -------------------------------------------------------------
 -- Widget Object Functions
 -------------------------------------------------------------
@@ -220,6 +223,7 @@ local function UpdateIconGrid(frame, unitid)
 		local AuraIconFrames = frame.AuraIconFrames
 		local storedAuras = {}
 		local storedAuraCount = 0
+		local emphasizedAuras = {}
 
 		-- Cache displayable auras
 		------------------------------------------------------------------------------------------------------
@@ -261,17 +265,22 @@ local function UpdateIconGrid(frame, unitid)
 			-- Pre-filtering before the icon grid is populated
 			if aura.name then
 				local show, priority, r, g, b, a = AuraFilterFunction(aura)
+				local emphasized, ePriority = EmphasizedAuraFilterFunction(aura)
 				--print(aura.name, show, priority)
 				--show = true
 				AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = true, true -- Used by Custom Color Conditions
 				-- Store Order/Priority
 				if show then
-
 					aura.priority = priority or 10
 					aura.r, aura.g, aura.b, aura.a = r, g, b, a
 
 					storedAuraCount = storedAuraCount + 1
 					storedAuras[storedAuraCount] = aura
+				end
+				-- Add to Emphasized list
+				if emphasized then
+					aura.priority = ePriority or 10
+					emphasizedAuras[aura.name], emphasizedAuras[tostring(aura.spellid)] = aura, aura
 				end
 			else
 				if auraFilter == "HARMFUL" then
@@ -288,22 +297,24 @@ local function UpdateIconGrid(frame, unitid)
 		NeatPlatesWidgets.AuraCache = AuraCache
 
 		--[[ Debug, add custom Buff
-		storedAuraCount = storedAuraCount+1
-		storedAuras[storedAuraCount] = {
-			["type"] = "Magic",
-			["effect"] = "HELPFUL",
-			["duration"] = 10,
-			["stacks"] = 0,
-			["reaction"] = 1,
-			["name"] = "Debug",
-			["expiration"] = 0,
-			["priority"] = 20,
-			["spellid"] = 234153,
-			["texture"] = 136069,
-			["r"] = 0.2,
-			["g"] = 0,
-			["b"] = 1,
-		}
+		while storedAuraCount < AuraLimit do
+			storedAuraCount = storedAuraCount+1
+			storedAuras[storedAuraCount] = {
+				["type"] = "Magic",
+				["effect"] = "HELPFUL",
+				["duration"] = 10,
+				["stacks"] = 0,
+				["reaction"] = 1,
+				["name"] = "Debug",
+				["expiration"] = 0,
+				["priority"] = 20,
+				["spellid"] = 234153,
+				["texture"] = 136069,
+				["r"] = 0.2,
+				["g"] = 0,
+				["b"] = 1,
+			}
+		end
 		--]]
 
 		-- Display Auras
@@ -314,6 +325,7 @@ local function UpdateIconGrid(frame, unitid)
 		local BuffAuras = {}
 		local DebuffAuras = {}
 		local DebuffCount = 0
+		local RowCount = 0
 
 		if storedAuraCount > 0 then
 			frame:Show()
@@ -345,12 +357,12 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Calculate Buff Offset
 			local rowOffset
-			local rowCount = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
-			-- print(DebuffColumns * rowCount - (DebuffSlotCount + BuffSlotCount))
-			if DebuffColumns * rowCount - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
-				rowOffset = math.max(DebuffColumns * rowCount, DebuffColumns) -- Same Row with space between
+			RowCount = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
+			-- print(DebuffColumns * RowCount - (DebuffSlotCount + BuffSlotCount))
+			if DebuffColumns * RowCount - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
+				rowOffset = math.max(DebuffColumns * RowCount, DebuffColumns) -- Same Row with space between
 			else
-				rowOffset = DebuffColumns * (rowCount + 1)	-- Seperate Row
+				rowOffset = DebuffColumns * (RowCount + 1)	-- Seperate Row
 			end
 
 			-- Loop through buffs and call function to display them
@@ -370,6 +382,9 @@ local function UpdateIconGrid(frame, unitid)
 			if AuraSlots[AuraSlotEmpty] ~= true then UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 		end
 
+		-- Display Emphasized Aura
+		frame.emphasized:SetAura(emphasizedAuras)
+		frame:SetHeight(RowCount*16 + (RowCount-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
 end
 
 function UpdateWidget(frame)
@@ -430,6 +445,8 @@ end
 
 
 local function TransformWideAura(frame)
+	frame.Parent:SetWidth(DebuffColumns*(26 + 5))
+
 	frame:SetWidth(26.5)
 	frame:SetHeight(14.5)
 	-- Icon
@@ -461,6 +478,8 @@ local function TransformWideAura(frame)
 end
 
 local function TransformSquareAura(frame)
+	frame.Parent:SetWidth(DebuffColumns*(16 + 5))
+
 	frame:SetWidth(16.5)
 	frame:SetHeight(14.5)
 	-- Icon
@@ -541,27 +560,12 @@ local function UpdateIconConfig(frame)
 			if useWideIcons then TransformWideAura(icon) else TransformSquareAura(icon) end
 		end
 
-		-- -- Set Anchors
-		-- iconTable[1]:ClearAllPoints()
-		-- iconTable[1]:SetPoint("LEFT", frame)
-		-- for index = 2, DebuffColumns do
-		--   iconTable[index]:ClearAllPoints()
-		--   iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
-		-- end
-
-		-- iconTable[DebuffColumns+1]:ClearAllPoints()
-		-- iconTable[DebuffColumns+1]:SetPoint("BOTTOMLEFT", iconTable[1], "TOPLEFT", 0, 8)
-		-- for index = (DebuffColumns+2), AuraLimit do
-		--   iconTable[index]:ClearAllPoints()
-		--   iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
-		-- end
-
 		-- Set Anchors
 		local anchorIndex = 1
 		for row = 1, AuraLimit/DebuffColumns do
 			iconTable[anchorIndex]:ClearAllPoints()
 			if row == 1 then
-				iconTable[anchorIndex]:SetPoint("LEFT", frame)
+				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", frame)
 			else
 				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", iconTable[anchorIndex-DebuffColumns], "TOPLEFT", 0, 8)
 			end
@@ -574,10 +578,35 @@ local function UpdateIconConfig(frame)
 	end
 end
 
-local function UpdateWidgetConfig(frame)
-	UpdateIconConfig(frame)
+local function UpdateEmphasizedIconConfig(frame)
+	local iconTable = frame.AuraIconFrames
+
+	local columns = 1
+	local auraLimit = 1
+
+	if iconTable then
+		-- Create Icons
+		for index = 1, auraLimit do
+			local icon = iconTable[index] or CreateAuraIcon(frame)
+			iconTable[index] = icon
+			-- Apply Style
+			if useWideIcons then TransformWideAura(icon) else TransformSquareAura(icon) end
+		end
+
+		-- Set Anchors
+		iconTable[1]:ClearAllPoints()
+		iconTable[1]:SetPoint("BOTTOM", frame)
+		--for index = 2, columns do
+		--  iconTable[index]:ClearAllPoints()
+		--  iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+		--end
+	end
 end
 
+local function UpdateWidgetConfig(frame)
+	UpdateIconConfig(frame)
+	UpdateEmphasizedIconConfig(frame.emphasized)
+end
 
 -- Create the Main Widget Body and Icon Array
 local function CreateAuraWidget(parent, style)
@@ -587,9 +616,15 @@ local function CreateAuraWidget(parent, style)
 	frame:SetWidth(128); frame:SetHeight(32); frame:Show()
 	--frame.PollFunction = UpdateWidgetTime
 
+	-- Create Emphasized Frame
+	frame.emphasized = CreateFrame("Frame", nil, frame)
+	frame.emphasized:SetWidth(32); frame.emphasized:SetHeight(32); frame.emphasized:SetPoint("BOTTOM", frame, "TOP", 0, 2); frame.emphasized:SetScale(2); frame.emphasized:Show()
+
 	-- Create Icon Grid
 	frame.AuraIconFrames = {}
+	frame.emphasized.AuraIconFrames = {}
 	UpdateIconConfig(frame)
+	UpdateEmphasizedIconConfig(frame.emphasized, 1)
 
 	-- Functions
 	frame._Hide = frame.Hide
@@ -600,6 +635,18 @@ local function CreateAuraWidget(parent, style)
 	frame.Update = UpdateWidgetContext
 	frame.UpdateConfig = UpdateWidgetConfig
 	frame.UpdateTarget = UpdateWidgetTarget
+
+	-- Emphasized Functions
+	frame.emphasized.SetAura = function(frame, auras)
+		local name
+
+		for k, v in pairs(auras) do
+			if not name or v.priority < auras[name].priority then name = k end
+		end
+
+		UpdateIcon(frame.AuraIconFrames[1], auras[name])
+	end
+
 	return frame
 end
 
@@ -623,6 +670,12 @@ end
 local function SetAuraFilter(func)
 	if func and type(func) == 'function' then
 		AuraFilterFunction = func
+	end
+end
+
+local function SetEmphasizedAuraFilter(func)
+	if func and type(func) == 'function' then
+		EmphasizedAuraFilterFunction = func
 	end
 end
 
@@ -657,6 +710,7 @@ NeatPlatesWidgets.UseSquareDebuffIcon = UseSquareDebuffIcon
 NeatPlatesWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 
 NeatPlatesWidgets.SetAuraFilter = SetAuraFilter
+NeatPlatesWidgets.SetEmphasizedAuraFilter = SetEmphasizedAuraFilter
 
 NeatPlatesWidgets.SetPandemic = SetPandemic
 NeatPlatesWidgets.SetBorderTypes = SetBorderTypes

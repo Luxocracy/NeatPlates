@@ -82,7 +82,7 @@ local function ConvertStringToTable(source, target )
 end
 
 
-local function ConvertDebuffListTable(source, target, order)
+local function ConvertAuraListTable(source, target, order)
 	if source == nil then return end
 	local temp = ListToTable(strsplit("\n", source))
 	target = wipe(target)
@@ -146,7 +146,7 @@ NeatPlatesHubHelpers.SetPanelValues = SetPanelValues
 NeatPlatesHubHelpers.MergeProfileValues = MergeProfileValues
 NeatPlatesHubHelpers.ListToTable = ListToTable
 NeatPlatesHubHelpers.ConvertStringToTable = ConvertStringToTable
-NeatPlatesHubHelpers.ConvertDebuffListTable = ConvertDebuffListTable
+NeatPlatesHubHelpers.ConvertAuraListTable = ConvertAuraListTable
 NeatPlatesHubHelpers.ConvertColorListTable = ConvertColorListTable
 NeatPlatesHubHelpers.AddHubFunction = AddHubFunction
 

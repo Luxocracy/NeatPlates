@@ -186,7 +186,10 @@ local function BuildHubPanel(panel)
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, "Additional Auras:", AlignmentColumn, panel.SpacerSlots, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
 
-	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.WidgetDebuffTrackList, 16)
+	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, "Emphasized Auras:", AlignmentColumn, panel.WidgetDebuffTrackList, 16)
+	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, 16)
+
+	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", "Icon Style:", DebuffStyles, 1, AlignmentColumn, panel.EmphasizedAuraList, 16)
 
 	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", "Include Dispellable Debuffs on Friendly Units", AlignmentColumn, panel.WidgetDebuffStyle, 16, 4)
 	panel.WidgetAuraTrackCurse = CreateQuickCheckbutton(objectName.."WidgetAuraTrackCurse", "Curse", AlignmentColumn, panel.WidgetAuraTrackDispelFriendly, 16+16, -2)
@@ -485,6 +488,7 @@ local function BuildHubPanel(panel)
 
 	panel.OpacityFilterList:SetWidth(200)
 	panel.WidgetDebuffTrackList:SetWidth(200)
+	panel.EmphasizedAuraList:SetWidth(200)
 
 	SetSliderMechanics(panel.OpacityTarget, 1, 0, 1, .01)
 	SetSliderMechanics(panel.OpacityNonTarget, 1, 0, 1, .01)
@@ -506,7 +510,7 @@ local function BuildHubPanel(panel)
 	-- "RefreshSettings" is called; A) When PLAYER_ENTERING_WORLD is called, and; B) When changes are made to settings
 
 	local ConvertStringToTable = NeatPlatesHubHelpers.ConvertStringToTable
-	local ConvertDebuffListTable = NeatPlatesHubHelpers.ConvertDebuffListTable
+	local ConvertAuraListTable = NeatPlatesHubHelpers.ConvertAuraListTable
 	local ConvertColorListTable = NeatPlatesHubHelpers.ConvertColorListTable
 	local CallForStyleUpdate = NeatPlatesHubHelpers.CallForStyleUpdate
 
@@ -514,7 +518,9 @@ local function BuildHubPanel(panel)
 		-- print("RefreshSettings", panel:IsShown())
 		CallForStyleUpdate()
 		-- Convert Debuff Filter Strings
-		ConvertDebuffListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
+		ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
+		-- Convert Emphasized Filter Strings
+		ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
 		-- Convert Unit Filter Strings
 		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)

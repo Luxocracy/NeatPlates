@@ -5,7 +5,7 @@
 		<SwipeTexture>
 			<Color r="0" g="0" b="0" a="0.8"/>
 		</SwipeTexture>
-		<EdgeTexture file="Interface\Addons\NeatPlatesinuedWidgets\Aura\Edge"/>
+		<EdgeTexture file="Interface\Addons\NeatPlatesWidgets\Aura\Edge"/>
 	</Cooldown>
 
 	<Script file="WidgetCore.lua"/>

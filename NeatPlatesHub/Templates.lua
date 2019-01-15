@@ -314,7 +314,7 @@ local GetPanelValues = NeatPlatesHubHelpers.GetPanelValues
 local SetPanelValues = NeatPlatesHubHelpers.SetPanelValues
 local ListToTable = NeatPlatesHubHelpers.ListToTable
 --local ConvertStringToTable = NeatPlatesHubHelpers.ConvertStringToTable
---local ConvertDebuffListTable = NeatPlatesHubHelpers.ConvertDebuffListTable
+--local ConvertAuraListTable = NeatPlatesHubHelpers.ConvertAuraListTable
 local CopyTable = NeatPlatesUtility.copyTable
 
 --[[

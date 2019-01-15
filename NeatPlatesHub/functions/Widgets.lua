@@ -243,6 +243,21 @@ local function DebuffFilter(aura)
 	return SmartFilterMode(aura)
 end
 
+local function EmphasizedFilter(aura)
+	local spellid = tostring(aura.spellid)
+	local name = aura.name
+	local r, g, b = GetAuraColor(aura)
+
+	-- Lookup using the Prefix & Priority Lists
+	--local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name]
+	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name]
+
+	if priority then
+		return true, priority, r, g, b
+	else
+		return false
+	end
+end
 
 ---------------------------------------------------------------------------------------------------------
 -- Widget Initializers
@@ -265,7 +280,7 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 		end
 
 		widget:ClearAllPoints()
-		widget:SetPoint(config.anchor or "TOP", extended, config.x or 0, config.y or 0)
+		widget:SetPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
 
 	elseif widget and widget.Hide then
 		widget:Hide()
@@ -356,6 +371,10 @@ local function OnVariableChange(vars)
 		NeatPlatesWidgets:EnableAuraWatcher()
 		NeatPlatesWidgets.SetAuraFilter(DebuffFilter)
 	else NeatPlatesWidgets:DisableAuraWatcher() end
+
+	if true then
+		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter)
+	end
 	
 	if LocalVars.WidgetAbsorbIndicator then
 		NeatPlatesWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode, LocalVars.WidgetAbsorbUnits)

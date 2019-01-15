@@ -245,6 +245,9 @@ NeatPlatesHubDefaults = {
 	WidgetAuraTrackDisease = true,
 	WidgetAuraTrackMagic = true,
 	WidgetAuraTrackPoison = true,
+	EmphasizedAuraList = "",
+	EmphasizedAuraLookup = {},
+	EmphasizedAuraPriority = {},
 
 	-- Frame
 	---------------------------------------

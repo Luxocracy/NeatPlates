@@ -255,9 +255,9 @@ WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = 0 ,y = 18 }
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 31 ,y = 23 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = 24 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 12 }
-WidgetConfig.DebuffWidget = { anchor = "CENTER" , x = 15 ,y = 28 }
+WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = 0 }
 WidgetConfig.AbsorbWidget =	{ anchor="TOP", x = -1 , y = 5, w = 100, h = 25 }
-WidgetConfig.DebuffWidgetPlus = { anchor = "CENTER" , x = 15 ,y = 40 }
+WidgetConfig.DebuffWidgetPlus = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = 40 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -14,y = 10 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 12,y = 24 }
 
