@@ -1,9 +1,0 @@
-## Interface: 80100
-## Title: Tidy Plates Continued: Graphite
-## Notes: Minimalisty
-## Author: Binny
-## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
-
-Graphite.lua
-
-

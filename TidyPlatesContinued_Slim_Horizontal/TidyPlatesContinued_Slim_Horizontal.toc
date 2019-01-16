@@ -1,7 +1,0 @@
-## Interface: 80100
-## Title: Tidy Plates Continued: Slim Horizontal
-## Author: Dotfix
-## Version: 2.2
-## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
-
-TidyPlatesContinued_Slim_Horizontal.lua

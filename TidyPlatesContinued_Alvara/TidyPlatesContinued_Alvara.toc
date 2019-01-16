@@ -1,9 +1,0 @@
-## Interface: 80100
-## Title: Tidy Plates Continued: Alvara
-## Notes: Made to Alvara's specifications. Very Simple.
-## Author: Alvara - Zul'Jin
-## Version: 5a
-## Dependencies: TidyPlatesContinued, TidyPlatesContinuedHub
-
-TidyPlatesContinued_Alvara.lua
-
