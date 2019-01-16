@@ -560,8 +560,10 @@ end
 
 local function LoadProfiles(profiles)
 	--if next(profiles) == nil then profiles = {["Default"] = "FFFFFFFF"} end -- Make sure at least something is loaded
+	CreateProfile("Default", profiles["Default"]) -- Load Default first to keep it at the top of the list
+
 	for k, v in pairs(profiles) do
-		CreateProfile(k, v)
+		if k ~= "Default" then CreateProfile(k, v) end
 	end
 end
 

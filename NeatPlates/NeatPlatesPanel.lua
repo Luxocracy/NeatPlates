@@ -716,8 +716,23 @@ local function BuildInterfacePanel(panel)
 	end
 
 	panel.RemoveProfileDropdown.OnValueChanged = function(self)
-		RemoveProfile(_G["HubPanelProfile"..panel.RemoveProfileDropdown:GetValue().."_InterfaceOptionsPanel"])
-		panel.RemoveProfileDropdown:SetValue(nil)
+		local name = panel.RemoveProfileDropdown:GetValue()
+		
+		StaticPopupDialogs["NeatPlates_RemoveProfile"] = {
+		  text = "Are you sure you wish to delete the profile '"..name.."'?",
+		  button1 = "Yes",
+		  button2 = "No",
+		  OnAccept = function()
+				RemoveProfile(_G["HubPanelProfile"..name.."_InterfaceOptionsPanel"])
+				panel.RemoveProfileDropdown:SetValue("")
+			  print(orange.."NeatPlates: "..blue.."The profile '"..name.."' was successfully deleted.")
+		  end,
+		  timeout = 0,
+		  whileDead = true,
+		  hideOnEscape = true,
+		  preferredIndex = 3,  -- avoid some UI taint, see http://www.wowace.com/announcements/how-to-avoid-some-ui-taint/
+		}
+		StaticPopup_Show("NeatPlates_RemoveProfile")
 	end
 
 
