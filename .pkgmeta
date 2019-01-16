@@ -1,21 +1,21 @@
-package-as: TidyPlatesContinued
+package-as: NeatPlates
 
 ignore:
     - README.md
 
 move-folders:
-    TidyPlatesContinued/TidyPlatesContinued: TidyPlatesContinued
-    TidyPlatesContinued/TidyPlatesContinued_BlizzardPlates: TidyPlatesContinued_BlizzardPlates
-    TidyPlatesContinued/TidyPlatesContinued_ClassicPlates: TidyPlatesContinued_ClassicPlates
-    TidyPlatesContinued/TidyPlatesContinued_Graphite: TidyPlatesContinued_Graphite
-    TidyPlatesContinued/TidyPlatesContinued_Grey: TidyPlatesContinued_Grey
-    TidyPlatesContinued/TidyPlatesContinued_Neon: TidyPlatesContinued_Neon
-    TidyPlatesContinued/TidyPlatesContinued_Quatre: TidyPlatesContinued_Quatre
-    TidyPlatesContinued/TidyPlatesContinued_Roth: TidyPlatesContinued_Roth
-    TidyPlatesContinued/TidyPlatesContinued_Renaitre: TidyPlatesContinued_Renaitre
-    TidyPlatesContinued/TidyPlatesContinued_Simple: TidyPlatesContinued_Simple
-    TidyPlatesContinued/TidyPlatesContinued_Slim_Horizontal: TidyPlatesContinued_Slim_Horizontal
-    TidyPlatesContinued/TidyPlatesContinued_Slim_Vertical: TidyPlatesContinued_Slim_Vertical
-    TidyPlatesContinued/TidyPlatesContinued_Alvara: TidyPlatesContinued_Alvara
-    TidyPlatesContinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
-    TidyPlatesContinued/TidyPlatesContinuedWidgets: TidyPlatesContinuedWidgets
+    NeatPlates/NeatPlates: NeatPlates
+    NeatPlates/NeatPlates_BlizzardPlates: NeatPlates_BlizzardPlates
+    NeatPlates/NeatPlates_ClassicPlates: NeatPlates_ClassicPlates
+    NeatPlates/NeatPlates_Graphite: NeatPlates_Graphite
+    NeatPlates/NeatPlates_Grey: NeatPlates_Grey
+    NeatPlates/NeatPlates_Neon: NeatPlates_Neon
+    NeatPlates/NeatPlates_Quatre: NeatPlates_Quatre
+    NeatPlates/NeatPlates_Roth: NeatPlates_Roth
+    NeatPlates/NeatPlates_Renaitre: NeatPlates_Renaitre
+    NeatPlates/NeatPlates_Simple: NeatPlates_Simple
+    NeatPlates/NeatPlates_Slim_Horizontal: NeatPlates_Slim_Horizontal
+    NeatPlates/NeatPlates_Slim_Vertical: NeatPlates_Slim_Vertical
+    NeatPlates/NeatPlates_Alvara: NeatPlates_Alvara
+    NeatPlates/NeatPlatesHub: NeatPlatesHub
+    NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets

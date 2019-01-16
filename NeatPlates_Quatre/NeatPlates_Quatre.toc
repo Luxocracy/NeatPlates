@@ -1,0 +1,7 @@
+## Interface: 80100
+## Title: Neat Plates: Quatre Theme
+## Notes: It's the 4th!
+## Author: Binny
+## Dependencies: NeatPlates, NeatPlatesHub
+
+Quatre.lua

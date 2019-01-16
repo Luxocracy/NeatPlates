@@ -1,0 +1,6 @@
+## Interface: 80100
+## Title: Neat Plates Widgets
+## Notes: Library of Widgets
+## Dependencies: NeatPlates
+
+Widgets.xml

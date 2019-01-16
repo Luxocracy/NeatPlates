@@ -1,0 +1,9 @@
+## Interface: 80100
+## Title: Neat Plates: Neon Theme
+## Notes: It toasts your Eggo waffles, and butters your bread.
+## Author: Binny
+## Dependencies: NeatPlates, NeatPlatesHub
+
+Neon.lua
+
+
