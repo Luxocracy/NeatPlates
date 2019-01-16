@@ -36,6 +36,8 @@ local IsAuraShown = NeatPlatesWidgets.IsAuraShown
 local IsHealer = NeatPlatesUtility.IsHealer
 local InstanceStatus = NeatPlatesUtility.InstanceStatus
 
+local LastErrorMessage = 0
+
 
 -- Combat
 local IsEnemyTanked = NeatPlatesWidgets.IsEnemyTanked
@@ -229,6 +231,27 @@ local function ApplyStyleCustomization(style, defaults)
 end
 
 
+local function ValidateCombatRestrictedSettings()
+	local CombatLockdown = InCombatLockdown()
+	local time = GetTime()
+	local settings = {
+		["StyleEnemyBarsClickThrough"] = C_NamePlate.GetNamePlateEnemyClickThrough(),
+		["StyleFriendlyBarsClickThrough"] = C_NamePlate.GetNamePlateFriendlyClickThrough(),
+	}
+
+	if CombatLockdown then
+		-- Loop through affected settings to see if any of them were change, if so trigger a warning that they weren't applied correctly
+		for k, v in pairs(settings) do
+			if LastErrorMessage+5 < time and LocalVars[k] ~= v then
+				LastErrorMessage = time
+				print("|cffff6906NeatPlates:|cffffdd00 Some settings could not be applied properly due to certain combat restrictions.")
+			end
+		end
+	end
+
+	return CombatLockdown
+end
+
 local function ApplyProfileSettings(theme, source, ...)
 	-- When nil is passed, the theme is being deactivated
 	if not theme then return end
@@ -255,7 +278,7 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
 
 	-- Manage ClickThrough option of nameplate bars.
-	if not InCombatLockdown() then
+	if ValidateCombatRestrictedSettings() then
 		C_NamePlate.SetNamePlateFriendlyClickThrough(LocalVars.StyleFriendlyBarsClickThrough or false)
 		C_NamePlate.SetNamePlateEnemyClickThrough(LocalVars.StyleEnemyBarsClickThrough or false)
 	end

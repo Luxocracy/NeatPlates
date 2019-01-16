@@ -249,14 +249,19 @@ local function EmphasizedFilter(aura)
 	local r, g, b = GetAuraColor(aura)
 
 	-- Lookup using the Prefix & Priority Lists
-	--local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name]
+	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name]
 	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name]
 
-	if priority then
+	if prefix and priority then
+		local show = DebuffPrefixModes[prefix](aura)
+		if show == true then
+			return true, priority, r, g, b
+		end
+	elseif priority then
 		return true, priority, r, g, b
-	else
-		return false
 	end
+
+	return false -- Return false if aura isn't one to be emphasized
 end
 
 ---------------------------------------------------------------------------------------------------------
