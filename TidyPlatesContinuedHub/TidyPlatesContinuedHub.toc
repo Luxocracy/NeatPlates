@@ -1,8 +1,0 @@
-## Interface: 80000
-## Title: Tidy Plates Continued Hub
-## Notes: Provides a common configuration panel for supported themes.
-## Author: Daniel/Binbwen
-## Dependencies: TidyPlatesContinued
-## OptionalDeps: TidyPlatesContHubDE, TidyPlatesContHubES, TidyPlatesContHubMX, TidyPlatesContHubFR, TidyPlatesContHubKR, TidyPlatesContHubRU, TidyPlatesContHubCN, TidyPlatesContHubTW
-## SavedVariables: TidyPlatesContHubCache, TidyPlatesContHubGlobal
-## SavedVariablesPerCharacter: TidyPlatesContHubSettings
