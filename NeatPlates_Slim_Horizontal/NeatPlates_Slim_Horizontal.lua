@@ -253,7 +253,7 @@ WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment +
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment + 0 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = VerticalAdjustment - 12 }
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
-	WidgetConfig.DebuffWidgetPlus = { anchor = "BOTTOM" , x = 0 ,y = VerticalAdjustment - 12 }
+	--WidgetConfig.DebuffWidgetPlus = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = VerticalAdjustment - 12 }
 --end
 WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = 0 , y = VerticalAdjustment + 1, h = 16, w = 100 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -12,y = VerticalAdjustment + 1 }
