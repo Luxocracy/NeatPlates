@@ -249,7 +249,7 @@ local function ValidateCombatRestrictedSettings()
 		end
 	end
 
-	return CombatLockdown
+	return not CombatLockdown
 end
 
 local function ApplyProfileSettings(theme, source, ...)

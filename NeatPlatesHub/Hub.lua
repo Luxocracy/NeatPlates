@@ -633,16 +633,20 @@ end
 
 local HubHandler = CreateFrame("Frame")
 HubHandler:SetScript("OnEvent", function(...)
-	local _,_,name = ...
-	local _,_,_,TPCEnabled = GetAddOnInfo("TidyPlatesContinuedHub")
+	local _,_,addon = ...
+	local player = UnitName("player");
+	local TPCEnabled = GetAddOnEnableState(player, "TidyPlatesContinued") ~= 0
+	local TPCHubEnabled = GetAddOnEnableState(player, "TidyPlatesContinuedHub") ~= 0
 
-	if name == "NeatPlatesHub" and not TPCEnabled then
+	if addon == "NeatPlatesHub" and (not TPCEnabled or not TPCHubEnabled) then
 		LoadProfiles(NeatPlatesHubSettings.profiles)
+		HubHandler:UnregisterEvent("ADDON_LOADED")
 	end
 
 	-- Temporary function for transfering settings from old addon
-	if name == "TidyPlatesContinuedHub" then
+	if addon == "TidyPlatesContinuedHub" and TPCEnabled then
 		ImportSettingsPrompt()
+		HubHandler:UnregisterEvent("ADDON_LOADED")
 	end
 end)
 HubHandler:RegisterEvent("ADDON_LOADED")
