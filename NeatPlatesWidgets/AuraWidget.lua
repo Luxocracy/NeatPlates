@@ -363,6 +363,7 @@ local function UpdateIconGrid(frame, unitid)
 				rowOffset = math.max(DebuffColumns * RowCount, DebuffColumns) -- Same Row with space between
 			else
 				rowOffset = DebuffColumns * (RowCount + 1)	-- Seperate Row
+				RowCount = RowCount+1
 			end
 
 			-- Loop through buffs and call function to display them
