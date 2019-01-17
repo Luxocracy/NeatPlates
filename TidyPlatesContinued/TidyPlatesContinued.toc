@@ -1,0 +1,6 @@
+## Interface: 80100
+## Title: Tidy Plates Continued
+## Notes: Enjoys long walks on Darkshore
+## Author: Binbwen and Friends
+## Version: 6.21.13a
+## SavedVariablesPerCharacter: TidyPlatesContOptions
