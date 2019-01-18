@@ -19,3 +19,5 @@ move-folders:
     NeatPlates/NeatPlates_Alvara: NeatPlates_Alvara
     NeatPlates/NeatPlatesHub: NeatPlatesHub
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
+    TidyPlatesContinued/TidyPlatesContinued: TidyPlatesContinued
+    TidyPlatesContinued/TidyPlatesContinuedHub: TidyPlatesContinuedHub
