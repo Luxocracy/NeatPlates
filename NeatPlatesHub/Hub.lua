@@ -693,22 +693,12 @@ NeatPlatesHubMenus.CreateProfile = CreateProfile
 ---------------------------------------------
 
 function ShowNeatPlatesHubPanel()
-	local profile = NeatPlatesOptions.ActiveProfile
+	local profile = NeatPlates.GetProfile()
 	if profile then
 		NeatPlatesUtility.OpenInterfacePanel(Panels[profile])
 	else
-		NeatPlatesUtility.OpenInterfacePanel(Panels["Damage"])
+		NeatPlatesUtility.OpenInterfacePanel(Panels["Default"])
 	end
-	--if profile == "Tank" then
-	--	ShowNeatPlatesHubTankPanel()
-	--elseif profile == "Healer" then
-	--	ShowNeatPlatesHubHealerPanel()
-	--elseif profile == "Gladiator" then
-	--	ShowNeatPlatesHubGladiatorPanel()
-	--else
-	--	ShowNeatPlatesHubDamagePanel()
-	--end
-
 end
 
 local function SlashCommandHub()
