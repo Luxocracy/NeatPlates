@@ -614,14 +614,22 @@ local function ImportSettingsPrompt()
 
 	local CancelButton = CreateFrame("Button", "ImportSettingsPromptCancelButton", frame, "NeatPlatesPanelButtonTemplate")
 	CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
-	CancelButton:SetWidth(110)
+	CancelButton:SetWidth(80)
 	CancelButton:SetText("Cancel")
 
 	CancelButton:SetScript("OnClick", function() frame:Hide(); LoadProfiles(NeatPlatesHubSettings.profiles); end)
 
+	local NoImportButton = CreateFrame("Button", "ImportSettingsPromptNoImportButton", frame, "NeatPlatesPanelButtonTemplate")
+	NoImportButton.tooltipText = "Do not import settings from TidyPlatesContinued. And do not show this message again."
+	NoImportButton:SetPoint("RIGHT", CancelButton, "LEFT", -6, 0)
+	NoImportButton:SetWidth(160)
+	NoImportButton:SetText("Don't show this again")
+
+	NoImportButton:SetScript("OnClick", function() frame:Hide(); DisableAddOn("TidyPlatesContinued"); LoadProfiles(NeatPlatesHubSettings.profiles); end)
+
 	local ImportButton = CreateFrame("Button", "ImportSettingsPromptImportButton", frame, "NeatPlatesPanelButtonTemplate")
 	ImportButton.tooltipText = "Import Settings from TidyPlatesContinued."
-	ImportButton:SetPoint("RIGHT", CancelButton, "LEFT", -12, 0)
+	ImportButton:SetPoint("RIGHT", NoImportButton, "LEFT", -6, 0)
 	ImportButton:SetWidth(140)
 	ImportButton:SetText("Import TPC Settings")
 
