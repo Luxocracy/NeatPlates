@@ -30,6 +30,8 @@ local SpacerSlots = 0 -- math.min(15, DebuffColumns-1)
 local PandemicEnabled = false
 local PandemicColor = {}
 
+local EmphasizedUnique = false
+
 local function DummyFunction() end
 
 local function DefaultPreFilterFunction() return true end
@@ -316,6 +318,7 @@ local function UpdateIconGrid(frame, unitid)
 			}
 		end
 		--]]
+		
 
 		-- Display Auras
 		------------------------------------------------------------------------------------------------------
@@ -325,7 +328,10 @@ local function UpdateIconGrid(frame, unitid)
 		local BuffAuras = {}
 		local DebuffAuras = {}
 		local DebuffCount = 0
-		local RowCount = 0
+		local DisplayedRows = 0
+		local EmphasizedAura
+
+		EmphasizedAura = frame.emphasized:SetAura(emphasizedAuras)	-- Display Emphasized Aura, returns displayed aura
 
 		if storedAuraCount > 0 then
 			frame:Show()
@@ -334,7 +340,7 @@ local function UpdateIconGrid(frame, unitid)
 			for index = 1, storedAuraCount do
 				if (DebuffSlotCount+BuffSlotCount) > AuraLimit then break end
 				local aura = storedAuras[index]
-				if aura.spellid and aura.expiration then
+				if aura.spellid and aura.expiration and not(EmphasizedUnique and aura == EmphasizedAura) then
 
 					-- Sort buffs and debuffs
 					if aura.effect == "HELPFUL" then 
@@ -357,13 +363,14 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Calculate Buff Offset
 			local rowOffset
-			RowCount = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
-			-- print(DebuffColumns * RowCount - (DebuffSlotCount + BuffSlotCount))
-			if DebuffColumns * RowCount - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
-				rowOffset = math.max(DebuffColumns * RowCount, DebuffColumns) -- Same Row with space between
-			else
-				rowOffset = DebuffColumns * (RowCount + 1)	-- Seperate Row
-				RowCount = RowCount+1
+			DisplayedRows = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
+			
+			 --print(DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount))
+			if DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
+				rowOffset = math.max(DebuffColumns * DisplayedRows, DebuffColumns) -- Same Row with space between
+			elseif BuffSlotCount > 0 then
+				rowOffset = DebuffColumns * (DisplayedRows + 1)	-- Seperate Row
+				DisplayedRows = DisplayedRows+1
 			end
 
 			-- Loop through buffs and call function to display them
@@ -383,9 +390,7 @@ local function UpdateIconGrid(frame, unitid)
 			if AuraSlots[AuraSlotEmpty] ~= true then UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 		end
 
-		-- Display Emphasized Aura
-		frame.emphasized:SetAura(emphasizedAuras)
-		frame:SetHeight(RowCount*16 + (RowCount-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
+		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
 end
 
 function UpdateWidget(frame)
@@ -646,6 +651,7 @@ local function CreateAuraWidget(parent, style)
 		end
 
 		UpdateIcon(frame.AuraIconFrames[1], auras[name])
+		return auras[name]
 	end
 
 	return frame
@@ -674,10 +680,11 @@ local function SetAuraFilter(func)
 	end
 end
 
-local function SetEmphasizedAuraFilter(func)
+local function SetEmphasizedAuraFilter(func, unique)
 	if func and type(func) == 'function' then
 		EmphasizedAuraFilterFunction = func
 	end
+	EmphasizedUnique = unique
 end
 
 local function SetPandemic(enabled, color)

@@ -248,6 +248,7 @@ NeatPlatesHubDefaults = {
 	EmphasizedAuraList = "",
 	EmphasizedAuraLookup = {},
 	EmphasizedAuraPriority = {},
+	EmphasizedUnique = true,
 
 	-- Frame
 	---------------------------------------

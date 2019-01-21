@@ -378,7 +378,7 @@ local function OnVariableChange(vars)
 	else NeatPlatesWidgets:DisableAuraWatcher() end
 
 	if true then
-		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter)
+		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter, LocalVars.EmphasizedUnique)
 	end
 	
 	if LocalVars.WidgetAbsorbIndicator then

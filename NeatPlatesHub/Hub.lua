@@ -191,6 +191,7 @@ local function BuildHubPanel(panel)
 
 	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.WidgetDebuffTrackList, 16)
 	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, 16)
+	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", "Emphasize Hides Normal Aura", AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64, 4)
 
 	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.EmphasizedAuraList, 16)
 
