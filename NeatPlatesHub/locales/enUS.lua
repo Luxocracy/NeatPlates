@@ -102,6 +102,7 @@ L["Enable Aura Widget"] = true
 L["Space Between buffs & debuffs:"] = true
 L["Additional Auras:"] = true
 L["Emphasized Auras:"] = true
+L["Emphasize Hides Normal Aura"] = true
 L["Icon Style:"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
@@ -319,3 +320,18 @@ L["Don't show this again"] = true
 
 L["Import TPC Settings"] = true
 	L["Import Settings from TidyPlatesContinued."] = true
+
+
+------------------------------
+-- Various Tooltips
+------------------------------
+L["Makes the Nameplates non-interactable"] = true
+L["Display Debuffs that have been applied by you"] = true
+L["Display Buffs that have been applied by you"] = true
+L["Highlight auras when they have less than 30% of their original duration remaining"] = true
+L["Color of the border highlight"] = true
+L["Type of highlighting to use"] = true
+L["Display beneficial auras that can be removed by Dispel/Purge"] = true
+L["Display Enrage effects that can be removed by Soothe"] = true
+L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"] = true
+L["Hides the regular aura from the aura widget if it is currently emphasized"] = true

@@ -76,6 +76,7 @@ local function BuildHubPanel(panel)
 	panel.StyleEnemyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnPlayers", L["Players"], AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnActive", L["Active/Damaged Units"], AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsClickThrough", L["Clickthrough"], AlignmentColumn, F, 16, 0)
+	panel.StyleEnemyBarsClickThrough.tooltipText = L["Makes the Nameplates non-interactable"]
 
 	ColumnEnd = F
 
@@ -88,6 +89,7 @@ local function BuildHubPanel(panel)
 	panel.StyleFriendlyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnPlayers", L["Players"], AlignmentColumn, F, OffsetColumnB+16, 0)
 	panel.StyleFriendlyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnActive", L["Active/Damaged Units"], AlignmentColumn, F, OffsetColumnB+16, 0)
 	panel.StyleFriendlyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsClickThrough", L["Clickthrough"], AlignmentColumn, F, OffsetColumnB+16, 0)
+	panel.StyleFriendlyBarsClickThrough.tooltipText = L["Makes the Nameplates non-interactable"]
 
 	F =  ColumnEnd
 	panel.HealthBarStyleLabel, F = CreateQuickItemLabel(nil, L["Health Bar View:"], AlignmentColumn, F, 0, 2)
@@ -170,28 +172,41 @@ local function BuildHubPanel(panel)
 	--panel.WidgetAuraMode =  CreateQuickDropdown(objectName.."WidgetAuraMode", "Filter Mode:", AuraWidgetModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)		-- used to be WidgetDebuffMode
 
 	panel.WidgetMyDebuff = CreateQuickCheckbutton(objectName.."WidgetMyDebuff", L["Include My Debuffs"], AlignmentColumn, panel.WidgetDebuff, 16)
+	panel.WidgetMyDebuff.tooltipText = L["Display Debuffs that have been applied by you"]
 	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", L["Include My Buffs"], AlignmentColumn, panel.WidgetMyDebuff, 16)
+	panel.WidgetMyBuff.tooltipText = L["Display Buffs that have been applied by you"]
 
 	panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", L["Enable Pandemic Highlighting"], AlignmentColumn, panel.WidgetMyBuff, 16)
+	panel.WidgetPandemic.tooltipText = L["Highlight auras when they have less than 30% of their original duration remaining"]
 	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", nil, AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
+	panel.ColorPandemic.tooltipText = L["Color of the border highlight"]
 	panel.BorderPandemic = CreateQuickDropdown(objectName.."BorderPandemic", "", BorderTypes, 1, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 90)
+	panel.BorderPandemic.tooltipText = L["Type of highlighting to use"]
 
 	panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", L["Include Purgeable Buffs"], AlignmentColumn, panel.WidgetPandemic, 16)
+	panel.WidgetBuffPurgeable.tooltipText = L["Display beneficial auras that can be removed by Dispel/Purge"]
 	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", nil, AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
+	panel.ColorBuffPurgeable.tooltipText = L["Color of the border highlight"]
 	panel.BorderBuffPurgeable = CreateQuickDropdown(objectName.."BorderBuffPurgeable", "", BorderTypes, 1, AlignmentColumn, panel.WidgetPandemic, OffsetColumnB + 90)
+	panel.BorderBuffPurgeable.tooltipText = L["Type of highlighting to use"]
 
 	panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", L["Include Enrage Buffs"], AlignmentColumn, panel.WidgetBuffPurgeable, 16)
+	panel.WidgetBuffEnrage.tooltipText = L["Display Enrage effects that can be removed by Soothe"]
 	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", nil, AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
+	panel.ColorBuffEnrage.tooltipText = L["Color of the border highlight"]
 	panel.BorderBuffEnrage = CreateQuickDropdown(objectName.."BorderBuffEnrage", "", BorderTypes, 1, AlignmentColumn, panel.WidgetBuffPurgeable, OffsetColumnB + 90)
+	panel.BorderBuffEnrage.tooltipText = L["Type of highlighting to use"]
 
 	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
+	panel.SpacerSlots.tooltipText = L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"]
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras:"], AlignmentColumn, panel.SpacerSlots, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
 
 	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.WidgetDebuffTrackList, 16)
 	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, 16)
-	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", "Emphasize Hides Normal Aura", AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64, 4)
+	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64, 4)
+	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
 
 	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.EmphasizedAuraList, 16)
 
