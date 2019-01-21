@@ -1,7 +1,7 @@
 
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
-
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 
 
 -- Widget Helpers
@@ -27,35 +27,35 @@ NeatPlatesHubMenus.RangeModes = {
 
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
 NeatPlatesHubMenus.AbsorbModes = {
-				{ text = "Blizzlike"} ,
-				{ text = "Overlay" } ,
+				{ text = L["Blizzlike"]} ,
+				{ text = L["Overlay"]} ,
 			}
 
 NeatPlatesHubDefaults.WidgetAbsorbUnits = 1
 NeatPlatesHubMenus.AbsorbUnits = {
-				{ text = "Target Only"} ,
-				{ text = "All Units" } ,
+				{ text = L["Target Only"]} ,
+				{ text = L["All Units"]} ,
 			}
 
 NeatPlatesHubDefaults.WidgetDebuffStyle = 1
 NeatPlatesHubMenus.DebuffStyles = {
-				{ text = "Wide",  } ,
-				{ text = "Compact (May require UI reload to take effect)",  } ,
+				{ text = L["Wide"],  } ,
+				{ text = L["Compact (May require UI reload to take effect)"],  } ,
 			}
 
 NeatPlatesHubDefaults.WidgetComboPointsStyle = 2
 NeatPlatesHubMenus.ComboPointsStyles = {
-				{ text = "Blizzlike",  } ,
-				{ text = "NeatPlates",  } ,
-				{ text = "NeatPlatesTraditional",  } ,
+				{ text = L["Blizzlike"],  } ,
+				{ text = L["NeatPlates"],  } ,
+				{ text = L["NeatPlatesTraditional"],  } ,
 			}
 
 NeatPlatesHubDefaults.BorderPandemic = 1
 NeatPlatesHubDefaults.BorderBuffPurgeable = 1
 NeatPlatesHubDefaults.BorderBuffEnrage = 1
 NeatPlatesHubMenus.BorderTypes = {
-				{ text = "Border Color",  },
-				{ text = "Glow",  },
+				{ text = L["Border Color"],  },
+				{ text = L["Glow"],  },
 			}
 
 ------------------------------------------------------------------------------

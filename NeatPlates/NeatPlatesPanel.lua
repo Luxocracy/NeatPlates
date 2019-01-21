@@ -2,9 +2,11 @@
 -- Neat Plates Interface Panel
 ---------------------------------------------------------------------------------------------------------------------
 
-local addonName, NeatPlatesInternal = ...
+local AddonName, NeatPlatesInternal = ...
 NeatPlatesPanel = {}
 NeatPlatesHubMenus = NeatPlatesHubMenus or {}
+
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 
 local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 
@@ -19,9 +21,9 @@ local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local RGBToHex = NeatPlatesUtility.RGBToHex
 
-local NO_AUTOMATION = "No Automation"
-local DURING_COMBAT = "Show during Combat, Hide when Combat ends"
-local OUT_OF_COMBAT = "Hide when Combat starts, Show when Combat ends"
+local NO_AUTOMATION = L["No Automation"]
+local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
+local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
 
 local font = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
@@ -32,6 +34,13 @@ local function SetCastBars(enable)
 	end
 end
 
+local function ReplaceColorPatterns(text)
+	text = text:gsub('%%yellow%%', yellow) -- Yellow
+	text = text:gsub('%%blue%%', blue) -- BLue
+	text = text:gsub('%%red%%', red) -- Red
+	text = text:gsub('%%orange%%', orange) -- Orange
+	return text
+end
 
 -------------------------------------------------------------------------------------
 --  Default Options
@@ -94,7 +103,7 @@ function NeatPlatesPanel.RemoveProfile(self, profileName)
 end
 
 local function RemoveProfile(panel)
-	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red.."Sorry, can't delete the Default profile :("); return end
+	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red..L["Sorry, can't delete the Default profile :("]); return end
 
 	panel:Hide()	-- Hide panel, as it cannot be deleted
 
@@ -111,18 +120,18 @@ end
 local function ValidateProfileName(name, callback)
 	if not name or name == "" then
 		-- Invalid Name
-		print(orange.."NeatPlates: "..red.."You need to specify a 'Profile Name'.")
+		print(orange.."NeatPlates: "..red..L["You need to specify a 'Profile Name'."])
 	elseif NeatPlatesHubSettings.profiles[name] then
 		-- Profile name alredy exists, ask permission to overwrite.
 		StaticPopupDialogs["NeatPlates_OverwriteProfile"] = {
-		  text = "A profile with this name already exists, do you wish to overwrite it?",
-		  button1 = "Yes",
-		  button2 = "No",
+		  text = L["A profile with this name already exists, do you wish to overwrite it?"],
+		  button1 = YES,
+		  button2 = NO,
 		  OnAccept = function()
-		  	print(orange.."NeatPlates: "..blue.."The profile '"..name.."' was successfully overwritten.")
-		  	callback(true)	-- Profile name exists, but it is okay to overwrite it.
+		  	print(orange.."NeatPlates: "..blue..name:gsub(".+", L["The profile '%1' was successfully overwritten."]))
+		  	--callback(true)	-- Profile name exists, but it is okay to overwrite it.
 		  end,
-		  OnCancel = function() print(orange.."NeatPlates: "..yellow.."The profile '"..name.."' already exists, try a different name.") end,
+		  OnCancel = function() print(orange.."NeatPlates: "..yellow..name:gsub(".+", L["The profile '%1' already exists, try a different name."])) end,
 		  timeout = 0,
 		  whileDead = true,
 		  hideOnEscape = true,
@@ -452,7 +461,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	panel.ThemeCategoryTitle = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ThemeCategoryTitle:SetFont(font, 22)
-	panel.ThemeCategoryTitle:SetText("Theme")
+	panel.ThemeCategoryTitle:SetText(L["Theme"])
 	panel.ThemeCategoryTitle:SetPoint("TOPLEFT", 20, -10)
 	panel.ThemeCategoryTitle:SetTextColor(255/255, 105/255, 6/255)
 
@@ -465,7 +474,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	panel.ProfileLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ProfileLabel:SetFont(font, 22)
-	panel.ProfileLabel:SetText("Profile Selection")
+	panel.ProfileLabel:SetText(L["Profile Selection"])
 	panel.ProfileLabel:SetPoint("TOPLEFT", panel.ActiveThemeDropdown, "BOTTOMLEFT", 20, -20)
 	panel.ProfileLabel:SetTextColor(255/255, 105/255, 6/255)
 
@@ -477,7 +486,7 @@ local function BuildInterfacePanel(panel)
 	panel.FirstSpecLabel:SetPoint("TOPLEFT", panel.ProfileLabel,"BOTTOMLEFT", 0, -4)
 	panel.FirstSpecLabel:SetWidth(170)
 	panel.FirstSpecLabel:SetJustifyH("LEFT")
-	panel.FirstSpecLabel:SetText("First Spec")
+	panel.FirstSpecLabel:SetText(L["First Spec"])
 
 	panel.FirstSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFirstSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
 	panel.FirstSpecDropdown:SetPoint("TOPLEFT", panel.FirstSpecLabel, "BOTTOMLEFT", -20, -2)
@@ -487,7 +496,7 @@ local function BuildInterfacePanel(panel)
 	panel.ThirdSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecDropdown,"BOTTOMLEFT", 20, -8)
 	panel.ThirdSpecLabel:SetWidth(170)
 	panel.ThirdSpecLabel:SetJustifyH("LEFT")
-	panel.ThirdSpecLabel:SetText("Third Spec")
+	panel.ThirdSpecLabel:SetText(L["Third Spec"])
 	panel.ThirdSpecLabel:Hide()
 
 	panel.ThirdSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesThirdSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
@@ -502,7 +511,7 @@ local function BuildInterfacePanel(panel)
 	panel.SecondSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecLabel,"TOPLEFT", 150, 0)
 	panel.SecondSpecLabel:SetWidth(170)
 	panel.SecondSpecLabel:SetJustifyH("LEFT")
-	panel.SecondSpecLabel:SetText("Second Spec")
+	panel.SecondSpecLabel:SetText(L["Second Spec"])
 
 	panel.SecondSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesSecondSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
 	panel.SecondSpecDropdown:SetPoint("TOPLEFT",panel.SecondSpecLabel, "BOTTOMLEFT", -20, -2)
@@ -512,7 +521,7 @@ local function BuildInterfacePanel(panel)
 	panel.FourthSpecLabel:SetPoint("TOPLEFT", panel.SecondSpecDropdown,"BOTTOMLEFT", 20, -8)
 	panel.FourthSpecLabel:SetWidth(170)
 	panel.FourthSpecLabel:SetJustifyH("LEFT")
-	panel.FourthSpecLabel:SetText("Fourth Spec")
+	panel.FourthSpecLabel:SetText(L["Fourth Spec"])
 	panel.FourthSpecLabel:Hide()
 
 	panel.FourthSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFourthSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
@@ -526,7 +535,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.ProfileManagementLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ProfileManagementLabel:SetFont(font, 22)
-	panel.ProfileManagementLabel:SetText("Profile Management")
+	panel.ProfileManagementLabel:SetText(L["Profile Management"])
 	panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.ThirdSpecDropdown, "BOTTOMLEFT", 20, -20)
 	panel.ProfileManagementLabel:SetTextColor(255/255, 105/255, 6/255)
 
@@ -535,7 +544,7 @@ local function BuildInterfacePanel(panel)
 	panel.ProfileName:SetPoint("TOPLEFT", panel.ProfileManagementLabel, "BOTTOMLEFT", 0, -20)
 	panel.ProfileName:SetWidth(170)
 	panel.ProfileName:SetJustifyH("LEFT")
-	panel.ProfileName:SetText("Profile Name")
+	panel.ProfileName:SetText(L["Profile Name"])
 
 	panel.ProfileNameEditBox = CreateFrame("EditBox", "NeatPlatesOptions_ProfileNameEditBox", panel, "InputBoxTemplate")
 	panel.ProfileNameEditBox:SetWidth(124)
@@ -554,24 +563,24 @@ local function BuildInterfacePanel(panel)
 	panel.CreateProfile = CreateFrame("Button", "NeatPlatesOptions_CreateProfile", panel, "NeatPlatesPanelButtonTemplate")
 	panel.CreateProfile:SetPoint("LEFT", panel.ProfileColorBox, "RIGHT", 3, 0)
 	panel.CreateProfile:SetWidth(100)
-	panel.CreateProfile:SetText("Add Profile")
+	panel.CreateProfile:SetText(L["Add Profile"])
 
-	-- Clone Profile Button
-	panel.CloneProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.CloneProfile:SetPoint("TOPLEFT", panel.ProfileNameEditBox, "BOTTOMLEFT", -3, -8)
-	panel.CloneProfile:SetWidth(170)
-	panel.CloneProfile:SetJustifyH("LEFT")
-	panel.CloneProfile:SetText("Clone Profile")
+	-- Copy Profile Button
+	panel.CopyProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.CopyProfile:SetPoint("TOPLEFT", panel.ProfileNameEditBox, "BOTTOMLEFT", -3, -8)
+	panel.CopyProfile:SetWidth(170)
+	panel.CopyProfile:SetJustifyH("LEFT")
+	panel.CopyProfile:SetText(L["Copy Profile"])
 
-	panel.CloneProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCloneProfileDropdown", panel, HubProfileList, nil, nil, true)
-	panel.CloneProfileDropdown:SetPoint("TOPLEFT", panel.CloneProfile, "BOTTOMLEFT", -20, -2)
+	panel.CopyProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCopyProfileDropdown", panel, HubProfileList, nil, nil, true)
+	panel.CopyProfileDropdown:SetPoint("TOPLEFT", panel.CopyProfile, "BOTTOMLEFT", -20, -2)
 
 	-- Remove Profile Button
 	panel.RemoveProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.RemoveProfile:SetPoint("TOPLEFT", panel.CloneProfile, "TOPLEFT", 140, 0)
+	panel.RemoveProfile:SetPoint("TOPLEFT", panel.CopyProfile, "TOPLEFT", 140, 0)
 	panel.RemoveProfile:SetWidth(170)
 	panel.RemoveProfile:SetJustifyH("LEFT")
-	panel.RemoveProfile:SetText("Remove Profile")
+	panel.RemoveProfile:SetText(L["Remove Profile"])
 
 	panel.RemoveProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesRemoveProfileDropdown", panel, HubProfileList, nil, nil, true)
 	panel.RemoveProfileDropdown:SetPoint("TOPLEFT", panel.RemoveProfile, "BOTTOMLEFT", -20, -2)
@@ -581,8 +590,8 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	panel.AutomationLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.AutomationLabel:SetFont(font, 22)
-	panel.AutomationLabel:SetText("Automation")
-	panel.AutomationLabel:SetPoint("TOPLEFT", panel.CloneProfileDropdown, "BOTTOMLEFT", 20, -20)
+	panel.AutomationLabel:SetText(L["Automation"])
+	panel.AutomationLabel:SetPoint("TOPLEFT", panel.CopyProfileDropdown, "BOTTOMLEFT", 20, -20)
 	panel.AutomationLabel:SetTextColor(255/255, 105/255, 6/255)
 
 
@@ -594,7 +603,7 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowEnemyLabel:SetPoint("TOPLEFT", panel.AutomationLabel,"BOTTOMLEFT", 0, -4)
 	panel.AutoShowEnemyLabel:SetWidth(170)
 	panel.AutoShowEnemyLabel:SetJustifyH("LEFT")
-	panel.AutoShowEnemyLabel:SetText("Enemy Nameplates:")
+	panel.AutoShowEnemyLabel:SetText(L["Enemy Nameplates:"])
 
 	panel.AutoShowEnemy = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowEnemy", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
 	panel.AutoShowEnemy:SetPoint("TOPLEFT",panel.AutoShowEnemyLabel, "BOTTOMLEFT", -20, -2)
@@ -608,7 +617,7 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowFriendlyLabel:SetPoint("TOPLEFT", panel.AutoShowEnemyLabel,"TOPLEFT", 150, 0)
 	panel.AutoShowFriendlyLabel:SetWidth(170)
 	panel.AutoShowFriendlyLabel:SetJustifyH("LEFT")
-	panel.AutoShowFriendlyLabel:SetText("Friendly Nameplates:")
+	panel.AutoShowFriendlyLabel:SetText(L["Friendly Nameplates:"])
 
 	panel.AutoShowFriendly = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowFriendly", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
 	panel.AutoShowFriendly:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel,"BOTTOMLEFT", -20, -2)
@@ -619,17 +628,17 @@ local function BuildInterfacePanel(panel)
 	-- Other Options
 	----------------------------------------------
 	-- Cast Bars
-	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, "Disable Cast Bars")
+	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
 	panel.DisableCastBars:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 16, -50)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont
-	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceBlizzardFont", panel, "Force Multi-Lingual Font (Requires /reload)")
+	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceBlizzardFont", panel, L["Force Multi-Lingual Font (Requires /reload)"])
 	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) NeatPlates.OverrideFonts( self:GetChecked()) end)
 
 	-- Frequent Health Updates
-	panel.HealthFrequent = PanelHelpers:CreateCheckButton("NeatPlatesOptions_HealthFrequent", panel, "Use Frequent Health Updates")
+	panel.HealthFrequent = PanelHelpers:CreateCheckButton("NeatPlatesOptions_HealthFrequent", panel, L["Use Frequent Health Updates"])
 	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
 	panel.HealthFrequent:SetScript("OnClick", function(self) NeatPlates:SetHealthUpdateMethod(self:GetChecked()) end)
 
@@ -640,31 +649,31 @@ local function BuildInterfacePanel(panel)
 	panel.CVarsLabel:SetPoint("TOPLEFT", panel.HealthFrequent, "BOTTOMLEFT", 0, -20)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
-	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, "Always keep Target Nameplate on Screen")
+	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])
 	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.CVarsLabel, "TOPLEFT", 0, -25)
 	panel.NameplateTargetClamp:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateTargetRadialPosition", 1) else SetCVar("nameplateTargetRadialPosition", 0) end end)
 
-	panel.NameplateStacking = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateStacking", panel, "Stacking Nameplates")
+	panel.NameplateStacking = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateStacking", panel, L["Stacking Nameplates"])
 	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
 	panel.NameplateStacking:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateMotion", 1) else SetCVar("nameplateMotion", 0) end end)
 
-	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, "Nameplate Max Distance", 60, 10, 100, 1, "ACTUAL", 250)
+	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
 	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -45)
 	panel.NameplateMaxDistance:SetScript("OnMouseUp", function(self) SetCVar("nameplateMaxDistance", self.ceil(self:GetValue())) end)
 
-	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, "Nameplate Horizontal Overlap", 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
 	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -45)
 	panel.NameplateOverlapH:SetScript("OnMouseUp", function(self) SetCVar("nameplateOverlapH", self.ceil(self:GetValue())) end)
 
-	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, "Nameplate Vertical Overlap", 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
 	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -45)
 	panel.NameplateOverlapV:SetScript("OnMouseUp", function(self) SetCVar("nameplateOverlapV", self.ceil(self:GetValue())) end)
 
-	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, "Clickable Width of Nameplates", 1, .1, 2, .01, nil, 170)
+	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -45)
 	--panel.NameplateClickableWidth:SetScript("OnMouseUp", function(self) print(self.ceil(self:GetValue())) end)
 
-	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, "Clickable Height of Nameplates", 1, .1, 2, .01, nil, 170)
+	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, L["Clickable Height of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -45)
 	--panel.NameplateClickableHeight:SetScript("OnMouseUp", function(self) print("clickableheight", self.ceil(self:GetValue())) end)
 
@@ -672,13 +681,13 @@ local function BuildInterfacePanel(panel)
 	local BlizzOptionsButton = CreateFrame("Button", "NeatPlatesOptions_BlizzOptionsButton", panel, "NeatPlatesPanelButtonTemplate")
 	BlizzOptionsButton:SetPoint("TOPLEFT", panel.NameplateClickableWidth, "TOPLEFT", -10, -70)
 	BlizzOptionsButton:SetWidth(260)
-	BlizzOptionsButton:SetText("Nameplate Motion & Visibility")
+	BlizzOptionsButton:SetText(L["Nameplate Motion & Visibility"])
 
 	-- Reset
 	local ResetButton = CreateFrame("Button", "NeatPlatesOptions_ResetButton", panel, "NeatPlatesPanelButtonTemplate")
 	ResetButton:SetPoint("TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -10)
 	ResetButton:SetWidth(155)
-	ResetButton:SetText("Reset Configuration")
+	ResetButton:SetText(L["Reset Configuration"])
 
 
 	-- Update Functions
@@ -703,9 +712,9 @@ local function BuildInterfacePanel(panel)
 		end)
 	end)
 
-	panel.CloneProfileDropdown.OnValueChanged = function(self)
+	panel.CopyProfileDropdown.OnValueChanged = function(self)
 		local name = panel.ProfileNameEditBox:GetText()
-		local copy = panel.CloneProfileDropdown:GetValue()
+		local copy = panel.CopyProfileDropdown:GetValue()
 		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
 
 		ValidateProfileName(name, function()
@@ -719,13 +728,13 @@ local function BuildInterfacePanel(panel)
 		local name = panel.RemoveProfileDropdown:GetValue()
 		
 		StaticPopupDialogs["NeatPlates_RemoveProfile"] = {
-		  text = "Are you sure you wish to delete the profile '"..name.."'?",
-		  button1 = "Yes",
-		  button2 = "No",
+		  text = name:gsub('.+', L["Are you sure you wish to delete the profile '%1'?"]),
+		  button1 = YES,
+		  button2 = NO,
 		  OnAccept = function()
 				RemoveProfile(_G["HubPanelProfile"..name.."_InterfaceOptionsPanel"])
 				panel.RemoveProfileDropdown:SetValue("")
-			  print(orange.."NeatPlates: "..blue.."The profile '"..name.."' was successfully deleted.")
+			  print(orange.."NeatPlates: "..blue..name:gsub('.+', L["The profile '%1' was successfully deleted."]))
 		  end,
 		  timeout = 0,
 		  whileDead = true,
@@ -757,8 +766,8 @@ local function BuildInterfacePanel(panel)
 			for i, v in pairs(NeatPlatesOptionsDefaults) do NeatPlatesOptions[i] = v end
 			OnRefresh(_panel)
 			ApplyPanelSettings()
-			print(yellow.."Resetting "..orange.."Neat Plates"..yellow.." Theme Selection to Default")
-			print(yellow.."Holding down "..blue.."Shift"..yellow.." while clicking "..red.."Reset Configuration"..yellow.." will clear your saved settings, AND reload the user interface.")
+			print(ReplaceColorPatterns(L["%yellow%Resetting %orange%Neat Plates%yellow% Theme Selection to Default"]))
+			print(ReplaceColorPatterns(L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."]))
 		end
 
 	end)

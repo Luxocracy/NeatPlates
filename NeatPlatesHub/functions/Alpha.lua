@@ -1,6 +1,7 @@
 
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 
 
 ------------------------------------------------------------------------------
@@ -111,23 +112,23 @@ local AddHubFunction = NeatPlatesHubHelpers.AddHubFunction
 local AlphaFunctionsEnemy = {}
 
 NeatPlatesHubDefaults.EnemyAlphaSpotlightMode = "ByThreat"			-- Sets the default function
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, DummyFunction, "None", "None")
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByThreat, "By Threat", "ByThreat")
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByLowHealth, "On Low-Health Units", "OnLowHealth")
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByNPC, "On NPC", "OnNPC")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, DummyFunction, L["None"], "None")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByThreat, L["By Threat"], "ByThreat")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByLowHealth, L["On Low-Health Units"], "OnLowHealth")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByNPC, L["On NPC"], "OnNPC")
 --AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByActiveAuras, "On Active Auras", "OnActiveAura")
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByEnemyHealer, "On Enemy Healers", "OnEnemyHealer")
-AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByActive, "On Active/Damaged Units", "OnActiveUnits")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByEnemyHealer, L["On Enemy Healers"], "OnEnemyHealer")
+AddHubFunction(AlphaFunctionsEnemy, NeatPlatesHubMenus.EnemyOpacityModes, AlphaFunctionByActive, L["On Active/Damaged Units"], "OnActiveUnits")
 
 
 local AlphaFunctionsFriendly = {}
 
 NeatPlatesHubDefaults.FriendlyAlphaSpotlightMode = "None"			-- Sets the default function
-AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, DummyFunction, "None", "None")
-AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByLowHealth, "On Low-Health Units", "OnLowHealth")
-AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionGroupMembers, "On Party Members", "OnGroupMembers")
-AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByPlayers, "On Players", "OnPlayers")
-AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByDamaged, "On Damaged Units", "OnActiveUnits")
+AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, DummyFunction, L["None"], "None")
+AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByLowHealth, L["On Low-Health Units"], "OnLowHealth")
+AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionGroupMembers, L["On Party Members"], "OnGroupMembers")
+AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByPlayers, L["On Players"], "OnPlayers")
+AddHubFunction(AlphaFunctionsFriendly, NeatPlatesHubMenus.FriendlyOpacityModes, AlphaFunctionByDamaged, L["On Damaged Units"], "OnActiveUnits")
 
 
 

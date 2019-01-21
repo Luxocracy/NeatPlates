@@ -16,7 +16,7 @@ local function UpdateQuestWidget(self, unit, showFriendly)
 			questTotal = tonumber(questTotal)
 		end
 
-		if (questName and not (questProgress and questTotal) and not isDungeon) or (questProgress and questTotal and questProgress < questTotal and not isDungeon) then
+		if (not isDungeon and ((questName and not (questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal))) then
 			self.Icon:SetTexture(art)
 			self:Show()
 		else

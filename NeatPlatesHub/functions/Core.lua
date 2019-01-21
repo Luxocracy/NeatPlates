@@ -4,6 +4,7 @@
 ------------------------------------------------------------------------------------
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 ------------------------------------------------------------------------------------
 HubData.Functions = {}
 HubData.Colors = {}
@@ -71,9 +72,9 @@ local function DummyFunction() return end
 -- Define the Menu for Threat Modes
 NeatPlatesHubDefaults.ThreatWarningMode = "Auto"
 NeatPlatesHubMenus.ThreatWarningModes = {
-					{ text = "Auto (Color Swap)", value = "Auto",} ,
-					{ text = "Tank", value = "Tank",} ,
-					{ text = "DPS/Healer", value = "DPS",} ,
+					{ text = L["Auto (Color Swap)"], value = "Auto",} ,
+					{ text = L["Tank"], value = "Tank",} ,
+					{ text = L["DPS/Healer"], value = "DPS",} ,
 					}
 
 local NormalGrey = {r = .65, g = .65, b = .65, a = .4}

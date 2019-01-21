@@ -1,7 +1,7 @@
 
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
-
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 
 
 ------------------------------------------------------------------
@@ -183,18 +183,18 @@ end
 local EnemyBarFunctions = {}
 NeatPlatesHubDefaults.EnemyBarColorMode = "ByThreat"			-- Sets the default function
 
-AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByThreat, "By Threat", "ByThreat")
-AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByReaction, "By Reaction", "ByReaction")
-AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByClass, "By Class", "ByClass")
-AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByHealth, "By Health", "ByHealth")
+AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByThreat, L["By Threat"], "ByThreat")
+AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByReaction, L["By Reaction"], "ByReaction")
+AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByClass, L["By Class"], "ByClass")
+AddHubFunction(EnemyBarFunctions, NeatPlatesHubMenus.EnemyBarModes, ColorFunctionByHealth, L["By Health"], "ByHealth")
 
 
 local FriendlyBarFunctions = {}
 NeatPlatesHubDefaults.FriendlyBarColorMode = "ByReaction"			-- Sets the default function
 
-AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByReaction, "By Reaction", "ByReaction")
-AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByClass, "By Class", "ByClass")
-AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByHealth, "By Health", "ByHealth")
+AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByReaction, L["By Reaction"], "ByReaction")
+AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByClass, L["By Class"], "ByClass")
+AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorFunctionByHealth, L["By Health"], "ByHealth")
 
 
 
@@ -515,22 +515,22 @@ local EnemyNameColorFunctions = {}
 NeatPlatesHubMenus.EnemyNameColorModes = {}
 NeatPlatesHubDefaults.EnemyNameColorMode = "Default"
 
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorDefault, "White", "Default")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByClass, "By Class", "ByClass")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByThreat, "By Threat", "ByThreat")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByReaction, "By Reaction", "ByReaction")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, ColorFunctionByHealth, "By Health", "ByHealth")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, ColorFunctionByLevelColor, "By Level Color", "ByLevel")
-AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorBySignificance, "By Normal/Elite/Boss", "ByElite")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorDefault, L["White"], "Default")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByClass, L["By Class"], "ByClass")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByThreat, L["By Threat"], "ByThreat")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorByReaction, L["By Reaction"], "ByReaction")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, ColorFunctionByHealth, L["By Health"], "ByHealth")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, ColorFunctionByLevelColor, L["By Level Color"], "ByLevel")
+AddHubFunction(EnemyNameColorFunctions, NeatPlatesHubMenus.EnemyNameColorModes, NameColorBySignificance, L["By Normal/Elite/Boss"], "ByElite")
 
 local FriendlyNameColorFunctions = {}
 NeatPlatesHubMenus.FriendlyNameColorModes = {}
 NeatPlatesHubDefaults.FriendlyNameColorMode = "Default"
 
-AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorDefault, "White", "Default")
-AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorByClass, "By Class", "ByClass")
-AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorByReaction, "By Reaction", "ByReaction")
-AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, ColorFunctionByHealth, "By Health", "ByHealth")
+AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorDefault, L["White"], "Default")
+AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorByClass, L["By Class"], "ByClass")
+AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, NameColorByReaction, L["By Reaction"], "ByReaction")
+AddHubFunction(FriendlyNameColorFunctions, NeatPlatesHubMenus.FriendlyNameColorModes, ColorFunctionByHealth, L["By Health"], "ByHealth")
 
 
 NeatPlatesHubDefaults.FriendlyHeadlineColor = "ByReaction"

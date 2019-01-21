@@ -2,6 +2,7 @@
 
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
+local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
 
 
 ------------------------------------------------------------------------------
@@ -117,15 +118,15 @@ local ScaleFunctionsUniversal = { DummyFunction, ScaleFunctionByThreat, ScaleFun
 
 local AddHubFunction = NeatPlatesHubHelpers.AddHubFunction
 
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, DummyFunction, "None", "None")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByThreat, "By Threat", "ByThreat")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByElite, "On Elite Units", "OnElite")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByEnemy, "On Enemy Units", "OnHostile")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByNPC, "On NPCs", "OnNPC")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByRaidIcon, "On Raid Targets", "OnMarked")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByEnemyHealer, "On Enemy Healers", "OnHealers")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByLowHealth, "On Low-Health Units", "OnLowHealth")
-AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByBoss, "On Bosses", "OnBosses")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, DummyFunction, L["None"], "None")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByThreat, L["By Threat"], "ByThreat")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByElite, L["On Elite Units"], "OnElite")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByEnemy, L["On Enemy Units"], "OnHostile")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByNPC, L["On NPCs"], "OnNPC")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByRaidIcon, L["On Raid Targets"], "OnMarked")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByEnemyHealer, L["On Enemy Healers"], "OnHealers")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByLowHealth, L["On Low-Health Units"], "OnLowHealth")
+AddHubFunction(ScaleFunctionsUniversal, NeatPlatesHubMenus.ScaleModes, ScaleFunctionByBoss, L["On Bosses"], "OnBosses")
 --NeatPlatesHubDefaults.ScaleFunctionMode = 2			-- Sets the default function
 NeatPlatesHubDefaults.ScaleFunctionMode = "ByThreat"			-- Sets the default function
 
