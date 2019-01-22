@@ -35,8 +35,7 @@ elseif (LOCALE_zhTW) then
 elseif (LOCALE_ruRU) then
 	NeatPlatesLocalizedFont = "Fonts\\FRIZQT___CYR.TTF";
 else
-	--NeatPlatesLocalizedFont = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf";
-	NeatPlatesLocalizedFont = "Fonts\\ARKai_T.ttf";
+	NeatPlatesLocalizedFont = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf";
 end
 
 local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
