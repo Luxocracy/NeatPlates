@@ -343,7 +343,7 @@ local function OnRefresh(panel)
 	local id, name = GetSpecializationInfo(1)
 
 	if name then
-		if currentSpec == 1 then name = name.." (Active)" end
+		if currentSpec == 1 then name = name.." ("..L["Active"]..")" end
 		panel.FirstSpecLabel:SetText(name)
 	end
 	------------------------
@@ -352,7 +352,7 @@ local function OnRefresh(panel)
 	local id, name = GetSpecializationInfo(2)
 
 	if name then
-		if currentSpec == 2 then name = name.." (Active)" end
+		if currentSpec == 2 then name = name.." ("..L["Active"]..")" end
 		panel.SecondSpecLabel:SetText(name)
 	end
 	------------------------
@@ -361,7 +361,7 @@ local function OnRefresh(panel)
 	local id, name = GetSpecializationInfo(3)
 
 	if name then
-		if currentSpec == 3 then name = name.." (Active)" end
+		if currentSpec == 3 then name = name.." ("..L["Active"]..")" end
 		panel.ThirdSpecLabel:SetText(name)
 		panel.ThirdSpecLabel:Show()
 		panel.ThirdSpecDropdown:Show()
@@ -372,7 +372,7 @@ local function OnRefresh(panel)
 	local id, name = GetSpecializationInfo(4)
 
 	if name then
-		if currentSpec == 4 then name = name.." (Active)" end
+		if currentSpec == 4 then name = name.." ("..L["Active"]..")" end
 		panel.FourthSpecLabel:SetText(name)
 		panel.FourthSpecLabel:Show()
 		panel.FourthSpecDropdown:Show()
