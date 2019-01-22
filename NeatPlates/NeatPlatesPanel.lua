@@ -6,7 +6,7 @@ local AddonName, NeatPlatesInternal = ...
 NeatPlatesPanel = {}
 NeatPlatesHubMenus = NeatPlatesHubMenus or {}
 
-local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 
@@ -25,7 +25,21 @@ local NO_AUTOMATION = L["No Automation"]
 local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
 local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
 
-local font = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
+-- Localized fonts
+if (LOCALE_koKR) then
+	NeatPlatesLocalizedFont = "Fonts\\2002.TTF";
+elseif (LOCALE_zhCN) then
+	NeatPlatesLocalizedFont = "Fonts\\ARKai_T.ttf";
+elseif (LOCALE_zhTW) then
+	NeatPlatesLocalizedFont = "Fonts\\blei00d.TTF";
+elseif (LOCALE_ruRU) then
+	NeatPlatesLocalizedFont = "Fonts\\FRIZQT___CYR.TTF";
+else
+	--NeatPlatesLocalizedFont = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf";
+	NeatPlatesLocalizedFont = "Fonts\\ARKai_T.ttf";
+end
+
+local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
 
 local function SetCastBars(enable)
@@ -408,7 +422,7 @@ local function BuildInterfacePanel(panel)
 	panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 	panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
 
-	panel.Label:SetFont("Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 26)
+	panel.Label:SetFont(font, 26)
 	panel.Label:SetPoint("TOPLEFT", panel, "TOPLEFT", 16+6, -16-4)
 	panel.Label:SetTextColor(255/255, 105/255, 6/255)
 
@@ -419,7 +433,7 @@ local function BuildInterfacePanel(panel)
 	panel.Version:SetJustifyH("RIGHT")
 	panel.Version:SetJustifyV("TOP")
 	panel.Version:SetText(versionString)
-	panel.Version:SetFont("Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 18)
+	panel.Version:SetFont(font, 18)
 
 	panel.DividerLine = panel:CreateTexture(nil, 'ARTWORK')
 	panel.DividerLine:SetTexture("Interface\\Addons\\NeatPlatesHub\\shared\\ThinBlackLine")
@@ -551,7 +565,7 @@ local function BuildInterfacePanel(panel)
 	panel.ProfileNameEditBox:SetHeight(25)
 	panel.ProfileNameEditBox:SetPoint("TOPLEFT", panel.ProfileName, "BOTTOMLEFT", 4, 0)
 	panel.ProfileNameEditBox:SetAutoFocus(false)
-	panel.ProfileNameEditBox:SetFont("media\\DefaultFont.TTF", 11, "NONE")
+	panel.ProfileNameEditBox:SetFont(font, 11, "NONE")
 	panel.ProfileNameEditBox:SetFrameStrata("DIALOG")
 
 	-- Profile Color picker

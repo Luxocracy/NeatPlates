@@ -6,8 +6,6 @@
 ## OptionalDeps: NeatPlatesHubDE, NeatPlatesHubES, NeatPlatesHubMX, NeatPlatesHubFR, NeatPlatesHubKR, NeatPlatesHubRU, NeatPlatesHubCN, NeatPlatesHubTW
 ## SavedVariables: NeatPlatesHubSettings
 
-locales.xml
-
 Defaults.lua
 Helpers.lua
 Templates.lua

@@ -1,5 +1,4 @@
-local AddonName, addon = ...
-local L = LibStub("AceLocale-3.0"):NewLocale(AddonName, "esMX")
+local L = LibStub("AceLocale-3.0"):NewLocale("NeatPlates", "esMX")
 if not L then return end
 
 

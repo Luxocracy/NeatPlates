@@ -4,7 +4,7 @@
 ------------------------------------------------------------------------------------
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
-local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 ------------------------------------------------------------------------------------
 HubData.Functions = {}
 HubData.Colors = {}

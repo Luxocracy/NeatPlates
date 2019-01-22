@@ -1,9 +1,10 @@
-local font = NeatPlatesHubLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+
+local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local divider = "Interface\\Addons\\NeatPlatesHub\\shared\\ThinBlackLine"
 
 local PanelHelpers = NeatPlatesUtility.PanelHelpers 		-- PanelTools
 local DropdownFrame = CreateFrame("Frame", "NeatPlatesHubCategoryFrame", UIParent, "UIDropDownMenuTemplate" )
-local L = NeatPlatesHub_GetLocalizedString
 
 -- Menu Templates
 NeatPlatesHubMenus = NeatPlatesHubMenus or {}
@@ -125,7 +126,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		EditBox:SetMultiLine(true)
 
 		EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
-		EditBox:SetFont("Fonts\\FRIZQT__.TTF", 11, "NONE")
+		EditBox:SetFont(NeatPlatesLocalizedFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 		--EditBox:SetText("Empty")
 		EditBox:SetText("")
 		EditBox:SetAutoFocus(false)

@@ -10,8 +10,7 @@ Color Guide:
 
 --]]
 
-local AddonName, HubData = ...;
-local L = LibStub("AceLocale-3.0"):GetLocale(AddonName)
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 -- Rapid Panel Functions
 local CreateQuickSlider = NeatPlatesHubRapidPanel.CreateQuickSlider
@@ -620,7 +619,7 @@ local function ImportSettingsPrompt()
 	frame:SetPoint("CENTER",0,0)
 
 	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	frame.Text:SetFont(NeatPlatesHubLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 14)
+	frame.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 14)
 	frame.Text:SetTextColor(255/255, 105/255, 6/255)
 	frame.Text:SetPoint("TOPLEFT", 12, -12)
 	frame.Text:SetJustifyH("LEFT")
