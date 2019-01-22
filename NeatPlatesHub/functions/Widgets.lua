@@ -19,10 +19,10 @@ local CreateThreatPercentageWidget = WidgetLib.CreateThreatPercentageWidget
 
 NeatPlatesHubDefaults.WidgetRangeMode = 1
 NeatPlatesHubMenus.RangeModes = {
-				{ text = "9 yards"} ,
-				{ text = "15 yards" } ,
-				{ text = "28 yards" } ,
-				{ text = "40 yards" } ,
+				{ text = "9 "..L["yards"]} ,
+				{ text = "15 "..L["yards"]} ,
+				{ text = "28 "..L["yards"]} ,
+				{ text = "40 "..L["yards"]} ,
 			}
 
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1

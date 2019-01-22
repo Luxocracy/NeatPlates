@@ -62,6 +62,7 @@ L["The profile '%1' was successfully deleted."] = true
 ------------------------------
 -- Profile Panel
 ------------------------------
+L["Categories"] = true
 
 ------------------------------
 -- Nameplate Style
@@ -113,6 +114,8 @@ L["Friendly Status Text:"] = true
 	L["Percent Health"] = true
 	L["Exact Health"] = true
 	L["Approximate Health"] = true
+		L["M"] = true
+		L["K"] = true
 	L["Health Deficit"] = true
 	L["Health Total & Percent"] = true
 	L["Target Of"] = true
@@ -269,7 +272,13 @@ L["Other Colors:"] = true
 L["Custom Color Conditions:"] = true
 L["Color Select"] = true
 -- Custom Color Help Tip
-L["|cffCCCCCCColor value in Hex(#) followed by:\n- Unit Name\n- Buff/Debuff Name/SpellID\n- Health Threshold\n\n(ex. #A300FF Spawn of G'huun)\n|cffff9320Prioritised top to bottom"] = true
+L[ [=[|cffCCCCCCColor value in Hex(#) followed by:
+- Unit Name
+- Buff/Debuff Name/SpellID
+- Health Threshold
+
+(ex. #A300FF Spawn of G'huun)
+|cffff9320Prioritised top to bottom]=] ] = true
 
 ------------------------------
 -- Threat
@@ -356,6 +365,7 @@ L["Show Absorb Bars"] = true
 
 L["Show Party Range Warning"] = true
 	L["Range:"] = true
+		L["yards"] = true
 
 ------------------------------
 -- Funky Stuff
@@ -375,7 +385,12 @@ L["Blizzard Nameplate Motion & Visibility..."] = true
 ------------------------------
 -- Import Settings Prompt
 ------------------------------
-L["You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)"] = true
+--L["You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)"] = true
+L[ [=[You seem to be running both NeatPlates and TidyPlatesContinued.
+Do you wish to import your TPC settings from this character to NeatPlates?
+
+(Once Importing is done TPC will be disabled and a UI Reload will be performed.
+You will also have to re-select which profile to use for which spec, sorry...)]=] ] = true
 
 L["Don't show this again"] = true
 	L["Do not import settings from TidyPlatesContinued. And do not show this message again."] = true
@@ -397,3 +412,5 @@ L["Display beneficial auras that can be removed by Dispel/Purge"] = true
 L["Display Enrage effects that can be removed by Soothe"] = true
 L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"] = true
 L["Hides the regular aura from the aura widget if it is currently emphasized"] = true
+
+

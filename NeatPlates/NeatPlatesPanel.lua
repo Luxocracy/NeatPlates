@@ -36,7 +36,10 @@ elseif (LOCALE_ruRU) then
 	NeatPlatesLocalizedFont = "Fonts\\FRIZQT___CYR.TTF";
 else
 	NeatPlatesLocalizedFont = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf";
+	NeatPlatesLocalizedInputFont = "Fonts\\FRIZQT__.TTF"
 end
+
+NeatPlatesLocalizedInputFont = NeatPlatesLocalizedInputFont or NeatPlatesLocalizedFont
 
 local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
@@ -116,7 +119,7 @@ function NeatPlatesPanel.RemoveProfile(self, profileName)
 end
 
 local function RemoveProfile(panel)
-	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red..L["Sorry, can't delete the Default profile :("]); return end
+	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red..L["Sorry, can't delete the Default profile :("]); return false end
 
 	panel:Hide()	-- Hide panel, as it cannot be deleted
 
@@ -128,6 +131,7 @@ local function RemoveProfile(panel)
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
 	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
 	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
+	return true
 end
 
 local function ValidateProfileName(name, callback)
@@ -564,7 +568,7 @@ local function BuildInterfacePanel(panel)
 	panel.ProfileNameEditBox:SetHeight(25)
 	panel.ProfileNameEditBox:SetPoint("TOPLEFT", panel.ProfileName, "BOTTOMLEFT", 4, 0)
 	panel.ProfileNameEditBox:SetAutoFocus(false)
-	panel.ProfileNameEditBox:SetFont(font, 11, "NONE")
+	panel.ProfileNameEditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 	panel.ProfileNameEditBox:SetFrameStrata("DIALOG")
 
 	-- Profile Color picker
@@ -745,9 +749,10 @@ local function BuildInterfacePanel(panel)
 		  button1 = YES,
 		  button2 = NO,
 		  OnAccept = function()
-				RemoveProfile(_G["HubPanelProfile"..name.."_InterfaceOptionsPanel"])
-				panel.RemoveProfileDropdown:SetValue("")
-			  print(orange.."NeatPlates: "..blue..name:gsub('.+', L["The profile '%1' was successfully deleted."]))
+				if RemoveProfile(_G["HubPanelProfile"..name.."_InterfaceOptionsPanel"]) then
+					panel.RemoveProfileDropdown:SetValue("")
+			  	print(orange.."NeatPlates: "..blue..name:gsub('.+', L["The profile '%1' was successfully deleted."]))
+				end
 		  end,
 		  timeout = 0,
 		  whileDead = true,

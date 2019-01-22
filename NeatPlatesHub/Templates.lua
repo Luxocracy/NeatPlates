@@ -126,7 +126,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		EditBox:SetMultiLine(true)
 
 		EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
-		EditBox:SetFont(NeatPlatesLocalizedFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+		EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 		--EditBox:SetText("Empty")
 		EditBox:SetText("")
 		EditBox:SetAutoFocus(false)
@@ -525,7 +525,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	BookmarkButton:SetPoint("TOPRIGHT", -40, -22)
 	BookmarkButton:SetWidth(110)
 	BookmarkButton:SetScale(.85)
-	BookmarkButton:SetText("Categories")
+	BookmarkButton:SetText(L["Categories"])
 
 
 	local function OnClickBookmark(frame)

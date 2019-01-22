@@ -67,9 +67,9 @@ local function ShortenNumber(number)
 	if not number then return "" end
 
 	if number > 1000000 then
-		return (ceil((number/100000))/10).." M"
+		return (ceil((number/100000))/10).." "..L["M"]
 	elseif number > 1000 then
-		return (ceil((number/100))/10).." K"
+		return (ceil((number/100))/10).." "..L["K"]
 	else
 		return number
 	end
