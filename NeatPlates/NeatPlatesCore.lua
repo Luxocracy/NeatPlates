@@ -887,7 +887,7 @@ do
 
 		local function setSpellText()
 			local spellString, color
-			local eventText = "Interrupted"
+			local eventText = L["Interrupted"]
 
 			if sourceGUID and sourceGUID ~= "" and ShowIntWhoCast then
 				local _, engClass = GetPlayerInfoByGUID(sourceGUID)

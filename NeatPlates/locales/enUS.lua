@@ -114,8 +114,10 @@ L["Friendly Status Text:"] = true
 	L["Percent Health"] = true
 	L["Exact Health"] = true
 	L["Approximate Health"] = true
-		L["M"] = true
-		L["K"] = true
+		L["SHORT_ONE_HUNDRED_MILLION"] = "UNUSED"
+		L["SHORT_MILLION"] = "M"
+		L["SHORT_TEN_THOUSAND"] = "UNUSED"
+		L["SHORT_THOUSAND"] = "K"
 	L["Health Deficit"] = true
 	L["Health Total & Percent"] = true
 	L["Target Of"] = true
@@ -182,7 +184,7 @@ L["Include Dispellable Debuffs on Friendly Units"] = true
 
 -- Aura Help Config Help Tip
 -- Important to not translate the prefixes.('My', 'All', 'Not')
-L["Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones."] = true
+L["AURA_TIP"] = "Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones."
 
 ------------------------------
 -- Opacity
@@ -272,13 +274,13 @@ L["Other Colors:"] = true
 L["Custom Color Conditions:"] = true
 L["Color Select"] = true
 -- Custom Color Help Tip
-L[ [=[|cffCCCCCCColor value in Hex(#) followed by:
+L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by:
 - Unit Name
 - Buff/Debuff Name/SpellID
 - Health Threshold
 
 (ex. #A300FF Spawn of G'huun)
-|cffff9320Prioritised top to bottom]=] ] = true
+|cffff9320Prioritised top to bottom]=]
 
 ------------------------------
 -- Threat
@@ -386,11 +388,11 @@ L["Blizzard Nameplate Motion & Visibility..."] = true
 -- Import Settings Prompt
 ------------------------------
 --L["You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)"] = true
-L[ [=[You seem to be running both NeatPlates and TidyPlatesContinued.
+L["IMPORT_PROMPT_TEXT"] = [=[You seem to be running both NeatPlates and TidyPlatesContinued.
 Do you wish to import your TPC settings from this character to NeatPlates?
 
 (Once Importing is done TPC will be disabled and a UI Reload will be performed.
-You will also have to re-select which profile to use for which spec, sorry...)]=] ] = true
+You will also have to re-select which profile to use for which spec, sorry...)]=]
 
 L["Don't show this again"] = true
 	L["Do not import settings from TidyPlatesContinued. And do not show this message again."] = true
@@ -400,8 +402,10 @@ L["Import TPC Settings"] = true
 
 
 ------------------------------
--- Various Tooltips
+-- Various stuff & Tooltips
 ------------------------------
+L["Interrupted"] = true
+
 L["Makes the Nameplates non-interactable"] = true
 L["Display Debuffs that have been applied by you"] = true
 L["Display Buffs that have been applied by you"] = true

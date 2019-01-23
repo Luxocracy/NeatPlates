@@ -66,10 +66,14 @@ end
 local function ShortenNumber(number)
 	if not number then return "" end
 
-	if number > 1000000 then
-		return (ceil((number/100000))/10).." "..L["M"]
+	if (LOCALE_zhCN or LOCALE_zhTW) and number > 100000000 then
+		return (ceil((number/10000000))/10).." "..L["SHORT_ONE_HUNDRED_MILLION"] --"亿"
+	elseif number > 1000000 then
+		return (ceil((number/100000))/10).." "..L["SHORT_MILLION"]
+	elseif (LOCALE_zhCN or LOCALE_zhTW) and number > 10000 then
+		return (ceil((number/1000))/10).." "..L["SHORT_TEN_THOUSAND"]	--"万"
 	elseif number > 1000 then
-		return (ceil((number/100))/10).." "..L["K"]
+		return (ceil((number/100))/10).." "..L["SHORT_THOUSAND"]
 	else
 		return number
 	end

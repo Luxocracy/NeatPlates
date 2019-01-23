@@ -218,7 +218,7 @@ local function BuildHubPanel(panel)
 
 	------------------------------
 	-- Debuff Help Tip
-	panel.DebuffHelpTip = CreateQuickItemLabel(nil, L["Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones."], AlignmentColumn, panel.WidgetDebuffListLabel, 225+40) -- 210, 275, )
+	panel.DebuffHelpTip = CreateQuickItemLabel(nil, L["AURA_TIP"], AlignmentColumn, panel.WidgetDebuffListLabel, 225+40) -- 210, 275, )
 	panel.DebuffHelpTip:SetHeight(150)
 	panel.DebuffHelpTip:SetWidth(200)
 	panel.DebuffHelpTip.Text:SetJustifyV("TOP")
@@ -355,13 +355,7 @@ local function BuildHubPanel(panel)
 	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorTapped, 0, 2)
 	panel.CustomColorList, F = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", L["Color Select"], function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
-	panel.CustomColorInfo = CreateQuickItemLabel(nil, L[ [=[|cffCCCCCCColor value in Hex(#) followed by:
-- Unit Name
-- Buff/Debuff Name/SpellID
-- Health Threshold
-
-(ex. #A300FF Spawn of G'huun)
-|cffff9320Prioritised top to bottom]=] ], AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
+	panel.CustomColorInfo = CreateQuickItemLabel(nil, L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
 	panel.CustomColorInfo:SetHeight(150)
 	panel.CustomColorInfo:SetWidth(220)
 	panel.CustomColorInfo.Text:SetJustifyV("TOP")
@@ -632,11 +626,7 @@ local function ImportSettingsPrompt()
 	frame.Text:SetJustifyV("BOTTOM")
 
 
-	frame.Text:SetText(L[ [=[You seem to be running both NeatPlates and TidyPlatesContinued.
-Do you wish to import your TPC settings from this character to NeatPlates?
-
-(Once Importing is done TPC will be disabled and a UI Reload will be performed.
-You will also have to re-select which profile to use for which spec, sorry...)]=] ])
+	frame.Text:SetText(L["IMPORT_PROMPT_TEXT"])
 
 	local CancelButton = CreateFrame("Button", "ImportSettingsPromptCancelButton", frame, "NeatPlatesPanelButtonTemplate")
 	CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
