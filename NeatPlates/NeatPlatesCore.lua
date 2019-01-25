@@ -4,6 +4,7 @@
 -- Variables and References
 ---------------------------------------------------------------------------------------------------------------------
 local addonName, NeatPlatesInternal = ...
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
 local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner

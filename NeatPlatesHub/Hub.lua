@@ -552,10 +552,13 @@ local Panels = {}
 
 local function CreateProfile(label, color)
 	color = color:gsub("|c","")
+	local suffix = ""
+
+	if NeatPlatesOptions.DefaultProfile == label then suffix = "|cFFFFFFFF("..L["Default"]..")" end
 
 	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
 	if not Panels[label] then -- If panel doesn't exist, create it
-		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile", "Neat Plates" )	-- Create the basic settings panel
+		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile"..suffix, "Neat Plates" )	-- Create the basic settings panel
 		NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
 		BuildHubPanel(Panels[label])	-- Fill the settings panel with options
 	else
@@ -576,10 +579,11 @@ end
 
 local function LoadProfiles(profiles)
 	--if next(profiles) == nil then profiles = {["Default"] = "FFFFFFFF"} end -- Make sure at least something is loaded
-	CreateProfile("Default", profiles["Default"]) -- Load Default first to keep it at the top of the list
+	--CreateProfile("Default", profiles["Default"]) -- Load Default first to keep it at the top of the list
 
 	for k, v in pairs(profiles) do
-		if k ~= "Default" then CreateProfile(k, v) end
+		--if k ~= "Default" then CreateProfile(k, v) end
+		CreateProfile(k, v)
 	end
 end
 
@@ -721,7 +725,7 @@ function ShowNeatPlatesHubPanel()
 	if profile then
 		NeatPlatesUtility.OpenInterfacePanel(Panels[profile])
 	else
-		NeatPlatesUtility.OpenInterfacePanel(Panels["Default"])
+		NeatPlatesUtility.OpenInterfacePanel(Panels[NeatPlatesOptions.DefaultProfile])
 	end
 end
 

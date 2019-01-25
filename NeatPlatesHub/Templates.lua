@@ -552,6 +552,38 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
 
 	BookmarkButton:SetScript("OnClick", OnClickBookmarkDrawer )
+
+	-- Make Default Profile
+	local DefaultProfileButton = CreateFrame("Button", objectName.."DefaultProfileButton", panel, "NeatPlatesPanelButtonTemplate")
+	DefaultProfileButton:SetPoint("LEFT", BookmarkButton, -120, 0)
+	DefaultProfileButton:SetWidth(110)
+	DefaultProfileButton:SetScale(.85)
+	DefaultProfileButton:SetText(L["Default Profile"])
+
+	local function OnClickDefaultProfile(frame)
+		PlaySound(856)
+		local name = panel.objectName:gsub("HubPanelProfile", "")
+
+		-- Set profile as the default profile.
+		StaticPopupDialogs["NeatPlates_DefaultProfile"] = {
+		  text = name:gsub(".+", L["Do you really want to make '%1' the default profile?"]),
+		  button1 = YES,
+		  button2 = NO,
+		  OnAccept = function()
+		  	local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
+		  	NeatPlatesOptions.DefaultProfile = name
+		  	print(orange.."NeatPlates: "..blue..name:gsub(".+", L["The profile '%1' is now the Default profile."]))
+		  end,
+		  timeout = 0,
+		  whileDead = true,
+		  hideOnEscape = true,
+		  preferredIndex = 3,  -- avoid some UI taint, see http://www.wowace.com/announcements/how-to-avoid-some-ui-taint/
+		}
+		StaticPopup_Show("NeatPlates_DefaultProfile")
+	end
+
+
+	DefaultProfileButton:SetScript("OnClick", OnClickDefaultProfile)
 --]]
 
 	local function SetMaximizeButtonTexture(frame)

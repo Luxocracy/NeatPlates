@@ -63,13 +63,14 @@ end
 -------------------------------------------------------------------------------------
 
 local FirstTryTheme = "Neon"
-local DefaultProfile = "Default"
+local DefaultProfile = L["Default"]
 
 local ActiveProfile = "None"
 
 NeatPlatesOptions = {
 
 	ActiveTheme = nil,
+	DefaultProfile = DefaultProfile,
 
 	FirstSpecProfile = DefaultProfile,
 	SecondSpecProfile = DefaultProfile,
@@ -119,9 +120,9 @@ function NeatPlatesPanel.RemoveProfile(self, profileName)
 end
 
 local function RemoveProfile(panel)
-	if panel.objectName == "HubPanelProfileDefault" then print(orange.."NeatPlates: "..red..L["Sorry, can't delete the Default profile :("]); return false end
+	if panel.objectName == "HubPanelProfile"..NeatPlatesOptions.DefaultProfile then print(orange.."NeatPlates: "..red..L["Sorry, can't delete the Default profile :("]); return false end
 
-	panel:Hide()	-- Hide panel, as it cannot be deleted
+	panel:Hide()	-- Hide panel, as a frame cannot be deleted
 
 	-- Remove interface category for profile
 	table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
@@ -145,8 +146,8 @@ local function ValidateProfileName(name, callback)
 		  button1 = YES,
 		  button2 = NO,
 		  OnAccept = function()
+		  	callback(true)	-- Profile name exists, but it is okay to overwrite it.
 		  	print(orange.."NeatPlates: "..blue..name:gsub(".+", L["The profile '%1' was successfully overwritten."]))
-		  	--callback(true)	-- Profile name exists, but it is okay to overwrite it.
 		  end,
 		  OnCancel = function() print(orange.."NeatPlates: "..yellow..name:gsub(".+", L["The profile '%1' already exists, try a different name."])) end,
 		  timeout = 0,
@@ -232,6 +233,15 @@ local function VerifyPanelSettings()
 	end
 end
 
+local function VerifySpecSelections()
+	if NeatPlatesHubSettings then
+		if not NeatPlatesHubSettings.profiles[NeatPlatesOptions.FirstSpecProfile] then NeatPlatesOptions.FirstSpecProfile = nil end
+		if not NeatPlatesHubSettings.profiles[NeatPlatesOptions.SecondSpecProfile] then NeatPlatesOptions.SecondSpecProfile = nil end
+		if not NeatPlatesHubSettings.profiles[NeatPlatesOptions.ThirdSpecProfile] then NeatPlatesOptions.ThirdSpecProfile = nil end
+		if not NeatPlatesHubSettings.profiles[NeatPlatesOptions.FourthSpecProfile] then NeatPlatesOptions.FourthSpecProfile = nil end
+	end
+end
+
 local function ApplyPanelSettings()
 	-- Theme
 	SetTheme(NeatPlatesOptions.ActiveTheme or FirstTryTheme)
@@ -241,7 +251,7 @@ local function ApplyPanelSettings()
 	--local theme = NeatPlatesThemeList[NeatPlatesInternal.activeThemeName]
 
 	-- Load Hub Profile
-	ActiveProfile = DefaultProfile
+	ActiveProfile = NeatPlatesOptions.DefaultProfile
 
 	local currentSpec = GetSpecialization()
 
@@ -279,7 +289,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
-	NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
+	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
 
 	NeatPlatesOptions.FirstSpecProfile = panel.FirstSpecDropdown:GetValue()
 	NeatPlatesOptions.SecondSpecProfile = panel.SecondSpecDropdown:GetValue()
@@ -505,7 +515,7 @@ local function BuildInterfacePanel(panel)
 	panel.FirstSpecLabel:SetJustifyH("LEFT")
 	panel.FirstSpecLabel:SetText(L["First Spec"])
 
-	panel.FirstSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFirstSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
+	panel.FirstSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFirstSpecDropdown", panel, HubProfileList, NeatPlatesOptions.DefaultProfile, nil, true)
 	panel.FirstSpecDropdown:SetPoint("TOPLEFT", panel.FirstSpecLabel, "BOTTOMLEFT", -20, -2)
 
 	-- Spec 3
@@ -516,7 +526,7 @@ local function BuildInterfacePanel(panel)
 	panel.ThirdSpecLabel:SetText(L["Third Spec"])
 	panel.ThirdSpecLabel:Hide()
 
-	panel.ThirdSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesThirdSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
+	panel.ThirdSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesThirdSpecDropdown", panel, HubProfileList, NeatPlatesOptions.DefaultProfile, nil, true)
 	panel.ThirdSpecDropdown:SetPoint("TOPLEFT", panel.ThirdSpecLabel, "BOTTOMLEFT", -20, -2)
 	panel.ThirdSpecLabel:Hide()
 
@@ -530,7 +540,7 @@ local function BuildInterfacePanel(panel)
 	panel.SecondSpecLabel:SetJustifyH("LEFT")
 	panel.SecondSpecLabel:SetText(L["Second Spec"])
 
-	panel.SecondSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesSecondSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
+	panel.SecondSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesSecondSpecDropdown", panel, HubProfileList, NeatPlatesOptions.DefaultProfile, nil, true)
 	panel.SecondSpecDropdown:SetPoint("TOPLEFT",panel.SecondSpecLabel, "BOTTOMLEFT", -20, -2)
 
 	-- Spec 4
@@ -541,7 +551,7 @@ local function BuildInterfacePanel(panel)
 	panel.FourthSpecLabel:SetText(L["Fourth Spec"])
 	panel.FourthSpecLabel:Hide()
 
-	panel.FourthSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFourthSpecDropdown", panel, HubProfileList, DefaultProfile, nil, true)
+	panel.FourthSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFourthSpecDropdown", panel, HubProfileList, NeatPlatesOptions.DefaultProfile, nil, true)
 	panel.FourthSpecDropdown:SetPoint("TOPLEFT",panel.FourthSpecLabel, "BOTTOMLEFT", -20, -2)
 	panel.FourthSpecDropdown:Hide()
 
@@ -819,6 +829,7 @@ function panelevents:PLAYER_ENTERING_WORLD()
 		NeatPlatesOptions.ActiveTheme = fallBackTheme end
 
 	VerifyPanelSettings()
+	VerifySpecSelections()
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
 end
@@ -853,10 +864,10 @@ function panelevents:PLAYER_LOGIN()
 		--NeatPlatesOptions.SecondSpecProfile = Role2Profile(2)
 		--NeatPlatesOptions.ThirdSpecProfile = Role2Profile(3)
 		--NeatPlatesOptions.FourthSpecProfile = Role2Profile(4)
-		NeatPlatesOptions.FirstSpecProfile = "Default"
-		NeatPlatesOptions.SecondSpecProfile = "Default"
-		NeatPlatesOptions.ThirdSpecProfile = "Default"
-		NeatPlatesOptions.FourthSpecProfile = "Default"
+		NeatPlatesOptions.FirstSpecProfile = NeatPlatesOptions.DefaultProfile
+		NeatPlatesOptions.SecondSpecProfile = NeatPlatesOptions.DefaultProfile
+		NeatPlatesOptions.ThirdSpecProfile = NeatPlatesOptions.DefaultProfile
+		NeatPlatesOptions.FourthSpecProfile = NeatPlatesOptions.DefaultProfile
 	end
 end
 

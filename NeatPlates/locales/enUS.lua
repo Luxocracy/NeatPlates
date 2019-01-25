@@ -57,12 +57,15 @@ L["The profile '%1' was successfully overwritten."] = true
 L["The profile '%1' already exists, try a different name."] = true
 L["Are you sure you wish to delete the profile '%1'?"] = true
 L["The profile '%1' was successfully deleted."] = true
+L["Do you really want to make '%1' the default profile?"] = true
+L["The profile '%1' is now the Default profile."] = true
 
 
 ------------------------------
 -- Profile Panel
 ------------------------------
 L["Categories"] = true
+L["Default Profile"] = true
 
 ------------------------------
 -- Nameplate Style
@@ -404,6 +407,7 @@ L["Import TPC Settings"] = true
 ------------------------------
 -- Various stuff & Tooltips
 ------------------------------
+L["Default"] = true
 L["Interrupted"] = true
 
 L["Makes the Nameplates non-interactable"] = true

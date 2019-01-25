@@ -1,10 +1,11 @@
 
 local CopyTable = NeatPlatesUtility.copyTable
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 NeatPlatesHubCache = {}
 NeatPlatesHubSettings = {
 	profiles = {
-		["Default"] = "FFFFFFFF"
+		[L["Default"]] = "FFFFFFFF"
 	}
 }
 

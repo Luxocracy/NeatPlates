@@ -166,7 +166,7 @@ local CreateVariableSet = NeatPlatesHubRapidPanel.CreateVariableSet
 
 local function UseVariables(profileName)
 
-	local suffix = profileName or "Default"
+	local suffix = profileName or L["Default"]
 	if suffix then
 
 		if CurrentProfileName ~= suffix then 	-- Stop repeat loading
