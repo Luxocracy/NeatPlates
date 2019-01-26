@@ -26,7 +26,7 @@ L["Friendly Nameplates:"] = true
 	L["Show during Combat, Hide when Combat ends"] = true
 	L["Hide when Combat starts, Show when Combat ends"] = true
 
-L["Auras for all profiles"] = true
+L["General Auras:"] = true
 
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true

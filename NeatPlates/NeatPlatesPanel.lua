@@ -670,10 +670,18 @@ local function BuildInterfacePanel(panel)
 	panel.GlobalAuraLabel:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 20, -50)
 	panel.GlobalAuraLabel:SetWidth(170)
 	panel.GlobalAuraLabel:SetJustifyH("LEFT")
-	panel.GlobalAuraLabel:SetText(L["Auras for all profiles"])
+	panel.GlobalAuraLabel:SetText(L["General Auras:"])
 
 	panel.GlobalAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", -2, -12)
 	panel.GlobalAuraEditBox:SetWidth(200)
+
+	panel.GlobalAuraTip = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.GlobalAuraTip:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "TOPRIGHT", 50, 23)
+	panel.GlobalAuraTip:SetHeight(150)
+	panel.GlobalAuraTip:SetWidth(200)
+	panel.GlobalAuraTip:SetJustifyH("LEFT")
+	panel.GlobalAuraTip:SetJustifyV("BOTTOM")
+	panel.GlobalAuraTip:SetText(L["AURA_TIP"])
 
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
