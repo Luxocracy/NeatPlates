@@ -86,6 +86,10 @@ NeatPlatesOptions = {
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
 	WelcomeShown = false,
+
+	GlobalAuraList = "",
+	GlobalAuraLookup = {},
+	GlobalAuraPriority = {},
 }
 
 local NeatPlatesOptionsDefaults = copytable(NeatPlatesOptions)
@@ -274,6 +278,9 @@ local function ApplyPanelSettings()
 	--NeatPlatesOptions.ActiveProfile = ActiveProfile
 	-- ** Use NeatPlates:GetProfile()
 
+	-- Global Aura List
+	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesOptions.GlobalAuraList, NeatPlatesOptions.GlobalAuraLookup, NeatPlatesOptions.GlobalAuraPriority)
+
 	-- Reset Widgets
 	NeatPlates:ResetWidgets()
 	NeatPlates:ForceUpdate()
@@ -295,6 +302,8 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.SecondSpecProfile = panel.SecondSpecDropdown:GetValue()
 	NeatPlatesOptions.ThirdSpecProfile = panel.ThirdSpecDropdown:GetValue()
 	NeatPlatesOptions.FourthSpecProfile = panel.FourthSpecDropdown:GetValue()
+
+	NeatPlatesOptions.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
 end
 
 
@@ -313,6 +322,8 @@ local function SetPanelValues(panel)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
 	panel.AutoShowFriendly:SetValue(NeatPlatesOptions.FriendlyAutomation)
 	panel.AutoShowEnemy:SetValue(NeatPlatesOptions.EnemyAutomation)
+
+	panel.GlobalAuraEditBox:SetValue(NeatPlatesOptions.GlobalAuraList)
 	
 	-- CVars
 	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
@@ -654,9 +665,19 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 	-- Other Options
 	----------------------------------------------
+	-- Global Additional Auras
+	panel.GlobalAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.GlobalAuraLabel:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 20, -50)
+	panel.GlobalAuraLabel:SetWidth(170)
+	panel.GlobalAuraLabel:SetJustifyH("LEFT")
+	panel.GlobalAuraLabel:SetText(L["Auras for all profiles"])
+
+	panel.GlobalAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", -2, -12)
+	panel.GlobalAuraEditBox:SetWidth(200)
+
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
-	panel.DisableCastBars:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 16, -50)
+	panel.DisableCastBars:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -25)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont

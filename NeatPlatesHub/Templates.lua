@@ -572,6 +572,9 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 		  OnAccept = function()
 		  	local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
 		  	NeatPlatesOptions.DefaultProfile = name
+		  	-- Update names of profiles
+		  	NeatPlatesHubMenus.UpdateDefaultPanel(name)
+
 		  	print(orange.."NeatPlates: "..blue..name:gsub(".+", L["The profile '%1' is now the Default profile."]))
 		  end,
 		  timeout = 0,
@@ -716,12 +719,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	return panel
 end
 
-local function UpdateInterfacePanelName(panel, panelTitle)
-	panel.name = panelTitle
-	panel.MainLabel = CreateQuickHeadingLabel(nil, panelTitle, panel, nil, 16, 8)
-end
 
 NeatPlatesHubRapidPanel.CreateInterfacePanel = CreateInterfacePanel
-NeatPlatesHubRapidPanel.UpdateInterfacePanelName = UpdateInterfacePanelName
 NeatPlatesHubRapidPanel.CreateVariableSet = CreateVariableSet
 NeatPlatesHubRapidPanel.RemoveVariableSet = RemoveVariableSet

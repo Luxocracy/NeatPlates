@@ -26,6 +26,8 @@ L["Friendly Nameplates:"] = true
 	L["Show during Combat, Hide when Combat ends"] = true
 	L["Hide when Combat starts, Show when Combat ends"] = true
 
+L["Auras for all profiles"] = true
+
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
@@ -408,6 +410,7 @@ L["Import TPC Settings"] = true
 -- Various stuff & Tooltips
 ------------------------------
 L["Default"] = true
+L["Profile"] = true
 L["Interrupted"] = true
 
 L["Makes the Nameplates non-interactable"] = true

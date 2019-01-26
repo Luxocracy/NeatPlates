@@ -558,7 +558,7 @@ local function CreateProfile(label, color)
 
 	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
 	if not Panels[label] then -- If panel doesn't exist, create it
-		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." Profile"..suffix, "Neat Plates" )	-- Create the basic settings panel
+		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." "..L["Profile"]..suffix, "Neat Plates" )	-- Create the basic settings panel
 		NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
 		BuildHubPanel(Panels[label])	-- Fill the settings panel with options
 	else
@@ -713,7 +713,27 @@ local function RefreshPanel(name)
 	if panel then panel:refresh() end
 end
 
+local function UpdateDefaultPanel(name)
+	for k, v in pairs(Panels) do
+		local panel = Panels[k]
+		local color = NeatPlatesHubSettings.profiles[k]
+		local suffix = ""
+		local label
+
+		if k == name then suffix = "|cFFFFFFFF("..L["Default"]..")" end
+		label = "|c"..color..k.." "..L["Profile"]..suffix
+
+		-- Update Panel Label
+		panel.name = label
+		panel.MainLabel.Text:SetText(label)
+
+		-- Update List Label
+		InterfaceAddOnsList_Update()
+	end
+end
+
 NeatPlatesHubMenus.RefreshPanel = RefreshPanel
+NeatPlatesHubMenus.UpdateDefaultPanel = UpdateDefaultPanel
 NeatPlatesHubMenus.CreateProfile = CreateProfile
 
 ---------------------------------------------

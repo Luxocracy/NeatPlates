@@ -122,9 +122,10 @@ local AURA_TYPE_COLORS = {
 local function GetPrefixPriority(aura)
 	local spellid = tostring(aura.spellid)
 	local name = aura.name
+
 	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name]
-	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name]
+	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name] or NeatPlatesOptions.GlobalAuraLookup[spellid] or NeatPlatesOptions.GlobalAuraLookup[name]
+	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name] or NeatPlatesOptions.GlobalAuraPriority[spellid] or NeatPlatesOptions.GlobalAuraPriority[name]
 
 	return prefix, priority
 end
