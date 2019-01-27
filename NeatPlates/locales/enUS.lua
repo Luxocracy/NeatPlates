@@ -26,8 +26,9 @@ L["Friendly Nameplates:"] = true
 	L["Show during Combat, Hide when Combat ends"] = true
 	L["Hide when Combat starts, Show when Combat ends"] = true
 
-L["General Auras:"] = true
+L["General Aura Filters"] = true
 
+L["Other Options"] = true
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
@@ -409,6 +410,8 @@ L["Import TPC Settings"] = true
 ------------------------------
 -- Various stuff & Tooltips
 ------------------------------
+L["Tip"] = true
+
 L["Default"] = true
 L["Profile"] = true
 L["Interrupted"] = true

@@ -201,13 +201,16 @@ local function BuildHubPanel(panel)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras:"], AlignmentColumn, panel.SpacerSlots, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
+	panel.WidgetDebuffAuraTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetDebuffTrackList, "TOPRIGHT", 6, 0)
 
-	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.WidgetDebuffTrackList, 16)
-	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, 16)
-	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64, 4)
+	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.SpacerSlots, OffsetColumnB + 64)
+	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64)
+	panel.EmphasizedAuraTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
+
+	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraList, 16, 4)
 	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
 
-	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.EmphasizedAuraList, 16)
+	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.EmphasizedUnique, 16)
 
 	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", L["Include Dispellable Debuffs on Friendly Units"], AlignmentColumn, panel.WidgetDebuffStyle, 16, 4)
 	panel.WidgetAuraTrackCurse = CreateQuickCheckbutton(objectName.."WidgetAuraTrackCurse", L["Curse"], AlignmentColumn, panel.WidgetAuraTrackDispelFriendly, 16+16, -2)
@@ -218,10 +221,10 @@ local function BuildHubPanel(panel)
 
 	------------------------------
 	-- Debuff Help Tip
-	panel.DebuffHelpTip = CreateQuickItemLabel(nil, L["AURA_TIP"], AlignmentColumn, panel.WidgetDebuffListLabel, 225+40) -- 210, 275, )
-	panel.DebuffHelpTip:SetHeight(150)
-	panel.DebuffHelpTip:SetWidth(200)
-	panel.DebuffHelpTip.Text:SetJustifyV("TOP")
+	--panel.DebuffHelpTip = CreateQuickItemLabel(nil, L["AURA_TIP"], AlignmentColumn, panel.WidgetDebuffListLabel, 225+40) -- 210, 275, )
+	--panel.DebuffHelpTip:SetHeight(150)
+	--panel.DebuffHelpTip:SetWidth(200)
+	--panel.DebuffHelpTip.Text:SetJustifyV("TOP")
 
 	-- Expand Options
 	-- Filtering mode: Show raid targets, show only my target
@@ -355,10 +358,11 @@ local function BuildHubPanel(panel)
 	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorTapped, 0, 2)
 	panel.CustomColorList, F = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", L["Color Select"], function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
-	panel.CustomColorInfo = CreateQuickItemLabel(nil, L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
-	panel.CustomColorInfo:SetHeight(150)
-	panel.CustomColorInfo:SetWidth(220)
-	panel.CustomColorInfo.Text:SetJustifyV("TOP")
+	panel.CustomColorTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."CustomColorTip", L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.CustomColorList, "TOPRIGHT", 6, 0)
+	--panel.CustomColorInfo = CreateQuickItemLabel(nil, L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
+	--panel.CustomColorInfo:SetHeight(150)
+	--panel.CustomColorInfo:SetWidth(220)
+	--panel.CustomColorInfo.Text:SetJustifyV("TOP")
 
 --]]
 

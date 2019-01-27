@@ -90,6 +90,10 @@ NeatPlatesOptions = {
 	GlobalAuraList = "",
 	GlobalAuraLookup = {},
 	GlobalAuraPriority = {},
+
+	GlobalEmphasizedAuraList = "",
+	GlobalEmphasizedAuraLookup = {},
+	GlobalEmphasizedAuraPriority = {},
 }
 
 local NeatPlatesOptionsDefaults = copytable(NeatPlatesOptions)
@@ -278,8 +282,9 @@ local function ApplyPanelSettings()
 	--NeatPlatesOptions.ActiveProfile = ActiveProfile
 	-- ** Use NeatPlates:GetProfile()
 
-	-- Global Aura List
+	-- Global Aura Filter Lists
 	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesOptions.GlobalAuraList, NeatPlatesOptions.GlobalAuraLookup, NeatPlatesOptions.GlobalAuraPriority)
+	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesOptions.GlobalEmphasizedAuraList, NeatPlatesOptions.GlobalEmphasizedAuraLookup, NeatPlatesOptions.GlobalEmphasizedAuraPriority)
 
 	-- Reset Widgets
 	NeatPlates:ResetWidgets()
@@ -304,6 +309,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.FourthSpecProfile = panel.FourthSpecDropdown:GetValue()
 
 	NeatPlatesOptions.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
+	NeatPlatesOptions.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
 end
 
 
@@ -324,6 +330,7 @@ local function SetPanelValues(panel)
 	panel.AutoShowEnemy:SetValue(NeatPlatesOptions.EnemyAutomation)
 
 	panel.GlobalAuraEditBox:SetValue(NeatPlatesOptions.GlobalAuraList)
+	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesOptions.GlobalEmphasizedAuraList)
 	
 	-- CVars
 	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
@@ -505,7 +512,7 @@ local function BuildInterfacePanel(panel)
 
 	-- Dropdown
 	panel.ActiveThemeDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesChooserDropdown", panel, ThemeDropdownMenuItems, NeatPlatesDefaultThemeName, nil, true)
-	panel.ActiveThemeDropdown:SetPoint("TOPLEFT", panel.ThemeCategoryTitle, "BOTTOMLEFT", -20, -4)
+	panel.ActiveThemeDropdown:SetPoint("TOPLEFT", panel.ThemeCategoryTitle, "BOTTOMLEFT", -20, -8)
 
 	----------------------------------------------
 	-- Profiles
@@ -521,7 +528,7 @@ local function BuildInterfacePanel(panel)
 	---------------
 	-- Spec 1
 	panel.FirstSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.FirstSpecLabel:SetPoint("TOPLEFT", panel.ProfileLabel,"BOTTOMLEFT", 0, -4)
+	panel.FirstSpecLabel:SetPoint("TOPLEFT", panel.ProfileLabel,"BOTTOMLEFT", 0, -8)
 	panel.FirstSpecLabel:SetWidth(170)
 	panel.FirstSpecLabel:SetJustifyH("LEFT")
 	panel.FirstSpecLabel:SetText(L["First Spec"])
@@ -579,7 +586,7 @@ local function BuildInterfacePanel(panel)
 
 	-- Profile Name
 	panel.ProfileName = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.ProfileName:SetPoint("TOPLEFT", panel.ProfileManagementLabel, "BOTTOMLEFT", 0, -20)
+	panel.ProfileName:SetPoint("TOPLEFT", panel.ProfileManagementLabel, "BOTTOMLEFT", 0, -8)
 	panel.ProfileName:SetWidth(170)
 	panel.ProfileName:SetJustifyH("LEFT")
 	panel.ProfileName:SetText(L["Profile Name"])
@@ -638,7 +645,7 @@ local function BuildInterfacePanel(panel)
 	---------------
 	-- Enemy Visibility
 	panel.AutoShowEnemyLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.AutoShowEnemyLabel:SetPoint("TOPLEFT", panel.AutomationLabel,"BOTTOMLEFT", 0, -4)
+	panel.AutoShowEnemyLabel:SetPoint("TOPLEFT", panel.AutomationLabel,"BOTTOMLEFT", 0, -8)
 	panel.AutoShowEnemyLabel:SetWidth(170)
 	panel.AutoShowEnemyLabel:SetJustifyH("LEFT")
 	panel.AutoShowEnemyLabel:SetText(L["Enemy Nameplates:"])
@@ -660,32 +667,53 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowFriendly = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowFriendly", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
 	panel.AutoShowFriendly:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel,"BOTTOMLEFT", -20, -2)
 
-
-
 	----------------------------------------------
-	-- Other Options
+	-- General Aura Filters
 	----------------------------------------------
+
+	panel.GeneralAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.GeneralAuraLabel:SetFont(font, 22)
+	panel.GeneralAuraLabel:SetText(L["General Aura Filters"])
+	panel.GeneralAuraLabel:SetPoint("TOPLEFT", panel.AutoShowEnemy, "BOTTOMLEFT", 20, -20)
+	panel.GeneralAuraLabel:SetTextColor(255/255, 105/255, 6/255)
+
 	-- Global Additional Auras
 	panel.GlobalAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.GlobalAuraLabel:SetPoint("TOPLEFT", panel.AutoShowEnemy, "TOPLEFT", 20, -50)
-	panel.GlobalAuraLabel:SetWidth(170)
+	panel.GlobalAuraLabel:SetPoint("TOPLEFT", panel.GeneralAuraLabel, "BOTTOMLEFT", 0, -8)
+	panel.GlobalAuraLabel:SetWidth(190)
 	panel.GlobalAuraLabel:SetJustifyH("LEFT")
-	panel.GlobalAuraLabel:SetText(L["General Auras:"])
+	panel.GlobalAuraLabel:SetText(L["Additional Auras:"])
 
 	panel.GlobalAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", -2, -12)
 	panel.GlobalAuraEditBox:SetWidth(200)
 
-	panel.GlobalAuraTip = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.GlobalAuraTip:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "TOPRIGHT", 50, 23)
-	panel.GlobalAuraTip:SetHeight(150)
-	panel.GlobalAuraTip:SetWidth(200)
-	panel.GlobalAuraTip:SetJustifyH("LEFT")
-	panel.GlobalAuraTip:SetJustifyV("BOTTOM")
-	panel.GlobalAuraTip:SetText(L["AURA_TIP"])
+	panel.GlobalAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalAuraEditBox, "TOPRIGHT", 6, 0)
+
+	-- Global Emphasized Auras
+	panel.GlobalEmphasizedAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.GlobalEmphasizedAuraLabel:SetPoint("TOPLEFT", panel.GlobalAuraLabel, "TOPRIGHT", 64, 0)
+	panel.GlobalEmphasizedAuraLabel:SetWidth(170)
+	panel.GlobalEmphasizedAuraLabel:SetJustifyH("LEFT")
+	panel.GlobalEmphasizedAuraLabel:SetText(L["Emphasized Auras:"])
+
+	panel.GlobalEmphasizedAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalEmphasizedAuraLabel, "BOTTOMLEFT", -2, -12)
+	panel.GlobalEmphasizedAuraEditBox:SetWidth(200)
+
+	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
+
+	----------------------------------------------
+	-- Other Options
+	----------------------------------------------
+
+	panel.OtherOptionsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.OtherOptionsLabel:SetFont(font, 22)
+	panel.OtherOptionsLabel:SetText(L["Other Options"])
+	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
-	panel.DisableCastBars:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -25)
+	panel.DisableCastBars:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont
@@ -706,7 +734,7 @@ local function BuildInterfacePanel(panel)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])
-	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.CVarsLabel, "TOPLEFT", 0, -25)
+	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.CVarsLabel, "BOTTOMLEFT", 0, -8)
 	panel.NameplateTargetClamp:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateTargetRadialPosition", 1) else SetCVar("nameplateTargetRadialPosition", 0) end end)
 
 	panel.NameplateStacking = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateStacking", panel, L["Stacking Nameplates"])

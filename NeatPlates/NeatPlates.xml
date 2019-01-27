@@ -143,6 +143,32 @@
 
 
 
+
+
+    <Frame name="NeatPlatesPanelTipTemplate" virtual="true">
+        <Size>
+                <AbsDimension x="40" y="32"/>
+        </Size>
+        <Scripts>
+            <OnEnter>
+                if(self.tooltipText ~= nil) then
+                    --GameTooltip_SetBasicTooltip(GameTooltip, self.tooltipText, 0, 0, true);
+                    GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                    GameTooltip:ClearAllPoints();
+                    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                    GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                end
+            </OnEnter>
+            <OnLeave>
+                if(self.tooltipText ~= nil) then
+                    GameTooltip:Hide();
+                end
+            </OnLeave>
+        </Scripts>
+        <NormalFont style="GameFontNormal"/>
+    </Frame>
+
+
     <Frame name="NeatPlatesDropdownDrawerTemplate" virtual="true">
             <Size>
                     <AbsDimension x="40" y="32"/>

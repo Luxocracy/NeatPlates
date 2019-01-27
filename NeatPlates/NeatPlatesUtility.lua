@@ -4,6 +4,7 @@ NeatPlatesUtility = {}
 --  General Helpers
 -------------------------------------------------------------------------------------
 local _
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 local copytable         -- Allows self-reference
 copytable = function(original)
@@ -925,6 +926,22 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 	return frame, frame
 end
 
+local function CreateTipBox(self, name, text, parent, ...)
+	local frame = CreateFrame("Frame", name, parent, "NeatPlatesPanelTipTemplate")
+	
+	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	frame.Text:SetTextColor(255/255, 105/255, 6/255)
+	frame.Text:SetAllPoints()
+	frame.Text:SetFont(NeatPlatesLocalizedFont, 12)
+	frame.Text:SetText(L["Tip"])
+
+	frame.tooltipText = text
+
+	frame:SetPoint(...)
+
+	return frame, frame
+end
+
 PanelHelpers = {}
 
 PanelHelpers.CreatePanelFrame = CreatePanelFrame
@@ -935,6 +952,7 @@ PanelHelpers.CreateSliderFrame = CreateSliderFrame
 PanelHelpers.CreateDropdownFrame = CreateDropdownFrame
 PanelHelpers.CreateColorBox = CreateColorBox
 PanelHelpers.CreateEditBox = CreateEditBox
+PanelHelpers.CreateTipBox = CreateTipBox
 PanelHelpers.ShowDropdownMenu = ShowDropdownMenu
 PanelHelpers.HideDropdownMenu = HideDropdownMenu
 

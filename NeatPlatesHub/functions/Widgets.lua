@@ -250,8 +250,8 @@ local function EmphasizedFilter(aura)
 	local r, g, b = GetAuraColor(aura)
 
 	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name]
-	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name]
+	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name] or NeatPlatesOptions.GlobalEmphasizedAuraLookup[spellid] or NeatPlatesOptions.GlobalEmphasizedAuraLookup[name]
+	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name] or NeatPlatesOptions.GlobalEmphasizedAuraPriority[spellid] or NeatPlatesOptions.GlobalEmphasizedAuraPriority[name]
 
 	if prefix and priority then
 		local show = DebuffPrefixModes[prefix](aura)
