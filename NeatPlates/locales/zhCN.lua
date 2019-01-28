@@ -53,10 +53,8 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[友情提示: |cffCCCCCC以十六进制表�
 - 血量阀值（如：30%）
 格式：#FFFFFF 自定义条件
 |cffff9320自上而下优先排序]=]
---[[Translation missing --]]
-L["Default"] = "Default"
---[[Translation missing --]]
-L["Default Profile"] = "Default Profile"
+L["Default"] = "默认"
+L["Default Profile"] = "默认配置文件"
 L["Disable Cast Bars"] = "禁用施法条"
 L["Disease"] = "疾病"
 L["Display beneficial auras that can be removed by Dispel/Purge"] = "显示可以被驱散/净化的增益效果。"
@@ -64,8 +62,7 @@ L["Display Buffs that have been applied by you"] = "显示你所施放的增益�
 L["Display Debuffs that have been applied by you"] = "显示你所施放的负面效果。"
 L["Display Enrage effects that can be removed by Soothe"] = "显示可以通过安抚驱散的激怒效果"
 L["Do not import settings from TidyPlatesContinued. And do not show this message again."] = "不要从TidyPlatesContinued导入设置，并且不要再显示此消息。"
---[[Translation missing --]]
-L["Do you really want to make '%1' the default profile?"] = "Do you really want to make '%1' the default profile?"
+L["Do you really want to make '%1' the default profile?"] = "是否确定要将'％1'设为默认配置文件？"
 L["Don't show this again"] = "不再显示"
 L["DPS/Healer"] = "伤害输出/治疗者"
 L["Elite Units"] = "精英目标"
@@ -86,7 +83,7 @@ L["Enemy Spotlight Mode:"] = "敌方高亮模式："
 L["Enemy Status Text:"] = "敌方信息文字:"
 L["Everything"] = "所有"
 L["Exact Health"] = "精确血量"
-L["Exclude Instances"] = "分类设置"
+L["Exclude Instances"] = "副本除外"
 L["Filter By Unit Name:"] = "按名字过滤："
 L["Filter Enemy NPC"] = "过滤敌方NPC"
 L["Filter Friendly NPC"] = "过滤友方NPC"
@@ -117,7 +114,7 @@ L["Friendly Spotlight Mode:"] = "友方高亮透明度模式："
 L["Friendly Status Text:"] = "友方信息文字："
 L["Funky Stuff"] = "高级设置"
 --[[Translation missing --]]
-L["General Auras:"] = "General Auras:"
+L["General Aura Filters"] = "General Aura Filters"
 L["Glow"] = "闪光"
 L["Group Member Aggro"] = "高亮团队成员的仇恨"
 L["Guild Member"] = "公会成员"
@@ -198,6 +195,8 @@ L["On Players"] = "对玩家"
 L["On Raid Targets"] = "对团队标记目标"
 L["Opacity"] = "透明度"
 L["Other Colors:"] = "其他颜色："
+--[[Translation missing --]]
+L["Other Options"] = "Other Options"
 L["Other Widgets"] = "其他组件"
 L["Overlay"] = "覆盖模式"
 L["Override Target/Spotlight Scale"] = "覆盖目标和高亮缩放"
@@ -259,8 +258,7 @@ L["Text Color:"] = "文字颜色："
 L[ [=[The amount of empty aura slots between Buffs & Debuffs.
 Max value means they never share a row]=] ] = "增益与负面效果之间的间隔。最大值表示它们不会显示在同一行"
 L["The profile '%1' already exists, try a different name."] = "配置文件 '%1' 已经存在，请尝试其他名称。"
---[[Translation missing --]]
-L["The profile '%1' is now the Default profile."] = "The profile '%1' is now the Default profile."
+L["The profile '%1' is now the Default profile."] = "'％1'现在是默认配置文件。"
 L["The profile '%1' was successfully deleted."] = "配置文件 '%1' 已成功删除。"
 L["The profile '%1' was successfully overwritten."] = "配置文件 '%1' 已成功覆盖。"
 L["Theme"] = "主题"
@@ -268,6 +266,8 @@ L["Third Spec"] = "第三专精"
 L["Threat"] = "仇恨"
 L["Threat Colors:"] = "仇恨颜色："
 L["Threat Mode:"] = "仇恨模式："
+--[[Translation missing --]]
+L["Tip"] = "Tip"
 L["Transition"] = "过渡状态"
 L["Treat Focus as a Target"] = "焦点目标以当前目标样式显示"
 L["Type of highlighting to use"] = "高亮边框时使用的类型"
