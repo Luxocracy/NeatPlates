@@ -558,7 +558,7 @@ local function CreateProfile(label, color)
 	color = color:gsub("|c","")
 	local suffix = ""
 
-	if NeatPlatesOptions.DefaultProfile == label then suffix = "|cFFFFFFFF("..L["Default"]..")" end
+	if NeatPlatesSettings.DefaultProfile == label then suffix = "|cFFFFFFFF("..L["Default"]..")" end
 
 	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
 	if not Panels[label] then -- If panel doesn't exist, create it
@@ -749,7 +749,7 @@ function ShowNeatPlatesHubPanel()
 	if profile then
 		NeatPlatesUtility.OpenInterfacePanel(Panels[profile])
 	else
-		NeatPlatesUtility.OpenInterfacePanel(Panels[NeatPlatesOptions.DefaultProfile])
+		NeatPlatesUtility.OpenInterfacePanel(Panels[NeatPlatesSettings.DefaultProfile])
 	end
 end
 

@@ -571,7 +571,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 		  button2 = NO,
 		  OnAccept = function()
 		  	local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
-		  	NeatPlatesOptions.DefaultProfile = name
+		  	NeatPlatesSettings.DefaultProfile = name
 		  	-- Update names of profiles
 		  	NeatPlatesHubMenus.UpdateDefaultPanel(name)
 
