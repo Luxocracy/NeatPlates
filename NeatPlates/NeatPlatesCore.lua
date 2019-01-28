@@ -975,11 +975,11 @@ do
 
 		local currentTime = GetTime() * 1000
 
-		-- Check to see if there's a spell being cast
-		if UnitCastingInfo(unitid) then OnStartCasting(plate, unitid, false)
-		else
-		-- See if one is being channeled...
-			if UnitChannelInfo(unitid) then OnStartCasting(plate, unitid, true) end
+		
+		if UnitCastingInfo(unitid) then
+			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
+		elseif UnitChannelInfo(unitid) then
+			OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
 		end
 	end
 
@@ -997,9 +997,8 @@ do
 	-- Frequently Used Event-handling Functions
 	----------------------------------------
 	-- Update individual plate
-	local function UnitConditionChanged(unitid)
-		--local unitid = ...
-		--if not unitid then return end
+	local function UnitConditionChanged(...)
+		local _, unitid = ...
 		local plate = GetNamePlateForUnit(unitid)
 
 		if plate then OnHealthUpdate(plate) end
@@ -1012,8 +1011,7 @@ do
 
 	-- Update spell currently being cast
 	local function UnitSpellcastMidway(...)
-		local unitid = ...
-
+		local _, unitid = ...
 		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
 
 		local plate = GetNamePlateForUnit(unitid);
