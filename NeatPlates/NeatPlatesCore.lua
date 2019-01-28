@@ -1001,7 +1001,7 @@ do
 		local _, unitid = ...
 		local plate = GetNamePlateForUnit(unitid)
 
-		if plate then OnHealthUpdate(plate) end
+		if plate and not UnitIsUnit("player", unitid) then OnHealthUpdate(plate) end
 	end
 
 	-- Update everything
