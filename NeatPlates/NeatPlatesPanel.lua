@@ -68,12 +68,18 @@ local ActiveProfile = "None"
 
 NeatPlatesSettings = {
 	DefaultProfile = L["Default"],
+
+	GlobalAuraList = "",
+	GlobalAuraLookup = {},
+	GlobalAuraPriority = {},
+
+	GlobalEmphasizedAuraList = "",
+	GlobalEmphasizedAuraLookup = {},
+	GlobalEmphasizedAuraPriority = {},
 }
 
 NeatPlatesOptions = {
-
 	ActiveTheme = nil,
-	
 
 	FirstSpecProfile = NeatPlatesSettings.DefaultProfile,
 	SecondSpecProfile = NeatPlatesSettings.DefaultProfile,
@@ -89,17 +95,10 @@ NeatPlatesOptions = {
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
 	WelcomeShown = false,
-
-	GlobalAuraList = "",
-	GlobalAuraLookup = {},
-	GlobalAuraPriority = {},
-
-	GlobalEmphasizedAuraList = "",
-	GlobalEmphasizedAuraLookup = {},
-	GlobalEmphasizedAuraPriority = {},
 }
 
 local NeatPlatesOptionsDefaults = copytable(NeatPlatesOptions)
+local NeatPlatesSettingsDefaults = copytable(NeatPlatesSettings)
 local NeatPlatesThemeNames = {}
 
 local AutomationDropdownItems = {
@@ -237,9 +236,16 @@ end
 --end
 
 local function VerifyPanelSettings()
+	-- Verify per-character settings
 	for k, v in pairs(NeatPlatesOptionsDefaults) do
 		if NeatPlatesOptions[k] == nil then
 			NeatPlatesOptions[k] = NeatPlatesOptionsDefaults[k]
+		end
+	end
+	-- Verify global settings
+	for k, v in pairs(NeatPlatesSettingsDefaults) do
+		if NeatPlatesSettings[k] == nil then
+			NeatPlatesSettings[k] = NeatPlatesSettingsDefaults[k]
 		end
 	end
 end
@@ -260,6 +266,10 @@ local function ApplyPanelSettings()
 	-- This is here in case the theme couldn't be loaded, and the core falls back to defaults
 	--NeatPlatesOptions.ActiveTheme = NeatPlatesInternal.activeThemeName
 	--local theme = NeatPlatesThemeList[NeatPlatesInternal.activeThemeName]
+
+	-- Global Aura Filter Lists
+	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalAuraList, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalAuraPriority)
+	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalEmphasizedAuraList, NeatPlatesSettings.GlobalEmphasizedAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraPriority)
 
 	-- Load Hub Profile
 	ActiveProfile = NeatPlatesSettings.DefaultProfile
@@ -285,10 +295,6 @@ local function ApplyPanelSettings()
 	--NeatPlatesOptions.ActiveProfile = ActiveProfile
 	-- ** Use NeatPlates:GetProfile()
 
-	-- Global Aura Filter Lists
-	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesOptions.GlobalAuraList, NeatPlatesOptions.GlobalAuraLookup, NeatPlatesOptions.GlobalAuraPriority)
-	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesOptions.GlobalEmphasizedAuraList, NeatPlatesOptions.GlobalEmphasizedAuraLookup, NeatPlatesOptions.GlobalEmphasizedAuraPriority)
-
 	-- Reset Widgets
 	NeatPlates:ResetWidgets()
 	NeatPlates:ForceUpdate()
@@ -311,8 +317,8 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.ThirdSpecProfile = panel.ThirdSpecDropdown:GetValue()
 	NeatPlatesOptions.FourthSpecProfile = panel.FourthSpecDropdown:GetValue()
 
-	NeatPlatesOptions.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
-	NeatPlatesOptions.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
+	NeatPlatesSettings.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
+	NeatPlatesSettings.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
 end
 
 
@@ -332,8 +338,8 @@ local function SetPanelValues(panel)
 	panel.AutoShowFriendly:SetValue(NeatPlatesOptions.FriendlyAutomation)
 	panel.AutoShowEnemy:SetValue(NeatPlatesOptions.EnemyAutomation)
 
-	panel.GlobalAuraEditBox:SetValue(NeatPlatesOptions.GlobalAuraList)
-	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesOptions.GlobalEmphasizedAuraList)
+	panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
+	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
 	
 	-- CVars
 	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
@@ -689,6 +695,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", -2, -12)
 	panel.GlobalAuraEditBox:SetWidth(200)
+	PanelHelpers.CreateEditBoxButton(panel.GlobalAuraEditBox, function() OnOkay(_panel) end)
 
 	panel.GlobalAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalAuraEditBox, "TOPRIGHT", 6, 0)
 
@@ -701,6 +708,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalEmphasizedAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalEmphasizedAuraLabel, "BOTTOMLEFT", -2, -12)
 	panel.GlobalEmphasizedAuraEditBox:SetWidth(200)
+	PanelHelpers.CreateEditBoxButton(panel.GlobalEmphasizedAuraEditBox, function() OnOkay(_panel) end)
 
 	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
 

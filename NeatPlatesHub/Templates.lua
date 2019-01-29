@@ -512,6 +512,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
 	--panel:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+	panel.onEditboxOkay = function() OnPanelItemChange(panel) end
 
 
 	-----------------

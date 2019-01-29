@@ -124,8 +124,8 @@ local function GetPrefixPriority(aura)
 	local name = aura.name
 
 	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name] or NeatPlatesOptions.GlobalAuraLookup[spellid] or NeatPlatesOptions.GlobalAuraLookup[name]
-	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name] or NeatPlatesOptions.GlobalAuraPriority[spellid] or NeatPlatesOptions.GlobalAuraPriority[name]
+	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name] or NeatPlatesSettings.GlobalAuraLookup[spellid] or NeatPlatesSettings.GlobalAuraLookup[name]
+	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name] or NeatPlatesSettings.GlobalAuraPriority[spellid] or NeatPlatesSettings.GlobalAuraPriority[name]
 
 	return prefix, priority
 end
@@ -250,8 +250,8 @@ local function EmphasizedFilter(aura)
 	local r, g, b = GetAuraColor(aura)
 
 	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name] or NeatPlatesOptions.GlobalEmphasizedAuraLookup[spellid] or NeatPlatesOptions.GlobalEmphasizedAuraLookup[name]
-	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name] or NeatPlatesOptions.GlobalEmphasizedAuraPriority[spellid] or NeatPlatesOptions.GlobalEmphasizedAuraPriority[name]
+	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name] or NeatPlatesSettings.GlobalEmphasizedAuraLookup[spellid] or NeatPlatesSettings.GlobalEmphasizedAuraLookup[name]
+	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name] or NeatPlatesSettings.GlobalEmphasizedAuraPriority[spellid] or NeatPlatesSettings.GlobalEmphasizedAuraPriority[name]
 
 	if prefix and priority then
 		local show = DebuffPrefixModes[prefix](aura)

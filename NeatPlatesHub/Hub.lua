@@ -24,6 +24,8 @@ local CreateQuickItemLabel = NeatPlatesHubRapidPanel.CreateQuickItemLabel
 local OnMouseWheelScrollFrame = NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame
 local CreateHubInterfacePanel = NeatPlatesHubRapidPanel.CreateInterfacePanel
 
+local PanelHelpers = PanelHelpers
+
 -- Modes
 local ThemeList = NeatPlatesHubMenus.ThemeList
 local StyleModes = NeatPlatesHubMenus.StyleModes
@@ -201,11 +203,13 @@ local function BuildHubPanel(panel)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras:"], AlignmentColumn, panel.SpacerSlots, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
-	panel.WidgetDebuffAuraTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetDebuffTrackList, "TOPRIGHT", 6, 0)
+	panel.WidgetDebuffAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetDebuffTrackList, "TOPRIGHT", 6, 0)
+	PanelHelpers.CreateEditBoxButton(panel.WidgetDebuffTrackList, panel.onEditboxOkay)
 
 	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.SpacerSlots, OffsetColumnB + 64)
 	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64)
-	panel.EmphasizedAuraTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
+	panel.EmphasizedAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
+	PanelHelpers.CreateEditBoxButton(panel.EmphasizedAuraList, panel.onEditboxOkay)
 
 	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraList, 16, 4)
 	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
@@ -326,6 +330,7 @@ local function BuildHubPanel(panel)
 
 	panel.OpacityCustomFilterLabel = CreateQuickItemLabel(nil, L["Filter By Unit Name:"], AlignmentColumn, F, 8, 4)
 	panel.OpacityFilterList, F = CreateQuickEditbox(objectName.."OpacityFilterList", nil, nil, AlignmentColumn, panel.OpacityCustomFilterLabel, 8)
+	PanelHelpers.CreateEditBoxButton(panel.OpacityFilterList, panel.onEditboxOkay)
 
 
 -- [[
@@ -358,7 +363,8 @@ local function BuildHubPanel(panel)
 	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorTapped, 0, 2)
 	panel.CustomColorList, F = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", L["Color Select"], function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
-	panel.CustomColorTip = NeatPlatesUtility.PanelHelpers:CreateTipBox(objectName.."CustomColorTip", L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.CustomColorList, "TOPRIGHT", 6, 0)
+	panel.CustomColorTip = PanelHelpers:CreateTipBox(objectName.."CustomColorTip", L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.CustomColorList, "TOPRIGHT", 6, 0)
+	PanelHelpers.CreateEditBoxButton(panel.CustomColorList, panel.onEditboxOkay)
 	--panel.CustomColorInfo = CreateQuickItemLabel(nil, L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, panel.CustomColorSelect, OffsetColumnB + 50, 2)
 	--panel.CustomColorInfo:SetHeight(150)
 	--panel.CustomColorInfo:SetWidth(220)

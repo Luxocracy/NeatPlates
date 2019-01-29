@@ -926,6 +926,30 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 	return frame, frame
 end
 
+local function CreateEditBoxButton(frame, onOkay)
+	frame.okayButton = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	frame.okayButton:SetWidth(40)
+	frame.okayButton:SetHeight(20)
+	frame.okayButton:SetPoint("BOTTOMRIGHT", -2, 2)
+	frame.okayButton:SetText(OKAY)
+	frame.okayButton:Hide()
+
+	frame.okayButton:SetScript("OnClick", function()
+		onOkay()
+		frame.EditBox:ClearFocus()
+		frame.okayButton:Hide()
+	end)
+	frame.EditBox:SetScript("OnEditFocusLost", function()
+		if frame.EditBox.oldValue == frame:GetValue() then
+			frame.okayButton:Hide()
+		end
+	end)
+	frame.EditBox:SetScript("OnEditFocusGained", function()
+		frame.EditBox.oldValue = frame:GetValue()
+		frame.okayButton:Show()
+	end)
+end
+
 local function CreateTipBox(self, name, text, parent, ...)
 	local frame = CreateFrame("Frame", name, parent, "NeatPlatesPanelTipTemplate")
 	
@@ -952,6 +976,7 @@ PanelHelpers.CreateSliderFrame = CreateSliderFrame
 PanelHelpers.CreateDropdownFrame = CreateDropdownFrame
 PanelHelpers.CreateColorBox = CreateColorBox
 PanelHelpers.CreateEditBox = CreateEditBox
+PanelHelpers.CreateEditBoxButton = CreateEditBoxButton
 PanelHelpers.CreateTipBox = CreateTipBox
 PanelHelpers.ShowDropdownMenu = ShowDropdownMenu
 PanelHelpers.HideDropdownMenu = HideDropdownMenu
