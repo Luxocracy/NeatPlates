@@ -459,7 +459,7 @@ local function CreateDescriptionFrame(self, reference, parent, title, text)
 end
 --]]
 local function CreateCheckButton(self, reference, parent, label)
-	local checkbutton = CreateFrame( "CheckButton", reference, parent, "InterfaceOptionsCheckButtonTemplate" )
+	local checkbutton = CreateFrame( "CheckButton", reference, parent, "NeatPlatesCheckButtonTemplate" )
 	checkbutton.Label = _G[reference.."Text"]
 	checkbutton.Label:SetText(label)
 	checkbutton.GetValue = function() if checkbutton:GetChecked() then return true else return false end end

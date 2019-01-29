@@ -736,12 +736,19 @@ local function BuildInterfacePanel(panel)
 	panel.HealthFrequent = PanelHelpers:CreateCheckButton("NeatPlatesOptions_HealthFrequent", panel, L["Use Frequent Health Updates"])
 	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
 	panel.HealthFrequent:SetScript("OnClick", function(self) NeatPlates:SetHealthUpdateMethod(self:GetChecked()) end)
+	panel.HealthFrequent.tooltipText = L["Might resolve some issues with health not updating properly"]
+
+	-- Blizzard Scaling
+	panel.BlizzardScaling = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardScaling", panel, L["Use Blizzard Scaling"])
+	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.HealthFrequent, "TOPLEFT", 0, -25)
+	panel.BlizzardScaling:SetScript("OnClick", function(self) NeatPlates:SetBlizzardScaling(self:GetChecked()) end)
+	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
 
 	-- Nameplate Behaviour
 	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.CVarsLabel:SetFont(font, 22)
 	panel.CVarsLabel:SetText("CVars")
-	panel.CVarsLabel:SetPoint("TOPLEFT", panel.HealthFrequent, "BOTTOMLEFT", 0, -20)
+	panel.CVarsLabel:SetPoint("TOPLEFT", panel.BlizzardScaling, "BOTTOMLEFT", 0, -20)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])

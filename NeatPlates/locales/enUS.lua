@@ -32,6 +32,7 @@ L["Other Options"] = true
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
+L["Use Blizzard Scaling"] = true
 
 ------------------------------
 -- CVars
@@ -416,6 +417,11 @@ L["Default"] = true
 L["Profile"] = true
 L["Interrupted"] = true
 
+-- Main Panel
+L["Might resolve some issues with health not updating properly"] = true
+L["Allows some CVars to work(Might require a /reload)"] = true
+
+-- Profile Panel
 L["Makes the Nameplates non-interactable"] = true
 L["Display Debuffs that have been applied by you"] = true
 L["Display Buffs that have been applied by you"] = true
