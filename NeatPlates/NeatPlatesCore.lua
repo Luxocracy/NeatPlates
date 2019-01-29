@@ -155,6 +155,8 @@ do
 			local carrier = plate.carrier
 			local extended = plate.extended
 
+			carrier:SetScale(plate:GetScale())	-- Scale the carrier to allow for certain CVars that control scale to function properly.
+
 			-- Check for an Update Request
 			if UpdateMe or UpdateHealth then
 				if not UpdateMe then

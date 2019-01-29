@@ -333,8 +333,8 @@ local function UpdateIconGrid(frame, unitid)
 
 		EmphasizedAura = frame.emphasized:SetAura(emphasizedAuras)	-- Display Emphasized Aura, returns displayed aura
 
+		if storedAuraCount > 0 or EmphasizedAura then frame:Show() end -- Show the parent frame
 		if storedAuraCount > 0 then
-			frame:Show()
 			sort(storedAuras, AuraSortFunction)
 
 			for index = 1, storedAuraCount do
