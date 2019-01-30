@@ -238,6 +238,7 @@ NeatPlatesHubDefaults = {
 	ColorBuffEnrage = {r = 1, g = 0, b = 0.2, a = 1}, -- Medium Red
 	BorderBuffEnrage = 1,
 	SpacerSlots = 1,
+	EmphasizedSlots = 1,
 	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetDebuffLookup = {},
 	WidgetDebuffPriority = {},

@@ -31,6 +31,8 @@ local PandemicEnabled = false
 local PandemicColor = {}
 
 local EmphasizedUnique = false
+local MaxEmphasizedAuras = 1
+local AuraWidth = 16.5
 
 local function DummyFunction() end
 
@@ -282,7 +284,8 @@ local function UpdateIconGrid(frame, unitid)
 				-- Add to Emphasized list
 				if emphasized then
 					aura.priority = ePriority or 10
-					emphasizedAuras[aura.name], emphasizedAuras[tostring(aura.spellid)] = aura, aura
+					--emphasizedAuras[aura.name], emphasizedAuras[tostring(aura.spellid)] = aura, aura
+					emphasizedAuras[tostring(aura.spellid)] = aura
 				end
 			else
 				if auraFilter == "HARMFUL" then
@@ -333,14 +336,14 @@ local function UpdateIconGrid(frame, unitid)
 
 		EmphasizedAura = frame.emphasized:SetAura(emphasizedAuras)	-- Display Emphasized Aura, returns displayed aura
 
-		if storedAuraCount > 0 or EmphasizedAura then frame:Show() end -- Show the parent frame
+		if storedAuraCount > 0 or next(EmphasizedAura) then frame:Show() end -- Show the parent frame
 		if storedAuraCount > 0 then
 			sort(storedAuras, AuraSortFunction)
 
 			for index = 1, storedAuraCount do
 				if (DebuffSlotCount+BuffSlotCount) > AuraLimit then break end
 				local aura = storedAuras[index]
-				if aura.spellid and aura.expiration and not(EmphasizedUnique and aura == EmphasizedAura) then
+				if aura.spellid and aura.expiration and not(EmphasizedUnique and EmphasizedAura[aura.spellid]) then
 
 					-- Sort buffs and debuffs
 					if aura.effect == "HELPFUL" then 
@@ -391,6 +394,7 @@ local function UpdateIconGrid(frame, unitid)
 		end
 
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
+		frame.emphasized:SetWidth(#EmphasizedAura * AuraWidth)
 end
 
 function UpdateWidget(frame)
@@ -481,6 +485,8 @@ local function TransformWideAura(frame)
 	frame.Stacks:SetWidth(26)
 	frame.Stacks:SetHeight(16)
 	frame.Stacks:SetJustifyH("RIGHT")
+
+	AuraWidth = frame:GetWidth()
 end
 
 local function TransformSquareAura(frame)
@@ -514,6 +520,8 @@ local function TransformSquareAura(frame)
 	frame.Stacks:SetWidth(26)
 	frame.Stacks:SetHeight(16)
 	frame.Stacks:SetJustifyH("RIGHT")
+
+	AuraWidth = frame:GetWidth()
 end
 
 -- Create a Wide Aura Icon
@@ -587,8 +595,8 @@ end
 local function UpdateEmphasizedIconConfig(frame)
 	local iconTable = frame.AuraIconFrames
 
-	local columns = 1
-	local auraLimit = 1
+	--local columns = 1
+	local auraLimit = MaxEmphasizedAuras
 
 	if iconTable then
 		-- Create Icons
@@ -601,11 +609,11 @@ local function UpdateEmphasizedIconConfig(frame)
 
 		-- Set Anchors
 		iconTable[1]:ClearAllPoints()
-		iconTable[1]:SetPoint("BOTTOM", frame)
-		--for index = 2, columns do
-		--  iconTable[index]:ClearAllPoints()
-		--  iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
-		--end
+		iconTable[1]:SetPoint("BOTTOMLEFT", frame)
+		for index = 2, auraLimit do
+		  iconTable[index]:ClearAllPoints()
+		  iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+		end
 	end
 end
 
@@ -630,7 +638,7 @@ local function CreateAuraWidget(parent, style)
 	frame.AuraIconFrames = {}
 	frame.emphasized.AuraIconFrames = {}
 	UpdateIconConfig(frame)
-	UpdateEmphasizedIconConfig(frame.emphasized, 1)
+	UpdateEmphasizedIconConfig(frame.emphasized)
 
 	-- Functions
 	frame._Hide = frame.Hide
@@ -644,14 +652,30 @@ local function CreateAuraWidget(parent, style)
 
 	-- Emphasized Functions
 	frame.emphasized.SetAura = function(frame, auras)
-		local name
+		local shown = {}
+		sort(auras, AuraSortFunction)
 
 		for k, v in pairs(auras) do
-			if not name or v.priority < auras[name].priority then name = k end
+			if #shown < 3 then
+				table.insert(shown, auras[k])
+				UpdateIcon(frame.AuraIconFrames[#shown], auras[k])
+			end
 		end
 
-		UpdateIcon(frame.AuraIconFrames[1], auras[name])
-		return auras[name]
+		-- Cleanup empty aura slots
+		for i=#shown+1, MaxEmphasizedAuras do
+			UpdateIcon(frame.AuraIconFrames[i])
+		end
+
+
+		return shown
+
+	--	for k, v in pairs(auras) do
+	--		if not name or v.priority < auras[name].priority then name = k end
+	--	end
+
+	--	UpdateIcon(frame.AuraIconFrames[1], auras[name])
+	--	return auras[name]
 	end
 
 	return frame
@@ -707,6 +731,10 @@ local function SetSpacerSlots(amount)
 	SpacerSlots = math.min(amount, DebuffColumns-1)
 end
 
+local function SetEmphasizedSlots(amount)
+	MaxEmphasizedAuras = math.min(amount, DebuffColumns-1)
+end
+
 
 -----------------------------------------------------
 -- External
@@ -723,6 +751,7 @@ NeatPlatesWidgets.SetEmphasizedAuraFilter = SetEmphasizedAuraFilter
 NeatPlatesWidgets.SetPandemic = SetPandemic
 NeatPlatesWidgets.SetBorderTypes = SetBorderTypes
 NeatPlatesWidgets.SetSpacerSlots = SetSpacerSlots
+NeatPlatesWidgets.SetEmphasizedSlots = SetEmphasizedSlots
 
 NeatPlatesWidgets.CreateAuraWidget = CreateAuraWidget
 

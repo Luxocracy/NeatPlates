@@ -201,12 +201,15 @@ local function BuildHubPanel(panel)
 	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
 	panel.SpacerSlots.tooltipText = L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"]
 
-	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras:"], AlignmentColumn, panel.SpacerSlots, 16)
+	panel.EmphasizedSlots = CreateQuickSlider(objectName.."EmphasizedSlots", L["Amount of Emphasized Auras:"], "ACTUAL", 150, AlignmentColumn, panel.SpacerSlots, 16, 2)
+	panel.EmphasizedSlots.tooltipText = L["The amount of Emphasized auras that can be displayed at once"]
+
+	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras:"], AlignmentColumn, panel.EmphasizedSlots, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
 	panel.WidgetDebuffAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetDebuffTrackList, "TOPRIGHT", 6, 0)
 	PanelHelpers.CreateEditBoxButton(panel.WidgetDebuffTrackList, panel.onEditboxOkay)
 
-	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.SpacerSlots, OffsetColumnB + 64)
+	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras:"], AlignmentColumn, panel.EmphasizedSlots, OffsetColumnB + 64)
 	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64)
 	panel.EmphasizedAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
 	PanelHelpers.CreateEditBoxButton(panel.EmphasizedAuraList, panel.onEditboxOkay)
@@ -526,6 +529,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.ScaleSpotlight, 1, .5, 2.2, .01)
 
 	SetSliderMechanics(panel.SpacerSlots, 0, 0, 4, 1)
+	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)

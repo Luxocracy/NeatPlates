@@ -244,6 +244,11 @@ local function VerifyPanelSettings()
 	end
 	-- Verify global settings
 	for k, v in pairs(NeatPlatesSettingsDefaults) do
+		-- Temporary to move over per-character settings that are now global.
+		if NeatPlatesOptions[k] and NeatPlatesSettings[k] == NeatPlatesSettingsDefaults[k] then
+			NeatPlatesSettings[k] = NeatPlatesOptions[k]
+			NeatPlatesOptions[k] = nil
+		end
 		if NeatPlatesSettings[k] == nil then
 			NeatPlatesSettings[k] = NeatPlatesSettingsDefaults[k]
 		end

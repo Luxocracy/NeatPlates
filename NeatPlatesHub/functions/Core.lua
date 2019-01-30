@@ -275,6 +275,7 @@ local function ApplyProfileSettings(theme, source, ...)
 
 	-- Set Space Between Buffs & Debuffs
 	NeatPlatesWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
+	NeatPlatesWidgets.SetEmphasizedSlots(math.ceil(LocalVars.EmphasizedSlots))
 
 	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
 

@@ -174,6 +174,7 @@ L["Enable Aura Widget"] = true
 		L["Glow"] = true
 
 L["Space Between buffs & debuffs:"] = true
+L["Amount of Emphasized Auras:"] = true
 L["Additional Auras:"] = true
 L["Emphasized Auras:"] = true
 L["Emphasize Hides Normal Aura"] = true
@@ -431,6 +432,7 @@ L["Type of highlighting to use"] = true
 L["Display beneficial auras that can be removed by Dispel/Purge"] = true
 L["Display Enrage effects that can be removed by Soothe"] = true
 L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"] = true
+L["The amount of Emphasized auras that can be displayed at once"] = true
 L["Hides the regular aura from the aura widget if it is currently emphasized"] = true
 
 
