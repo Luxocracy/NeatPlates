@@ -333,8 +333,9 @@ local function UpdateIconGrid(frame, unitid)
 		local DebuffCount = 0
 		local DisplayedRows = 0
 		local EmphasizedAura
+		local EmphasizedAuraCount = 0
 
-		EmphasizedAura = frame.emphasized:SetAura(emphasizedAuras)	-- Display Emphasized Aura, returns displayed aura
+		EmphasizedAura, EmphasizedAuraCount = frame.emphasized:SetAura(emphasizedAuras)	-- Display Emphasized Aura, returns displayed aura
 
 		if storedAuraCount > 0 or next(EmphasizedAura) then frame:Show() end -- Show the parent frame
 		if storedAuraCount > 0 then
@@ -343,8 +344,8 @@ local function UpdateIconGrid(frame, unitid)
 			for index = 1, storedAuraCount do
 				if (DebuffSlotCount+BuffSlotCount) > AuraLimit then break end
 				local aura = storedAuras[index]
-				if aura.spellid and aura.expiration and not(EmphasizedUnique and EmphasizedAura[aura.spellid]) then
 
+				if aura.spellid and aura.expiration and not(EmphasizedUnique and EmphasizedAura[tostring(aura.spellid)]) then
 					-- Sort buffs and debuffs
 					if aura.effect == "HELPFUL" then 
 						table.insert(BuffAuras, aura)
@@ -394,7 +395,7 @@ local function UpdateIconGrid(frame, unitid)
 		end
 
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
-		frame.emphasized:SetWidth(#EmphasizedAura * AuraWidth)
+		frame.emphasized:SetWidth(EmphasizedAuraCount * AuraWidth)
 end
 
 function UpdateWidget(frame)
@@ -653,11 +654,13 @@ local function CreateAuraWidget(parent, style)
 	-- Emphasized Functions
 	frame.emphasized.SetAura = function(frame, auras)
 		local shown = {}
+		local ids = {}
 		sort(auras, AuraSortFunction)
 
 		for k, v in pairs(auras) do
 			if #shown < 3 then
 				table.insert(shown, auras[k])
+				ids[k] = true
 				UpdateIcon(frame.AuraIconFrames[#shown], auras[k])
 			end
 		end
@@ -668,7 +671,7 @@ local function CreateAuraWidget(parent, style)
 		end
 
 
-		return shown
+		return ids, #shown
 
 	--	for k, v in pairs(auras) do
 	--		if not name or v.priority < auras[name].priority then name = k end
