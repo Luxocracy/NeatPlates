@@ -12,7 +12,11 @@ L["Add Profile"] = "프로필 추가"
 L["Additional Auras:"] = "추가 효과:"
 L["All NPCs"] = "모든 NPC"
 L["All Units"] = "모든 유닛"
+--[[Translation missing --]]
+L["Allows some CVars to work(Might require a /reload)"] = "Allows some CVars to work(Might require a /reload)"
 L["Always keep Target Nameplate on Screen"] = "대상 이름표 항상 화면에 표시"
+--[[Translation missing --]]
+L["Amount of Emphasized Auras:"] = "Amount of Emphasized Auras:"
 L["Approximate Health"] = "대략적인 체력"
 L["Are you sure you wish to delete the profile '%1'?"] = " '%1'프로필을 삭제 하시겠습니까?"
 L["Arena ID"] = "아레나 ID"
@@ -164,6 +168,8 @@ L["Low Health Threshold:"] = "최저 체력 한계:"
 L["Magic"] = "마법"
 L["Makes the Nameplates non-interactable"] = "Nameplates를 상호 작용 가능하게 함"
 L["Medium Health"] = "중간 체력"
+--[[Translation missing --]]
+L["Might resolve some issues with health not updating properly"] = "Might resolve some issues with health not updating properly"
 L["Mode:"] = "유형:"
 L["Name Text Color"] = "이름 문자 색상"
 L["Nameplate Horizontal Overlap"] = "이름표 가로 겹치기"
@@ -223,9 +229,9 @@ L["Second Spec"] = "두번째 전문화"
 --[[Translation missing --]]
 L["SHORT_MILLION"] = "M"
 --[[Translation missing --]]
-L["SHORT_ONE_HUNDRED_MILLION"] = "UNUSED"
+L["SHORT_ONE_HUNDRED_MILLION"] = "E"
 --[[Translation missing --]]
-L["SHORT_TEN_THOUSAND"] = "UNUSED"
+L["SHORT_TEN_THOUSAND"] = "W"
 --[[Translation missing --]]
 L["SHORT_THOUSAND"] = "K"
 L["Show Absorb Bars"] = "흡수 바 표시"
@@ -262,6 +268,8 @@ L["Tapped Unit"] = "선택된 유닛"
 L["Target Of"] = "대상"
 L["Target Only"] = "대상 만"
 L["Text Color:"] = "문자 색상:"
+--[[Translation missing --]]
+L["The amount of Emphasized auras that can be displayed at once"] = "The amount of Emphasized auras that can be displayed at once"
 L[ [=[The amount of empty aura slots between Buffs & Debuffs.
 Max value means they never share a row]=] ] = [=[버프와 디버프 사이의 빈 효과 슬롯의 양. 
 최대 값은 행을 공유하지 않는다는 것을 의미합니다.]=]
@@ -283,6 +291,10 @@ L["Type of highlighting to use"] = "사용할 하이라이트 유형"
 L["Un-interruptible"] = "차단 불가"
 L["Unit Filter"] = "유닛 필터"
 L["Use Blizzard Font"] = "블리자드 기본 글꼴 사용"
+--[[Translation missing --]]
+L["Use Blizzard Scaling"] = "Use Blizzard Scaling"
+--[[Translation missing --]]
+L["Use Chinese Number Shortening"] = "Use Chinese Number Shortening"
 L["Use Frequent Health Updates"] = "빠른 상태 업데이트 사용"
 L["Use Target Opacity When No Target Exists"] = "대상이 없을 때 대상 불투명도 사용"
 L["Vertical Position of Artwork: (May cause targeting problems)"] = "아트웍의 수직 위치: (타켓팅에 문제를 일으킬 수 있음)"
