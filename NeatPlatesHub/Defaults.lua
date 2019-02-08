@@ -257,6 +257,7 @@ NeatPlatesHubDefaults = {
 	FrameVerticalPosition = .7,
 	AdvancedEnableUnitCache = true,
 	FocusAsTarget = false,
+	AltShortening = (LOCALE_zhCN or LOCALE_zhTW) or false,
 	FrameBarWidth = 1,
 	--AdvancedHealthTextList = [[return unit.health]],
 }

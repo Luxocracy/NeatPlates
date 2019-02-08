@@ -121,9 +121,9 @@ L["Friendly Status Text:"] = true
 	L["Percent Health"] = true
 	L["Exact Health"] = true
 	L["Approximate Health"] = true
-		L["SHORT_ONE_HUNDRED_MILLION"] = "UNUSED"
+		L["SHORT_ONE_HUNDRED_MILLION"] = "E"
 		L["SHORT_MILLION"] = "M"
-		L["SHORT_TEN_THOUSAND"] = "UNUSED"
+		L["SHORT_TEN_THOUSAND"] = "W"
 		L["SHORT_THOUSAND"] = "K"
 	L["Health Deficit"] = true
 	L["Health Total & Percent"] = true
@@ -384,6 +384,7 @@ L["Funky Stuff"] = true
 
 L["Use Blizzard Font"] = true
 L["Treat Focus as a Target"] = true
+L["Use Chinese Number Shortening"] = true
 L["Enable Title Caching"] = true
 
 L["Vertical Position of Artwork: (May cause targeting problems)"] = true
