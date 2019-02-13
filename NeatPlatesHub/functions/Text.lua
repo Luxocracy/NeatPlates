@@ -72,7 +72,7 @@ local function ShortenNumber(number)
 		return (ceil((number/100000))/10).." "..L["SHORT_MILLION"]
 	elseif LocalVars.AltShortening and number > 10000 then
 		return (ceil((number/1000))/10).." "..L["SHORT_TEN_THOUSAND"]	--"万"
-	elseif number > 1000 then
+	elseif not LocalVars.AltShortening and number > 1000 then
 		return (ceil((number/100))/10).." "..L["SHORT_THOUSAND"]
 	else
 		return number
