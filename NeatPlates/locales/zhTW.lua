@@ -14,8 +14,7 @@ L["All NPCs"] = "所有 NPC"
 L["All Units"] = "所有單位"
 L["Allows some CVars to work(Might require a /reload)"] = "允許使用一些 CVars 遊戲參數 (可能需要重新載入介面)"
 L["Always keep Target Nameplate on Screen"] = "選取目標的血條永遠保持在畫面中"
---[[Translation missing --]]
-L["Amount of Emphasized Auras:"] = "Amount of Emphasized Auras:"
+L["Amount of Emphasized Auras:"] = "強調光環數量:"
 L["Approximate Health"] = "近似血量"
 L["Are you sure you wish to delete the profile '%1'?"] = "是否確定要刪除設定檔 '%1'?"
 L["Arena ID"] = "競技場 ID"
@@ -257,8 +256,7 @@ L["Tapped Unit"] = "無效單位"
 L["Target Of"] = "目標屬於誰"
 L["Target Only"] = "只有選取目標"
 L["Text Color:"] = "文字顏色:"
---[[Translation missing --]]
-L["The amount of Emphasized auras that can be displayed at once"] = "The amount of Emphasized auras that can be displayed at once"
+L["The amount of Emphasized auras that can be displayed at once"] = "同時能夠顯示出來的強調光環最多數量"
 L[ [=[The amount of empty aura slots between Buffs & Debuffs.
 Max value means they never share a row]=] ] = [=[增益 & 減益之間的空光環個數。
 最大數值表示兩者永遠不會在同一個橫列。]=]
@@ -279,8 +277,7 @@ L["Un-interruptible"] = "不可打斷"
 L["Unit Filter"] = "單位過濾方式"
 L["Use Blizzard Font"] = "使用遊戲內建的字體"
 L["Use Blizzard Scaling"] = "使用遊戲內建的縮放大小"
---[[Translation missing --]]
-L["Use Chinese Number Shortening"] = "Use Chinese Number Shortening"
+L["Use Chinese Number Shortening"] = "數字縮寫使用中文單位"
 L["Use Frequent Health Updates"] = "更頻繁的更新血量"
 L["Use Target Opacity When No Target Exists"] = "沒有選取目標時使用選取目標的不透明度"
 L["Vertical Position of Artwork: (May cause targeting problems)"] = "名字和底圖垂直位置: (選取目標有問題時可調整)"
