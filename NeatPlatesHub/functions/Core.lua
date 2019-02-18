@@ -77,26 +77,26 @@ NeatPlatesHubMenus.ThreatWarningModes = {
 					{ text = L["DPS/Healer"], value = "DPS",} ,
 					}
 
-local NormalGrey = {r = .65, g = .65, b = .65, a = .4}
-local EliteGrey = {r = .9, g = .7, b = .3, a = .5}
-local BossGrey = {r = 1, g = .85, b = .1, a = .8}
+HubData.Colors.NormalGrey = {r = .65, g = .65, b = .65, a = .4}
+HubData.Colors.EliteGrey = {r = .9, g = .7, b = .3, a = .5}
+HubData.Colors.BossGrey = {r = 1, g = .85, b = .1, a = .8}
 
 -- Colors
-local BlueColor = {r = 60/255, g =  168/255, b = 255/255, }
-local GreenColor = { r = 96/255, g = 224/255, b = 37/255, }
-local RedColor = { r = 255/255, g = 51/255, b = 32/255, }
-local YellowColor = { r = 252/255, g = 220/255, b = 27/255, }
-local GoldColor = { r = 252/255, g = 140/255, b = 0, }
-local OrangeColor = { r = 255/255, g = 64/255, b = 0, }
-local WhiteColor = { r = 250/255, g = 250/255, b = 250/255, }
+HubData.Colors.BlueColor = {r = 60/255, g =  168/255, b = 255/255, }
+HubData.Colors.GreenColor = { r = 96/255, g = 224/255, b = 37/255, }
+HubData.Colors.RedColor = { r = 255/255, g = 51/255, b = 32/255, }
+HubData.Colors.YellowColor = { r = 252/255, g = 220/255, b = 27/255, }
+HubData.Colors.GoldColor = { r = 252/255, g = 140/255, b = 0, }
+HubData.Colors.OrangeColor = { r = 255/255, g = 64/255, b = 0, }
+HubData.Colors.WhiteColor = { r = 250/255, g = 250/255, b = 250/255, }
 
-local White = {r = 1, g = 1, b = 1}
-local Black = {r = 0, g = 0, b = 0}
-local BrightBlue =  {r = 0, g = 70/255, b = 240/255,} -- {r = 0, g = 75/255, b = 240/255,}
-local BrightBlueText = {r = 112/255, g = 219/255, b = 255/255,}
-local PaleBlue = {r = 0, g = 130/255, b = 225/255,}
-local PaleBlueText = {r = 194/255, g = 253/255, b = 1,}
-local DarkRed = {r = .9, g = 0.08, b = .08,}
+HubData.Colors.White = {r = 1, g = 1, b = 1}
+HubData.Colors.Black = {r = 0, g = 0, b = 0}
+HubData.Colors.BrightBlue =  {r = 0, g = 70/255, b = 240/255,} -- {r = 0, g = 75/255, b = 240/255,}
+HubData.Colors.BrightBlueText = {r = 112/255, g = 219/255, b = 255/255,}
+HubData.Colors.PaleBlue = {r = 0, g = 130/255, b = 225/255,}
+HubData.Colors.PaleBlueText = {r = 194/255, g = 253/255, b = 1,}
+HubData.Colors.DarkRed = {r = .9, g = 0.08, b = .08,}
 
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 

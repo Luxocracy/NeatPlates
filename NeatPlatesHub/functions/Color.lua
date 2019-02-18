@@ -60,7 +60,7 @@ HubData.Functions.ColorFunctionByHealth = ColorFunctionByHealth
 
 
 local function ColorFunctionBlack()
-	return Black
+	return HubData.Colors.Black
 end
 
 --[[
@@ -313,7 +313,7 @@ local WarningColor = {}
 -- Player Health (na)
 local function WarningBorderFunctionByPlayerHealth(unit)
 	local healthPct = UnitHealth("player")/UnitHealthMax("player")
-	if healthPct < .3 then return DarkRed end
+	if healthPct < .3 then return HubData.Colors.DarkRed end
 end
 
 -- By Enemy Healer
@@ -418,10 +418,10 @@ end
 local function NameColorBySignificance(unit)
 	-- [[
 	if unit.reaction ~= "FRIENDLY" then
-		if (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)) then return White
-		elseif unit.isBoss or unit.isMarked then return BossGrey
-		elseif unit.isElite or (unit.levelcolorRed > .9 and unit.levelcolorGreen < .9) then return EliteGrey
-		else return NormalGrey end
+		if (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)) then return HubData.Colors.White
+		elseif unit.isBoss or unit.isMarked then return LocalVars.TextColorBoss --HubData.Colors.BossGrey
+		elseif unit.isElite or (unit.levelcolorRed > .9 and unit.levelcolorGreen < .9) then return LocalVars.TextColorElite --HubData.Colors.EliteGrey
+		else return LocalVars.TextColorNormal end --HubData.Colors.NormalGrey
 	else
 		return NameColorByReaction(unit)
 	end
@@ -507,7 +507,7 @@ local SemiWhiter = {r=1, g=1, b=1, a=.9}
 local SemiYellow = {r=1, g=1, b=.8, a=1}
 -- GoldColor, YellowColor
 local function NameColorDefault(unit)
-	return White
+	return HubData.Colors.White
 end
 
 

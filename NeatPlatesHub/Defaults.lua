@@ -168,6 +168,9 @@ NeatPlatesHubDefaults = {
 	TextColorHostileNPC = {r = 255/255, g = 51/255, b = 32/255,},
 	TextColorHostilePlayer = {r = 255/255, g = 51/255, b = 32/255,},
 	TextColorGuildMember = {r = 60/255, g = 168/255, b = 255/255,},
+	TextColorNormal = {r = .65, g = .65, b = .65, a = .4},
+	TextColorElite = {r = .9, g = .7, b = .3, a = .5},
+	TextColorBoss = {r = 1, g = .85, b = .1, a = .8},
 
 	ColorTapped = {r = 110/255, g = 110/255, b = 110/255,},
 

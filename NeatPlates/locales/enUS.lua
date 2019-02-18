@@ -275,6 +275,8 @@ L["Text Color:"] = true
 	L["Hostile NPC"] = true
 	L["Hostile Player"] = true
 	L["Guild Member"] = true
+	L["Elite"] = true
+	L["Boss"] = true
 
 L["Other Colors:"] = true
 	L["Tapped Unit"] = true

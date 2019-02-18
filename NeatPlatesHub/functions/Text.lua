@@ -31,8 +31,8 @@ local AddHubFunction = NeatPlatesHubHelpers.AddHubFunction
 local function DummyFunction() end
 
 -- Colors
-local White = {r = 1, g = 1, b = 1}
-local WhiteColor = { r = 250/255, g = 250/255, b = 250/255, }
+--local White = {r = 1, g = 1, b = 1}
+--local WhiteColor = { r = 250/255, g = 250/255, b = 250/255, }
 
 
 ------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ end
 -- Total and Percent
 local function HealthFunctionTotal(unit)
 	local color = ColorFunctionByHealth(unit)
-	--local color = White
+	--local color = HubData.Colors.White
 	local health, healthmax = GetHealth(unit), GetHealthMax(unit)
 	return ShortenNumber(health).."|cffffffff ("..ceil(100*(unit.health/unit.healthmax)).."%)", color.r, color.g, color.b
 end
@@ -182,7 +182,7 @@ end
 
 -- Arena ID
 local function HealthFunctionArenaIDOnly(unit)
-	local powercolor = White
+	local powercolor = HubData.Colors.White
 	local arenastring = ""
 	local arenaindex = GetArenaIndex(unit.rawName)
 
@@ -198,7 +198,7 @@ local function HealthFunctionArenaIDOnly(unit)
 -- Test Strings
 	--arenastring = "|cffffcc00["..(tostring(2)).."]  |r"
 	arenastring = "|cffffcc00#"..(tostring(2)).."  |r"
-	--powercolor = White
+	--powercolor = HubData.Colors.White
 --]]
 
 	return arenastring, powercolor.r, powercolor.g, powercolor.b, 1
@@ -216,7 +216,7 @@ end
 -- Arena Vitals (ID, Mana, Health
 local function HealthFunctionArenaID(unit)
 	local localid
-	local powercolor = White
+	local powercolor = HubData.Colors.White
 	local powerstring = ""
 	local arenastring = ""
 	local arenaindex = GetArenaIndex(unit.rawName)
@@ -242,7 +242,7 @@ local function HealthFunctionArenaID(unit)
 
 			if power and power > 0 then
 				powerstring = "  "..power.."%"		--..powername
-				powercolor = PowerBarColor[powerindex] or White
+				powercolor = PowerBarColor[powerindex] or HubData.Colors.White
 			end
 		end
 	end
@@ -490,7 +490,7 @@ end
 -- Guild, Role, Level, Health
 function TextAll(unit)
 	-- local color = ColorFunctionByHealth(unit) --6.0
-	local color = White
+	local color = HubData.Colors.White
 	if unit.health < unit.healthmax then
 		return ceil(100*(unit.health/unit.healthmax)).."%", color.r, color.g, color.b, .7
 	else
