@@ -218,9 +218,8 @@ local function EnableWatcherFrame(arg)
 end
 
 local function SetPlayerSpecData()
-	local _, _class = UnitClass("player")	
+	local _, _class = UnitClass("player")
 	local _specializationIndex = tonumber(GetSpecialization())
-	local _spec, _ = GetSpecializationInfo(_specializationIndex)
 
 	if not _specializationIndex then
 		playeRole = "DAMAGER"
@@ -234,7 +233,7 @@ local function SetPlayerSpecData()
 		playeRole = "DAMAGER"
 	end
 
-	playerSpec = _spec
+	playerSpec = GetSpecializationInfo(_specializationIndex)
 	PlayerClass = _class
 end
 
