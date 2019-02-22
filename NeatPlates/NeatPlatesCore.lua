@@ -700,9 +700,11 @@ do
 	-- UpdateIndicator_RaidIcon
 	function UpdateIndicator_RaidIcon()
 		if unit.isMarked and style.raidicon.show then
-			visual.raidicon:Show()
 			local iconCoord = RaidIconCoordinate[unit.raidIcon]
-			visual.raidicon:SetTexCoord(iconCoord.x, iconCoord.x + 0.25, iconCoord.y,  iconCoord.y + 0.25)
+			if iconCoord then
+				visual.raidicon:Show()
+				visual.raidicon:SetTexCoord(iconCoord.x, iconCoord.x + 0.25, iconCoord.y, iconCoord.y + 0.25)
+			else visual.raidicon:Hide() end
 		else visual.raidicon:Hide() end
 	end
 
@@ -1120,7 +1122,8 @@ do
 	function CoreEvents:UPDATE_MOUSEOVER_UNIT(...)
 		if UnitExists("mouseover") then
 			HasMouseover = true
-			SetUpdateAll()
+			local plate = GetNamePlateForUnit("mouseover")
+			if plate then SetUpdateMe(plate) else SetUpdateAll() end
 		end
 	end
 
