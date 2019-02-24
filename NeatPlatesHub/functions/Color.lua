@@ -418,19 +418,12 @@ end
 local function NameColorBySignificance(unit)
 	-- [[
 	if unit.reaction ~= "FRIENDLY" then
-		if (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)) then return HubData.Colors.White
-		elseif unit.isBoss or unit.isMarked then return LocalVars.TextColorBoss --HubData.Colors.BossGrey
-		elseif unit.isElite or (unit.levelcolorRed > .9 and unit.levelcolorGreen < .9) then return LocalVars.TextColorElite --HubData.Colors.EliteGrey
+		if unit.isBoss then return LocalVars.TextColorBoss --HubData.Colors.BossGrey
+		elseif unit.isElite then return LocalVars.TextColorElite --HubData.Colors.EliteGrey
 		else return LocalVars.TextColorNormal end --HubData.Colors.NormalGrey
 	else
 		return NameColorByReaction(unit)
 	end
-	--]]
-	--[[
-	if unit.reaction == "FRIENDLY" then return White
-	elseif unit.isBoss or unit.isMarked then return BossGrey
-	elseif unit.isElite or (unit.levelcolorRed > .9 and unit.levelcolorGreen < .9) then return EliteGrey
-	else return NormalGrey end
 	--]]
 end
 
