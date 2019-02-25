@@ -91,6 +91,7 @@ NeatPlatesOptions = {
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
+	BlizzardScaling = false,
 
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
@@ -748,7 +749,6 @@ local function BuildInterfacePanel(panel)
 	-- Blizzard Scaling
 	panel.BlizzardScaling = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardScaling", panel, L["Use Blizzard Scaling"])
 	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.HealthFrequent, "TOPLEFT", 0, -25)
-	panel.BlizzardScaling:SetScript("OnClick", function(self) NeatPlates:SetBlizzardScaling(self:GetChecked()) end)
 	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
 
 	-- Nameplate Behaviour

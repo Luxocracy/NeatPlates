@@ -7,7 +7,6 @@ local addonName, NeatPlatesInternal = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
 local FrequentHealthUpdate = true
-local BlizzardScaling = false
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 NeatPlates = {}
 
@@ -156,7 +155,7 @@ do
 			local carrier = plate.carrier
 			local extended = plate.extended
 
-			if BlizzardScaling then carrier:SetScale(plate:GetScale()) end	-- Scale the carrier to allow for certain CVars that control scale to function properly.
+			if NeatPlatesOptions.BlizzardScaling then carrier:SetScale(plate:GetScale()) end	-- Scale the carrier to allow for certain CVars that control scale to function properly.
 
 			-- Check for an Update Request
 			if UpdateMe or UpdateHealth then
@@ -1399,7 +1398,6 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
-function NeatPlates:SetBlizzardScaling(useScaling) BlizzardScaling = useScaling end
 
 function NeatPlates:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function NeatPlates:ResetWidgets() ForEachPlate(OnResetWidgets) end
