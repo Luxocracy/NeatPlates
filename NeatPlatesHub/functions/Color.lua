@@ -145,16 +145,33 @@ Threat Value
 
 
 local function ColorFunctionByThreat(unit)
-
 	local classColor = RaidClassColors[unit.class]
 
 	if classColor then
 		return classColor
 	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+		local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
+		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
+		-- Mobs from Reaping affix
+		local souls = {
+			["148893"] = true,
+			["148894"] = true,
+			["148716"] = true,
+		}
+
+		-- Special case dealing with mobs from Reaping affix
+		if souls[unitGUID] then
+			local playerIsTarget = UnitIsUnit(unit.unitid.."target", "player")
+			if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
+				return LocalVars.ColorThreatSafe
+			else
+				return LocalVars.ColorThreatWarning
+			end
+		end
 
 		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return ReactionColors[unit.reaction][unit.type] end
 
-		if (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive()) then
+		if isTank then
 			return ColorFunctionTankSwapColors(unit)
 		--elseif LocalVars.ThreatWarningMode == "Tank" then
 		--	return ColorFunctionRawTank(unit)

@@ -50,10 +50,16 @@ local function IsOffTanked(unit)
 		local targetOf = unitid.."target"	
 		local targetGUID = UnitGUID(targetOf)
 		local targetIsGuardian = false
+		local guardians = {
+			["61146"] = true, 	-- Black Ox Statue(61146)
+			["103822"] = true,	-- Treant(103822)
+			["61056"] = true, 	-- Primal Earth Elemental(61056)
+			["95072"] = true, 	-- Greater Earth Elemental(95072)
+		}
 
 		if targetGUID then
 			targetGUID = select(6, strsplit("-", UnitGUID(targetOf)))
-			targetIsGuardian = targetGUID == "61146" or targetGUID == "103822" or targetGUID == "61056" or targetGUID == "95072" -- Black Ox Statue(61146), Treant(103822), Primal Earth Elemental(61056), Greater Earth Elemental(95072)
+			targetIsGuardian = guardians[targetGUID]
 		end
 		
 		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
