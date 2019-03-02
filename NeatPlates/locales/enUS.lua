@@ -136,6 +136,9 @@ L["Friendly Status Text:"] = true
 L["Show Level"] = true
 L["Show Status Text on Target & Mouseover"] = true
 L["Show Status Text on Active/Damaged Units"] = true
+L["Use Custom Target Color"] = true
+L["Use Custom Focus Color"] = true
+L["Use Custom Mouseover Color"] = true
 
 ------------------------------
 -- Headline View
@@ -280,6 +283,9 @@ L["Text Color:"] = true
 
 L["Other Colors:"] = true
 	L["Tapped Unit"] = true
+	L["Target Unit"] = true
+	L["Focus Unit"] = true
+	L["Mouseover Unit"] = true
 
 L["Custom Color Conditions:"] = true
 L["Color Select"] = true
@@ -437,5 +443,6 @@ L["Display Enrage effects that can be removed by Soothe"] = true
 L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"] = true
 L["The amount of Emphasized auras that can be displayed at once"] = true
 L["Hides the regular aura from the aura widget if it is currently emphasized"] = true
+L["Color is defined under the 'Reaction' category."] = true
 
 

@@ -257,13 +257,18 @@ local function HealthColorDelegate(unit)
 	local color, class
 
 	-- Group Member Aggro Coloring
-	if unit.reaction == "FRIENDLY"  then
+	if unit.reaction == "FRIENDLY" then
 		if LocalVars.ColorShowPartyAggro and LocalVars.ColorPartyAggroBar then
 			--if GetFriendlyThreat(unit.unitid) then color = LocalVars.ColorPartyAggro end
 		end
-	-- Tapped Color Priority
 	elseif unit.isTapped then
-		color = LocalVars.ColorTapped
+		color = LocalVars.ColorTapped -- Tapped Color Priority
+	elseif LocalVars.CustomMouseoverColor and unit.isMouseover then
+		color = LocalVars.ColorMouseover -- Mouseover Color
+	elseif LocalVars.CustomTargetColor and unit.isTarget then
+		color = LocalVars.ColorTarget -- Target Color
+	elseif LocalVars.CustomFocusColor and unit.isFocus then
+		color = LocalVars.ColorFocus -- Focus Color
 	end
 
 	-- Custom Color

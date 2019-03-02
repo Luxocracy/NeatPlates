@@ -125,6 +125,12 @@ local function BuildHubPanel(panel)
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Level"], AlignmentColumn, F, 0, 2)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 0)
+  panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Custom Target Color"], AlignmentColumn, F, 0)
+  panel.CustomFocusColor, F = CreateQuickCheckbutton(objectName.."CustomFocusColor", L["Use Custom Focus Color"], AlignmentColumn, F, 0)
+  panel.CustomMouseoverColor, F = CreateQuickCheckbutton(objectName.."CustomMouseoverColor", L["Use Custom Mouseover Color"], AlignmentColumn, F, 0)
+  panel.CustomTargetColor.tooltipText = L["Color is defined under the 'Reaction' category."]
+  panel.CustomFocusColor.tooltipText = L["Color is defined under the 'Reaction' category."]
+  panel.CustomMouseoverColor.tooltipText = L["Color is defined under the 'Reaction' category."]
 
 
 	------------------------------
@@ -364,9 +370,12 @@ local function BuildHubPanel(panel)
 	-- Other
 	panel.OtherColorLabel = CreateQuickItemLabel(nil, L["Other Colors:"], AlignmentColumn, panel.TextColorBoss, 0, 2)
 	panel.ColorTapped = CreateQuickColorbox(objectName.."ColorTapped", L["Tapped Unit"], nil, AlignmentColumn, panel.OtherColorLabel , 16)
+	panel.ColorTarget = CreateQuickColorbox(objectName.."ColorTarget", L["Target Unit"], nil, AlignmentColumn, panel.ColorTapped , 16)
+	panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", L["Focus Unit"], nil, AlignmentColumn, panel.ColorTarget , 16)
+	panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", L["Mouseover Unit"], nil, AlignmentColumn, panel.ColorFocus , 16)
 	--panel.ColorTotem = CreateQuickColorbox(objectName.."ColorTotem", "Totem", nil, AlignmentColumn, panel.ColorTapped , 16)
 	-- Custom Colors
-	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorTapped, 0, 2)
+	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorMouseover, 0, 2)
 	panel.CustomColorList, F = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", L["Color Select"], function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
 	panel.CustomColorTip = PanelHelpers:CreateTipBox(objectName.."CustomColorTip", L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.CustomColorList, "TOPRIGHT", 6, 0)
@@ -462,8 +471,8 @@ local function BuildHubPanel(panel)
 	panel.WidgetEliteIndicator = CreateQuickCheckbutton(objectName.."WidgetEliteIndicator", L["Show Elite Icon"], AlignmentColumn, panel.WidgetTargetHighlight)
 	panel.ClassEnemyIcon = CreateQuickCheckbutton(objectName.."ClassEnemyIcon", L["Show Enemy Class Art"], AlignmentColumn, panel.WidgetEliteIndicator)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", L["Show Friendly Class Art"], AlignmentColumn, panel.ClassEnemyIcon)
-	panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)
-	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.WidgetTotemIcon)
+	--panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)
+	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.ClassPartyIcon)
 	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, panel.WidgetQuestIcon)
 	panel.WidgetComboPointsStyle, F =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", L["Personal Resource Style:"], ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
 

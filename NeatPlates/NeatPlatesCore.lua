@@ -846,7 +846,7 @@ do
 
 		-- Clear registered events incase they weren't
 		castBar:SetScript("OnEvent", nil)
-		castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
 		visual.spelltext:SetText(text)
 		visual.spellicon:SetTexture(texture)
@@ -1121,8 +1121,7 @@ do
 	function CoreEvents:UPDATE_MOUSEOVER_UNIT(...)
 		if UnitExists("mouseover") then
 			HasMouseover = true
-			local plate = GetNamePlateForUnit("mouseover")
-			if plate then SetUpdateMe(plate) else SetUpdateAll() end
+			SetUpdateAll()
 		end
 	end
 

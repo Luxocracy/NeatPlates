@@ -129,6 +129,9 @@ NeatPlatesHubDefaults = {
 	TextUseBlizzardFont = false,
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
+	CustomTargetColor = false,
+	CustomFocusColor = false,
+	CustomMouseoverColor = false,
 
 	-- Color
 	---------------------------------------
@@ -173,6 +176,9 @@ NeatPlatesHubDefaults = {
 	TextColorBoss = {r = 1, g = .85, b = .1, a = .8},
 
 	ColorTapped = {r = 110/255, g = 110/255, b = 110/255,},
+	ColorTarget = {r = 110/255, g = 110/255, b = 110/255,},
+	ColorFocus = {r = 110/255, g = 110/255, b = 110/255,},
+	ColorMouseover = {r = 110/255, g = 110/255, b = 110/255,},
 
 	CustomColorList = "",
 	CustomColorLookup = {},
