@@ -5,9 +5,13 @@
 local font = "FONTS\\arialn.ttf"
 -- local art = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\Absorbs"
 -- local artVertical = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\Absorbs"
-local art = {
+local ArtDamage = {
 	["HORIZONTAL"] = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\Absorbs",
 	["VERTICAL"] = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\AbsorbsVertical"
+}
+local ArtHealing = {
+	["HORIZONTAL"] = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\HealingAbsorbs",
+	["VERTICAL"] = "Interface\\Addons\\NeatPlatesWidgets\\AbsorbWidget\\HealingAbsorbsVertical"
 }
 
 local WidgetList = {}
@@ -22,22 +26,33 @@ local function UpdateWidgetConfig(frame)
 
 	frame:SetHeight(32)
 	frame:SetWidth(width)
-	frame.Line:SetHeight(height)
-	frame.Line:SetWidth(width)
+	frame.LineDamage:SetHeight(height)
+	frame.LineHealing:SetHeight(height)
+	frame.LineDamage:SetWidth(width)
+	frame.LineHealing:SetWidth(width)
 	frame._orientation = orientation
 	-- frame:SetWidth(width)
-	-- frame.Line:SetHeight(height)
-	frame.Line:SetTexture(art[orientation], "REPEAT", "REPEAT")
-	frame.Line:SetTexCoord(0,1,0,1)
+	-- frame.LineDamage:SetHeight(height)
+	-- frame.LineHealing:SetHeight(height)
+	frame.LineDamage:SetTexture(ArtDamage[orientation], "REPEAT", "REPEAT")
+	--frame.LineDamage:SetAlpha(0.4)
+	frame.LineHealing:SetTexture(ArtHealing[orientation], "REPEAT", "REPEAT")
+	frame.LineHealing:SetAlpha(1)
+	frame.LineDamage:SetTexCoord(0,1,0,1)
+	frame.LineHealing:SetTexCoord(0,1,0,1)
 
 	if orientation == "VERTICAL" then
 		frame._frameWidth = height
-		frame.Line:SetHorizTile(false)
-		frame.Line:SetVertTile(true)
+		frame.LineDamage:SetHorizTile(false)
+		frame.LineHealing:SetHorizTile(false)
+		frame.LineDamage:SetVertTile(true)
+		frame.LineHealing:SetVertTile(true)
 	else
 		frame._frameWidth = width
-		frame.Line:SetVertTile(false)
-		frame.Line:SetHorizTile(true)
+		frame.LineDamage:SetVertTile(false)
+		frame.LineHealing:SetVertTile(false)
+		frame.LineDamage:SetHorizTile(true)
+		frame.LineHealing:SetHorizTile(true)
 	end
 end
 
@@ -46,15 +61,22 @@ local function UpdateAbsorbs(frame, unitid)
 	local _frameWidth = frame._frameWidth
 	local _orientation = frame._orientation
 	local length = 0
+	local showFrame = false
 	-- local anchor = "RIGHT"
-	local absorb = UnitGetTotalAbsorbs(unitid) or 0	
+	absorb = {
+		["damage"] = UnitGetTotalAbsorbs(unitid) or 0,
+		["healing"] = UnitGetTotalHealAbsorbs(unitid) or 0,
+	}
   local health = UnitHealth(unitid) or 0
 	local healthmax = UnitHealthMax(unitid) or 1
 	
 	-- absorb = healthmax -- This is just for testing the bars
+	absorb.damage = healthmax/2
+	absorb.healing = healthmax/4
 
 	--[[ We wont update the widget until something has changed ]] --
-	if lastWidget == frame and frame.lastAbsorb ~= nil and frame.lastAbsorb == absorb and
+	if lastWidget == frame and frame.lastAbsorb ~= nil and frame.lastAbsorb.damage == absorb.damage and
+		frame.lastAbsorb.healing == absorb.healing and
 		frame.lasthp ~= nil and frame.lasthp == health and
 		frame.lastmaxhp ~= nil and frame.lastmaxhp == healthmax then 
 		return
@@ -65,49 +87,119 @@ local function UpdateAbsorbs(frame, unitid)
 	frame.lasthp = health
 	frame.lastmaxhp = healthmax
 
-	if absorb == 0 then 
-		frame:_Hide(); 
-		return 
+	if absorb.damage == 0 and absorb.healing == 0 then
+		frame:_Hide();
+		return
 	end
-	
-	if WidgetMode == 1 then
-		length = _frameWidth * absorb/healthmax
-	else
-		length = _frameWidth * min(absorb, health)/healthmax
-	end
-	
-	if (length < 0) then length = 0 end
-    
-	if absorb > 0 and length > 0 then
-		local helper = _frameWidth * health/healthmax
-		local width = max(1, min( _frameWidth, length))
-		local offset = helper - length
 
+	for k,v in pairs(absorb) do
+		local type = {
+			["damage"] = "LineDamage",
+			["healing"] = "LineHealing",
+		}
+		-- Determine which style of absorbs should be displayed
 		if WidgetMode == 1 then
-			offset = helper
-			if offset + width >= _frameWidth then
-				if _frameWidth == helper then
-					offset = offset - _frameWidth*0.015
-				end 
-
-				width = _frameWidth - offset
-			end
+			length = _frameWidth * v/healthmax
+		else
+			length = _frameWidth * min(v, health)/healthmax
 		end
 
-		-- anchor = "LEFT"
-		frame.Line:ClearAllPoints()
-		if _orientation == "VERTICAL" then
-			frame.Line:SetHeight(width)
-			frame.Line:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
-		else
-			frame.Line:SetWidth(width)
-			frame.Line:SetPoint("LEFT", frame, "LEFT", offset, -1)
-		end	
+		if v > 0 and length > 0 then
+			local helper = _frameWidth * health/healthmax
+			local width = max(1, min( _frameWidth, length))
+			local offset = helper - length
+			local fraction = 1
 
+			if WidgetMode == 1 then
+				offset = helper
+				if offset + width >= _frameWidth then
+					if _frameWidth == helper then
+						offset = offset - _frameWidth*0.015
+					end 
+
+					width = _frameWidth - offset
+				end
+			end
+
+			-- Calculate width distribution
+			if absorb.damage > absorb.healing then
+				frame.LineHealing:SetDrawLayer("OVERLAY")
+				frame.LineDamage:SetDrawLayer("BACKGROUND")
+			elseif absorb.healing > absorb.damage then
+				frame.LineDamage:SetDrawLayer("OVERLAY")
+				frame.LineHealing:SetDrawLayer("BACKGROUND")
+			elseif absorb.damage == absorb.healing then
+				fraction = 0.5
+			end
+
+			frame[type[k]]:ClearAllPoints()
+			if _orientation == "VERTICAL" then
+				frame[type[k]]:SetHeight(width)
+				frame[type[k]]:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
+			else
+				frame[type[k]]:SetWidth(width)
+				frame[type[k]]:SetPoint("LEFT", frame, "LEFT", offset, -1)
+			end
+
+			showFrame = true -- Show frame
+		end
+	end
+
+	if showFrame then
 		frame:Show()
 	else
 		frame:_Hide()
 	end
+
+
+	--if absorb == 0 then 
+	--	frame:_Hide(); 
+	--	return 
+	--end
+	
+	--if WidgetMode == 1 then
+	--	length = _frameWidth * absorb/healthmax
+	--else
+	--	length = _frameWidth * min(absorb, health)/healthmax
+	--end
+	
+	--if (length < 0) then length = 0 end
+    
+	--if absorb > 0 and length > 0 then
+	--	local helper = _frameWidth * health/healthmax
+	--	local width = max(1, min( _frameWidth, length))
+	--	local offset = helper - length
+
+	--	if WidgetMode == 1 then
+	--		offset = helper
+	--		if offset + width >= _frameWidth then
+	--			if _frameWidth == helper then
+	--				offset = offset - _frameWidth*0.015
+	--			end 
+
+	--			width = _frameWidth - offset
+	--		end
+	--	end
+
+	--	-- anchor = "LEFT"
+	--	frame.LineDamage:ClearAllPoints()
+	--	frame.LineHealing:ClearAllPoints()
+	--	if _orientation == "VERTICAL" then
+	--		frame.LineDamage:SetHeight(width)
+	--		frame.LineHealing:SetHeight(width)
+	--		frame.LineDamage:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
+	--		frame.LineHealing:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
+	--	else
+	--		frame.LineDamage:SetWidth(width)
+	--		frame.LineHealing:SetWidth(width)
+	--		frame.LineDamage:SetPoint("LEFT", frame, "LEFT", offset, -1)
+	--		frame.LineHealing:SetPoint("LEFT", frame, "LEFT", offset, -1)
+	--	end	
+
+	--	frame:Show()
+	--else
+	--	frame:_Hide()
+	--end
 end
 
 -- [[ Widget frame self update ]] --
@@ -198,21 +290,30 @@ local function CreateWidgetFrame(parent)
 	frame:Hide()
 	frame:SetWidth(width)
 	frame:SetHeight(32)
-	frame.Line = frame:CreateTexture(nil, "OVERLAY")
-	frame.Line:SetTexture(art[orientation], "REPEAT", "REPEAT")
-	frame.Line:SetTexCoord(0,1,0,1)
-	frame.Line:SetHeight(height)
-	frame.Line:SetWidth(width)
+	frame.LineDamage = frame:CreateTexture(nil, "OVERLAY")
+	frame.LineHealing = frame:CreateTexture(nil, "OVERLAY")
+	frame.LineDamage:SetTexture(ArtDamage[orientation], "REPEAT", "REPEAT")
+	frame.LineHealing:SetTexture(ArtHealing[orientation], "REPEAT", "REPEAT")
+	frame.LineDamage:SetTexCoord(0,1,0,1)
+	frame.LineHealing:SetTexCoord(0,1,0,1)
+	frame.LineDamage:SetHeight(height)
+	frame.LineHealing:SetHeight(height)
+	frame.LineDamage:SetWidth(width)
+	frame.LineHealing:SetWidth(width)
 	frame:SetAlpha(1)
 
 	if orientation == "VERTICAL" then
 		frame._frameWidth = height
-		frame.Line:SetHorizTile(false)
-		frame.Line:SetVertTile(true)
+		frame.LineDamage:SetHorizTile(false)
+		frame.LineHealing:SetHorizTile(false)
+		frame.LineDamage:SetVertTile(true)
+		frame.LineHealing:SetVertTile(true)
 	else
 		frame._frameWidth = width
-		frame.Line:SetVertTile(false)
-		frame.Line:SetHorizTile(true)
+		frame.LineDamage:SetVertTile(false)
+		frame.LineHealing:SetVertTile(false)
+		frame.LineDamage:SetHorizTile(true)
+		frame.LineHealing:SetHorizTile(true)
 	end
 
 	-- Required Widget Code
@@ -222,7 +323,10 @@ local function CreateWidgetFrame(parent)
 	frame.UpdateConfig = UpdateWidgetConfig
 	frame._Hide = frame.Hide
 	frame.Hide = function() 
-	frame.lastAbsorb = 0
+	frame.lastAbsorb = {
+		["damage"] = 0,
+		["healing"] = 0,
+	}
 	frame.lasthp = 0
 	frame.lastmaxhp = 0
 	ClearWidgetContext(frame);
