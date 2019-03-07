@@ -71,8 +71,8 @@ local function UpdateAbsorbs(frame, unitid)
 	local healthmax = UnitHealthMax(unitid) or 1
 	
 	-- absorb = healthmax -- This is just for testing the bars
-	absorb.damage = healthmax/2
-	absorb.healing = healthmax/4
+	--absorb.damage = healthmax/2
+	--absorb.healing = healthmax/4
 
 	--[[ We wont update the widget until something has changed ]] --
 	if lastWidget == frame and frame.lastAbsorb ~= nil and frame.lastAbsorb.damage == absorb.damage and
