@@ -108,7 +108,6 @@ local function UpdateAbsorbs(frame, unitid)
 			local helper = _frameWidth * health/healthmax
 			local width = max(1, min( _frameWidth, length))
 			local offset = helper - length
-			local fraction = 1
 
 			if WidgetMode == 1 then
 				offset = helper
@@ -128,8 +127,6 @@ local function UpdateAbsorbs(frame, unitid)
 			elseif absorb.healing > absorb.damage then
 				frame.LineDamage:SetDrawLayer("OVERLAY")
 				frame.LineHealing:SetDrawLayer("BACKGROUND")
-			elseif absorb.damage == absorb.healing then
-				fraction = 0.5
 			end
 
 			frame[type[k]]:ClearAllPoints()
