@@ -1173,13 +1173,26 @@ do
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
 		if not ShowIntCast then return end
-		local _,type,_,sourceGUID,sourceName,_,_,destGUID = CombatLogGetCurrentEventInfo()
+		local _,type,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
+		spellID = spellID or ""
+		local plate = nil
+		local fixate = {
+			[268074] = true,	-- Spawn of G'huun(Uldir)
+			[282209] = true,	-- Ravenous Stalker(Dazar'alor)
+		}
 
-		-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
-		-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
-		-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
-		if type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED" then
-			local plate = PlatesByGUID[destGUID]
+		if (type == "SPELL_AURA_APPLIED" or type == "SPELL_AURA_REMOVED") and fixate[spellID] then
+			plate = PlatesByGUID[sourceGUID]
+			if plate and type == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
+				plate.extended.unit.fixate = true 	-- Fixating player
+			elseif plate then
+				plate.extended.unit.fixate = false 	-- NOT Fixating player
+			end
+		elseif type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED" then
+			-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
+			-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
+			-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
+			plate = PlatesByGUID[destGUID]
 
 			if plate then
 				if (type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end

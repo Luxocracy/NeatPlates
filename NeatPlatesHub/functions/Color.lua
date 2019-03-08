@@ -7,8 +7,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 ------------------------------------------------------------------
 -- Color Definitions
 ------------------------------------------------------------------
-local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-
 local RaidIconColors = {
 	["STAR"] = {r = 251/255, g = 240/255, b = 85/255,},
 	["MOON"] = {r = 100/255, g = 180/255, b = 255/255,},
@@ -21,6 +19,7 @@ local RaidIconColors = {
 	["SKULL"] = {r = 244/255, g = 242/255, b = 240/255,},
 }
 
+local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local ReactionColors = HubData.Colors.ReactionColors
 local NameReactionColors = HubData.Colors.NameReactionColors
 
@@ -159,9 +158,9 @@ local function ColorFunctionByThreat(unit)
 			["148716"] = true,
 		}
 
-		-- Special case dealing with mobs from Reaping affix
-		if souls[unitGUID] then
-			local playerIsTarget = UnitIsUnit(unit.unitid.."target", "player")
+		-- Special case dealing with mobs from Reaping affix and units that fixate
+		if souls[unitGUID] or unit.fixate then
+			local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
 			if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
 				return LocalVars.ColorThreatSafe
 			else

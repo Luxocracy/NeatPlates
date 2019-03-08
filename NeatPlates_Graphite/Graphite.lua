@@ -231,7 +231,7 @@ WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 0 ,y = 16 } -- "CENTE
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = -8 }
 WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 12 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = -5 }
-WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 0 , y = 0, h = 3, w = 85 }
+WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 0 , y = 0.5, h = 1.5, w = 89 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -8,y = 4 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 11,y = -7 }
 -- 	WidgetConfig.DebuffWidgetPlus = { anchor = "TOP" , x = 15 ,y = 26.5 }

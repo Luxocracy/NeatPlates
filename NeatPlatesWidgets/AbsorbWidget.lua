@@ -35,11 +35,9 @@ local function UpdateWidgetConfig(frame)
 	-- frame.LineDamage:SetHeight(height)
 	-- frame.LineHealing:SetHeight(height)
 	frame.LineDamage:SetTexture(ArtDamage[orientation], "REPEAT", "REPEAT")
-	--frame.LineDamage:SetAlpha(0.4)
 	frame.LineHealing:SetTexture(ArtHealing[orientation], "REPEAT", "REPEAT")
-	frame.LineHealing:SetAlpha(1)
-	frame.LineDamage:SetTexCoord(0,1,0,1)
-	frame.LineHealing:SetTexCoord(0,1,0,1)
+	frame.LineDamage:SetTexCoord(0,1,11/32,22/32)
+	frame.LineHealing:SetTexCoord(0,1,11/32,22/32)
 
 	if orientation == "VERTICAL" then
 		frame._frameWidth = height
@@ -63,7 +61,7 @@ local function UpdateAbsorbs(frame, unitid)
 	local length = 0
 	local showFrame = false
 	-- local anchor = "RIGHT"
-	absorb = {
+	local absorb = {
 		["damage"] = UnitGetTotalAbsorbs(unitid) or 0,
 		["healing"] = UnitGetTotalHealAbsorbs(unitid) or 0,
 	}
@@ -98,10 +96,10 @@ local function UpdateAbsorbs(frame, unitid)
 			["healing"] = "LineHealing",
 		}
 		-- Determine which style of absorbs should be displayed
-		if WidgetMode == 1 then
-			length = _frameWidth * v/healthmax
+		if v == absorb.damage and WidgetMode == 1 then
+			length = max(0, _frameWidth * v/healthmax)	-- Blizzard
 		else
-			length = _frameWidth * min(v, health)/healthmax
+			length = max(0, _frameWidth * min(v, health)/healthmax) -- Overlay
 		end
 
 		if v > 0 and length > 0 then
@@ -109,7 +107,7 @@ local function UpdateAbsorbs(frame, unitid)
 			local width = max(1, min( _frameWidth, length))
 			local offset = helper - length
 
-			if WidgetMode == 1 then
+			if v == absorb.damage and WidgetMode == 1 then
 				offset = helper
 				if offset + width >= _frameWidth then
 					if _frameWidth == helper then
@@ -120,13 +118,11 @@ local function UpdateAbsorbs(frame, unitid)
 				end
 			end
 
-			-- Calculate width distribution
-			if absorb.damage > absorb.healing then
-				frame.LineHealing:SetDrawLayer("OVERLAY")
-				frame.LineDamage:SetDrawLayer("BACKGROUND")
-			elseif absorb.healing > absorb.damage then
-				frame.LineDamage:SetDrawLayer("OVERLAY")
-				frame.LineHealing:SetDrawLayer("BACKGROUND")
+			-- Set which absorb is overlayed on top of the other
+			if (v == absorb.damage and absorb.damage > absorb.healing) or (v == absorb.healing and absorb.healing > absorb.damage) then
+				frame[type[k]]:SetDrawLayer("BACKGROUND")
+			else
+				frame[type[k]]:SetDrawLayer("OVERLAY")
 			end
 
 			frame[type[k]]:ClearAllPoints()
@@ -291,8 +287,8 @@ local function CreateWidgetFrame(parent)
 	frame.LineHealing = frame:CreateTexture(nil, "OVERLAY")
 	frame.LineDamage:SetTexture(ArtDamage[orientation], "REPEAT", "REPEAT")
 	frame.LineHealing:SetTexture(ArtHealing[orientation], "REPEAT", "REPEAT")
-	frame.LineDamage:SetTexCoord(0,1,0,1)
-	frame.LineHealing:SetTexCoord(0,1,0,1)
+	frame.LineDamage:SetTexCoord(0,1,11/32,22/32)
+	frame.LineHealing:SetTexCoord(0,1,11/32,22/32)
 	frame.LineDamage:SetHeight(height)
 	frame.LineHealing:SetHeight(height)
 	frame.LineDamage:SetWidth(width)

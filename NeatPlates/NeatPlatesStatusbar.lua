@@ -52,7 +52,9 @@ end
 
 local function SetAllColors(self, rBar, gBar, bBar, aBar, rBackdrop, gBackdrop, bBackdrop, aBackdrop) 
 	self.Bar:SetVertexColor(rBar or 1, gBar or 1, bBar or 1, aBar or 1)
+	self.Bar.color = {r = rBar or 1, g = gBar or 1, b = bBar or 1, a = aBar or 1}
 	self.Backdrop:SetVertexColor(rBackdrop or 1, gBackdrop or 1, bBackdrop or 1, aBackdrop or 1)
+	self.Backdrop.color = {r = rBackdrop or 1, g = gBackdrop or 1, b = bBackdrop or 1, a = aBackdrop or 1}
 end
 
 local function SetOrientation(self, orientation) 

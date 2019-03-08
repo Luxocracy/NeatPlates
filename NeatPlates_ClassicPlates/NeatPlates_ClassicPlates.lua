@@ -247,7 +247,7 @@ WidgetConfig.ThreatLineWidget = {  x = 0 ,y = -10 }
 WidgetConfig.ComboWidget = { x = 8 ,y = -27 }
 WidgetConfig.RangeWidget = { anchor = "BOTTOM", x = 0 ,y = 0 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = -3 }
-WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 5 , y = 5, w = 105, h = 25}
+WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 6 , y = 5, w = 104, h = 9}
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 4,y = 4 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 8,y = -6 }
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then

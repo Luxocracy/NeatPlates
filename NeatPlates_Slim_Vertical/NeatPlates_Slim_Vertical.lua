@@ -256,7 +256,7 @@ WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = V
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
 	--WidgetConfig.DebuffWidgetPlus = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = VerticalAdjustment + 0 }
 --end
-WidgetConfig.AbsorbWidget =	{ anchor="BOTTOM", x = 0 , y = VerticalAdjustment + 5, h = 35, w = 14, o = "VERTICAL", }
+WidgetConfig.AbsorbWidget =	{ anchor="BOTTOM", x = 0 , y = VerticalAdjustment + 5.5, h = 35, w = 14, o = "VERTICAL", }
 WidgetConfig.QuestWidget = { anchor = "CENTER" , x = -8,y = VerticalAdjustment - 10 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "TOP" , x = 4,y = VerticalAdjustment + 6 }
 
