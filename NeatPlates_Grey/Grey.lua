@@ -248,7 +248,7 @@ Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon = { anchor = "TOP" , x = -32 ,y = 7 }
+WidgetConfig.ClassIcon = { anchor = "TOPLEFT" , x = -15 ,y = 8 }
 --WidgetConfig.TotemIcon = { anchor = "TOP" , x = -28 ,y = 12 }
 WidgetConfig.TotemIcon = { anchor = "TOP" , x = 0 ,y = 10 }
 WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = 0 ,y = 18 }

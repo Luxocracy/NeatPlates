@@ -306,7 +306,7 @@ local function UpdateIconGrid(frame, unitid)
 			storedAuraCount = storedAuraCount+1
 			storedAuras[storedAuraCount] = {
 				["type"] = "Magic",
-				["effect"] = "HELPFUL",
+				["effect"] = "HARMFUL",
 				["duration"] = 10,
 				["stacks"] = 0,
 				["reaction"] = 1,

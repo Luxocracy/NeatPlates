@@ -215,7 +215,7 @@ Theme["NameOnly"] = StyleTextOnly
 
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon =			{ anchor = "RIGHT", x = 40, y = -1 }
+WidgetConfig.ClassIcon =			{ anchor = "RIGHT", x = 36, y = -1 }
 WidgetConfig.TotemIcon =			{ anchor = "RIGHT", x = 25, y = -1 }
 WidgetConfig.ThreatLineWidget =		{ anchor="CENTER", x = 0 , y = 7 }
 WidgetConfig.ThreatWheelWidget =	{ anchor =  "CENTER", x = 36 ,y = 12 }

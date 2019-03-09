@@ -26,10 +26,10 @@ local function UpdateWidgetConfig(frame)
 
 	frame:SetHeight(32)
 	frame:SetWidth(width)
-	frame.LineDamage:SetHeight(height)
-	frame.LineHealing:SetHeight(height)
-	frame.LineDamage:SetWidth(width)
-	frame.LineHealing:SetWidth(width)
+	--frame.LineDamage:SetHeight(height)
+	--frame.LineHealing:SetHeight(height)
+	--frame.LineDamage:SetWidth(width)
+	--frame.LineHealing:SetWidth(width)
 	frame._orientation = orientation
 	-- frame:SetWidth(width)
 	-- frame.LineDamage:SetHeight(height)
@@ -58,7 +58,6 @@ end
 local function UpdateAbsorbs(frame, unitid)
 	local _frameWidth = frame._frameWidth
 	local _orientation = frame._orientation
-	local length = 0
 	local showFrame = false
 	-- local anchor = "RIGHT"
 	local absorb = {
@@ -73,10 +72,10 @@ local function UpdateAbsorbs(frame, unitid)
 	--absorb.healing = healthmax/4
 
 	--[[ We wont update the widget until something has changed ]] --
-	if lastWidget == frame and frame.lastAbsorb ~= nil and frame.lastAbsorb.damage == absorb.damage and
+	if frame.lastAbsorb ~= nil and frame.lastAbsorb.damage == absorb.damage and
 		frame.lastAbsorb.healing == absorb.healing and
 		frame.lasthp ~= nil and frame.lasthp == health and
-		frame.lastmaxhp ~= nil and frame.lastmaxhp == healthmax then 
+		frame.lastmaxhp ~= nil and frame.lastmaxhp == healthmax then
 		return
 	end
 	
@@ -91,50 +90,57 @@ local function UpdateAbsorbs(frame, unitid)
 	end
 
 	for k,v in pairs(absorb) do
+		local length = 0
 		local type = {
 			["damage"] = "LineDamage",
 			["healing"] = "LineHealing",
 		}
-		-- Determine which style of absorbs should be displayed
-		if v == absorb.damage and WidgetMode == 1 then
-			length = max(0, _frameWidth * v/healthmax)	-- Blizzard
-		else
-			length = max(0, _frameWidth * min(v, health)/healthmax) -- Overlay
-		end
 
-		if v > 0 and length > 0 then
-			local helper = _frameWidth * health/healthmax
-			local width = max(1, min( _frameWidth, length))
-			local offset = helper - length
-
+		if absorb[k] ~= 0 then
+			frame[type[k]]:SetAlpha(1)
+			-- Determine which style of absorbs should be displayed
 			if v == absorb.damage and WidgetMode == 1 then
-				offset = helper
-				if offset + width >= _frameWidth then
-					if _frameWidth == helper then
-						offset = offset - _frameWidth*0.015
-					end 
+				length = max(0, _frameWidth * v/healthmax)	-- Blizzard
+			else
+				length = max(0, _frameWidth * min(v, health)/healthmax) -- Overlay
+			end
 
-					width = _frameWidth - offset
+			if v > 0 and length > 0 then
+				local helper = _frameWidth * (health/healthmax)
+				local width = max(1, min( _frameWidth, length))
+				local offset = helper - length
+
+				if v == absorb.damage and WidgetMode == 1 then
+					offset = helper
+					if offset + width >= _frameWidth then
+						if _frameWidth == helper then
+							offset = offset - _frameWidth*0.015
+						end 
+
+						width = _frameWidth - offset
+					end
 				end
-			end
 
-			-- Set which absorb is overlayed on top of the other
-			if (v == absorb.damage and absorb.damage > absorb.healing) or (v == absorb.healing and absorb.healing > absorb.damage) then
-				frame[type[k]]:SetDrawLayer("BACKGROUND")
-			else
-				frame[type[k]]:SetDrawLayer("OVERLAY")
-			end
+				-- Set which absorb is overlayed on top of the other
+				if (v == absorb.damage and absorb.damage > absorb.healing) or (v == absorb.healing and absorb.healing > absorb.damage) then
+					frame[type[k]]:SetDrawLayer("BACKGROUND")
+				else
+					frame[type[k]]:SetDrawLayer("OVERLAY")
+				end
 
-			frame[type[k]]:ClearAllPoints()
-			if _orientation == "VERTICAL" then
-				frame[type[k]]:SetHeight(width)
-				frame[type[k]]:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
-			else
-				frame[type[k]]:SetWidth(width)
-				frame[type[k]]:SetPoint("LEFT", frame, "LEFT", offset, -1)
-			end
+				frame[type[k]]:ClearAllPoints()
+				if _orientation == "VERTICAL" then
+					frame[type[k]]:SetHeight(width)
+					frame[type[k]]:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
+				else
+					frame[type[k]]:SetWidth(width)
+					frame[type[k]]:SetPoint("LEFT", frame, "LEFT", offset, -1)
+				end
 
-			showFrame = true -- Show frame
+				showFrame = true -- Show frame
+			end
+		else
+			frame[type[k]]:SetAlpha(0)
 		end
 	end
 
@@ -143,56 +149,6 @@ local function UpdateAbsorbs(frame, unitid)
 	else
 		frame:_Hide()
 	end
-
-
-	--if absorb == 0 then 
-	--	frame:_Hide(); 
-	--	return 
-	--end
-	
-	--if WidgetMode == 1 then
-	--	length = _frameWidth * absorb/healthmax
-	--else
-	--	length = _frameWidth * min(absorb, health)/healthmax
-	--end
-	
-	--if (length < 0) then length = 0 end
-    
-	--if absorb > 0 and length > 0 then
-	--	local helper = _frameWidth * health/healthmax
-	--	local width = max(1, min( _frameWidth, length))
-	--	local offset = helper - length
-
-	--	if WidgetMode == 1 then
-	--		offset = helper
-	--		if offset + width >= _frameWidth then
-	--			if _frameWidth == helper then
-	--				offset = offset - _frameWidth*0.015
-	--			end 
-
-	--			width = _frameWidth - offset
-	--		end
-	--	end
-
-	--	-- anchor = "LEFT"
-	--	frame.LineDamage:ClearAllPoints()
-	--	frame.LineHealing:ClearAllPoints()
-	--	if _orientation == "VERTICAL" then
-	--		frame.LineDamage:SetHeight(width)
-	--		frame.LineHealing:SetHeight(width)
-	--		frame.LineDamage:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
-	--		frame.LineHealing:SetPoint("BOTTOM", frame, "BOTTOM", 0, offset)
-	--	else
-	--		frame.LineDamage:SetWidth(width)
-	--		frame.LineHealing:SetWidth(width)
-	--		frame.LineDamage:SetPoint("LEFT", frame, "LEFT", offset, -1)
-	--		frame.LineHealing:SetPoint("LEFT", frame, "LEFT", offset, -1)
-	--	end	
-
-	--	frame:Show()
-	--else
-	--	frame:_Hide()
-	--end
 end
 
 -- [[ Widget frame self update ]] --
@@ -201,19 +157,11 @@ local function UpdateWidget(frame)
 	UpdateAbsorbs(frame, unitid)
 end
 
-local function UpdateWidgetTarget(frame)
-	if UnitExists("target") then
-		UpdateAbsorbs(frame, "target")
-	else
-		frame:Hide()
-	end
-end
-
 -- Context
 local function UpdateWidgetContext(frame, unit)
 	local guid = unit.guid
 	frame.unitid = unitid
-	
+
 	if guid then
 		if frame.guid then WidgetList[frame.guid] = nil end
 		frame.guid = guid
@@ -256,10 +204,10 @@ local function WatcherFrameHandler(frame, event, unitid)
 		local widget = WidgetList[guid]
 		if widget then
 			UpdateAbsorbs(widget, widget.unitid)
-			lastWidget = widget
+			--lastWidget = widget
 		end
-	else
-		lastWidget = nil
+	--else
+	--	lastWidget = nil
 	end
 end
 
@@ -311,7 +259,6 @@ local function CreateWidgetFrame(parent)
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
-	-- frame.Update = UpdateWidgetTarget
 	frame.Update = UpdateWidget
 	frame.UpdateConfig = UpdateWidgetConfig
 	frame._Hide = frame.Hide
@@ -337,5 +284,4 @@ local function SetAbsorbType(mode, units)
 end
 
 NeatPlatesWidgets.CreateAbsorbWidget = CreateWidgetFrame
-
 NeatPlatesWidgets.SetAbsorbType = SetAbsorbType
