@@ -143,7 +143,7 @@ Threat Value
 --]]
 
 
-local function ColorFunctionByThreat(unit)
+local function ColorFunctionByThreat(unit, type)
 	local classColor = RaidClassColors[unit.class]
 
 	if classColor then
@@ -162,13 +162,23 @@ local function ColorFunctionByThreat(unit)
 		if souls[unitGUID] or unit.fixate then
 			local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
 			if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-				return LocalVars.ColorThreatSafe
+				if type == "WarningBorder" then
+					return
+				else
+					return LocalVars.ColorThreatSafe
+				end
 			else
 				return LocalVars.ColorThreatWarning
 			end
 		end
 
-		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return ReactionColors[unit.reaction][unit.type] end
+		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then
+			if type == "WarningBorder" then
+				return
+			else
+				return ReactionColors[unit.reaction][unit.type]
+			end
+		end
 
 		if isTank then
 			return ColorFunctionTankSwapColors(unit)
@@ -177,8 +187,11 @@ local function ColorFunctionByThreat(unit)
 		else return ColorFunctionDamage(unit) end
 
 	else
-		return ReactionColors[unit.reaction][unit.type]
-
+		if type == "WarningBorder" then
+			return
+		else
+			return ReactionColors[unit.reaction][unit.type]
+		end
 	end
 
 end
@@ -402,7 +415,8 @@ local function ThreatColorDelegate(unit)
 
 		-- NPCs
 		if LocalVars.ThreatGlowEnable then
-			color = WarningBorderFunctionByThreat(unit)
+			--color = WarningBorderFunctionByThreat(unit)
+			color = ColorFunctionByThreat(unit, "WarningBorder")
 		end
 
 		-- Players
