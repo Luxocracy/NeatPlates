@@ -163,7 +163,7 @@ Threat Value
 --]]
 
 
-local function ColorFunctionByThreat(unit, type)
+local function ColorFunctionByThreat(unit)
 	local classColor = RaidClassColors[unit.class]
 
 	if classColor then
