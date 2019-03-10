@@ -62,6 +62,26 @@ local function ColorFunctionBlack()
 	return HubData.Colors.Black
 end
 
+local function ThreatExceptions(unit, isTank)
+	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
+	-- Mobs from Reaping affix
+	local souls = {
+		["148893"] = true,
+		["148894"] = true,
+		["148716"] = true,
+	}
+
+	-- Special case dealing with mobs from Reaping affix and units that fixate
+	if souls[unitGUID] or unit.fixate then
+		local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
+		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
+			return LocalVars.ColorThreatSafe
+		else
+			return LocalVars.ColorThreatWarning
+		end
+	end
+end
+
 --[[
 unit.threatValue
 	0 - Unit has less than 100% raw threat (default UI shows no indicator)
@@ -149,36 +169,12 @@ local function ColorFunctionByThreat(unit, type)
 	if classColor then
 		return classColor
 	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
-		local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
-		-- Mobs from Reaping affix
-		local souls = {
-			["148893"] = true,
-			["148894"] = true,
-			["148716"] = true,
-		}
+		local threatException = ThreatExceptions(unit, isTank)
 
-		-- Special case dealing with mobs from Reaping affix and units that fixate
-		if souls[unitGUID] or unit.fixate then
-			local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-			if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-				if type == "WarningBorder" then
-					return
-				else
-					return LocalVars.ColorThreatSafe
-				end
-			else
-				return LocalVars.ColorThreatWarning
-			end
-		end
+		if threatException then return threatException end
 
-		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then
-			if type == "WarningBorder" then
-				return
-			else
-				return ReactionColors[unit.reaction][unit.type]
-			end
-		end
+		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return ReactionColors[unit.reaction][unit.type] end
 
 		if isTank then
 			return ColorFunctionTankSwapColors(unit)
@@ -187,11 +183,8 @@ local function ColorFunctionByThreat(unit, type)
 		else return ColorFunctionDamage(unit) end
 
 	else
-		if type == "WarningBorder" then
-			return
-		else
-			return ReactionColors[unit.reaction][unit.type]
-		end
+		return ReactionColors[unit.reaction][unit.type]
+
 	end
 
 end
@@ -383,10 +376,13 @@ end
 -- Warning Glow (Auto Detect)
 local function WarningBorderFunctionByThreat(unit)
 	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
+		local threatException = ThreatExceptions(unit, isTank)
+
+		if threatException then return threatException end
 		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return end
 
-		if (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
-			or LocalVars.ThreatWarningMode == "Tank" then
+		if isTank then
 				if not unit.isInCombat or IsOffTanked(unit) then return
 				elseif unit.threatValue == 2 then return LocalVars.ColorThreatTransition
 				elseif unit.threatValue < 2 then return LocalVars.ColorThreatWarning	end
@@ -415,8 +411,7 @@ local function ThreatColorDelegate(unit)
 
 		-- NPCs
 		if LocalVars.ThreatGlowEnable then
-			--color = WarningBorderFunctionByThreat(unit)
-			color = ColorFunctionByThreat(unit, "WarningBorder")
+			color = WarningBorderFunctionByThreat(unit)
 		end
 
 		-- Players
