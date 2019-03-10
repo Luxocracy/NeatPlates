@@ -62,7 +62,7 @@ local function ColorFunctionBlack()
 	return HubData.Colors.Black
 end
 
-local function ThreatExceptions(unit, isTank)
+local function ThreatExceptions(unit, isTank, noSafeColor)
 	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
 	-- Mobs from Reaping affix
 	local souls = {
@@ -75,7 +75,11 @@ local function ThreatExceptions(unit, isTank)
 	if souls[unitGUID] or unit.fixate then
 		local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
 		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-			return LocalVars.ColorThreatSafe
+			if noSafeColor then
+				return
+			else
+				return LocalVars.ColorThreatSafe
+			end
 		else
 			return LocalVars.ColorThreatWarning
 		end
@@ -377,7 +381,7 @@ end
 local function WarningBorderFunctionByThreat(unit)
 	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
-		local threatException = ThreatExceptions(unit, isTank)
+		local threatException = ThreatExceptions(unit, isTank, true)
 
 		if threatException then return threatException end
 		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return end
