@@ -75,11 +75,7 @@ local function ThreatExceptions(unit, isTank, noSafeColor)
 	if souls[unitGUID] or unit.fixate then
 		local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
 		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-			if noSafeColor then
-				return
-			else
-				return LocalVars.ColorThreatSafe
-			end
+				return noSafeColor or LocalVars.ColorThreatSafe
 		else
 			return LocalVars.ColorThreatWarning
 		end
@@ -383,7 +379,14 @@ local function WarningBorderFunctionByThreat(unit)
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank, true)
 
-		if threatException then return threatException end
+		if threatException then
+			if threatException == true then
+				return
+			else
+				return threatException
+			end
+		end
+
 		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return end
 
 		if isTank then
