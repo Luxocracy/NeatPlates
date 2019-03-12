@@ -141,7 +141,7 @@ do
         -- OnUpdate; This function is run frequently, on every clock cycle
 	function OnUpdate(self, e)
 		-- Poll Loop
-        local plate, curChildren
+		local plate, curChildren
 
         -- Detect when cursor leaves the mouseover unit
 		if HasMouseover and not UnitExists("mouseover") then
@@ -170,6 +170,8 @@ do
 				plate:GetChildren():Hide()
 
 			end
+
+			if plate.UnitFrame then plate.UnitFrame:Hide() end
 
 		-- This would be useful for alpha fades
 		-- But right now it's just going to get set directly
