@@ -52,6 +52,7 @@ local AbsorbModes = NeatPlatesHubMenus.AbsorbModes
 local AbsorbUnits = NeatPlatesHubMenus.AbsorbUnits
 local ComboPointsStyles = NeatPlatesHubMenus.ComboPointsStyles
 local BorderTypes = NeatPlatesHubMenus.BorderTypes
+local HighlightTypes = NeatPlatesHubMenus.HighlightTypes
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
@@ -126,12 +127,6 @@ local function BuildHubPanel(panel)
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Level"], AlignmentColumn, F, 0, 2)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 0)
-  panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Custom Target Color"], AlignmentColumn, F, 0)
-  panel.CustomFocusColor, F = CreateQuickCheckbutton(objectName.."CustomFocusColor", L["Use Custom Focus Color"], AlignmentColumn, F, 0)
-  panel.CustomMouseoverColor, F = CreateQuickCheckbutton(objectName.."CustomMouseoverColor", L["Use Custom Mouseover Color"], AlignmentColumn, F, 0)
-  panel.CustomTargetColor.tooltipText = L["Color is defined under the 'Reaction' category."]
-  panel.CustomFocusColor.tooltipText = L["Color is defined under the 'Reaction' category."]
-  panel.CustomMouseoverColor.tooltipText = L["Color is defined under the 'Reaction' category."]
 
 
 	------------------------------
@@ -371,15 +366,22 @@ local function BuildHubPanel(panel)
 	panel.TextColorNormal = CreateQuickColorbox(objectName.."TextColorNormal", L["Normal"], nil, AlignmentColumn, panel.TextColorGuildMember , OffsetColumnB + 16)
 	panel.TextColorElite = CreateQuickColorbox(objectName.."TextColorElite", L["Elite"], nil, AlignmentColumn, panel.TextColorNormal , OffsetColumnB + 16)
 	panel.TextColorBoss = CreateQuickColorbox(objectName.."TextColorBoss", L["Boss"], nil, AlignmentColumn, panel.TextColorElite , OffsetColumnB + 16)
+	-- Threat Colors
+		panel.ColorThreatColorLabel = CreateQuickItemLabel(nil, L["Threat Colors:"], AlignmentColumn, panel.TextColorBoss, 0, 2)
+	panel.ColorThreatWarning = CreateQuickColorbox(objectName.."ColorThreatWarning", L["Warning"], nil, AlignmentColumn, panel.ColorThreatColorLabel , 16)
+	panel.ColorThreatTransition = CreateQuickColorbox(objectName.."ColorThreatTransition", L["Transition"], nil, AlignmentColumn, panel.ColorThreatWarning , 16)
+	panel.ColorThreatSafe = CreateQuickColorbox(objectName.."ColorThreatSafe", L["Safe"], nil, AlignmentColumn, panel.ColorThreatTransition, 16)
+	panel.ColorAttackingOtherTank = CreateQuickColorbox(objectName.."ColorAttackingOtherTank", L["Attacking another Tank"], nil, AlignmentColumn, panel.ColorThreatSafe , 16)
+	panel.ColorPartyAggro = CreateQuickColorbox(objectName.."ColorPartyAggro", L["Group Member Aggro"], nil, AlignmentColumn, panel.ColorAttackingOtherTank , 16)
 	-- Other
-	panel.OtherColorLabel = CreateQuickItemLabel(nil, L["Other Colors:"], AlignmentColumn, panel.TextColorBoss, 0, 2)
-	panel.ColorTapped = CreateQuickColorbox(objectName.."ColorTapped", L["Tapped Unit"], nil, AlignmentColumn, panel.OtherColorLabel , 16)
-	panel.ColorTarget = CreateQuickColorbox(objectName.."ColorTarget", L["Target Unit"], nil, AlignmentColumn, panel.ColorTapped , 16)
-	panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", L["Focus Unit"], nil, AlignmentColumn, panel.ColorTarget , 16)
-	panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", L["Mouseover Unit"], nil, AlignmentColumn, panel.ColorFocus , 16)
-	--panel.ColorTotem = CreateQuickColorbox(objectName.."ColorTotem", "Totem", nil, AlignmentColumn, panel.ColorTapped , 16)
+		panel.OtherColorLabel = CreateQuickItemLabel(nil, L["Other Colors:"], AlignmentColumn, panel.TextColorBoss, OffsetColumnB, 2)
+	panel.ColorTapped = CreateQuickColorbox(objectName.."ColorTapped", L["Tapped Unit"], nil, AlignmentColumn, panel.OtherColorLabel , 16+OffsetColumnB)
+	--panel.ColorTarget = CreateQuickColorbox(objectName.."ColorTarget", L["Target Unit"], nil, AlignmentColumn, panel.ColorTapped , 16+OffsetColumnB)
+	--panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", L["Focus Unit"], nil, AlignmentColumn, panel.ColorTarget , 16+OffsetColumnB)
+	--panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", L["Mouseover Unit"], nil, AlignmentColumn, panel.ColorFocus , 16+OffsetColumnB)
+	--panel.ColorTotem = CreateQuickColorbox(objectName.."ColorTotem", "Totem", nil, AlignmentColumn, panel.ColorTapped , 16+OffsetColumnB)
 	-- Custom Colors
-	panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorMouseover, 0, 2)
+		panel.CustomColorLabel = CreateQuickItemLabel(nil, L["Custom Color Conditions:"], AlignmentColumn, panel.ColorPartyAggro, 0, 2)
 	panel.CustomColorList, F = CreateQuickEditbox(objectName.."CustomColorList", 200, 100, AlignmentColumn, panel.CustomColorLabel, 8)
 	panel.CustomColorSelect = CreateQuickColorbox(objectName.."CustomColorSelect", L["Color Select"], function(hex) local value = panel.CustomColorList:GetValue(); if value == "" then value = hex else value = value.."\n"..hex end; panel.CustomColorList:SetValue(value) end, AlignmentColumn, panel.CustomColorLabel , OffsetColumnB + 50)
 	panel.CustomColorTip = PanelHelpers:CreateTipBox(objectName.."CustomColorTip", L["CUSTOM_COLOR_CONDITION_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.CustomColorList, "TOPRIGHT", 6, 0)
@@ -395,16 +397,13 @@ local function BuildHubPanel(panel)
 	-- Threat
 	------------------------------
     -- Column 1
-	panel.ThreatLabel = CreateQuickHeadingLabel(nil, L["Threat"], AlignmentColumn, F, 0, 5)
+	panel.ThreatLabel = CreateQuickHeadingLabel(nil, L["Threat & Highlighting"], AlignmentColumn, F, 0, 5)
 	panel.ThreatWarningMode =  CreateQuickDropdown(objectName.."ThreatWarningMode", L["Threat Mode:"], ThreatWarningModes, 1, AlignmentColumn, panel.ThreatLabel, 0, 2)
 	panel.ThreatGlowEnable = CreateQuickCheckbutton(objectName.."ThreatGlowEnable", L["Enable Warning Glow"], AlignmentColumn, panel.ThreatWarningMode,0)
 
-	panel.ColorThreatColorLabels = CreateQuickItemLabel(nil, L["Threat Colors:"], AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
-	panel.ColorThreatWarning = CreateQuickColorbox(objectName.."ColorThreatWarning", L["Warning"], nil, AlignmentColumn, panel.ColorThreatColorLabels , 16)
-	panel.ColorThreatTransition = CreateQuickColorbox(objectName.."ColorThreatTransition", L["Transition"], nil, AlignmentColumn, panel.ColorThreatWarning , 16)
-	panel.ColorThreatSafe = CreateQuickColorbox(objectName.."ColorThreatSafe", L["Safe"], nil, AlignmentColumn, panel.ColorThreatTransition, 16)
+	--panel.ColorThreatColorLabels = CreateQuickItemLabel(nil, L["Threat Colors:"], AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
 
-	panel.WidgetThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetThreatIndicator", L["Show Tug-o-Threat Indicator"], AlignmentColumn, panel.ColorThreatSafe, 0, 2)
+	panel.WidgetThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetThreatIndicator", L["Show Tug-o-Threat Indicator"], AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
 	panel.WidgetThreatPercentage, F = CreateQuickCheckbutton(objectName.."WidgetThreatPercentage", L["Show Threat Percentage"], AlignmentColumn, panel.WidgetThreatIndicator, 0, 2)
 
 	--[[
@@ -412,19 +411,33 @@ local function BuildHubPanel(panel)
 	--]]
 
     -- Column 2
-	panel.EnableOffTankHighlight = CreateQuickCheckbutton(objectName.."EnableOffTankHighlight", L["Highlight Mobs on Off-Tanks"], AlignmentColumn, panel.ThreatLabel, OffsetColumnB)
-	panel.ColorAttackingOtherTank = CreateQuickColorbox(objectName.."ColorAttackingOtherTank", L["Attacking another Tank"], nil, AlignmentColumn, panel.EnableOffTankHighlight , 16+OffsetColumnB)
+	panel.EnableOffTankHighlight = CreateQuickCheckbutton(objectName.."EnableOffTankHighlight", L["Highlight Mobs on Off-Tanks"], AlignmentColumn, panel.ThreatWarningMode, 16+OffsetColumnB)
 
-	panel.ColorShowPartyAggro = CreateQuickCheckbutton(objectName.."ColorShowPartyAggro", L["Highlight Group Members holding Aggro"], AlignmentColumn, panel.ColorAttackingOtherTank, OffsetColumnB)
-	panel.ColorPartyAggro = CreateQuickColorbox(objectName.."ColorPartyAggro", L["Group Member Aggro"], nil, AlignmentColumn, panel.ColorShowPartyAggro , 14+OffsetColumnB)
-	panel.ColorPartyAggroBar = CreateQuickCheckbutton(objectName.."ColorPartyAggroBar", L["Health Bar Color"], AlignmentColumn, panel.ColorPartyAggro, 16+OffsetColumnB)
-	panel.ColorPartyAggroGlow = CreateQuickCheckbutton(objectName.."ColorPartyAggroGlow", L["Border/Warning Glow"], AlignmentColumn, panel.ColorPartyAggroBar, 16+OffsetColumnB)
-	panel.ColorPartyAggroText = CreateQuickCheckbutton(objectName.."ColorPartyAggroText", L["Name Text Color"], AlignmentColumn, panel.ColorPartyAggroGlow, 16+OffsetColumnB)
+	panel.ColorShowPartyAggro = CreateQuickCheckbutton(objectName.."ColorShowPartyAggro", L["Highlight Group Members holding Aggro"], AlignmentColumn, panel.EnableOffTankHighlight, 16+OffsetColumnB)
+	panel.ColorPartyAggroBar = CreateQuickCheckbutton(objectName.."ColorPartyAggroBar", L["Health Bar Color"], AlignmentColumn, panel.ColorShowPartyAggro, 32+OffsetColumnB)
+	panel.ColorPartyAggroGlow = CreateQuickCheckbutton(objectName.."ColorPartyAggroGlow", L["Border/Warning Glow"], AlignmentColumn, panel.ColorPartyAggroBar, 32+OffsetColumnB)
+	panel.ColorPartyAggroText = CreateQuickCheckbutton(objectName.."ColorPartyAggroText", L["Name Text Color"], AlignmentColumn, panel.ColorPartyAggroGlow, 32+OffsetColumnB)
+
+	panel.HighlightTargetMode =  CreateQuickDropdown(objectName.."HighlightTarget", L["Target Highlighting:"], HighlightTypes, 1, AlignmentColumn, F, 0, 2)
+	panel.HighlightFocusMode =  CreateQuickDropdown(objectName.."HighlightFocus", L["Focus Highlighting:"], HighlightTypes, 1, AlignmentColumn, panel.HighlightTargetMode, 0, 2)
+	panel.HighlightMouseoverMode =  CreateQuickDropdown(objectName.."Highlicht Mouseover", L["Mouseover Highlighting:"], HighlightTypes, 1, AlignmentColumn, panel.HighlightFocusMode, 0, 2)
+
+	panel.HighlightColorTarget = CreateQuickColorbox(objectName.."HighlightColorTarget", "", nil, AlignmentColumn, panel.HighlightTargetMode, 130, -17)
+	panel.HighlightColorFocus = CreateQuickColorbox(objectName.."HighlightColorFocus", "", nil, AlignmentColumn, panel.HighlightFocusMode,  130, -17)
+	panel.HighlightColorMouseover = CreateQuickColorbox(objectName.."HighlightColorMouseover", "", nil, AlignmentColumn, panel.HighlightMouseoverMode, 130, -17)
+
+	--panel.WidgetTargetHighlight, F = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", L["Show Target Highlight"], AlignmentColumn, F, 0)
+	--panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Target Highlight Color"], AlignmentColumn, F, 0)
+ -- panel.CustomFocusColor, F = CreateQuickCheckbutton(objectName.."CustomFocusColor", L["Use Focus Highlight Color"], AlignmentColumn, F, 0)
+ -- panel.CustomMouseoverColor, F = CreateQuickCheckbutton(objectName.."CustomMouseoverColor", L["Use Mouseover Highlight Color"], AlignmentColumn, F, 0)
+ -- panel.CustomTargetColor.tooltipText = L["Color is defined under the 'Reaction' category."]
+ -- panel.CustomFocusColor.tooltipText = L["Color is defined under the 'Reaction' category."]
+ -- panel.CustomMouseoverColor.tooltipText = L["Color is defined under the 'Reaction' category."]
 
 	------------------------------
 	-- Health
 	------------------------------
-	panel.HealthLabel, F = CreateQuickHeadingLabel(nil, L["Health"], AlignmentColumn, panel.WidgetThreatPercentage, 0, 5)
+	panel.HealthLabel, F = CreateQuickHeadingLabel(nil, L["Health"], AlignmentColumn, panel.HighlightMouseoverMode, 0, 5)
 	panel.EnableHealerWarning, F = CreateQuickCheckbutton(objectName.."EnableHealerWarning", L["Enable Healer Warning Glow"], AlignmentColumn, F)
 	panel.HighHealthThreshold = CreateQuickSlider(objectName.."HighHealthThreshold", L["High Health Threshold:"], nil, nil, AlignmentColumn, F, 0, 2)
 	panel.LowHealthThreshold =  CreateQuickSlider(objectName.."LowHealthThreshold", L["Low Health Threshold:"], nil, nil, AlignmentColumn, panel.HighHealthThreshold, 0, 2)
@@ -439,9 +452,9 @@ local function BuildHubPanel(panel)
     -- Cast Bars
 	------------------------------
     panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
-    panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
-    panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
-    panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
+   panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
+   panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
+   panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
 	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, L["Cast Bar Colors:"], AlignmentColumn, F, 0, 2)
 	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", L["Normal"], nil, AlignmentColumn, F , 16)
 	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", L["Un-interruptible"], nil, AlignmentColumn, F , 16)
@@ -471,8 +484,7 @@ local function BuildHubPanel(panel)
 	--Widgets
 	------------------------------
 	panel.WidgetLabel, F = CreateQuickHeadingLabel(nil, L["Other Widgets"], AlignmentColumn, F, 0, 5)
-	panel.WidgetTargetHighlight = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", L["Show Target Highlight"], AlignmentColumn, panel.WidgetLabel)
-	panel.WidgetEliteIndicator = CreateQuickCheckbutton(objectName.."WidgetEliteIndicator", L["Show Elite Icon"], AlignmentColumn, panel.WidgetTargetHighlight)
+	panel.WidgetEliteIndicator = CreateQuickCheckbutton(objectName.."WidgetEliteIndicator", L["Show Elite Icon"], AlignmentColumn, panel.WidgetLabel)
 	panel.ClassEnemyIcon = CreateQuickCheckbutton(objectName.."ClassEnemyIcon", L["Show Enemy Class Art"], AlignmentColumn, panel.WidgetEliteIndicator)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", L["Show Friendly Class Art"], AlignmentColumn, panel.ClassEnemyIcon)
 	panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)

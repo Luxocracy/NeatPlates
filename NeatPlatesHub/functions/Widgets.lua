@@ -57,6 +57,12 @@ NeatPlatesHubMenus.BorderTypes = {
 				{ text = L["Border Color"],  },
 				{ text = L["Glow"],  },
 			}
+NeatPlatesHubMenus.HighlightTypes = {
+	{ text = L["None"],  },
+	{ text = L["Border"],  },
+	{ text = L["Healthbar"],  },
+	{ text = L["Border & Healthbar"],  },
+}
 
 NeatPlatesHubDefaults.WidgetAuraSort = 1
 NeatPlatesHubMenus.AuraSortModes = {
