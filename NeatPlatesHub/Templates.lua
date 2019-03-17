@@ -55,7 +55,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		-- Set Feedback Function
 		frame:SetScript("OnMouseUp", function()
 			--OnPanelItemChange()
-			columnFrame.Callback()
+			columnFrame:Callback()
 			--if columnFrame.OnFeedback then columnFrame:OnFeedback() end
 		end)
 		return frame, frame

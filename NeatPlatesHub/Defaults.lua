@@ -129,9 +129,6 @@ NeatPlatesHubDefaults = {
 	TextUseBlizzardFont = false,
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
-	CustomTargetColor = false,
-	CustomFocusColor = false,
-	CustomMouseoverColor = false,
 
 	-- Color
 	---------------------------------------
@@ -141,19 +138,22 @@ NeatPlatesHubDefaults = {
 	ClassColorPartyMembers = false,
 	EnableOffTankHighlight = false,
 
-	-- Threat
+	-- Threat & Highlighting
 	---------------------------------------
 	ThreatMode = 1,
 	ThreatGlowEnable = true,
-	ColorThreatWarning = {r = .8, g = 0, b = 0,},		-- Orange
-	ColorThreatTransition = {r = 255/255, g = 160/255, b = 0},	-- Yellow
-	ColorThreatSafe = {r = 15/255, g = 150/255, b = 230/255},	-- Bright Blue
-	ColorAttackingOtherTank = {r = 15/255, g = 170/255, b = 200/255},	-- Bright Blue
 	ColorShowPartyAggro = false,
-	ColorPartyAggro = {r = 255/255, g = 0, b = .4,},
 	ColorPartyAggroBar = false,
 	ColorPartyAggroGlow = true,
 	ColorPartyAggroText = false,
+
+	HighlightTargetMode = 1,
+	HighlightFocusMode = 1,
+	HighlightMouseoverMode = 1,
+
+	HighlightColorTarget = {r = 110/255, g = 110/255, b = 110/255,},
+	HighlightColorFocus = {r = 110/255, g = 110/255, b = 110/255,},
+	HighlightColorMouseover = {r = 110/255, g = 110/255, b = 110/255,},
 
 
 	-- Reaction
@@ -175,10 +175,13 @@ NeatPlatesHubDefaults = {
 	TextColorElite = {r = .9, g = .7, b = .3, a = .5},
 	TextColorBoss = {r = 1, g = .85, b = .1, a = .8},
 
+	ColorThreatWarning = {r = .8, g = 0, b = 0,},		-- Red
+	ColorThreatTransition = {r = 255/255, g = 160/255, b = 0},	-- Yellow
+	ColorThreatSafe = {r = 15/255, g = 150/255, b = 230/255},	-- Bright Blue
+	ColorAttackingOtherTank = {r = 15/255, g = 170/255, b = 200/255},	-- Bright Blue
+	ColorPartyAggro = {r = 255/255, g = 0, b = .4,},
+
 	ColorTapped = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorTarget = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorFocus = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorMouseover = {r = 110/255, g = 110/255, b = 110/255,},
 
 	CustomColorList = "",
 	CustomColorLookup = {},
