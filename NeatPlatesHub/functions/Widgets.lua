@@ -360,7 +360,7 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if LocalVars.WidgetDebuff and widgets.AuraWidget then
 		widgets.AuraWidget:UpdateContext(unit) end
-	
+
 	if LocalVars.WidgetAbsorbIndicator and widgets.AbsorbWidgetHub then
 		widgets.AbsorbWidgetHub:UpdateContext(unit) end
 
@@ -403,7 +403,7 @@ local function OnVariableChange(vars)
 	if true then
 		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter, LocalVars.EmphasizedUnique)
 	end
-	
+
 	if LocalVars.WidgetAbsorbIndicator then
 		NeatPlatesWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode, LocalVars.WidgetAbsorbUnits)
 	end
@@ -431,9 +431,3 @@ NeatPlatesHubFunctions.OnUpdate = OnUpdateDelegate
 NeatPlatesHubFunctions.OnInitializeWidgets = OnInitializeWidgets
 NeatPlatesHubFunctions.OnContextUpdate = OnContextUpdateDelegate
 NeatPlatesHubFunctions._WidgetDebuffFilter = DebuffFilter
-
-
-
-
-
-
