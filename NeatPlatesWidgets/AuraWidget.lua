@@ -155,22 +155,13 @@ local function UpdateWidgetTime(frame, expiration)
 	end
 end
 
-
-local function UpdateIcon(frame, aura)
-	if frame and aura and aura.texture and aura.expiration then
+local function UpdateAuraHighlighting(frame, aura)
 		local r, g, b, a = aura.r, aura.g, aura.b, aura.a
 		local glowType = aura.type
-		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.expiration-GetTime() <= aura.duration*0.3
+		local expiration = aura.expiration-GetTime()
+		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and expiration <= aura.duration*0.3
 		local removeGlow = true
-
-		-- Icon
-		frame.Icon:SetTexture(aura.texture)
-
-		-- Stacks
-		if aura.stacks and aura.stacks > 1 then frame.Stacks:SetText(aura.stacks)
-		else frame.Stacks:SetText("") end
-
-		-- Pandemic and other Hightlighting
+	-- Pandemic and other Hightlighting
 		if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
 			removeGlow = false
 			frame.BorderHighlight:Hide()
@@ -189,6 +180,49 @@ local function UpdateIcon(frame, aura)
 
 		-- Remove ButtonGlow if appropriate
 		if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
+
+		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
+		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
+			frame.PandemicTimer = C_Timer.NewTimer(expiration-aura.duration*0.3, function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
+		end
+end
+
+local function UpdateIcon(frame, aura)
+	if frame and aura and aura.texture and aura.expiration then
+		--local r, g, b, a = aura.r, aura.g, aura.b, aura.a
+		--local glowType = aura.type
+		--local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and aura.expiration-GetTime() <= aura.duration*0.3
+		--local removeGlow = true
+
+		-- Icon
+		frame.Icon:SetTexture(aura.texture)
+
+		-- Stacks
+		if aura.stacks and aura.stacks > 1 then frame.Stacks:SetText(aura.stacks)
+		else frame.Stacks:SetText("") end
+
+		-- Hightlighting
+		UpdateAuraHighlighting(frame, aura)
+
+		---- Pandemic and other Hightlighting
+		--if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
+		--	removeGlow = false
+		--	frame.BorderHighlight:Hide()
+		--	frame.Border:Hide()
+		--	ButtonGlow.ShowOverlayGlow(frame)
+		--	frame.__LBGoverlay:SetFrameLevel(frame:GetFrameLevel() or 65)
+		--elseif PandemicEnabled and pandemicThreshold then
+		--	frame.BorderHighlight:SetVertexColor(PandemicColor.r,PandemicColor.g,PandemicColor.b,PandemicColor.a)
+		--	frame.BorderHighlight:Show()
+		--	frame.Border:Hide()
+		--elseif r then
+		--	frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
+		--	frame.BorderHighlight:Show()
+		--	frame.Border:Hide()
+		--else frame.BorderHighlight:Hide(); frame.Border:Show() end
+
+		---- Remove ButtonGlow if appropriate
+		--if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
 
 		-- [[ Cooldown
 		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
