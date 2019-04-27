@@ -256,10 +256,12 @@ NeatPlatesHubDefaults = {
 	WidgetAuraTrackDisease = true,
 	WidgetAuraTrackMagic = true,
 	WidgetAuraTrackPoison = true,
+	WidgetAuraSort = 1,
 	EmphasizedAuraList = "",
 	EmphasizedAuraLookup = {},
 	EmphasizedAuraPriority = {},
 	EmphasizedUnique = true,
+	HideCooldownSpiral = false,
 
 	-- Frame
 	---------------------------------------

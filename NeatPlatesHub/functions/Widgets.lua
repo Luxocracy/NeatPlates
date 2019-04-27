@@ -58,6 +58,12 @@ NeatPlatesHubMenus.BorderTypes = {
 				{ text = L["Glow"],  },
 			}
 
+NeatPlatesHubDefaults.WidgetAuraSort = 1
+NeatPlatesHubMenus.AuraSortModes = {
+				{ text = L["Default"],  },
+				{ text = L["By Duration"],  },
+			}
+
 ------------------------------------------------------------------------------
 -- Aura Widget
 ------------------------------------------------------------------------------
@@ -265,6 +271,14 @@ local function EmphasizedFilter(aura)
 	return false -- Return false if aura isn't one to be emphasized
 end
 
+local function AuraSortFunction(a,b)
+	if LocalVars.WidgetAuraSort == 2 then
+		return a.expiration < b.expiration	-- By Duration
+	else
+		return a.priority < b.priority -- Default
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------
 -- Widget Initializers
 ---------------------------------------------------------------------------------------------------------
@@ -376,6 +390,8 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetDebuff then
 		NeatPlatesWidgets:EnableAuraWatcher()
 		NeatPlatesWidgets.SetAuraFilter(DebuffFilter)
+		NeatPlatesWidgets.SetCooldownSpiral(LocalVars.HideCooldownSpiral)
+		NeatPlatesWidgets.SetAuraSortMode(AuraSortFunction)
 	else NeatPlatesWidgets:DisableAuraWatcher() end
 
 	if true then

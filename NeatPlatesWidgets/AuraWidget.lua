@@ -41,6 +41,7 @@ local function DefaultFilterFunction(aura, unit) if aura and aura.duration and (
 
 local AuraFilterFunction = DefaultFilterFunction
 local EmphasizedAuraFilterFunction = function() end
+local AuraSortFunction = function() end
 local AuraHookFunction
 local AuraCache = {}
 
@@ -56,6 +57,8 @@ local ButtonGlowEnabled = {
 		["Magic"] = false,
 		[""] = false, -- Enrage
 	}
+
+local HideCooldownSpiral = false
 
 -- Get a clean version of the function...  Avoid OmniCC interference
 local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
@@ -228,6 +231,8 @@ local function UpdateIcon(frame, aura)
 		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
 		if aura.duration and aura.duration > 0 and aura.expiration and aura.expiration > 0 then
 			SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)
+			frame.Cooldown:SetDrawSwipe(not HideCooldownSpiral)
+			frame.Cooldown:SetDrawEdge(not HideCooldownSpiral)
 			--frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
 		else
 			SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown
@@ -245,9 +250,9 @@ local function UpdateIcon(frame, aura)
 end
 
 
-local function AuraSortFunction(a,b)
-	return a.priority < b.priority
-end
+--local function AuraSortFunction(a,b)
+--	return a.priority < b.priority
+--end
 
 
 local function UpdateIconGrid(frame, unitid)
@@ -734,6 +739,11 @@ local function UseWideDebuffIcon()
 	NeatPlates:ForceUpdate()
 end
 
+local function SetAuraSortMode(func)
+	if func and type(func) == 'function' then
+		AuraSortFunction = func
+	end
+end
 
 local function SetAuraFilter(func)
 	if func and type(func) == 'function' then
@@ -746,6 +756,10 @@ local function SetEmphasizedAuraFilter(func, unique)
 		EmphasizedAuraFilterFunction = func
 	end
 	EmphasizedUnique = unique
+end
+
+local function SetCooldownSpiral(hide)
+	HideCooldownSpiral = hide
 end
 
 local function SetPandemic(enabled, color)
@@ -782,8 +796,10 @@ NeatPlatesWidgets.IsAuraShown = IsAuraShown
 NeatPlatesWidgets.UseSquareDebuffIcon = UseSquareDebuffIcon
 NeatPlatesWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 
+NeatPlatesWidgets.SetAuraSortMode = SetAuraSortMode
 NeatPlatesWidgets.SetAuraFilter = SetAuraFilter
 NeatPlatesWidgets.SetEmphasizedAuraFilter = SetEmphasizedAuraFilter
+NeatPlatesWidgets.SetCooldownSpiral = SetCooldownSpiral
 
 NeatPlatesWidgets.SetPandemic = SetPandemic
 NeatPlatesWidgets.SetBorderTypes = SetBorderTypes

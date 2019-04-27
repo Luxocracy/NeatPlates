@@ -33,6 +33,7 @@ local TextModes = NeatPlatesHubMenus.TextModes
 local RangeModes = NeatPlatesHubMenus.RangeModes
 local AuraWidgetModes = NeatPlatesHubMenus.AuraWidgetModes
 local DebuffStyles = NeatPlatesHubMenus.DebuffStyles
+local AuraSortModes = NeatPlatesHubMenus.AuraSortModes
 local EnemyOpacityModes = NeatPlatesHubMenus.EnemyOpacityModes
 local FriendlyOpacityModes = NeatPlatesHubMenus.FriendlyOpacityModes
 local ScaleModes = NeatPlatesHubMenus.ScaleModes
@@ -222,8 +223,11 @@ local function BuildHubPanel(panel)
 
 	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraList, 16, 4)
 	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
+	panel.HideCooldownSpiral = CreateQuickCheckbutton(objectName.."HideCooldownSpiral", L["Hide Cooldown Spiral"], AlignmentColumn, panel.EmphasizedUnique, 16, 0)
+	panel.HideCooldownSpiral.tooltipText = L["Hides the Cooldown Spiral on Auras"]
 
-	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.EmphasizedUnique, 16)
+	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style:"], DebuffStyles, 1, AlignmentColumn, panel.HideCooldownSpiral, 16)
+	panel.WidgetAuraSort =  CreateQuickDropdown(objectName.."WidgetAuraSort", L["Sorting Mode:"], AuraSortModes, 1, AlignmentColumn, panel.HideCooldownSpiral, OffsetColumnB)
 
 	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", L["Include Dispellable Debuffs on Friendly Units"], AlignmentColumn, panel.WidgetDebuffStyle, 16, 4)
 	panel.WidgetAuraTrackCurse = CreateQuickCheckbutton(objectName.."WidgetAuraTrackCurse", L["Curse"], AlignmentColumn, panel.WidgetAuraTrackDispelFriendly, 16+16, -2)

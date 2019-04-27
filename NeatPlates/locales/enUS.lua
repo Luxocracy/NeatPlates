@@ -181,10 +181,17 @@ L["Amount of Emphasized Auras:"] = true
 L["Additional Auras:"] = true
 L["Emphasized Auras:"] = true
 L["Emphasize Hides Normal Aura"] = true
+L["Hide Cooldown Spiral"] = true
+L["Hides the Cooldown Spiral on Auras"] = true
 L["Icon Style:"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
 	L["Compact (May require UI reload to take effect)"] = true
+
+L["Sorting Mode:"] = true
+	-- Aura Sorting Dropdown
+	L["Default"] = true
+	L["By Duration"] = true
 
 L["Include Dispellable Debuffs on Friendly Units"] = true
 	-- Dispellable Options
