@@ -190,7 +190,6 @@ L["Icon Style:"] = true
 
 L["Sorting Mode:"] = true
 	-- Aura Sorting Dropdown
-	L["Default"] = true
 	L["By Duration"] = true
 
 L["Include Dispellable Debuffs on Friendly Units"] = true
