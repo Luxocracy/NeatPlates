@@ -59,6 +59,7 @@ local ButtonGlowEnabled = {
 	}
 
 local HideCooldownSpiral = false
+local HideAuraDuration = false
 
 -- Get a clean version of the function...  Avoid OmniCC interference
 local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
@@ -145,7 +146,7 @@ end
 -------------------------------------------------------------
 
 local function UpdateWidgetTime(frame, expiration)
-	if expiration == 0 then
+	if expiration == 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
 		local timeleft = expiration-GetTime()
@@ -228,14 +229,17 @@ local function UpdateIcon(frame, aura)
 		--if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
 
 		-- [[ Cooldown
-		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
+		frame.Cooldown.noCooldownCount = not HideAuraDuration -- Disable OmniCC interaction
 		if aura.duration and aura.duration > 0 and aura.expiration and aura.expiration > 0 then
-			SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)
+			--SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)	-- (Clean Version)
+			frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
+
 			frame.Cooldown:SetDrawSwipe(not HideCooldownSpiral)
 			frame.Cooldown:SetDrawEdge(not HideCooldownSpiral)
-			--frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
+			
 		else
-			SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown
+			--SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown (Clean Version)
+			frame.Cooldown:SetCooldown(0, 0)
 		end
 		--]]
 
@@ -758,8 +762,9 @@ local function SetEmphasizedAuraFilter(func, unique)
 	EmphasizedUnique = unique
 end
 
-local function SetCooldownSpiral(hide)
-	HideCooldownSpiral = hide
+local function SetAuraOptions(hideSpiral, hideDuration)
+	HideCooldownSpiral = hideSpiral
+	HideAuraDuration = hideDuration
 end
 
 local function SetPandemic(enabled, color)
@@ -799,7 +804,7 @@ NeatPlatesWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 NeatPlatesWidgets.SetAuraSortMode = SetAuraSortMode
 NeatPlatesWidgets.SetAuraFilter = SetAuraFilter
 NeatPlatesWidgets.SetEmphasizedAuraFilter = SetEmphasizedAuraFilter
-NeatPlatesWidgets.SetCooldownSpiral = SetCooldownSpiral
+NeatPlatesWidgets.SetAuraOptions = SetAuraOptions
 
 NeatPlatesWidgets.SetPandemic = SetPandemic
 NeatPlatesWidgets.SetBorderTypes = SetBorderTypes

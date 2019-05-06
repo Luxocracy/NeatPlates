@@ -129,6 +129,7 @@ NeatPlatesHubDefaults = {
 	TextUseBlizzardFont = false,
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
+	TextShowServerIndicator = true,
 	CustomTargetColor = false,
 	CustomFocusColor = false,
 	CustomMouseoverColor = false,
@@ -262,6 +263,7 @@ NeatPlatesHubDefaults = {
 	EmphasizedAuraPriority = {},
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
+	HideAuraDuration = false,
 
 	-- Frame
 	---------------------------------------

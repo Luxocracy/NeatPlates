@@ -134,6 +134,7 @@ L["Friendly Status Text:"] = true
 	L["Arena ID, Health, and Power"] = true
 
 L["Show Level"] = true
+L["Show Different Server Indicator (*)"] = true
 L["Show Status Text on Target & Mouseover"] = true
 L["Show Status Text on Active/Damaged Units"] = true
 L["Use Custom Target Color"] = true
@@ -182,7 +183,7 @@ L["Additional Auras:"] = true
 L["Emphasized Auras:"] = true
 L["Emphasize Hides Normal Aura"] = true
 L["Hide Cooldown Spiral"] = true
-L["Hides the Cooldown Spiral on Auras"] = true
+L["Hide Aura Duration"] = true
 L["Icon Style:"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
@@ -450,5 +451,7 @@ L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they
 L["The amount of Emphasized auras that can be displayed at once"] = true
 L["Hides the regular aura from the aura widget if it is currently emphasized"] = true
 L["Color is defined under the 'Reaction' category."] = true
+L["Hides the Cooldown Spiral on Auras"] = true
+L["Hides the duration text on Auras. (Use this if you want something like OmniCC to handle the aura durations."] = true
 
 

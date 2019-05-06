@@ -283,7 +283,9 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlatesWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
 	NeatPlatesWidgets.SetEmphasizedSlots(math.ceil(LocalVars.EmphasizedSlots))
 
+	-- There might be a better way to handle these settings, but this works for now.
 	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
+	NeatPlates:ToggleServerIndicator(LocalVars.TextShowServerIndicator)	-- Toggle Server Indicator
 
 	-- Manage ClickThrough option of nameplate bars.
 	if ValidateCombatRestrictedSettings() then
