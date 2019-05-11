@@ -178,6 +178,7 @@ L["Enable Aura Widget"] = true
 		L["Glow"] = true
 
 L["Space Between buffs & debuffs:"] = true
+L["Aura Scale:"] = true
 L["Amount of Emphasized Auras:"] = true
 L["Additional Auras:"] = true
 L["Emphasized Auras:"] = true
@@ -453,5 +454,6 @@ L["Hides the regular aura from the aura widget if it is currently emphasized"] =
 L["Color is defined under the 'Reaction' category."] = true
 L["Hides the Cooldown Spiral on Auras"] = true
 L["Hides the duration text on Auras. (Use this if you want something like OmniCC to handle the aura durations."] = true
+L["Might require a '/reload' to display correctly"] = true
 
 

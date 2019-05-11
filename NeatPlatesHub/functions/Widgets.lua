@@ -390,7 +390,7 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetDebuff then
 		NeatPlatesWidgets:EnableAuraWatcher()
 		NeatPlatesWidgets.SetAuraFilter(DebuffFilter)
-		NeatPlatesWidgets.SetAuraOptions(LocalVars.HideCooldownSpiral, LocalVars.HideAuraDuration)
+		NeatPlatesWidgets.SetAuraOptions(LocalVars)
 		NeatPlatesWidgets.SetAuraSortMode(AuraSortFunction)
 	else NeatPlatesWidgets:DisableAuraWatcher() end
 

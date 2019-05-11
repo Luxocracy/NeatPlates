@@ -209,6 +209,9 @@ local function BuildHubPanel(panel)
 	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
 	panel.SpacerSlots.tooltipText = L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"]
 
+	panel.AuraScale = CreateQuickSlider(objectName.."AuraScale", L["Aura Scale:"], nil, 160, AlignmentColumn, panel.WidgetBuffEnrage, OffsetColumnB + 64, 2)
+	panel.AuraScale.tooltipText = L["Might require a '/reload' to display correctly"]
+
 	panel.EmphasizedSlots = CreateQuickSlider(objectName.."EmphasizedSlots", L["Amount of Emphasized Auras:"], "ACTUAL", 150, AlignmentColumn, panel.SpacerSlots, 16, 2)
 	panel.EmphasizedSlots.tooltipText = L["The amount of Emphasized auras that can be displayed at once"]
 
@@ -549,6 +552,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.ScaleSpotlight, 1, .5, 2.2, .01)
 
 	SetSliderMechanics(panel.SpacerSlots, 0, 0, 4, 1)
+	SetSliderMechanics(panel.AuraScale, 1, .5, 2.2, .01)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)

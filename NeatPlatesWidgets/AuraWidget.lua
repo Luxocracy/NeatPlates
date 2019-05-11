@@ -33,6 +33,7 @@ local PandemicColor = {}
 local EmphasizedUnique = false
 local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
+local AuraScale = 1
 
 local function DummyFunction() end
 
@@ -187,7 +188,7 @@ local function UpdateAuraHighlighting(frame, aura)
 
 		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
-			frame.PandemicTimer = C_Timer.NewTimer(expiration-aura.duration*0.3, function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
+			frame.PandemicTimer = C_Timer.NewTimer(math.max(expiration-aura.duration*0.3, 0), function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
 		end
 end
 
@@ -259,7 +260,7 @@ end
 --end
 
 
-local function UpdateIconGrid(frame, unitid)
+local function UpdateIconGrid(frame, unitid) 
 
 		if not unitid then return end
 
@@ -349,8 +350,8 @@ local function UpdateIconGrid(frame, unitid)
 			storedAuraCount = storedAuraCount+1
 			storedAuras[storedAuraCount] = {
 				["type"] = "Magic",
-				["effect"] = "HARMFUL",
-				["duration"] = 10,
+				["effect"] = "HELPFUL",
+				["duration"] = 12,
 				["stacks"] = 0,
 				["reaction"] = 1,
 				["name"] = "Debug",
@@ -499,7 +500,7 @@ end
 
 
 local function TransformWideAura(frame)
-	frame.Parent:SetWidth(DebuffColumns*(26 + 5))
+	frame.Parent:SetWidth(DebuffColumns*(26 + 5)*AuraScale)
 
 	frame:SetWidth(26.5)
 	frame:SetHeight(14.5)
@@ -614,6 +615,7 @@ local function UpdateIconConfig(frame)
 		for index = 1, AuraLimit do
 			local icon = iconTable[index] or CreateAuraIcon(frame)
 			iconTable[index] = icon
+			icon:SetScale(AuraScale)
 			-- Apply Style
 			if useWideIcons then TransformWideAura(icon) else TransformSquareAura(icon) end
 		end
@@ -727,17 +729,19 @@ local function CreateAuraWidget(parent, style)
 	return frame
 end
 
-local function UseSquareDebuffIcon()
+local function UseSquareDebuffIcon(scale)
+	AuraScale = scale
 	useWideIcons = false
-	DebuffColumns = 5
+	DebuffColumns = math.max(math.ceil(5/AuraScale), 5)
 	DebuffLimit = DebuffColumns * 2
 	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
 	NeatPlates:ForceUpdate()
 end
 
-local function UseWideDebuffIcon()
+local function UseWideDebuffIcon(scale)
+	AuraScale = scale
 	useWideIcons = true
-	DebuffColumns = 3
+	DebuffColumns = math.max(math.ceil(3/AuraScale), 3)
 	DebuffLimit = DebuffColumns * 2
 	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
 	NeatPlates:ForceUpdate()
@@ -762,9 +766,10 @@ local function SetEmphasizedAuraFilter(func, unique)
 	EmphasizedUnique = unique
 end
 
-local function SetAuraOptions(hideSpiral, hideDuration)
-	HideCooldownSpiral = hideSpiral
-	HideAuraDuration = hideDuration
+local function SetAuraOptions(LocalVars)
+	HideCooldownSpiral = LocalVars.HideCooldownSpiral
+	HideAuraDuration = LocalVars.HideAuraDuration
+	AuraScale = LocalVars.AuraScale
 end
 
 local function SetPandemic(enabled, color)
