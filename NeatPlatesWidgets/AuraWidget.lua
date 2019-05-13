@@ -34,6 +34,7 @@ local EmphasizedUnique = false
 local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
 local AuraScale = 1
+local AuraAlignment = "BOTTOMLEFT"
 
 local function DummyFunction() end
 
@@ -438,6 +439,11 @@ local function UpdateIconGrid(frame, unitid)
 			if AuraSlots[AuraSlotEmpty] ~= true then UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 		end
 
+		if AuraAlignment == "BOTTOM" then
+			local offsetX = -(AuraWidth+5)*(math.min(storedAuraCount, DebuffColumns)-1)/2
+			AuraIconFrames[1]:SetPoint(AuraAlignment, offsetX, 0)
+		end
+
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
 		frame.emphasized:SetWidth(EmphasizedAuraCount * AuraWidth)
 end
@@ -625,13 +631,17 @@ local function UpdateIconConfig(frame)
 		for row = 1, AuraLimit/DebuffColumns do
 			iconTable[anchorIndex]:ClearAllPoints()
 			if row == 1 then
-				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", frame)
+				iconTable[anchorIndex]:SetPoint(AuraAlignment or "BOTTOMLEFT", frame)
 			else
 				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", iconTable[anchorIndex-DebuffColumns], "TOPLEFT", 0, 8)
 			end
 			for index = anchorIndex + 1, DebuffColumns * row do
 			  iconTable[index]:ClearAllPoints()
-			  iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+			  if AuraAlignment == "BOTTOMRIGHT" then
+			  	iconTable[index]:SetPoint("RIGHT", iconTable[index-1], "LEFT", -5, 0)
+			  else
+			  	iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+			  end
 			end
 			anchorIndex = anchorIndex + DebuffColumns -- Set next anchor index
 		end
@@ -767,9 +777,16 @@ local function SetEmphasizedAuraFilter(func, unique)
 end
 
 local function SetAuraOptions(LocalVars)
+	local Alignments ={
+		"BOTTOMLEFT",
+		"BOTTOM",
+		"BOTTOMRIGHT",
+	}
+
 	HideCooldownSpiral = LocalVars.HideCooldownSpiral
 	HideAuraDuration = LocalVars.HideAuraDuration
 	AuraScale = LocalVars.AuraScale
+	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
 end
 
 local function SetPandemic(enabled, color)

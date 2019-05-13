@@ -259,6 +259,7 @@ NeatPlatesHubDefaults = {
 	WidgetAuraTrackMagic = true,
 	WidgetAuraTrackPoison = true,
 	WidgetAuraSort = 1,
+	WidgetAuraAlignment = 1,
 	EmphasizedAuraList = "",
 	EmphasizedAuraLookup = {},
 	EmphasizedAuraPriority = {},

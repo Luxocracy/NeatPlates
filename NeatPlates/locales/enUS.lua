@@ -194,6 +194,12 @@ L["Sorting Mode:"] = true
 	-- Aura Sorting Dropdown
 	L["By Duration"] = true
 
+L["Aura Alignment:"] = true
+	-- Aura Alignment Dropdown
+	L["Left"] = true
+	L["Center"] = true
+	L["Right"] = true
+
 L["Include Dispellable Debuffs on Friendly Units"] = true
 	-- Dispellable Options
 	L["Curse"] = true
