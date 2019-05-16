@@ -33,6 +33,8 @@ local PandemicColor = {}
 local EmphasizedUnique = false
 local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
+local AuraScale = 1
+local AuraAlignment = "BOTTOMLEFT"
 
 local function DummyFunction() end
 
@@ -59,6 +61,7 @@ local ButtonGlowEnabled = {
 	}
 
 local HideCooldownSpiral = false
+local HideAuraDuration = false
 
 -- Get a clean version of the function...  Avoid OmniCC interference
 local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
@@ -145,7 +148,7 @@ end
 -------------------------------------------------------------
 
 local function UpdateWidgetTime(frame, expiration)
-	if expiration == 0 then
+	if expiration == 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
 		local timeleft = expiration-GetTime()
@@ -186,7 +189,7 @@ local function UpdateAuraHighlighting(frame, aura)
 
 		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
-			frame.PandemicTimer = C_Timer.NewTimer(expiration-aura.duration*0.3, function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
+			frame.PandemicTimer = C_Timer.NewTimer(math.max(expiration-aura.duration*0.3, 0), function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
 		end
 end
 
@@ -228,14 +231,17 @@ local function UpdateIcon(frame, aura)
 		--if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
 
 		-- [[ Cooldown
-		frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
+		frame.Cooldown.noCooldownCount = not HideAuraDuration -- Disable OmniCC interaction
 		if aura.duration and aura.duration > 0 and aura.expiration and aura.expiration > 0 then
-			SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)
+			--SetCooldown(frame.Cooldown, aura.expiration-aura.duration, aura.duration+.25)	-- (Clean Version)
+			frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
+
 			frame.Cooldown:SetDrawSwipe(not HideCooldownSpiral)
 			frame.Cooldown:SetDrawEdge(not HideCooldownSpiral)
-			--frame.Cooldown:SetCooldown(aura.expiration-aura.duration, aura.duration+.25)
+			
 		else
-			SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown
+			--SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown (Clean Version)
+			frame.Cooldown:SetCooldown(0, 0)
 		end
 		--]]
 
@@ -255,7 +261,7 @@ end
 --end
 
 
-local function UpdateIconGrid(frame, unitid)
+local function UpdateIconGrid(frame, unitid) 
 
 		if not unitid then return end
 
@@ -345,8 +351,8 @@ local function UpdateIconGrid(frame, unitid)
 			storedAuraCount = storedAuraCount+1
 			storedAuras[storedAuraCount] = {
 				["type"] = "Magic",
-				["effect"] = "HARMFUL",
-				["duration"] = 10,
+				["effect"] = "HELPFUL",
+				["duration"] = 12,
 				["stacks"] = 0,
 				["reaction"] = 1,
 				["name"] = "Debug",
@@ -433,6 +439,11 @@ local function UpdateIconGrid(frame, unitid)
 			if AuraSlots[AuraSlotEmpty] ~= true then UpdateIcon(AuraIconFrames[AuraSlotEmpty]) end
 		end
 
+		if AuraAlignment == "BOTTOM" then
+			local offsetX = -(AuraWidth+5)*(math.min(storedAuraCount, DebuffColumns)-1)/2
+			AuraIconFrames[1]:SetPoint(AuraAlignment, offsetX, 0)
+		end
+
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
 		frame.emphasized:SetWidth(EmphasizedAuraCount * AuraWidth)
 end
@@ -495,7 +506,7 @@ end
 
 
 local function TransformWideAura(frame)
-	frame.Parent:SetWidth(DebuffColumns*(26 + 5))
+	frame.Parent:SetWidth(DebuffColumns*(26 + 5)*AuraScale)
 
 	frame:SetWidth(26.5)
 	frame:SetHeight(14.5)
@@ -610,6 +621,7 @@ local function UpdateIconConfig(frame)
 		for index = 1, AuraLimit do
 			local icon = iconTable[index] or CreateAuraIcon(frame)
 			iconTable[index] = icon
+			icon:SetScale(AuraScale)
 			-- Apply Style
 			if useWideIcons then TransformWideAura(icon) else TransformSquareAura(icon) end
 		end
@@ -619,13 +631,17 @@ local function UpdateIconConfig(frame)
 		for row = 1, AuraLimit/DebuffColumns do
 			iconTable[anchorIndex]:ClearAllPoints()
 			if row == 1 then
-				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", frame)
+				iconTable[anchorIndex]:SetPoint(AuraAlignment or "BOTTOMLEFT", frame)
 			else
 				iconTable[anchorIndex]:SetPoint("BOTTOMLEFT", iconTable[anchorIndex-DebuffColumns], "TOPLEFT", 0, 8)
 			end
 			for index = anchorIndex + 1, DebuffColumns * row do
 			  iconTable[index]:ClearAllPoints()
-			  iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+			  if AuraAlignment == "BOTTOMRIGHT" then
+			  	iconTable[index]:SetPoint("RIGHT", iconTable[index-1], "LEFT", -5, 0)
+			  else
+			  	iconTable[index]:SetPoint("LEFT", iconTable[index-1], "RIGHT", 5, 0)
+			  end
 			end
 			anchorIndex = anchorIndex + DebuffColumns -- Set next anchor index
 		end
@@ -723,17 +739,19 @@ local function CreateAuraWidget(parent, style)
 	return frame
 end
 
-local function UseSquareDebuffIcon()
+local function UseSquareDebuffIcon(scale)
+	AuraScale = scale
 	useWideIcons = false
-	DebuffColumns = 5
+	DebuffColumns = math.max(math.ceil(5/AuraScale), 5)
 	DebuffLimit = DebuffColumns * 2
 	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
 	NeatPlates:ForceUpdate()
 end
 
-local function UseWideDebuffIcon()
+local function UseWideDebuffIcon(scale)
+	AuraScale = scale
 	useWideIcons = true
-	DebuffColumns = 3
+	DebuffColumns = math.max(math.ceil(3/AuraScale), 3)
 	DebuffLimit = DebuffColumns * 2
 	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
 	NeatPlates:ForceUpdate()
@@ -758,8 +776,17 @@ local function SetEmphasizedAuraFilter(func, unique)
 	EmphasizedUnique = unique
 end
 
-local function SetCooldownSpiral(hide)
-	HideCooldownSpiral = hide
+local function SetAuraOptions(LocalVars)
+	local Alignments ={
+		"BOTTOMLEFT",
+		"BOTTOM",
+		"BOTTOMRIGHT",
+	}
+
+	HideCooldownSpiral = LocalVars.HideCooldownSpiral
+	HideAuraDuration = LocalVars.HideAuraDuration
+	AuraScale = LocalVars.AuraScale
+	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
 end
 
 local function SetPandemic(enabled, color)
@@ -799,7 +826,7 @@ NeatPlatesWidgets.UseWideDebuffIcon = UseWideDebuffIcon
 NeatPlatesWidgets.SetAuraSortMode = SetAuraSortMode
 NeatPlatesWidgets.SetAuraFilter = SetAuraFilter
 NeatPlatesWidgets.SetEmphasizedAuraFilter = SetEmphasizedAuraFilter
-NeatPlatesWidgets.SetCooldownSpiral = SetCooldownSpiral
+NeatPlatesWidgets.SetAuraOptions = SetAuraOptions
 
 NeatPlatesWidgets.SetPandemic = SetPandemic
 NeatPlatesWidgets.SetBorderTypes = SetBorderTypes

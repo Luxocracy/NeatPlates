@@ -129,6 +129,10 @@ NeatPlatesHubDefaults = {
 	TextUseBlizzardFont = false,
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
+	TextShowServerIndicator = true,
+	CustomTargetColor = false,
+	CustomFocusColor = false,
+	CustomMouseoverColor = false,
 
 	-- Color
 	---------------------------------------
@@ -250,6 +254,7 @@ NeatPlatesHubDefaults = {
 	ColorBuffEnrage = {r = 1, g = 0, b = 0.2, a = 1}, -- Medium Red
 	BorderBuffEnrage = 1,
 	SpacerSlots = 1,
+	AuraScale = 1,
 	EmphasizedSlots = 1,
 	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetDebuffLookup = {},
@@ -260,11 +265,13 @@ NeatPlatesHubDefaults = {
 	WidgetAuraTrackMagic = true,
 	WidgetAuraTrackPoison = true,
 	WidgetAuraSort = 1,
+	WidgetAuraAlignment = 1,
 	EmphasizedAuraList = "",
 	EmphasizedAuraLookup = {},
 	EmphasizedAuraPriority = {},
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
+	HideAuraDuration = false,
 
 	-- Frame
 	---------------------------------------

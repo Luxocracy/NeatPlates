@@ -70,6 +70,13 @@ NeatPlatesHubMenus.AuraSortModes = {
 				{ text = L["By Duration"],  },
 			}
 
+NeatPlatesHubDefaults.WidgetAuraAlignment = 1
+NeatPlatesHubMenus.AuraAlignmentModes = {
+				{ text = L["Left"],  },
+				{ text = L["Center"],  },
+				{ text = L["Right"],  },
+			}
+
 ------------------------------------------------------------------------------
 -- Aura Widget
 ------------------------------------------------------------------------------
@@ -396,8 +403,8 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetDebuff then
 		NeatPlatesWidgets:EnableAuraWatcher()
 		NeatPlatesWidgets.SetAuraFilter(DebuffFilter)
-		NeatPlatesWidgets.SetCooldownSpiral(LocalVars.HideCooldownSpiral)
 		NeatPlatesWidgets.SetAuraSortMode(AuraSortFunction)
+		NeatPlatesWidgets.SetAuraOptions(LocalVars)
 	else NeatPlatesWidgets:DisableAuraWatcher() end
 
 	if true then

@@ -34,6 +34,7 @@ local EnableFadeIn = true
 local ShowCastBars = true
 local ShowIntCast = true
 local ShowIntWhoCast = true
+local ShowServerIndicator = true
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -540,7 +541,7 @@ do
 	--------------------------------------------------------
 	function UpdateUnitIdentity(plate, unitid)
 		unit.unitid = unitid
-		unit.name = UnitName(unitid)
+		unit.name, unit.realm = UnitName(unitid)
 		unit.pvpname = UnitPVPName(unitid)
 		unit.rawName = unit.name  -- gsub(unit.name, " %(%*%)", "")
 
@@ -656,7 +657,7 @@ do
 
 	-- UpdateIndicator_Name:
 	function UpdateIndicator_Name()
-		visual.name:SetText(unit.name)
+		if ShowServerIndicator and unit.realm then visual.name:SetText(unit.name.." (*)") else visual.name:SetText(unit.name) end
 		--unit.pvpname
 
 		-- Name Color
@@ -1414,6 +1415,7 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
+function NeatPlates:ToggleServerIndicator(showIndicator) ShowServerIndicator = showIndicator end
 
 function NeatPlates:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function NeatPlates:ResetWidgets() ForEachPlate(OnResetWidgets) end
