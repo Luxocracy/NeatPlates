@@ -698,10 +698,11 @@ local function ShowDropdownMenu(sourceFrame, menu, clickScript)
 
 		if item then
 			local itemText = item.text
-
+			local tooltipText = sourceFrame["tooltipText"..i]
 			local region1, region2 = button:GetRegions()
 			--print(region1:GetObjectType(), region2:GetObjectType() )
 
+			button.tooltipText = tooltipText
 			if currentSelection == i or itemText == currentSelection then
 				region1:SetTextColor(1, .8, 0)
 				region1:SetFont(1, .8, 0)
@@ -716,7 +717,16 @@ local function ShowDropdownMenu(sourceFrame, menu, clickScript)
 			maxWidth = max(maxWidth, button:GetTextWidth())
 			numOfItems = numOfItems + 1
 			button:SetScript("OnClick", clickScript)
-
+			button:SetScript("OnEnter", function(self)
+				if(self.tooltipText ~= nil) then
+					GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+				end
+			end);
+			button:SetScript("OnLeave", function(self)
+				if(self.tooltipText ~= nil) then
+					GameTooltip:Hide();
+				end
+			end)
 
 			button:Show()
 		else

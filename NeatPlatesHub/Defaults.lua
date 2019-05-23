@@ -230,7 +230,15 @@ NeatPlatesHubDefaults = {
 	WidgetComboPointsStyle = 1,
 	WidgetThreatIndicator = true,
 	WidgetRangeIndicator = false,
+	WidgetRangeScale = false,
+	WidgetRangeMode = 1,
 	WidgetMaxRange = 40,
+	WidgetOffsetY = 0,
+	ColorRangeMelee = {r = 0.9, g = 0.9, b = 0.9, a = 0},	-- Opaque White
+	ColorRangeClose = {r = 0.055, g = 0.875, b = 0.825},	-- Light Blue
+	ColorRangeMid = {r = 0.035, g = 0.865, b = 0},	-- Green
+	ColorRangeFar = {r = 1, g = 0.5, b = 0}, -- Orange
+	ColorRangeOOR = {r = 0.9, g = 0.055, b = 0.075},	-- Red
 	WidgetEnableExternal = true,
 	WidgetAbsorbIndicator = false,
 	WidgetAbsorbMode = 1,

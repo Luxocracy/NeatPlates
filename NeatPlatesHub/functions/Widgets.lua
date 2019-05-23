@@ -17,13 +17,11 @@ local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
 local CreateQuestWidget = WidgetLib.CreateQuestWidget
 local CreateThreatPercentageWidget = WidgetLib.CreateThreatPercentageWidget
 
---NeatPlatesHubDefaults.WidgetRangeMode = 1
---NeatPlatesHubMenus.RangeModes = {
---				{ text = "9 "..L["yards"]} ,
---				{ text = "15 "..L["yards"]} ,
---				{ text = "28 "..L["yards"]} ,
---				{ text = "40 "..L["yards"]} ,
---			}
+NeatPlatesHubDefaults.WidgetRangeMode = 1
+NeatPlatesHubMenus.RangeModes = {
+				{ text = L["Simple"]} ,
+				{ text = L["Advanced"]} ,
+			}
 
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
 NeatPlatesHubMenus.AbsorbModes = {

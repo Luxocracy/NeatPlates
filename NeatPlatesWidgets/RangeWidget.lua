@@ -8,10 +8,12 @@ local rc = LibStub('LibRangeCheck-2.0')
 local font = "FONTS\\arialn.ttf"
 
 local WidgetList = {}
-local WidgetUnits = 2
+local WidgetMode = 1
 local WidgetRange = 40
+local WidgetColors = {}
+local WidgetPos = {x = 0, y = 0}
 
-local art = "Interface\\Addons\\NeatPlatesWidgets\\RangeWidget\\RangeWidget"
+local art = "Interface\\Addons\\NeatPlatesWidgets\\RangeWidget\\RangeWidgetLine"
 
 --[[ Ticker that runs every 0.05 seconds ]]--
 local function AttachNewTicker(frame)
@@ -26,16 +28,38 @@ end
 local function UpdateRangeWidget(frame, unit)
 	if not unit then return end
 	local minRange, maxRange = rc:GetRange(unit)
+	local width = frame:GetParent()._width or 100;
 	frame:Show()
 
 	if WidgetRange and minRange and maxRange then
 		frame.Texture:Show()
+		local color = {r = 0, g = 0, b = 0}
 
-		if WidgetRange > minRange then
-			frame.Texture:SetVertexColor(.25,1,0,.50)  -- Green
+		if WidgetMode == 1 then
+			if WidgetRange > minRange then
+				color = WidgetColors["Mid"] or color -- Mid Range
+			else
+				color = WidgetColors["OOR"] or color -- Out of Range
+			end
 		else
-			frame.Texture:SetVertexColor(1,.25,0,.50)  -- Red
+			if WidgetRange > minRange and maxRange <= 5 then
+				color = WidgetColors["Melee"] or color -- Melee Range
+			elseif WidgetRange > minRange then
+				if WidgetRange*0.75 <= minRange then
+					color = WidgetColors["Far"] or color -- Far Range
+				elseif WidgetRange*0.5 <= minRange then
+					color = WidgetColors["Mid"] or color -- Mid Range
+				else
+					color = WidgetColors["Close"] or color -- Close Range
+				end
+			else
+				color = WidgetColors["OOR"] or color -- Out of Range
+			end
 		end
+
+		frame.Texture:SetVertexColor(color.r,color.g,color.b,color.a)
+
+		if WidgetScale then frame.Texture:SetWidth(math.max(width*0.15, width*math.min(1, minRange/WidgetRange))) end
 	else
 		frame.Texture:Hide()
 	end
@@ -43,7 +67,10 @@ end
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
+	local width = frame:GetParent()._width or 100
+	if not WidgetScale then frame.Texture:SetWidth(width) end
 
+	frame.Texture:SetPoint("CENTER", WidgetPos.x, WidgetPos.y)
 end
 
 -- [[ Widget frame self update ]] --
@@ -64,7 +91,7 @@ local function UpdateWidgetContext(frame, unit)
 	end
 
 	--[[ Update Widget Frame ]]--
-	frame:UnregisterAllEvents()
+	--frame:UnregisterAllEvents()
 
 	AttachNewTicker(frame)
 	UpdateRangeWidget(frame, unitid)
@@ -81,14 +108,16 @@ end
 -- Widget Creation
 local function CreateWidgetFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
+	local height = frame:GetParent()._height or 12;
+	local width = frame:GetParent()._width or 100;
 
 	--[[ Widget Config can now pass width or height data from theme config ]]--
 	frame:SetWidth(16); frame:SetHeight(16)
 	frame.Texture = frame:CreateTexture(nil, "OVERLAY")
 	frame.Texture:SetTexture(art)
-	frame.Texture:SetPoint("CENTER")
-	frame.Texture:SetWidth(128)
-	frame.Texture:SetHeight(128)
+	frame.Texture:SetPoint("CENTER", WidgetPos.x, WidgetPos.y)
+	frame.Texture:SetHeight(3)
+	frame.Texture:SetWidth(width)
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
@@ -105,7 +134,15 @@ local function CreateWidgetFrame(parent)
 end
 
 local function SetRangeWidgetOptions(LocalVars)
+	WidgetMode = LocalVars.WidgetRangeMode
 	WidgetRange = LocalVars.WidgetMaxRange
+	WidgetScale = LocalVars.WidgetRangeScale
+	WidgetPos.y = LocalVars.WidgetOffsetY
+	WidgetColors["Melee"] = LocalVars.ColorRangeMelee
+	WidgetColors["Close"] = LocalVars.ColorRangeClose
+	WidgetColors["Mid"] = LocalVars.ColorRangeMid
+	WidgetColors["Far"] = LocalVars.ColorRangeFar
+	WidgetColors["OOR"] = LocalVars.ColorRangeOOR
 end
 
 NeatPlatesWidgets.UpdateRangeWidget = UpdateRangeWidget

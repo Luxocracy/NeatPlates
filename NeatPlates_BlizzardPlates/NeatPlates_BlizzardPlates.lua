@@ -226,6 +226,7 @@ WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = -9 , y = 1.5, h = 9.5, w = 10
 -- WidgetConfig.DebuffWidgetPlus = { anchor="TOP", x = 12 , y = 26 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -24,y = 2 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 5,y = -10 }
+WidgetConfig.RangeWidget = { anchor = "CENTER", x=-8, y=-6 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig
