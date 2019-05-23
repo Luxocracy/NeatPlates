@@ -511,8 +511,9 @@ local function BuildHubPanel(panel)
 	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", L["Show Absorb Bars"], AlignmentColumn, panel.WidgetLabel, OffsetColumnB+60)
 	panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", L["Mode:"], AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
 	panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", L["Show on:"], AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
-	panel.WidgetRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetRangeIndicator", L["Show Party Range Warning"], AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
-	panel.WidgetRangeMode =  CreateQuickDropdown(objectName.."WidgetRangeMode", L["Range:"], RangeModes, 1, AlignmentColumn, panel.WidgetRangeIndicator, OffsetColumnB+76)
+	panel.WidgetRangeIndicator = CreateQuickCheckbutton(objectName.."WidgetRangeIndicator", L["Show Unit Range Indicator"], AlignmentColumn, panel.WidgetAbsorbUnits, OffsetColumnB+60)
+	panel.WidgetMaxRange = CreateQuickSlider(objectName.."WidgetMaxRange", L["Range Threshold:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeIndicator, OffsetColumnB+76, 2)
+	--panel.WidgetMaxRange =  CreateQuickDropdown(objectName.."WidgetRangeMode", L["Range:"], RangeModes, 1, AlignmentColumn, panel.WidgetRangeIndicator, OffsetColumnB+76)
 
 	------------------------------
 	-- Advanced
@@ -572,6 +573,8 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.SpacerSlots, 0, 0, 4, 1)
 	SetSliderMechanics(panel.AuraScale, 1, .5, 2.2, .01)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
+
+	SetSliderMechanics(panel.WidgetMaxRange, 0, 1, 100, 1)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)
