@@ -155,9 +155,9 @@ NeatPlatesHubDefaults = {
 	HighlightFocusMode = 1,
 	HighlightMouseoverMode = 1,
 
-	HighlightColorTarget = {r = 110/255, g = 110/255, b = 110/255,},
-	HighlightColorFocus = {r = 110/255, g = 110/255, b = 110/255,},
-	HighlightColorMouseover = {r = 110/255, g = 110/255, b = 110/255,},
+	ColorTarget = {r = 1, g = 1, b = 1,},
+	ColorFocus = {r = 1, g = 1, b = 1,},
+	ColorMouseover = {r = 1, g = 1, b = 1,},
 
 
 	-- Reaction

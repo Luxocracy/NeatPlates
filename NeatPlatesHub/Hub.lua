@@ -432,11 +432,11 @@ local function BuildHubPanel(panel)
 
 	panel.HighlightTargetMode =  CreateQuickDropdown(objectName.."HighlightTarget", L["Target Highlighting:"], HighlightTypes, 1, AlignmentColumn, F, 0, 2)
 	panel.HighlightFocusMode =  CreateQuickDropdown(objectName.."HighlightFocus", L["Focus Highlighting:"], HighlightTypes, 1, AlignmentColumn, panel.HighlightTargetMode, 0, 2)
-	panel.HighlightMouseoverMode =  CreateQuickDropdown(objectName.."Highlicht Mouseover", L["Mouseover Highlighting:"], HighlightTypes, 1, AlignmentColumn, panel.HighlightFocusMode, 0, 2)
+	panel.HighlightMouseoverMode =  CreateQuickDropdown(objectName.."HighlightMouseover", L["Mouseover Highlighting:"], HighlightTypes, 1, AlignmentColumn, panel.HighlightFocusMode, 0, 2)
 
-	panel.HighlightColorTarget = CreateQuickColorbox(objectName.."HighlightColorTarget", "", nil, AlignmentColumn, panel.HighlightTargetMode, 130, -17)
-	panel.HighlightColorFocus = CreateQuickColorbox(objectName.."HighlightColorFocus", "", nil, AlignmentColumn, panel.HighlightFocusMode,  130, -17)
-	panel.HighlightColorMouseover = CreateQuickColorbox(objectName.."HighlightColorMouseover", "", nil, AlignmentColumn, panel.HighlightMouseoverMode, 130, -17)
+	panel.ColorTarget = CreateQuickColorbox(objectName.."ColorTarget", "", nil, AlignmentColumn, panel.HighlightTargetMode, 130, -17)
+	panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", "", nil, AlignmentColumn, panel.HighlightFocusMode,  130, -17)
+	panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", "", nil, AlignmentColumn, panel.HighlightMouseoverMode, 130, -17)
 
 	--panel.WidgetTargetHighlight, F = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", L["Show Target Highlight"], AlignmentColumn, F, 0)
 	--panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Target Highlight Color"], AlignmentColumn, F, 0)

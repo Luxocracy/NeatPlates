@@ -55,6 +55,10 @@ NeatPlatesHubMenus.BorderTypes = {
 				{ text = L["Border Color"],  },
 				{ text = L["Glow"],  },
 			}
+
+NeatPlatesHubDefaults.HighlightTargetMode = 1
+NeatPlatesHubDefaults.HighlightFocustMode = 1
+NeatPlatesHubDefaults.HighlightMouseoverMode = 1
 NeatPlatesHubMenus.HighlightTypes = {
 	{ text = L["None"],  },
 	{ text = L["Border"],  },

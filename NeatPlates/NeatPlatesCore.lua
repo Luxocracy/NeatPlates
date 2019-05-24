@@ -233,6 +233,8 @@ do
 		visual.eliteicon = textFrame:CreateTexture(nil, "OVERLAY")
 		visual.skullicon = textFrame:CreateTexture(nil, "OVERLAY")
 		visual.target = textFrame:CreateTexture(nil, "BACKGROUND")
+		visual.focus = textFrame:CreateTexture(nil, "BACKGROUND")
+		visual.mouseover = textFrame:CreateTexture(nil, "BACKGROUND")
 		-- TextFrame
 		visual.customtext = textFrame:CreateFontString(nil, "OVERLAY")
 		visual.name  = textFrame:CreateFontString(nil, "OVERLAY")
@@ -335,7 +337,7 @@ do
 				CheckNameplateStyle()
 				UpdateIndicator_Standard()
 				UpdateIndicator_HealthBar()
-				UpdateIndicator_Target()
+				UpdateIndicator_Highlight()
 			end
 
 			-- Update Widgets
@@ -694,10 +696,16 @@ do
 	end
 
 
-	-- UpdateIndicator_Target
-	function UpdateIndicator_Target()
-		if unit.isTarget and style.target.show then visual.target:Show() else visual.target:Hide() end
-		if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
+	-- UpdateIndicator_Highlight
+	function UpdateIndicator_Highlight()
+		local current = nil
+		
+		if not current and unit.isTarget and style.target.show then current = 'target'; visual.target:Show() else visual.target:Hide() end
+		if not current and unit.isFocus and style.focus.show then current = 'focus'; visual.focus:Show() else visual.focus:Hide() end
+		if not current and unit.isMouseover and style.mouseover.show then current = 'mouseover'; visual.mouseover:Show() else visual.mouseover:Hide() end
+
+		if current then visual[current]:SetVertexColor(style[current].color.r, style[current].color.g, style[current].color.b, style[current].color.a) end
+		--if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
 	end
 
 
@@ -1308,12 +1316,12 @@ do
 
 	local anchorgroup = {"healthborder", "threatborder", "castborder", "castnostop",
 						"name",  "spelltext", "customtext", "level",
-						"spellicon", "raidicon", "skullicon", "eliteicon", "target"}
+						"spellicon", "raidicon", "skullicon", "eliteicon", "target", "focus", "mouseover"}
 
 	local bargroup = {"castbar", "healthbar"}
 
 	local texturegroup = { "castborder", "castnostop", "healthborder", "threatborder", "eliteicon",
-						"skullicon", "highlight", "target", "spellicon", }
+						"skullicon", "highlight", "target", "focus", "mouseover", "spellicon", }
 
 
 	-- UpdateStyle:
@@ -1325,6 +1333,7 @@ do
 
 		-- Anchorgroup
 		for index = 1, #anchorgroup do
+
 			local objectname = anchorgroup[index]
 			local object, objectstyle = visual[objectname], style[objectname]
 			if objectstyle and objectstyle.show then
@@ -1359,6 +1368,8 @@ do
 		if not unit.isBoss then visual.skullicon:Hide() end
 
 		if not unit.isTarget then visual.target:Hide() end
+		if not unit.isFocus then visual.focus:Hide() end
+		if not unit.isMouseover then visual.mouseover:Hide() end
 		if not unit.isMarked then visual.raidicon:Hide() end
 
 	end
