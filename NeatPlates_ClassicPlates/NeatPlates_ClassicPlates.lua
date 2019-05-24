@@ -250,7 +250,7 @@ WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = -
 WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 6 , y = 5, w = 104, h = 9}
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 4,y = 4 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 8,y = -6 }
-WidgetConfig.RangeWidget = { anchor = "CENTER", x=10, y=-3 }
+WidgetConfig.RangeWidget = { anchor = "CENTER", x=10, y=-3, w = 104, h = 9}
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
 	--WidgetConfig.DebuffWidgetPlus = { anchor = "CENTER" , x = 15 ,y = VerticalAdjustment + 24 }
 --end

@@ -194,12 +194,11 @@ WidgetConfig.TotemIcon = { anchor = "TOP" , x = 0 ,y = 14 }
 WidgetConfig.ThreatLineWidget = { anchor =  "TOP", x = -16 ,y = 20, w = 10, h = 2 }	-- y = 20
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 33 ,y = 15 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "TOP" , x = 0 ,y = -2 }
-WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 0 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = 13 }
 WidgetConfig.AbsorbWidget =	{ anchor="LEFT", x = 18, y = 1, w = 92, h = 9}
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 5,y = 3 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = -2,y = -10 }
-WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=-5 }
+WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=-5, w = 92, h = 9 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig

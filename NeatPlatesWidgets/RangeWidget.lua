@@ -28,8 +28,11 @@ end
 local function UpdateRangeWidget(frame, unit)
 	if not unit then return end
 	local minRange, maxRange = rc:GetRange(unit)
+	local height = frame:GetParent()._height or 12;
 	local width = frame:GetParent()._width or 100;
 	frame:Show()
+
+	frame:SetWidth(width); frame:SetHeight(32)
 
 	if WidgetRange and minRange and maxRange then
 		frame.Texture:Show()

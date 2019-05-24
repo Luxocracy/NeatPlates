@@ -67,7 +67,7 @@ local function UpdateAbsorbs(frame, unitid)
   local health = UnitHealth(unitid) or 0
 	local healthmax = UnitHealthMax(unitid) or 1
 	
-	-- absorb = healthmax -- This is just for testing the bars
+	-- For testing absorbs
 	--absorb.damage = healthmax/2
 	--absorb.healing = healthmax/4
 
