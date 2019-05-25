@@ -67,9 +67,9 @@ NeatPlatesHubDefaults.HighlightFocustMode = 1
 NeatPlatesHubDefaults.HighlightMouseoverMode = 1
 NeatPlatesHubMenus.HighlightTypes = {
 	{ text = L["None"],  },
+	{ text = L["Glow/Highlight"],  },
 	{ text = L["Border"],  },
 	{ text = L["Healthbar"],  },
-	{ text = L["Border & Healthbar"],  },
 }
 
 NeatPlatesHubDefaults.WidgetAuraSort = 1
