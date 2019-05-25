@@ -23,6 +23,12 @@ NeatPlatesHubMenus.RangeModes = {
 				{ text = L["Advanced"]} ,
 			}
 
+NeatPlatesHubDefaults.WidgetRangeStyle = 1
+NeatPlatesHubMenus.RangeStyles = {
+				{ text = L["Line"]} ,
+				{ text = L["Icon"]} ,
+			}
+
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
 NeatPlatesHubMenus.AbsorbModes = {
 				{ text = L["Blizzlike"]} ,

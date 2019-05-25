@@ -31,6 +31,7 @@ local ThemeList = NeatPlatesHubMenus.ThemeList
 local StyleModes = NeatPlatesHubMenus.StyleModes
 local TextModes = NeatPlatesHubMenus.TextModes
 local RangeModes = NeatPlatesHubMenus.RangeModes
+local RangeStyles = NeatPlatesHubMenus.RangeStyles
 local AuraWidgetModes = NeatPlatesHubMenus.AuraWidgetModes
 local DebuffStyles = NeatPlatesHubMenus.DebuffStyles
 local AuraSortModes = NeatPlatesHubMenus.AuraSortModes
@@ -489,9 +490,11 @@ local function BuildHubPanel(panel)
 	panel.WidgetRangeMode = CreateQuickDropdown(objectName.."WidgetRangeMode", L["Mode:"], RangeModes, 1, AlignmentColumn, panel.WidgetRangeIndicatorLabel, OffsetColumnB+76)
 	panel.WidgetRangeMode.tooltipText1 = L["Only uses the 'Mid Range' & 'Out of Range' colors to indicate unit range"]
 	panel.WidgetRangeMode.tooltipText2 = L["Uses multiple colors to indicate unit range"]
-	panel.WidgetMaxRange = CreateQuickSlider(objectName.."WidgetMaxRange", L["Range Threshold:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeMode, OffsetColumnB+76, 2)
+	panel.WidgetRangeStyle = CreateQuickDropdown(objectName.."WidgetRangeStyle", L["Style:"], RangeStyles, 1, AlignmentColumn, panel.WidgetRangeMode, OffsetColumnB+76)
+	panel.WidgetMaxRange = CreateQuickSlider(objectName.."WidgetMaxRange", L["Range Threshold:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeStyle, OffsetColumnB+76, 2)
 	panel.WidgetMaxRange.tooltipText = L["Your 'Out of Range' distance"]
-	panel.WidgetOffsetY = CreateQuickSlider(objectName.."WidgetOffsetY", L["Offset Y:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetMaxRange, OffsetColumnB+76, 2)
+	panel.WidgetOffsetX = CreateQuickSlider(objectName.."WidgetOffsetX", L["Offset X:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetMaxRange, OffsetColumnB+76, 2)
+	panel.WidgetOffsetY, F = CreateQuickSlider(objectName.."WidgetOffsetY", L["Offset Y:"], "ACTUAL", 150, AlignmentColumn, panel.WidgetOffsetX, OffsetColumnB+76, 2)
 
 	--[[
 	------------------------------
@@ -593,6 +596,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 
 	SetSliderMechanics(panel.WidgetMaxRange, 0, 1, 100, 1)
+	SetSliderMechanics(panel.WidgetOffsetX, 0, -100, 100, 1)
 	SetSliderMechanics(panel.WidgetOffsetY, 0, -50, 50, 1)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)

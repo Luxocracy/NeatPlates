@@ -9,11 +9,20 @@ local font = "FONTS\\arialn.ttf"
 
 local WidgetList = {}
 local WidgetMode = 1
+local WidgetStyle = 1
 local WidgetRange = 40
+local WidgetScale = false
 local WidgetColors = {}
 local WidgetPos = {x = 0, y = 0}
 
-local art = "Interface\\Addons\\NeatPlatesWidgets\\RangeWidget\\RangeWidgetLine"
+local WidgetIconSize = 10
+
+--local art = "Interface\\Addons\\NeatPlatesWidgets\\RangeWidget\\RangeWidgetLine"
+local artpath = "Interface\\Addons\\NeatPlatesWidgets\\RangeWidget\\"
+local artfile = {
+	artpath.."RangeWidgetLine",
+	artpath.."RangeWidgetCircle",
+}
 
 --[[ Ticker that runs every 0.05 seconds ]]--
 local function AttachNewTicker(frame)
@@ -62,7 +71,13 @@ local function UpdateRangeWidget(frame, unit)
 
 		frame.Texture:SetVertexColor(color.r,color.g,color.b,color.a)
 
-		if WidgetScale then frame.Texture:SetWidth(math.max(width*0.15, width*math.min(1, minRange/WidgetRange))) end
+		if WidgetScale and WidgetStyle == 1 then
+			frame.Texture:SetWidth(math.max(width*0.15, width*math.min(1, minRange/WidgetRange)))
+		elseif WidgetScale then
+			local scaleSize = math.max(WidgetIconSize*0.15, WidgetIconSize*math.min(1, minRange/WidgetRange))
+			frame.Texture:SetHeight(scaleSize)
+			frame.Texture:SetWidth(scaleSize)
+		end
 	else
 		frame.Texture:Hide()
 	end
@@ -71,9 +86,20 @@ end
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
 	local width = frame:GetParent()._width or 100
-	if not WidgetScale then frame.Texture:SetWidth(width) end
+	local height = frame:GetParent()._height or 12
 
-	frame.Texture:SetPoint("CENTER", WidgetPos.x, WidgetPos.y)
+	frame.Texture:SetScale(1)
+	if not WidgetScale then
+		if WidgetStyle == 1 then
+			frame.Texture:SetHeight(3)
+			frame.Texture:SetWidth(width)
+		else
+			frame.Texture:SetHeight(WidgetIconSize)
+			frame.Texture:SetWidth(WidgetIconSize)
+		end
+	end
+
+	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetPos.x, WidgetPos.y)
 end
 
 -- [[ Widget frame self update ]] --
@@ -117,10 +143,18 @@ local function CreateWidgetFrame(parent)
 	--[[ Widget Config can now pass width or height data from theme config ]]--
 	frame:SetWidth(16); frame:SetHeight(16)
 	frame.Texture = frame:CreateTexture(nil, "OVERLAY")
-	frame.Texture:SetTexture(art)
-	frame.Texture:SetPoint("CENTER", WidgetPos.x, WidgetPos.y)
-	frame.Texture:SetHeight(3)
-	frame.Texture:SetWidth(width)
+	frame.Texture:SetTexture(artfile[WidgetStyle])
+	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetPos.x, WidgetPos.y)
+	frame.Texture:SetScale(1)
+
+	if WidgetStyle == 1 then
+		frame.Texture:SetHeight(3)
+		frame.Texture:SetWidth(width)
+	else
+		frame.Texture:SetHeight(WidgetIconSize)
+		frame.Texture:SetWidth(WidgetIconSize)
+	end
+	
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
@@ -138,8 +172,10 @@ end
 
 local function SetRangeWidgetOptions(LocalVars)
 	WidgetMode = LocalVars.WidgetRangeMode
+	WidgetStyle = LocalVars.WidgetRangeStyle
 	WidgetRange = LocalVars.WidgetMaxRange
 	WidgetScale = LocalVars.WidgetRangeScale
+	WidgetPos.x = LocalVars.WidgetOffsetX
 	WidgetPos.y = LocalVars.WidgetOffsetY
 	WidgetColors["Melee"] = LocalVars.ColorRangeMelee
 	WidgetColors["Close"] = LocalVars.ColorRangeClose

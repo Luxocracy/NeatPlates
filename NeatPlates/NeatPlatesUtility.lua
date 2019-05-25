@@ -565,6 +565,7 @@ end
 local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode, width)
 	local value, multiplier, minimum, maximum, current
 	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+	local EditBox = CreateFrame("EditBox", reference, slider)
 
 	slider:SetWidth(width or 100)
 	slider:SetHeight(15)
@@ -582,9 +583,23 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.Label:SetText(label or "")
 
 	-- Value
-	slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
-	slider.Value:SetPoint("BOTTOM", 0, -10)
-	slider.Value:SetWidth(50)
+	--slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
+	--slider.Value:SetPoint("BOTTOM", 0, -10)
+	--slider.Value:SetWidth(50)
+	EditBox:SetPoint("BOTTOM", 0, -10)
+	EditBox:SetHeight(5)
+	EditBox:SetWidth(50)
+	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	EditBox:SetAutoFocus(false)
+	EditBox:SetJustifyH("CENTER");
+
+	EditBox:SetScript("OnEnterPressed", function(self, val)
+		slider:SetValue(self:GetNumber())
+		self:ClearFocus()
+		parent:Callback()
+	end)
+
+	slider.Value = EditBox
 
 	slider.isActual = (mode and mode == "ACTUAL")
 

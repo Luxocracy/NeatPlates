@@ -232,7 +232,9 @@ NeatPlatesHubDefaults = {
 	WidgetRangeIndicator = false,
 	WidgetRangeScale = false,
 	WidgetRangeMode = 1,
+	WidgetRangeStyle = 1,
 	WidgetMaxRange = 40,
+	WidgetOffsetX = 0,
 	WidgetOffsetY = 0,
 	ColorRangeMelee = {r = 0.9, g = 0.9, b = 0.9, a = 0},	-- Opaque White
 	ColorRangeClose = {r = 0.055, g = 0.875, b = 0.825},	-- Light Blue

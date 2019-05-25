@@ -397,6 +397,11 @@ L["Range Indicator Colors:"] = true
 	L["Simple"] = true
 	L["Advanced"] = true
 
+L["Style:"] = true
+	L["Line"] = true
+	L["Icon"] = true
+
+	L["Offset X:"] = true
 	L["Offset Y:"] = true
 
 ------------------------------
