@@ -215,12 +215,39 @@ TemplateTheme.frame = {
 }
 
 TemplateTheme.target = {
+	color = {},
 	texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
 	y = -5,
 	anchor = "CENTER",
+	show = false,
+}
+
+TemplateTheme.focus = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
+TemplateTheme.mouseover = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
+TemplateTheme.rangeindicator = {
 	show = false,
 }
 

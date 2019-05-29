@@ -240,6 +240,7 @@ local function ApplyStyleCustomization(style, defaults)
 	style.focus.show = (LocalVars.HighlightFocusMode == 2 or LocalVars.HighlightFocusMode == 3)
 	style.mouseover.show = (LocalVars.HighlightMouseoverMode == 2 or LocalVars.HighlightMouseoverMode == 3)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
+	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
 
 	style.target.color = LocalVars.ColorTarget
 	style.focus.color = LocalVars.ColorFocus
