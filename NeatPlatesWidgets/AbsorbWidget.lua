@@ -171,7 +171,7 @@ local function UpdateWidgetContext(frame, unit)
 	--[[ Update Widget Frame ]]--
 	frame:UnregisterAllEvents()
 
-	if WidgetUnits == 2 or (WidgetUnits == 1 and UnitGUID("target") == guid) then
+	if unit.style == "Default" and (WidgetUnits == 2 or (WidgetUnits == 1 and UnitGUID("target") == guid)) then
 		frame:RegisterUnitEvent("UNIT_ABSORB_AMOUNT_CHANGED", unitid)
 		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unitid)
 		frame:RegisterUnitEvent("UNIT_HEALTH", unitid)

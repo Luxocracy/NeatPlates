@@ -232,13 +232,13 @@ local function ApplyStyleCustomization(style, defaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
 
-	if LocalVars.HighlightTargetMode == 2 then style.target = CopyTable(style.highlight) or CopyTable(style.target) or {}; style.target.highlight = true else style.target = style.target or {} end
-	if LocalVars.HighlightFocusMode == 2 then style.focus = CopyTable(style.highlight) or CopyTable(style.target) or {}; style.focus.highlight = true else style.focus = CopyTable(style.target) or {} end
-	if LocalVars.HighlightMouseoverMode == 2 then style.mouseover = CopyTable(style.highlight) or CopyTable(style.target) or {}; style.mouseover.highlight = true else style.mouseover = CopyTable(style.target) or {} end
+	style.target = style.target or {}
+	style.focus = CopyTable(style.target) or {}
+	style.mouseover = CopyTable(style.target) or {}
 
-	style.target.show = (LocalVars.HighlightTargetMode == 2 or LocalVars.HighlightTargetMode == 3)
-	style.focus.show = (LocalVars.HighlightFocusMode == 2 or LocalVars.HighlightFocusMode == 3)
-	style.mouseover.show = (LocalVars.HighlightMouseoverMode == 2 or LocalVars.HighlightMouseoverMode == 3)
+	style.target.show = (LocalVars.HighlightTargetMode == 2)
+	style.focus.show = (LocalVars.HighlightFocusMode == 2)
+	style.mouseover.show = (LocalVars.HighlightMouseoverMode == 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
 	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
 

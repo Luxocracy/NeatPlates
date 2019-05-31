@@ -74,7 +74,7 @@ local UpdateStyle
 local UpdateIndicator_CustomScaleText, UpdateIndicator_Standard, UpdateIndicator_CustomAlpha
 local UpdateIndicator_Level, UpdateIndicator_ThreatGlow, UpdateIndicator_RaidIcon
 local UpdateIndicator_EliteIcon, UpdateIndicator_UnitColor, UpdateIndicator_Name
-local UpdateIndicator_HealthBar, UpdateIndicator_Target
+local UpdateIndicator_HealthBar, UpdateIndicator_Highlight
 local OnUpdateCasting, OnStartCasting, OnStopCasting, OnUpdateCastMidway
 
 -- Event Functions
@@ -227,7 +227,7 @@ do
 		-- Parented to Health Bar - Lower Frame
 		visual.healthborder = healthbar:CreateTexture(nil, "ARTWORK")
 		visual.threatborder = healthbar:CreateTexture(nil, "ARTWORK")
-		--visual.highlight = healthbar:CreateTexture(nil, "OVERLAY")
+		visual.highlight = healthbar:CreateTexture(nil, "OVERLAY")
 		-- Parented to Extended - Middle Frame
 		visual.raidicon = textFrame:CreateTexture(nil, "ARTWORK")
 		visual.eliteicon = textFrame:CreateTexture(nil, "OVERLAY")
@@ -246,8 +246,8 @@ do
 		visual.spelltext = castbar:CreateFontString(nil, "OVERLAY")
 		-- Set Base Properties
 		visual.raidicon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
-		--visual.highlight:SetAllPoints(visual.healthborder)
-		--visual.highlight:SetBlendMode("ADD")
+		visual.highlight:SetAllPoints(visual.healthborder)
+		visual.highlight:SetBlendMode("ADD")
 
 		extended:SetFrameStrata("BACKGROUND")
 		healthbar:SetFrameStrata("BACKGROUND")
@@ -390,7 +390,7 @@ do
 		extended.stylename = ""
 		extended.Active = true
 
-		--visual.highlight:Hide()
+		visual.highlight:Hide()
 
 		wipe(extended.unit)
 		wipe(extended.unitcache)
@@ -406,7 +406,7 @@ do
 		-- Graphics
 		unit.isCasting = false
 		visual.castbar:Hide()
-		--visual.highlight:Hide()
+		visual.highlight:Hide()
 
 
 		-- Widgets/Extensions
@@ -704,18 +704,9 @@ do
 		if not current and unit.isFocus and style.focus.show then current = 'focus'; visual.focus:Show() else visual.focus:Hide() end
 		if not current and unit.isMouseover and style.mouseover.show then current = 'mouseover'; visual.mouseover:Show() else visual.mouseover:Hide() end
 
-		if current then
-			visual[current]:SetVertexColor(style[current].color.r, style[current].color.g, style[current].color.b, style[current].color.a)
-			if style[current].highlight then
-				visual[current]:SetAllPoints(visual.healthborder)
-				visual[current]:SetBlendMode("ADD")
-				visual[current]:SetDrawLayer("OVERLAY")
-			else
-				visual[current]:SetBlendMode("BLEND")
-				visual[current]:SetDrawLayer("BACKGROUND")
-			end
-		end
-		--if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
+		if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
+
+		if current then visual[current]:SetVertexColor(style[current].color.r, style[current].color.g, style[current].color.b, style[current].color.a) end
 	end
 
 
@@ -1321,6 +1312,7 @@ do
 		end
 	end
 
+
 	-- Style Groups
 	local fontgroup = {"name", "level", "spelltext", "customtext"}
 
@@ -1331,7 +1323,7 @@ do
 	local bargroup = {"castbar", "healthbar"}
 
 	local texturegroup = { "castborder", "castnostop", "healthborder", "threatborder", "eliteicon",
-						"skullicon", "target", "focus", "mouseover", "spellicon", }
+						"skullicon", "highlight", "target", "focus", "mouseover", "spellicon", }
 
 
 	-- UpdateStyle:
@@ -1367,6 +1359,7 @@ do
 		if style and style.raidicon and style.raidicon.texture then
 			visual.raidicon:SetTexture(style.raidicon.texture)
 		end
+		if style and style.healthbar.texture == EMPTY_TEXTURE then visual.noHealthbar = true end
 		-- Font Group
 		for index = 1, #fontgroup do
 			local objectname = fontgroup[index]
