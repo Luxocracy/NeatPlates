@@ -346,7 +346,6 @@ L["Target Highlighting:"] = true
 L["Focus Highlighting:"] = true
 L["Mouseover Highlighting:"] = true
 	L["None"] = true
-	L["Glow/Highlight"] = true
 	L["Border"] = true
 	L["Healthbar"] = true
 
