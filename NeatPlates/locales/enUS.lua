@@ -313,9 +313,9 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by
 |cffff9320Prioritised top to bottom]=]
 
 ------------------------------
--- Threat
+-- Threat & Highlighting
 ------------------------------
-L["Threat"] = true
+L["Threat & Highlighting"] = true
 
 L["Threat Mode:"] = true
 	-- Threat Mode Dropdown
@@ -341,6 +341,13 @@ L["Highlight Group Members holding Aggro"] = true
 	L["Health Bar Color"] = true
 	L["Border/Warning Glow"] = true
 	L["Name Text Color"] = true
+
+L["Target Highlighting:"] = true
+L["Focus Highlighting:"] = true
+L["Mouseover Highlighting:"] = true
+	L["None"] = true
+	L["Border"] = true
+	L["Healthbar"] = true
 
 ------------------------------
 -- Health
@@ -371,6 +378,32 @@ L["Cast Bar Colors:"] = true
 	L["Interrupted"] = true
 
 ------------------------------
+-- Range Indicator
+------------------------------
+L["Range Indicator"] = true
+
+L["Enable Range Indicator"] = true
+L["Range Threshold:"] = true
+L["Scale based on distance"] = true
+
+L["Range Indicator Colors:"] = true
+	L["Melee Range"] = true
+	L["Close Range"] = true
+	L["Mid Range"] = true
+	L["Far Range"] = true
+	L["Out of Range"] = true
+
+	L["Simple"] = true
+	L["Advanced"] = true
+
+L["Style:"] = true
+	L["Line"] = true
+	L["Icon"] = true
+
+	L["Offset X:"] = true
+	L["Offset Y:"] = true
+
+------------------------------
 -- Other Widgets
 ------------------------------
 L["Other Widgets"] = true
@@ -394,10 +427,6 @@ L["Show Absorb Bars"] = true
 	L["Show on:"] = true
 		L["Target Only"] = true
 		L["All Units"] = true
-
-L["Show Party Range Warning"] = true
-	L["Range:"] = true
-		L["yards"] = true
 
 ------------------------------
 -- Funky Stuff
@@ -461,5 +490,7 @@ L["Color is defined under the 'Reaction' category."] = true
 L["Hides the Cooldown Spiral on Auras"] = true
 L["Hides the duration text on Auras. (Use this if you want something like OmniCC to handle the aura durations."] = true
 L["Might require a '/reload' to display correctly"] = true
-
+L["Only uses the 'Mid Range' & 'Out of Range' colors to indicate unit range"] = true
+L["Uses multiple colors to indicate unit range"] = true
+L["Your 'Out of Range' distance"] = true
 

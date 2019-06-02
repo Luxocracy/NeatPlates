@@ -19,10 +19,14 @@ local CreateThreatPercentageWidget = WidgetLib.CreateThreatPercentageWidget
 
 NeatPlatesHubDefaults.WidgetRangeMode = 1
 NeatPlatesHubMenus.RangeModes = {
-				{ text = "9 "..L["yards"]} ,
-				{ text = "15 "..L["yards"]} ,
-				{ text = "28 "..L["yards"]} ,
-				{ text = "40 "..L["yards"]} ,
+				{ text = L["Simple"]} ,
+				{ text = L["Advanced"]} ,
+			}
+
+NeatPlatesHubDefaults.WidgetRangeStyle = 1
+NeatPlatesHubMenus.RangeStyles = {
+				{ text = L["Line"]} ,
+				{ text = L["Icon"]} ,
 			}
 
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
@@ -57,6 +61,15 @@ NeatPlatesHubMenus.BorderTypes = {
 				{ text = L["Border Color"],  },
 				{ text = L["Glow"],  },
 			}
+
+NeatPlatesHubDefaults.HighlightTargetMode = 1
+NeatPlatesHubDefaults.HighlightFocustMode = 1
+NeatPlatesHubDefaults.HighlightMouseoverMode = 1
+NeatPlatesHubMenus.HighlightTypes = {
+	{ text = L["None"],  },
+	{ text = L["Border"],  },
+	{ text = L["Healthbar"],  },
+}
 
 NeatPlatesHubDefaults.WidgetAuraSort = 1
 NeatPlatesHubMenus.AuraSortModes = {
@@ -330,6 +343,7 @@ local function OnInitializeWidgets(extended, configTable)
 	local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
 	local EnableQuestWidget = LocalVars.WidgetQuestIcon
 	local EnableThreatPercentageWidget = LocalVars.WidgetThreatPercentage
+	local EnableRangeWidget = LocalVars.WidgetRangeIndicator
 
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
@@ -338,6 +352,7 @@ local function OnInitializeWidgets(extended, configTable)
 	InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 	InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
 	InitWidget( "ThreatPercentageWidgetHub", extended, configTable.ThreatPercentageWidget, CreateThreatPercentageWidget, EnableThreatPercentageWidget)
+	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -361,12 +376,15 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if LocalVars.WidgetDebuff and widgets.AuraWidget then
 		widgets.AuraWidget:UpdateContext(unit) end
-	
+
 	if LocalVars.WidgetAbsorbIndicator and widgets.AbsorbWidgetHub then
 		widgets.AbsorbWidgetHub:UpdateContext(unit) end
 
 	if LocalVars.WidgetThreatPercentage and widgets.ThreatPercentageWidgetHub then
 		widgets.ThreatPercentageWidgetHub:UpdateContext(unit) end
+
+	if LocalVars.WidgetRangeIndicator and widgets.RangeWidgetHub then
+		widgets.RangeWidgetHub:UpdateContext(unit) end
 end
 
 local function OnUpdateDelegate(extended, unit)
@@ -404,7 +422,7 @@ local function OnVariableChange(vars)
 	if true then
 		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter, LocalVars.EmphasizedUnique)
 	end
-	
+
 	if LocalVars.WidgetAbsorbIndicator then
 		NeatPlatesWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode, LocalVars.WidgetAbsorbUnits)
 	end
@@ -420,6 +438,10 @@ local function OnVariableChange(vars)
 	if LocalVars.WidgetPandemic or LocalVars.WidgetBuffPurgeable or LocalVars.WidgetBuffEnrage then
 		NeatPlatesWidgets.SetBorderTypes(LocalVars.BorderPandemic, LocalVars.BorderBuffPurgeable, LocalVars.BorderBuffEnrage)
 	end
+
+	if LocalVars.WidgetRangeIndicator then
+		NeatPlatesWidgets.SetRangeWidgetOptions(LocalVars)
+	end
 end
 HubData.RegisterCallback(OnVariableChange)
 
@@ -432,9 +454,3 @@ NeatPlatesHubFunctions.OnUpdate = OnUpdateDelegate
 NeatPlatesHubFunctions.OnInitializeWidgets = OnInitializeWidgets
 NeatPlatesHubFunctions.OnContextUpdate = OnContextUpdateDelegate
 NeatPlatesHubFunctions._WidgetDebuffFilter = DebuffFilter
-
-
-
-
-
-

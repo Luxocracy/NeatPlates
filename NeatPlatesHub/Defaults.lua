@@ -142,19 +142,22 @@ NeatPlatesHubDefaults = {
 	ClassColorPartyMembers = false,
 	EnableOffTankHighlight = false,
 
-	-- Threat
+	-- Threat & Highlighting
 	---------------------------------------
 	ThreatMode = 1,
 	ThreatGlowEnable = true,
-	ColorThreatWarning = {r = .8, g = 0, b = 0,},		-- Orange
-	ColorThreatTransition = {r = 255/255, g = 160/255, b = 0},	-- Yellow
-	ColorThreatSafe = {r = 15/255, g = 150/255, b = 230/255},	-- Bright Blue
-	ColorAttackingOtherTank = {r = 15/255, g = 170/255, b = 200/255},	-- Bright Blue
 	ColorShowPartyAggro = false,
-	ColorPartyAggro = {r = 255/255, g = 0, b = .4,},
 	ColorPartyAggroBar = false,
 	ColorPartyAggroGlow = true,
 	ColorPartyAggroText = false,
+
+	HighlightTargetMode = 1,
+	HighlightFocusMode = 1,
+	HighlightMouseoverMode = 1,
+
+	ColorTarget = {r = 1, g = 1, b = 1,},
+	ColorFocus = {r = 1, g = 1, b = 1,},
+	ColorMouseover = {r = 1, g = 1, b = 1,},
 
 
 	-- Reaction
@@ -176,10 +179,13 @@ NeatPlatesHubDefaults = {
 	TextColorElite = {r = .9, g = .7, b = .3, a = .5},
 	TextColorBoss = {r = 1, g = .85, b = .1, a = .8},
 
+	ColorThreatWarning = {r = .8, g = 0, b = 0,},		-- Red
+	ColorThreatTransition = {r = 255/255, g = 160/255, b = 0},	-- Yellow
+	ColorThreatSafe = {r = 15/255, g = 150/255, b = 230/255},	-- Bright Blue
+	ColorAttackingOtherTank = {r = 15/255, g = 170/255, b = 200/255},	-- Bright Blue
+	ColorPartyAggro = {r = 255/255, g = 0, b = .4,},
+
 	ColorTapped = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorTarget = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorFocus = {r = 110/255, g = 110/255, b = 110/255,},
-	ColorMouseover = {r = 110/255, g = 110/255, b = 110/255,},
 
 	CustomColorList = "",
 	CustomColorLookup = {},
@@ -224,7 +230,17 @@ NeatPlatesHubDefaults = {
 	WidgetComboPointsStyle = 1,
 	WidgetThreatIndicator = true,
 	WidgetRangeIndicator = false,
+	WidgetRangeScale = false,
 	WidgetRangeMode = 1,
+	WidgetRangeStyle = 1,
+	WidgetMaxRange = 40,
+	WidgetOffsetX = 0,
+	WidgetOffsetY = 0,
+	ColorRangeMelee = {r = 0.9, g = 0.9, b = 0.9, a = 0},	-- Opaque White
+	ColorRangeClose = {r = 0.055, g = 0.875, b = 0.825},	-- Light Blue
+	ColorRangeMid = {r = 0.035, g = 0.865, b = 0},	-- Green
+	ColorRangeFar = {r = 1, g = 0.5, b = 0}, -- Orange
+	ColorRangeOOR = {r = 0.9, g = 0.055, b = 0.075},	-- Red
 	WidgetEnableExternal = true,
 	WidgetAbsorbIndicator = false,
 	WidgetAbsorbMode = 1,

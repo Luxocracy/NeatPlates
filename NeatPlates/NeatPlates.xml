@@ -307,7 +307,9 @@
             </Frames>
     </Frame>
 
-    <Script file="libs\LibButtonGlow-1.0\LibStub\LibStub.lua"/>
+    <Script file="libs\LibStub-1.0\LibStub.lua"/>
+    <Include file="libs\CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
+    <Script file="libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
     <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
     <Include file="libs\AceLocale-3.0\AceLocale-3.0.xml"/>
     <Include file="locales.xml"/>

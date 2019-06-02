@@ -565,6 +565,7 @@ end
 local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode, width)
 	local value, multiplier, minimum, maximum, current
 	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+	local EditBox = CreateFrame("EditBox", reference, slider)
 
 	slider:SetWidth(width or 100)
 	slider:SetHeight(15)
@@ -582,9 +583,23 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.Label:SetText(label or "")
 
 	-- Value
-	slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
-	slider.Value:SetPoint("BOTTOM", 0, -10)
-	slider.Value:SetWidth(50)
+	--slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
+	--slider.Value:SetPoint("BOTTOM", 0, -10)
+	--slider.Value:SetWidth(50)
+	EditBox:SetPoint("BOTTOM", 0, -10)
+	EditBox:SetHeight(5)
+	EditBox:SetWidth(50)
+	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	EditBox:SetAutoFocus(false)
+	EditBox:SetJustifyH("CENTER");
+
+	EditBox:SetScript("OnEnterPressed", function(self, val)
+		slider:SetValue(self:GetNumber())
+		self:ClearFocus()
+		parent:Callback()
+	end)
+
+	slider.Value = EditBox
 
 	slider.isActual = (mode and mode == "ACTUAL")
 
@@ -698,10 +713,11 @@ local function ShowDropdownMenu(sourceFrame, menu, clickScript)
 
 		if item then
 			local itemText = item.text
-
+			local tooltipText = sourceFrame["tooltipText"..i]
 			local region1, region2 = button:GetRegions()
 			--print(region1:GetObjectType(), region2:GetObjectType() )
 
+			button.tooltipText = tooltipText
 			if currentSelection == i or itemText == currentSelection then
 				region1:SetTextColor(1, .8, 0)
 				region1:SetFont(1, .8, 0)
@@ -716,7 +732,16 @@ local function ShowDropdownMenu(sourceFrame, menu, clickScript)
 			maxWidth = max(maxWidth, button:GetTextWidth())
 			numOfItems = numOfItems + 1
 			button:SetScript("OnClick", clickScript)
-
+			button:SetScript("OnEnter", function(self)
+				if(self.tooltipText ~= nil) then
+					GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+				end
+			end);
+			button:SetScript("OnLeave", function(self)
+				if(self.tooltipText ~= nil) then
+					GameTooltip:Hide();
+				end
+			end)
 
 			button:Show()
 		else

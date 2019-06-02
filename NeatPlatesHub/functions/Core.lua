@@ -221,7 +221,8 @@ local function ApplyCustomBarSize(style, defaults)
 		style.threatborder.width = defaults.threatborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthborder.width = defaults.healthborder.width * (LocalVars.FrameBarWidth or 1)
 		style.target.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
-		style.healthbar.width = defaults.healthbar.width * (LocalVars.FrameBarWidth or 1)
+		style.focus.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
+		style.mouseover.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
 		style.frame.width = defaults.frame.width * (LocalVars.FrameBarWidth or 1)
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
 	end
@@ -230,8 +231,20 @@ end
 local function ApplyStyleCustomization(style, defaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
-	style.target.show = (LocalVars.WidgetTargetHighlight == true)
+
+	style.target = style.target or {}
+	style.focus = CopyTable(style.target) or {}
+	style.mouseover = CopyTable(style.target) or {}
+
+	style.target.show = (LocalVars.HighlightTargetMode == 2)
+	style.focus.show = (LocalVars.HighlightFocusMode == 2)
+	style.mouseover.show = (LocalVars.HighlightMouseoverMode == 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
+	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
+
+	style.target.color = LocalVars.ColorTarget
+	style.focus.color = LocalVars.ColorFocus
+	style.mouseover.color = LocalVars.ColorMouseover
 
  	ApplyCustomBarSize(style, defaults)
 	ApplyFontCustomization(style, defaults)
@@ -359,6 +372,8 @@ local function ApplyHubFunctions(theme)
 		backupStyle.threatborder.default_width = barStyle.threatborder.width
 		backupStyle.healthborder.default_width = barStyle.healthborder.width
 		backupStyle.target.default_width = barStyle.target.width
+		backupStyle.focus.default_width = barStyle.target.width
+		backupStyle.mouseover.default_width = barStyle.target.width
 		backupStyle.healthbar.default_width = barStyle.healthbar.width
 		backupStyle.eliteicon.default_x = barStyle.eliteicon.x
 	end
