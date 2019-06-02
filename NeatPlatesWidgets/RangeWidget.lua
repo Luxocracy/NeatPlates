@@ -35,7 +35,7 @@ local function AttachNewTicker(frame)
 end
 
 local function UpdateRangeWidget(frame, unit)
-	if not unit or not frame.active then return end
+	if not unit or not frame._ticker then return end
 	local minRange, maxRange = rc:GetRange(unit)
 	local height = frame:GetParent()._height or 12;
 	local width = frame:GetParent()._width or 100;
@@ -122,13 +122,14 @@ local function UpdateWidgetContext(frame, unit)
 
 	--[[ Update Widget Frame ]]--
 	--frame:UnregisterAllEvents()
-	frame.active = true
-	if unit.style ~= "Default" then
-		frame.active = false
+
+	if unit.style == "Default" then
+		AttachNewTicker(frame)
+	else
+		frame._ticker = nil
 		frame:Hide()
 	end
-
-	AttachNewTicker(frame)
+	
 	UpdateRangeWidget(frame, unitid)
 end
 

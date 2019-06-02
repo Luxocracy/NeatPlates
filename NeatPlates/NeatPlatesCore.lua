@@ -68,7 +68,7 @@ local function BypassFunction() return true end
 local ShowBlizzardPlate		-- Holder for later
 
 -- Style
-local UpdateStyle
+local UpdateStyle, CheckNameplateStyle
 
 -- Indicators
 local UpdateIndicator_CustomScaleText, UpdateIndicator_Standard, UpdateIndicator_CustomAlpha
@@ -302,7 +302,7 @@ do
 	local function UpdateUnitCache() for key, value in pairs(unit) do unitcache[key] = value end end
 
 	-- CheckNameplateStyle
-	local function CheckNameplateStyle()
+	function CheckNameplateStyle()
 		if activetheme.SetStyle then				-- If the active theme has a style selection function, run it..
 			stylename = activetheme.SetStyle(unit)
 			extended.style = activetheme[stylename]
@@ -582,7 +582,10 @@ do
 
 		UpdateUnitCondition(plate, unitid)	-- This updates a bunch of properties
 
-		if activetheme.OnContextUpdate then activetheme.OnContextUpdate(extended, unit) end
+		if activetheme.OnContextUpdate then 
+			CheckNameplateStyle()
+			activetheme.OnContextUpdate(extended, unit)
+		end
 		if activetheme.OnUpdate then activetheme.OnUpdate(extended, unit) end
 	end
 
