@@ -57,8 +57,6 @@ local function CreateThreatPercentageWidget(parent)
 	frame.Text:SetFont(font, 10, "OUTLINE")
 	frame.Text:SetAllPoints(frame)
 	frame.Text:SetJustifyH("CENTER")
-	frame.Text:SetPoint("CENTER",frame.Line,"LEFT", 0, 0)
-	-- frame.Text:SetTextColor(1,1,1)
 
 	frame:Hide()
 	frame.Update = UpdateWidget
