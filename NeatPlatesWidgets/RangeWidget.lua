@@ -12,6 +12,7 @@ local WidgetMode = 1
 local WidgetStyle = 1
 local WidgetRange = 40
 local WidgetScale = false
+local WidgetWidthMod = 1
 local WidgetColors = {}
 local WidgetPos = {x = 0, y = 0}
 
@@ -38,7 +39,7 @@ local function UpdateRangeWidget(frame, unit)
 	if not unit or not frame._ticker then return end
 	local minRange, maxRange = rc:GetRange(unit)
 	local height = frame:GetParent()._height or 12;
-	local width = frame:GetParent()._width or 100;
+	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
 	
 	frame:Show()
 
@@ -86,7 +87,7 @@ end
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
-	local width = frame:GetParent()._width or 100
+	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
 	local height = frame:GetParent()._height or 12
 
 	frame.Texture:SetScale(1)
@@ -145,7 +146,7 @@ end
 local function CreateWidgetFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
 	local height = frame:GetParent()._height or 12;
-	local width = frame:GetParent()._width or 100;
+	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
 
 	--[[ Widget Config can now pass width or height data from theme config ]]--
 	frame:SetWidth(16); frame:SetHeight(16)
@@ -184,6 +185,7 @@ local function SetRangeWidgetOptions(LocalVars)
 	WidgetScale = LocalVars.WidgetRangeScale
 	WidgetPos.x = LocalVars.WidgetOffsetX
 	WidgetPos.y = LocalVars.WidgetOffsetY
+	WidgetWidthMod = LocalVars.FrameBarWidth or 1
 	WidgetColors["Melee"] = LocalVars.ColorRangeMelee
 	WidgetColors["Close"] = LocalVars.ColorRangeClose
 	WidgetColors["Mid"] = LocalVars.ColorRangeMid

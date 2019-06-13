@@ -220,6 +220,7 @@ local function ApplyCustomBarSize(style, defaults)
 		-- Alter Widths
 		style.threatborder.width = defaults.threatborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthborder.width = defaults.healthborder.width * (LocalVars.FrameBarWidth or 1)
+		style.healthbar.width = defaults.healthbar.width * (LocalVars.FrameBarWidth or 1)
 		style.target.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
 		style.focus.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
 		style.mouseover.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)

@@ -567,6 +567,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
 	local EditBox = CreateFrame("EditBox", reference, slider)
 
+	slider.isActual = (mode and mode == "ACTUAL")
+
 	slider:SetWidth(width or 100)
 	slider:SetHeight(15)
 	--
@@ -591,17 +593,18 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	EditBox:SetWidth(50)
 	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 	EditBox:SetAutoFocus(false)
-	EditBox:SetJustifyH("CENTER");
+	EditBox:SetJustifyH("CENTER")
+	EditBox:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
+	EditBox:SetScript("OnEditFocusLost", function(self) self:HighlightText(0, 0) end)
 
 	EditBox:SetScript("OnEnterPressed", function(self, val)
-		slider:SetValue(self:GetNumber())
+		if slider.isActual then val = self:GetNumber() else val = self:GetNumber()/100 end
+		slider:SetValue(val)
 		self:ClearFocus()
 		parent:Callback()
 	end)
 
 	slider.Value = EditBox
-
-	slider.isActual = (mode and mode == "ACTUAL")
 
 	if slider.isActual then
 		local multiplier = 1
