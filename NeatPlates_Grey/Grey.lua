@@ -188,10 +188,10 @@ StyleDefault.spellicon = {
 }
 
 StyleDefault.raidicon = {
-	width = 20,
-	height = 20,
-	x = -35,
-	y = 12+nameplate_verticalOffset,
+	width = 16,
+	height = 16,
+	x = -30,
+	y = 8+nameplate_verticalOffset,
 	anchor = "TOP",
 		-- Texture Coordinates
 	left = 0,

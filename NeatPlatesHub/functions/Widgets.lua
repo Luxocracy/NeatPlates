@@ -29,6 +29,12 @@ NeatPlatesHubMenus.RangeStyles = {
 				{ text = L["Icon"]} ,
 			}
 
+NeatPlatesHubDefaults.WidgetRangeUnits = 2
+NeatPlatesHubMenus.RangeUnits = {
+				{ text = L["Target Only"]} ,
+				{ text = L["All Units"]} ,
+			}
+
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
 NeatPlatesHubMenus.AbsorbModes = {
 				{ text = L["Blizzlike"]} ,

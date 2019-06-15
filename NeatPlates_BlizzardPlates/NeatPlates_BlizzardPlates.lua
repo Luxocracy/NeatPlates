@@ -175,7 +175,7 @@ StyleDefault.raidicon = {
 	width = 14,
 	height = 14,
 	x = -70,
-	y = 30,
+	y = 1,
 	anchor = "CENTER",
 }
 

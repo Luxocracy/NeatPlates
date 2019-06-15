@@ -187,10 +187,10 @@ StyleDefault.eliteicon = {
 }
 
 StyleDefault.raidicon = {
-	width = 25,
-	height = 25,
-	x = -55,
-	y = VerticalAdjustment + 21,
+	width = 18,
+	height = 18,
+	x = -60,
+	y = VerticalAdjustment + 16,
 	anchor = "CENTER",
 }
 

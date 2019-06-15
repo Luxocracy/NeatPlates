@@ -165,8 +165,8 @@ StyleDefault.spellicon = {
 StyleDefault.raidicon = {
 	width = 14,
 	height = 14,
-	x = -66,
-	y = 30,
+	x = -56,
+	y = 5,
 	anchor = "CENTER",
 }
 

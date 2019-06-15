@@ -137,10 +137,10 @@ StyleDefault.target = {
 }
 
 StyleDefault.raidicon = {
-	width = 22,
-	height = 22,
-	x = -64,
-	y = VerticalAdjustment - 3,
+	width = 16,
+	height = 16,
+	x = -60,
+	y = VerticalAdjustment + 1,
 	anchor = "CENTER",
 	texture = "Interface\\TargetingFrame\\UI-RaidTargetingIcons",
 	show = true,

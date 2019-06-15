@@ -10,6 +10,7 @@ local font = "FONTS\\arialn.ttf"
 local WidgetList = {}
 local WidgetMode = 1
 local WidgetStyle = 1
+local WidgetUnits = 2 -- 1 - Target Only; 2 - All Units
 local WidgetRange = 40
 local WidgetScale = false
 local WidgetWidthMod = 1
@@ -124,7 +125,7 @@ local function UpdateWidgetContext(frame, unit)
 	--[[ Update Widget Frame ]]--
 	--frame:UnregisterAllEvents()
 
-	if unit.style == "Default" then
+	if unit.style == "Default" and (WidgetUnits == 2 or (WidgetUnits == 1 and UnitGUID("target") == guid)) then
 		AttachNewTicker(frame)
 	else
 		frame._ticker = nil
@@ -181,6 +182,7 @@ end
 local function SetRangeWidgetOptions(LocalVars)
 	WidgetMode = LocalVars.WidgetRangeMode
 	WidgetStyle = LocalVars.WidgetRangeStyle
+	WidgetUnits = LocalVars.WidgetRangeUnits
 	WidgetRange = LocalVars.WidgetMaxRange
 	WidgetScale = LocalVars.WidgetRangeScale
 	WidgetPos.x = LocalVars.WidgetOffsetX

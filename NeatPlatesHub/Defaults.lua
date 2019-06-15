@@ -233,6 +233,7 @@ NeatPlatesHubDefaults = {
 	WidgetRangeScale = false,
 	WidgetRangeMode = 1,
 	WidgetRangeStyle = 1,
+	WidgetRangeUnits = 2,
 	WidgetMaxRange = 40,
 	WidgetOffsetX = 0,
 	WidgetOffsetY = 0,
