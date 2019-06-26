@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: Neat Plates Hub
 ## Notes: Provides a common configuration panel for supported themes.
 ## Author: Luxocracy and friends
