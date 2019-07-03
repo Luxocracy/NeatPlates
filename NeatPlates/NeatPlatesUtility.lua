@@ -238,6 +238,7 @@ local function GetUnitQuestInfo(unit)
     local unitid = unit.unitid
     local questName
     local questProgress
+    local questList = {}
 
     if not unitid then return end
 
@@ -255,7 +256,8 @@ local function GetUnitQuestInfo(unit)
 
             if (playerName == "") or (playerName == UnitName("player")) then
                 questProgress = questNote
-                break
+                table.insert(questList, {questName, questProgress})
+                --break
             end
 
         elseif b == 0 and r > 0.99 and g > 0.82 then
@@ -264,7 +266,7 @@ local function GetUnitQuestInfo(unit)
         end
     end
 
-    return questName, questProgress
+    return questList
 end
 
 
@@ -601,7 +603,12 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		if slider.isActual then val = self:GetNumber() else val = self:GetNumber()/100 end
 		slider:SetValue(val)
 		self:ClearFocus()
-		parent:Callback()
+
+		if parent.Callback then
+			parent:Callback()
+		elseif slider.Callback then
+			slider:Callback()
+		end
 	end)
 
 	slider.Value = EditBox
@@ -623,6 +630,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.Low:SetText(minimum)
 	slider.High:SetText(maximum)
 	slider.Value:SetText(current)
+	slider.Value:SetCursorPosition(0)
 	slider:SetScript("OnValueChanged", function()
 		local ext = "%"
 		if slider.isActual then ext = "" end
