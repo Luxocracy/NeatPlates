@@ -493,4 +493,5 @@ L["Might require a '/reload' to display correctly"] = true
 L["Only uses the 'Mid Range' & 'Out of Range' colors to indicate unit range"] = true
 L["Uses multiple colors to indicate unit range"] = true
 L["Your 'Out of Range' distance"] = true
+L["Requires 'All NPCs' to be unchecked"] = true
 

@@ -187,7 +187,7 @@ StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12
-StyleTextOnly.name.y = 17
+StyleTextOnly.name.y = 6
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15
@@ -207,6 +207,7 @@ WidgetConfig.RangeWidget = { anchor = "CENTER" , x = 0 ,y = 0 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = 4 }
 WidgetConfig.AbsorbWidget =	{ anchor="LEFT", x = -5, y = -2.5, w = 106, h = 4 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -18,y = 0 }
+WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = -18,y = 6 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 14,y = -9 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=-7, w = 106, h = 4 }
 

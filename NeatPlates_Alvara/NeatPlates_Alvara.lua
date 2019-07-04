@@ -177,7 +177,8 @@ StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12
-StyleTextOnly.name.y = 17
+StyleTextOnly.name.x = 0
+StyleTextOnly.name.y = 14
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15
@@ -197,6 +198,7 @@ WidgetConfig.ComboWidget = { anchor = "TOP" , x = 0 ,y = -2 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = 13 }
 WidgetConfig.AbsorbWidget =	{ anchor="LEFT", x = 18, y = 1, w = 92, h = 9}
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 5,y = 3 }
+WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = 4,y = 12 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = -2,y = -10 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=-5, w = 92, h = 9 }
 

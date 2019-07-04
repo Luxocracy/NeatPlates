@@ -249,6 +249,7 @@ WidgetConfig.RangeWidget = { anchor = "BOTTOM", x = 0 ,y = 0 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = -3 }
 WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 6 , y = 5, w = 104, h = 9}
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 4,y = 4 }
+WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = 2,y = 16 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 8,y = -6 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=10, y=-3, w = 104, h = 9}
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then

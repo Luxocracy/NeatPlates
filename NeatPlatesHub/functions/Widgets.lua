@@ -391,6 +391,9 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if LocalVars.WidgetRangeIndicator and widgets.RangeWidgetHub then
 		widgets.RangeWidgetHub:UpdateContext(unit) end
+
+	if LocalVars.WidgetQuestIcon and widgets.QuestWidgetHub then
+		widgets.QuestWidgetHub:UpdateContext(unit, extended) end
 end
 
 local function OnUpdateDelegate(extended, unit)
