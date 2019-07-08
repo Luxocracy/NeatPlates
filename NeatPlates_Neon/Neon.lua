@@ -270,6 +270,32 @@ StyleDefault.frame = {
 	y = 0,
 }
 
+StyleDefault.extrabar = {
+	texture =					 ArtworkPath.."Neon_Bar",
+	backdrop =					 ArtworkPath.."Neon_Bar_Backdrop",
+	width = 98,
+	height = 8,
+	x = 0,
+	y = VerticalAdjustment+6,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 8,
+	width = 98,
+	height = 4,
+	x = 0,
+	y = VerticalAdjustment+5,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
@@ -297,6 +323,11 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 70
+StyleTextOnly.extrabar.y = VerticalAdjustment - 20
+StyleTextOnly.extratext.y = VerticalAdjustment - 21
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.customtext.size = fontsize - 2
 StyleTextOnly.customtext.flags = "NONE"
 StyleTextOnly.customtext.y = VerticalAdjustment-8

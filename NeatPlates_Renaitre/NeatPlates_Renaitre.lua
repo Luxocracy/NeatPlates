@@ -203,6 +203,32 @@ StyleDefault.customart = {
 	show = true,
 }
 
+StyleDefault.extrabar = {
+	texture =						path.."Statusbar",
+	backdrop =						path.."StatusbarBackground",
+	height = 4,
+	width = 98,
+	x = 0,
+	y = VerticalAdjustment+8,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 7,
+	height = 4,
+	width = 98,
+	x = 0,
+	y = VerticalAdjustment+7,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 
 local arenaIconPath = "Interface\\AddOns\\NeatPlatesWidgets\\ArenaIcons"
 local arenaUnitIDs = {"arena1", "arena2", "arena3", "arena4", "arena5"}
@@ -247,6 +273,11 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 80
+StyleTextOnly.extrabar.y = VerticalAdjustment + 6
+StyleTextOnly.extratext.y = VerticalAdjustment + 5
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.customtext.align = "CENTER"
 --StyleTextOnly.customtext.size = 10
 StyleTextOnly.customtext.size = fontsize - 2

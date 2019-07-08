@@ -179,6 +179,32 @@ StyleDefault.raidicon = {
 	anchor = "CENTER",
 }
 
+StyleDefault.extrabar = {
+	texture =					"Interface\\TARGETINGFRAME\\UI-StatusBar",
+	backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	height = 6,
+	width = 100,
+	x = -8,
+	y = vert+12,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 7,
+	height = 6,
+	width = 100,
+	x = -8,
+	y = vert+11,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
@@ -189,6 +215,11 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 60
+StyleTextOnly.extrabar.y = vert+10
+StyleTextOnly.extratext.y = vert+9
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12

@@ -82,7 +82,6 @@ local OnShowNameplate, OnHideNameplate, OnUpdateNameplate, OnResetNameplate
 local OnHealthUpdate, UpdateUnitCondition
 local UpdateUnitContext, OnRequestWidgetUpdate, OnRequestDelegateUpdate
 local UpdateUnitIdentity
-local OnNewNameplate
 
 -- Main Loop
 local OnUpdate
@@ -213,6 +212,7 @@ do
 		local visual = {}
 		-- Status Bars
 		local healthbar = CreateNeatPlatesStatusbar(extended)
+		local extrabar = CreateNeatPlatesStatusbar(extended)	-- Currently used for Bodyguard XP in Nazjatar
 		local castbar = CreateNeatPlatesStatusbar(extended)
 		local textFrame = CreateFrame("Frame", nil, healthbar)
 		local widgetParent = CreateFrame("Frame", nil, textFrame)
@@ -221,8 +221,10 @@ do
 
 		extended.widgetParent = widgetParent
 		visual.healthbar = healthbar
+		visual.extrabar = extrabar
 		visual.castbar = castbar
 		bars.healthbar = healthbar		-- For Threat Plates Compatibility
+		bars.extrabar = extrabar			-- For Threat Plates Compatibility
 		bars.castbar = castbar			-- For Threat Plates Compatibility
 		-- Parented to Health Bar - Lower Frame
 		visual.healthborder = healthbar:CreateTexture(nil, "ARTWORK")
@@ -239,6 +241,9 @@ do
 		visual.customtext = textFrame:CreateFontString(nil, "OVERLAY")
 		visual.name  = textFrame:CreateFontString(nil, "OVERLAY")
 		visual.level = textFrame:CreateFontString(nil, "OVERLAY")
+		-- Extra Bar Frame
+		visual.extraborder = extrabar:CreateTexture(nil, "ARTWORK")
+		visual.extratext = extrabar:CreateFontString(nil, "OVERLAY")
 		-- Cast Bar Frame - Highest Frame
 		visual.castborder = castbar:CreateTexture(nil, "ARTWORK")
 		visual.castnostop = castbar:CreateTexture(nil, "ARTWORK")
@@ -251,6 +256,7 @@ do
 
 		extended:SetFrameStrata("BACKGROUND")
 		healthbar:SetFrameStrata("BACKGROUND")
+		extrabar:SetFrameStrata("BACKGROUND")
 		castbar:SetFrameStrata("BACKGROUND")
 		textFrame:SetFrameStrata("BACKGROUND")
 		widgetParent:SetFrameStrata("BACKGROUND")
@@ -261,6 +267,9 @@ do
 		extended.defaultLevel = topFrameLevel
 		extended:SetFrameLevel(topFrameLevel)
 
+		extrabar:Hide()
+		extrabar:SetStatusBarColor(1,.6,0)
+
 		castbar:Hide()
 		castbar:SetStatusBarColor(1,.8,0)
 		carrier:SetSize(16, 16)
@@ -268,6 +277,7 @@ do
 		-- Default Fonts
 		visual.name:SetFontObject("NeatPlatesFontNormal")
 		visual.level:SetFontObject("NeatPlatesFontSmall")
+		visual.extratext:SetFontObject("NeatPlatesFontSmall")
 		visual.spelltext:SetFontObject("NeatPlatesFontNormal")
 		visual.customtext:SetFontObject("NeatPlatesFontSmall")
 
@@ -338,6 +348,7 @@ do
 				UpdateIndicator_Standard()
 				UpdateIndicator_HealthBar()
 				UpdateIndicator_Highlight()
+				UpdateIndicator_ExtraBar()
 			end
 
 			-- Update Widgets
@@ -405,8 +416,10 @@ do
 
 		-- Graphics
 		unit.isCasting = false
+		visual.extrabar:Hide()
 		visual.castbar:Hide()
 		visual.highlight:Hide()
+		
 
 
 		-- Widgets/Extensions
@@ -433,6 +446,7 @@ do
 		PlatesByUnit[unitid] = nil
 		if unitGUID then PlatesByGUID[unitGUID] = nil end
 
+		visual.extrabar:Hide()
 		visual.castbar:Hide()
 		visual.castbar:SetScript("OnUpdate", nil)
 		unit.isCasting = false
@@ -710,6 +724,29 @@ do
 		if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
 
 		if current then visual[current]:SetVertexColor(style[current].color.r, style[current].color.g, style[current].color.b, style[current].color.a) end
+	end
+
+	-- UpdateIndicator_ExtraBar
+	function UpdateIndicator_ExtraBar()
+		if not unit or not unit.unitid then return end
+		local widgetSetID = UnitWidgetSet(unit.unitid);
+
+		if widgetSetID then
+			local widgetID = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)[1].widgetID
+			local widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
+			local rank = widget.overrideBarText
+			local barCur = widget.barValue - widget.barMin
+			local barMax = widget.barMax - widget.barMin
+			local text = rank
+
+			if unit.isMouseover then text = barCur.."/"..barMax end
+
+			visual.extrabar:SetMinMaxValues(0, barMax)
+			visual.extrabar:SetValue(barCur)
+			visual.extratext:SetText(text)
+
+			visual.extrabar:Show()
+		end
 	end
 
 
@@ -1317,15 +1354,15 @@ do
 
 
 	-- Style Groups
-	local fontgroup = {"name", "level", "spelltext", "customtext"}
+	local fontgroup = {"name", "level", "extratext", "spelltext", "customtext"}
 
 	local anchorgroup = {"healthborder", "threatborder", "castborder", "castnostop",
-						"name",  "spelltext", "customtext", "level",
+						"name", "extraborder", "extratext", "spelltext", "customtext", "level",
 						"spellicon", "raidicon", "skullicon", "eliteicon", "target", "focus", "mouseover"}
 
-	local bargroup = {"castbar", "healthbar"}
+	local bargroup = {"castbar", "healthbar", "extrabar"}
 
-	local texturegroup = { "castborder", "castnostop", "healthborder", "threatborder", "eliteicon",
+	local texturegroup = { "extraborder", "castborder", "castnostop", "healthborder", "threatborder", "eliteicon",
 						"skullicon", "highlight", "target", "focus", "mouseover", "spellicon", }
 
 

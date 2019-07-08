@@ -165,6 +165,32 @@ Alvara.customtext = {
 	show = true,
 }
 
+Alvara.extrabar = {
+	texture =	path.."\\Statusbar",
+	backdrop = "Interface/Tooltips/UI-Tooltip-Background",
+	height = 4,
+	width = 92,
+	x = 0,
+	y = -7,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+Alvara.extratext = {
+	typeface = font,
+	size = 7,
+	height = 4,
+	width = 97,
+	x = 0,
+	y = -8,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
@@ -174,6 +200,9 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.extrabar.width = 60
+StyleTextOnly.extrabar.y = -9
+StyleTextOnly.extratext.y = -10
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12

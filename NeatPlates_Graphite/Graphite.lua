@@ -198,8 +198,34 @@ StyleDefault.skullicon = {
 StyleDefault.threatcolor = {
 	LOW = {r = .6, g = 1, b = 0, a = 0,},
 	MEDIUM = {r = .6, g = 1, b = 0, a = 1,},
-	HIGH = {r = 1, g = 0, b = 0, a= 1,},  }
+	HIGH = {r = 1, g = 0, b = 0, a= 1,},
+}
 
+StyleDefault.extrabar = {
+	texture =					path.."StatusBar",
+	--backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	width = (barwidth*widthfactor)/1.2,
+	height = barheight*heightfactor,
+	x = 0,
+	y = -4,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 7,
+	width = (barwidth*widthfactor)/1.2,
+	height = barheight*heightfactor,
+	x = 0,
+	y = 2,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 
 -- No-Bar Style		(6.2)
 local StyleTextOnly = CopyTable(StyleDefault)
@@ -210,6 +236,11 @@ StyleTextOnly.healthborder.y = -18
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 60
+StyleTextOnly.extrabar.y = -14
+StyleTextOnly.extratext.y = -8
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.customtext.align = "CENTER"
 StyleTextOnly.customtext.size = 9
 StyleTextOnly.customtext.y = -2

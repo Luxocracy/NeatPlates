@@ -174,6 +174,31 @@ SimpleBar.customtext = {
 	show = true,
 }
 
+SimpleBar.extrabar = {
+	texture =						path.."\\barhealth.tga",
+	--backdrop =					"Interface/Tooltips/UI-Tooltip-Background",
+	width = 110,
+	height = 12,
+	x = 0,
+	y = -6,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+SimpleBar.extratext = {
+	typeface =					font,
+	size = 7,
+	width = 110,
+	height = 12,
+	x = 0,
+	y = -6,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 
 local CopyTable = NeatPlatesUtility.copyTable
 
@@ -185,6 +210,11 @@ StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.threatborder.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 70
+StyleTextOnly.extrabar.y = -9
+StyleTextOnly.extratext.y = -9
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12
 StyleTextOnly.name.y = 6

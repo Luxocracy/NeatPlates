@@ -221,7 +221,34 @@ StyleDefault.skullicon = {
 StyleDefault.threatcolor = {
 	LOW = {r = .6, g = 1, b = 0, a = 0,},
 	MEDIUM = {r = .6, g = 1, b = 0, a = 1,},
-	HIGH = {r = 1, g = 0, b = 0, a= 1,},  }
+	HIGH = {r = 1, g = 0, b = 0, a= 1,},
+}
+
+StyleDefault.extrabar = {
+	texture =					path.."Statusbar",
+	backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	height = 4,
+	width = 98,
+	x = 0,
+	y = VerticalAdjustment+6,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 7,
+	height = 4,
+	width = 98,
+	x = 0,
+	y = VerticalAdjustment+5,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 
 
 -- No-Bar Style		(6.2)
@@ -230,6 +257,11 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.extrabar.width = 70
+StyleTextOnly.extrabar.y = VerticalAdjustment + 5
+StyleTextOnly.extratext.y = VerticalAdjustment + 4
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.customtext.align = "CENTER"
 StyleTextOnly.customtext.size = fontsize - 2

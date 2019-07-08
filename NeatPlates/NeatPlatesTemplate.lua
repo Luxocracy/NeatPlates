@@ -42,6 +42,16 @@ TemplateTheme.healthborder = {
 	bottom = 1,
 }
 
+TemplateTheme.extraborder = {
+	texture =					EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -11,
+	anchor = "CENTER",
+	show = true,
+}
+
 TemplateTheme.eliteicon = {
 	texture = EMPTY_TEXTURE,
 	width = 128,
@@ -136,6 +146,17 @@ TemplateTheme.healthbar = {
 	orientation = "HORIZONTAL",
 }
 
+TemplateTheme.extrabar = {
+	texture =					EMPTY_TEXTURE,
+	backdrop = 				EMPTY_TEXTURE,
+	height = 12,
+	width = 99,
+	x = 0,
+	y = -19,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
 TemplateTheme.castbar = {
 	texture =					EMPTY_TEXTURE,
 	backdrop = 				EMPTY_TEXTURE,
@@ -145,6 +166,21 @@ TemplateTheme.castbar = {
 	y = -19,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+}
+
+TemplateTheme.extratext = {
+	typeface =					font,
+	size = 9,
+	width = 93,
+	height = 10,
+	x = 0,
+	y = 11,
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = false,
 }
 
 TemplateTheme.spelltext = {

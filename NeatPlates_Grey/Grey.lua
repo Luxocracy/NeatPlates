@@ -212,7 +212,34 @@ StyleDefault.frame = {
 StyleDefault.threatcolor = {
 	LOW = {r = .6, g = 1, b = 0, a = 1,},
 	MEDIUM = {r = .6, g = 1, b = 0, a = 1,},
-	HIGH = {r = 1, g = 0, b = 0, a= 1,},  }
+	HIGH = {r = 1, g = 0, b = 0, a= 1,},
+}
+
+StyleDefault.extrabar = {
+	texture =					defaultArtPath.."\\Statusbar",
+	backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	width = 100,
+	height = 4,
+	x = 0,
+	y = 24+nameplate_verticalOffset,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 8,
+	width = 100,
+	height = 4,
+	x = 0,
+	y = 23+nameplate_verticalOffset,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 
 
 -- No-Bar Style		(6.2)
@@ -223,6 +250,11 @@ StyleTextOnly.healthborder.y = nameplate_verticalOffset - 7
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 70
+StyleTextOnly.extrabar.y = nameplate_verticalOffset - 2
+StyleTextOnly.extratext.y = nameplate_verticalOffset - 3
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 --StyleTextOnly.name.flags = "OUTLINE"
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"

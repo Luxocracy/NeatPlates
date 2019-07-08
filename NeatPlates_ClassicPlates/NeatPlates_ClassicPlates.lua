@@ -185,6 +185,32 @@ StyleDefault.threatcolor = {
 	HIGH = { r = 1, g = .2, b = 0, a = 1, },
 }
 
+StyleDefault.extrabar = {
+	texture =					path.."StatusBar",
+	backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	height = 4,
+	width = 92,
+	x = 12,
+	y = -4,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.extratext = {
+	typeface =					font,
+	size = 9,
+	height = 4,
+	width = 92,
+	x = 12,
+	y = -6,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
@@ -195,6 +221,11 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
+StyleTextOnly.extrabar.width = 66
+StyleTextOnly.extrabar.y = -10
+StyleTextOnly.extratext.y = -12
+StyleTextOnly.extrabar.x = 0
+StyleTextOnly.extratext.x = 0
 StyleTextOnly.name.show = true
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
