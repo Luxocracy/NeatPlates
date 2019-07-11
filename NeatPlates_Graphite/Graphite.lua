@@ -58,12 +58,32 @@ StyleDefault.healthborder = {
 	y = 0,
 }
 
-StyleDefault.target = {
+StyleDefault.targetindicator = {
 	texture 			= path.."Target",
 	width = 128,
 	height = 36,
 	x = 0,
 	y = -4,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = 21,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 128,
+	height = 18,
+	x = 0,
+	y = 0,
 	anchor = "CENTER",
 	show = true,
 }
@@ -248,6 +268,7 @@ StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false
 StyleTextOnly.highlight.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Highlight"
+
 
 -- Active Styles
 Theme["Default"] = StyleDefault

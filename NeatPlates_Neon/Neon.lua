@@ -125,13 +125,33 @@ StyleDefault.threatborder = {
 }
 
 
-StyleDefault.target = {
+StyleDefault.targetindicator = {
 	texture = "Interface\\Addons\\NeatPlates_Neon\\Neon_Select",
 	width = 128,
 	_width = 128,
 	height = 32,
 	x = 0,
 	y = VerticalAdjustment,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = VerticalAdjustment+18,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 138,
+	height = 18,
+	x = 0,
+	y = VerticalAdjustment+0,
 	anchor = "CENTER",
 	show = true,
 }
@@ -337,9 +357,9 @@ StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false
 StyleTextOnly.highlight.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Highlight"
-StyleTextOnly.target.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
-StyleTextOnly.target.height = 72
-StyleTextOnly.target.y = VerticalAdjustment -8 -18
+StyleTextOnly.targetindicator.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
+StyleTextOnly.targetindicator.height = 72
+StyleTextOnly.targetindicator.y = VerticalAdjustment -8 -18
 
 StyleTextOnly.raidicon.x = 0
 StyleTextOnly.raidicon.y = VerticalAdjustment - 25
@@ -363,12 +383,13 @@ DefaultNoAura.raidicon = {
 
 TextNoAura.raidicon = DefaultNoAura.raidicon
 
-TextNoDescription.target.height = 55
-TextNoDescription.target.y = VerticalAdjustment - 17
+TextNoDescription.targetindicator.height = 55
+TextNoDescription.targetindicator.y = VerticalAdjustment - 17
 TextNoDescription.raidicon.x = 0
 TextNoDescription.raidicon.y = VerticalAdjustment - 22
 
 --]]
+
 
 -- Active Styles
 Theme["Default"] = StyleDefault

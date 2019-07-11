@@ -6,19 +6,19 @@ local NonLatinLocales = { ["koKR"] = true, ["zhCN"] = true, ["zhTW"] = true, }
 if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 
 local Theme = {}
-local Alvara = {}
+local StyleDefault = {}
 
-Alvara.hitbox = {
+StyleDefault.hitbox = {
 	width = 120,
 	height = 30,
 	x = 0,
 	y = -4,
 }
-Alvara.frame = {
+StyleDefault.frame = {
 	width = 128,
 	height = 16,
 }
-Alvara.threatborder = {
+StyleDefault.threatborder = {
 	texture = path.."\\Threat",
 	elitetexture = path.."\\ThreatElite",
 	width = 128,
@@ -27,12 +27,12 @@ Alvara.threatborder = {
 	y = 0,
 	anchor = "CENTER",
 }
-Alvara.threatcolor = {
+StyleDefault.threatcolor = {
 	LOW = { r = 0, g = 1, b = 0, a= 1, },
 	MEDIUM = { r = 1, g = 1, b = 0, a = 1, },
 	HIGH = { r = 1, g = 0, b = 0, a = 1, },
 }
-Alvara.healthborder = {
+StyleDefault.healthborder = {
 	texture = path.."\\Shade",
 	--glowtexture = path.."\\Highlight",
 	--elitetexture = path.."\\ShadeElite",
@@ -42,7 +42,7 @@ Alvara.healthborder = {
 	y = 0,
 	anchor = "CENTER",
 }
-Alvara.eliteicon = {
+StyleDefault.eliteicon = {
 	texture = path.."\\EliteIcon",
 	width = 10,
 	height = 10,
@@ -51,14 +51,32 @@ Alvara.eliteicon = {
 	anchor = "CENTER",
 	show = true,
 }
-Alvara.skullicon = {
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = 24,
+	anchor = "CENTER",
+	show = true,
+}
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 132,
+	height = 18,
+	x = 0,
+	y = 0,
+	anchor = "CENTER",
+	show = true,
+}
+StyleDefault.skullicon = {
 	width = 12,
 	height = 12,
 	x = -43,
 	y = -4,
 	anchor = "CENTER",
 }
-Alvara.healthbar = {
+StyleDefault.healthbar = {
 	texture = path.."\\Statusbar",
 	width = 92,
 	height = 8,
@@ -67,7 +85,7 @@ Alvara.healthbar = {
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
 }
-Alvara.castbar = {
+StyleDefault.castbar = {
 	texture = path.."\\StatusbarCast",
 	width = 128,
 	height = 16,
@@ -76,7 +94,7 @@ Alvara.castbar = {
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
 }
-Alvara.castborder = {
+StyleDefault.castborder = {
 	texture = path.."\\ShadeCast",
 	width = 128,
 	height = 16,
@@ -84,7 +102,7 @@ Alvara.castborder = {
 	y = 0,
 	anchor = "CENTER",
 }
-Alvara.name = {
+StyleDefault.name = {
 	typeface = font,
 	size = 10,
 	width = 128,
@@ -96,7 +114,7 @@ Alvara.name = {
 	vertical = "TOP",
 	shadow = true,
 }
-Alvara.level = {
+StyleDefault.level = {
 	typeface = font,
 	size = 10,
 	width = 20,
@@ -108,14 +126,14 @@ Alvara.level = {
 	vertical = "TOP",
 	shadow = true,
 }
-Alvara.spellicon = {
+StyleDefault.spellicon = {
 	width = 12,
 	height = 12,
 	x = 5,
 	y = 0,
 	anchor = "LEFT",
 }
-Alvara.spelltext = {
+StyleDefault.spelltext = {
 	typeface = font,
 	size = 8,
 	height = 12,
@@ -129,14 +147,14 @@ Alvara.spelltext = {
 	flags = "NONE",
 	show = true,
 }
-Alvara.raidicon = {
+StyleDefault.raidicon = {
 	width = 12,
 	height = 12,
 	x = 0,
 	y = 22,
 	anchor = "CENTER",
 }
-Alvara.specialText = {
+StyleDefault.specialText = {
 	typeface = font,
 	size = 10,
 	width = 92,
@@ -148,14 +166,14 @@ Alvara.specialText = {
 	vertical = "BOTTOM",
 	shadow = false,
 }
-Alvara.options = {
+StyleDefault.options = {
 	showLevel = true,
 	showName = true,
 	showSpecialText = true,
 	showDangerSkull = true,
 	showspellIcon = true,
 }
-Alvara.customtext = {
+StyleDefault.customtext = {
 	typeface = font,
 	width = 90,
 	x = -3,
@@ -165,7 +183,7 @@ Alvara.customtext = {
 	show = true,
 }
 
-Alvara.extrabar = {
+StyleDefault.extrabar = {
 	texture =	path.."\\Statusbar",
 	backdrop = "Interface/Tooltips/UI-Tooltip-Background",
 	height = 4,
@@ -176,7 +194,7 @@ Alvara.extrabar = {
 	orientation = "HORIZONTAL",
 }
 
-Alvara.extratext = {
+StyleDefault.extratext = {
 	typeface = font,
 	size = 7,
 	height = 4,
@@ -194,7 +212,7 @@ Alvara.extratext = {
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
-local StyleTextOnly = CopyTable(Alvara)
+local StyleTextOnly = CopyTable(StyleDefault)
 
 StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
@@ -215,7 +233,8 @@ StyleTextOnly.raidicon.height = 14
 StyleTextOnly.raidicon.width = 14
 StyleTextOnly.raidicon.anchor = "TOP"
 
-Theme["Default"] = Alvara
+
+Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 local WidgetConfig = {}

@@ -268,11 +268,11 @@ local function HealthColorDelegate(unit)
 		end
 	elseif unit.isTapped then
 		color = LocalVars.ColorTapped -- Tapped Color Priority
-	elseif (LocalVars.HighlightMouseoverMode == 3) and unit.isMouseover then
+	elseif (LocalVars.HighlightMouseoverMode == 2) and unit.isMouseover then
 		color = LocalVars.ColorMouseover -- Mouseover Color
-	elseif (LocalVars.HighlightTargetMode == 3) and unit.isTarget then
+	elseif (LocalVars.HighlightTargetMode == 2) and unit.isTarget then
 		color = LocalVars.ColorTarget -- Target Color
-	elseif (LocalVars.HighlightFocusMode == 3) and unit.isFocus then
+	elseif (LocalVars.HighlightFocusMode == 2) and unit.isFocus then
 		color = LocalVars.ColorFocus -- Focus Color
 	end
 

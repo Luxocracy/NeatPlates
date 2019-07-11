@@ -6,16 +6,16 @@ local NonLatinLocales = { ["koKR"] = true, ["zhCN"] = true, ["zhTW"] = true, }
 if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 
 local Theme = {}
-local SimpleBar = {}
+local StyleDefault = {}
 
-SimpleBar.hitbox = {
+StyleDefault.hitbox = {
 	width = 135,
 	height = 30,
 	x = 0,
 	y = -8,
 }
 
-SimpleBar.healthborder = {
+StyleDefault.healthborder = {
 	texture 				= path.."\\empty.tga",
 	width = 10,
 	height = 10,
@@ -25,7 +25,7 @@ SimpleBar.healthborder = {
 	show = false,
 }
 
-SimpleBar.healthbar = {
+StyleDefault.healthbar = {
 	texture 				= path.."\\barhealth.tga",
 	height = 18,
 	width = 110,
@@ -36,7 +36,7 @@ SimpleBar.healthbar = {
 	show = true,
 }
 
-SimpleBar.eliteicon = {
+StyleDefault.eliteicon = {
 	texture 				= path.."\\eliteicon.tga",
 	width = 10,
 	height = 10,
@@ -46,7 +46,27 @@ SimpleBar.eliteicon = {
 	show = true,
 }
 
-SimpleBar.threatborder = {
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = 18,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 145,
+	height = 18,
+	x = 0,
+	y = -3,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.threatborder = {
 	texture 				= path.."\\empty.tga",
 	width = 110,
 	height = 18,
@@ -56,7 +76,7 @@ SimpleBar.threatborder = {
 	show = false,
 }
 
-SimpleBar.castborder = {
+StyleDefault.castborder = {
 	texture 				= path.."\\empty.tga",
 	height = 20,
 	width = 112,
@@ -67,7 +87,7 @@ SimpleBar.castborder = {
 	show = true,
 }  
 
-SimpleBar.castnostop = {
+StyleDefault.castnostop = {
 	texture 				= path.."\\empty.tga",
 	height = 18,
 	width = 110,
@@ -78,7 +98,7 @@ SimpleBar.castnostop = {
 	show = true,
 }
 
-SimpleBar.name = {
+StyleDefault.name = {
 	typeface = font,
 	size = 8,
 	width = 106,
@@ -92,7 +112,7 @@ SimpleBar.name = {
 	show = true,
 }
 
-SimpleBar.level = {
+StyleDefault.level = {
 	typeface = font,
 	size = 7,
 	width = 30,
@@ -106,7 +126,7 @@ SimpleBar.level = {
 	show = true,
 }
 
-SimpleBar.castbar = {
+StyleDefault.castbar = {
 	texture 				= path.."\\barcast.tga",
 	height = 18,
 	width = 110,
@@ -117,7 +137,7 @@ SimpleBar.castbar = {
 	show = true,
 }
 
-SimpleBar.spellicon = {
+StyleDefault.spellicon = {
 	width = 10,
 	height = 10,
 	x = 52,
@@ -126,7 +146,7 @@ SimpleBar.spellicon = {
 	show = true,
 }
 
-SimpleBar.specialtext = {
+StyleDefault.specialtext = {
 	typeface = font,
 	size = 10,
 	width = 74,
@@ -139,7 +159,7 @@ SimpleBar.specialtext = {
 	show = false,
 }
 
-SimpleBar.skullicon = {
+StyleDefault.skullicon = {
 	width = 14,
 	height = 14,
 	x = -7,
@@ -148,14 +168,14 @@ SimpleBar.skullicon = {
 	show = false,
 }
 
-SimpleBar.frame = {
+StyleDefault.frame = {
 	width = 96,
 	height = 16,
 	x = 0,
 	y = -5,
 }
 
-SimpleBar.raidicon = {
+StyleDefault.raidicon = {
 	width = 14,
 	height = 14,
 	x = 0,
@@ -164,7 +184,7 @@ SimpleBar.raidicon = {
 	show = true,
 }
 
-SimpleBar.customtext = {
+StyleDefault.customtext = {
 	typeface = font,
 	width = 90,
 	x = -3,
@@ -174,7 +194,7 @@ SimpleBar.customtext = {
 	show = true,
 }
 
-SimpleBar.extrabar = {
+StyleDefault.extrabar = {
 	texture =						path.."\\barhealth.tga",
 	--backdrop =					"Interface/Tooltips/UI-Tooltip-Background",
 	width = 110,
@@ -185,7 +205,7 @@ SimpleBar.extrabar = {
 	orientation = "HORIZONTAL",
 }
 
-SimpleBar.extratext = {
+StyleDefault.extratext = {
 	typeface =					font,
 	size = 7,
 	width = 110,
@@ -203,7 +223,7 @@ SimpleBar.extratext = {
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
-local StyleTextOnly = CopyTable(SimpleBar)
+local StyleTextOnly = CopyTable(StyleDefault)
 
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
@@ -223,7 +243,7 @@ StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15
 
 
-Theme["Default"] = SimpleBar
+Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 

@@ -89,12 +89,12 @@ local OnNewNameplate
 local ForEachPlate
 
 -- UpdateNameplateSize
-local function UpdateNameplateSize(plate)
+local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 	local scaleStandard = activetheme.SetScale()
 	local clickableWidth, clickableHeight = NeatPlatesPanel.GetClickableArea()
 	local hitbox = {
-		width = activetheme.Default.hitbox.width * scaleStandard * clickableWidth,
-		height = activetheme.Default.hitbox.height * scaleStandard * clickableHeight,
+		width = activetheme.Default.hitbox.width * scaleStandard * (cWidth or clickableWidth),
+		height = activetheme.Default.hitbox.height * scaleStandard * (cHeight or clickableHeight),
 		x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
 		y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
 	}
@@ -105,6 +105,11 @@ local function UpdateNameplateSize(plate)
 	end
 
 	plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
+	plate.extended.visual.hitbox:SetPoint("CENTER", plate)
+	plate.extended.visual.hitbox:SetWidth(hitbox.width + math.abs(hitbox.x))	-- Note sure why the values are off by these amounts but...
+	plate.extended.visual.hitbox:SetHeight(hitbox.height + math.abs(hitbox.y))	-- Note sure why the values are off by these amounts but...
+
+	if show then plate.extended.visual.hitbox:Show() else plate.extended.visual.hitbox:Hide() end
 end
 
 -- UpdateReferences
@@ -230,6 +235,7 @@ do
 		visual.healthborder = healthbar:CreateTexture(nil, "ARTWORK")
 		visual.threatborder = healthbar:CreateTexture(nil, "ARTWORK")
 		visual.highlight = healthbar:CreateTexture(nil, "OVERLAY")
+		visual.hitbox = healthbar:CreateTexture(nil, "OVERLAY")
 		-- Parented to Extended - Middle Frame
 		visual.raidicon = textFrame:CreateTexture(nil, "ARTWORK")
 		visual.eliteicon = textFrame:CreateTexture(nil, "OVERLAY")
@@ -253,6 +259,8 @@ do
 		visual.raidicon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
 		visual.highlight:SetAllPoints(visual.healthborder)
 		visual.highlight:SetBlendMode("ADD")
+		visual.hitbox:SetBlendMode("ADD")
+		visual.hitbox:SetColorTexture(0, 0.6, 0.0, 0.5)
 
 		extended:SetFrameStrata("BACKGROUND")
 		healthbar:SetFrameStrata("BACKGROUND")
@@ -401,7 +409,7 @@ do
 		extended.stylename = ""
 		extended.Active = true
 
-		visual.highlight:Hide()
+		--visual.highlight:Hide()
 
 		wipe(extended.unit)
 		wipe(extended.unitcache)
@@ -419,6 +427,7 @@ do
 		visual.extrabar:Hide()
 		visual.castbar:Hide()
 		visual.highlight:Hide()
+		visual.hitbox:Hide()
 		
 
 
@@ -1470,6 +1479,8 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 function NeatPlates:ToggleServerIndicator(showIndicator) ShowServerIndicator = showIndicator end
+
+function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end
 
 function NeatPlates:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function NeatPlates:ResetWidgets() ForEachPlate(OnResetWidgets) end

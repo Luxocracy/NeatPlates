@@ -60,12 +60,32 @@ StyleDefault.skullicon = {
 	anchor = "CENTER",
 }
 
-StyleDefault.target = {
+StyleDefault.targetindicator = {
 	texture = defaultArtPath.."\\TargetBox",
 	width = 128,
 	height = 64,
 	x = 0,
 	y = nameplate_verticalOffset,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = 34+nameplate_verticalOffset,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 138,
+	height = 18,
+	x = 0,
+	y = 15+nameplate_verticalOffset,
 	anchor = "CENTER",
 	show = true,
 }
@@ -271,9 +291,10 @@ StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false
 StyleTextOnly.highlight.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Highlight"
-StyleTextOnly.target.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
-StyleTextOnly.target.y = nameplate_verticalOffset - 8
-StyleTextOnly.target.height = 66
+StyleTextOnly.targetindicator.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
+StyleTextOnly.targetindicator.y = nameplate_verticalOffset - 8
+StyleTextOnly.targetindicator.height = 66
+
 
 -- Active Styles
 Theme["Default"] = StyleDefault

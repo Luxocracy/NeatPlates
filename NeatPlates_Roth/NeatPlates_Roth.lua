@@ -99,12 +99,32 @@ StyleDefault.eliteicon = {
 	show = true,
 }
 
-StyleDefault.target = {
+StyleDefault.targetindicator = {
 	texture		 =				path.."Highlight",
 	width = 128,
 	height = 64,
 	x = 0,
 	y = 0,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 6,
+	y = 36,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 176,
+	height = 18,
+	x = 6,
+	y = 4,
 	anchor = "CENTER",
 	show = true,
 }
@@ -263,11 +283,12 @@ StyleTextOnly.raidicon.height = 14
 StyleTextOnly.raidicon.width = 14
 StyleTextOnly.raidicon.anchor = "TOP"
 StyleTextOnly.highlight.texture = EmptyTexture
-StyleTextOnly.target.texture = EmptyTexture
-StyleTextOnly.target.y = 21
-StyleTextOnly.target.height = 64
-StyleTextOnly.target.height = 128
-StyleTextOnly.target.anchor = "CENTER"
+StyleTextOnly.targetindicator.texture = EmptyTexture
+StyleTextOnly.targetindicator.y = 21
+StyleTextOnly.targetindicator.height = 64
+StyleTextOnly.targetindicator.height = 128
+StyleTextOnly.targetindicator.anchor = "CENTER"
+
 
 Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly

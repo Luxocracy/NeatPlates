@@ -221,11 +221,13 @@ local function ApplyCustomBarSize(style, defaults)
 		style.threatborder.width = defaults.threatborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthborder.width = defaults.healthborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthbar.width = defaults.healthbar.width * (LocalVars.FrameBarWidth or 1)
-		style.target.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
-		style.focus.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
-		style.mouseover.width = defaults.target.width * (LocalVars.FrameBarWidth or 1)
 		style.frame.width = defaults.frame.width * (LocalVars.FrameBarWidth or 1)
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
+	
+		-- Defined elsewhere so they need to be handled differently
+		style.target.width = style.target.width * (LocalVars.FrameBarWidth or 1)
+		style.focus.width = style.focus.width * (LocalVars.FrameBarWidth or 1)
+		style.mouseover.width = style.mouseover.width * (LocalVars.FrameBarWidth or 1)
 	end
 end
 
@@ -233,13 +235,27 @@ local function ApplyStyleCustomization(style, defaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
 
-	style.target = style.target or {}
-	style.focus = CopyTable(style.target) or {}
-	style.mouseover = CopyTable(style.target) or {}
+	local indicators = {
+		["target"] = LocalVars.HighlightTargetMode,
+		["focus"] = LocalVars.HighlightFocusMode,
+		["mouseover"] = LocalVars.HighlightMouseoverMode
+	}
 
-	style.target.show = (LocalVars.HighlightTargetMode == 2)
-	style.focus.show = (LocalVars.HighlightFocusMode == 2)
-	style.mouseover.show = (LocalVars.HighlightMouseoverMode == 2)
+	for k,v in pairs(indicators) do
+		style[k] = style[k] or {}
+		-- Set Indicator style, 3 = Theme Default, 2 = Healthbar, 1 = Disabled
+		if v == 3 then
+			style[k] = CopyTable(style.targetindicator)
+		elseif v == 4 then
+			style[k] = CopyTable(style.targetindicator_arrowtop)
+		elseif v == 5 then
+			style[k] = CopyTable(style.targetindicator_arrowsides)
+		end
+	end
+
+	style.target.show = (LocalVars.HighlightTargetMode > 2)
+	style.focus.show = (LocalVars.HighlightFocusMode > 2)
+	style.mouseover.show = (LocalVars.HighlightMouseoverMode > 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
 	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
 

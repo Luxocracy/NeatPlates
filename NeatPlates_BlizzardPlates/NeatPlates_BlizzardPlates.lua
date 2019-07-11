@@ -27,8 +27,9 @@ StyleDefault.highlight = {
 	texture = 					"Interface\\Tooltips\\Nameplate-Glow",
 }
 
-StyleDefault.target = {
+StyleDefault.targetindicator = {
 }
+
 
 StyleDefault.healthborder = {
 	texture		 =				path.."Nameplate-Border",
@@ -55,6 +56,26 @@ StyleDefault.eliteicon = {
 	x = 48,
 	y = -3, 
 	anchor = "RIGHT",
+}
+
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = 30,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 165,
+	height = 18,
+	x = 0,
+	y = 0,
+	anchor = "CENTER",
+	show = true,
 }
 
 StyleDefault.threatborder = {

@@ -22,22 +22,22 @@ if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
 -- Default Style
 ---------------------------------------------
 local Theme = {}
-local DefaultStyle = {}
+local StyleDefault = {}
 
-DefaultStyle.hitbox = {
+StyleDefault.hitbox = {
 	width = 130,
 	height = 30,
 	x = 0,
 	y = 6,
 }
 
-DefaultStyle.highlight = {
+StyleDefault.highlight = {
 	texture =					ArtworkPath.."Slim_Highlight",
 	width = 128,
 	height = 16,
 }
 
-DefaultStyle.healthborder = {
+StyleDefault.healthborder = {
 	texture		 =				ArtworkPath.."Slim_HealthOverlay",
 	width = 128,
 	height = 16,
@@ -45,7 +45,7 @@ DefaultStyle.healthborder = {
 	show = true,
 }
 
-DefaultStyle.healthbar = {
+StyleDefault.healthbar = {
 	texture =					 ArtworkPath.."Slim_Bar",
 	backdrop =					 ArtworkPath.."Slim_Bar_Backdrop",
 	width = 100,
@@ -54,7 +54,7 @@ DefaultStyle.healthbar = {
 	y = VerticalAdjustment,
 }
 
-DefaultStyle.castborder = {
+StyleDefault.castborder = {
 	texture =					 ArtworkPath.."Slim_CastOverlay",
 	width = 128,
 	height = 16,
@@ -63,7 +63,7 @@ DefaultStyle.castborder = {
 	show = true,
 }
 
-DefaultStyle.castnostop = {
+StyleDefault.castnostop = {
 	texture =					 ArtworkPath.."Slim_CastShield",
 	width = 128,
 	height = 16,
@@ -72,7 +72,7 @@ DefaultStyle.castnostop = {
 	show = true,
 }
 
-DefaultStyle.spellicon = {
+StyleDefault.spellicon = {
 	height = 7,
 	width = 7,
 	x = -47,
@@ -80,7 +80,7 @@ DefaultStyle.spellicon = {
 	show = true,
 }
 
-DefaultStyle.castbar = {
+StyleDefault.castbar = {
 	texture =					 ArtworkPath.."Slim_Bar",
 	backdrop =					 ArtworkPath.."Slim_Bar_Backdrop",
 	height = 6,
@@ -90,7 +90,7 @@ DefaultStyle.castbar = {
 	orientation = "HORIZONTAL",
 }
 
-DefaultStyle.target = {
+StyleDefault.targetindicator = {
 	texture =                    ArtworkPath.."Slim_Select",
 	width = 128,
 	height = 16,
@@ -100,7 +100,27 @@ DefaultStyle.target = {
 	show = true,
 }
 
-DefaultStyle.raidicon = {
+StyleDefault.targetindicator_arrowtop = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
+	width = 64,
+	height = 12,
+	x = 0,
+	y = VerticalAdjustment+16,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowsides = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	width = 138,
+	height = 18,
+	x = 0,
+	y = VerticalAdjustment+0,
+	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.raidicon = {
 	width = 18,
 	height = 18,
 	x = -62,
@@ -110,7 +130,7 @@ DefaultStyle.raidicon = {
 	show = true,
 }
 
-DefaultStyle.eliteicon = {
+StyleDefault.eliteicon = {
 	texture =                    ArtworkPath.."Slim_EliteIcon",
 	width = 14,
 	height = 14,
@@ -120,7 +140,7 @@ DefaultStyle.eliteicon = {
 	show = true,
 }
 
-DefaultStyle.skullicon = {
+StyleDefault.skullicon = {
 	width = 14,
 	height = 14,
 	x = -42,
@@ -129,7 +149,7 @@ DefaultStyle.skullicon = {
 	show = true,
 }
 
-DefaultStyle.name = {
+StyleDefault.name = {
 	typeface = font,
 	size = fontsize,
 	width = 200,
@@ -143,7 +163,7 @@ DefaultStyle.name = {
 	flags = "NONE",
 }
 
-DefaultStyle.level = {
+StyleDefault.level = {
 	typeface = font,
 	size = 9,
 	width = 22,
@@ -158,7 +178,7 @@ DefaultStyle.level = {
 	show = false,
 }
 
-DefaultStyle.spelltext = {
+StyleDefault.spelltext = {
 	typeface = font,
 	size = fontsize - 2,
 	width = 150,
@@ -172,7 +192,7 @@ DefaultStyle.spelltext = {
 	show = true,
 }
 
-DefaultStyle.customart = {
+StyleDefault.customart = {
 	width = 14,
 	height = 14,
 	x = -42,
@@ -181,7 +201,7 @@ DefaultStyle.customart = {
 	--show = true,
 }
 
-DefaultStyle.customtext = {
+StyleDefault.customtext = {
 	typeface = font,
 	size = 11,
 	width = 150,
@@ -196,7 +216,7 @@ DefaultStyle.customtext = {
 	show = true,
 }
 
-DefaultStyle.threatborder = {
+StyleDefault.threatborder = {
 	texture =                    ArtworkPath.."Slim_Invis",
 	width = 2,
 	_width = 2,
@@ -206,11 +226,11 @@ DefaultStyle.threatborder = {
 	show = true,
 }
 
-DefaultStyle.frame = {
+StyleDefault.frame = {
 	y = 0,
 }
 
-DefaultStyle.extrabar = {
+StyleDefault.extrabar = {
 	texture =					 ArtworkPath.."Slim_Bar",
 	backdrop =					 ArtworkPath.."Slim_Bar_Backdrop",
 	width = 98,
@@ -221,7 +241,7 @@ DefaultStyle.extrabar = {
 	orientation = "HORIZONTAL",
 }
 
-DefaultStyle.extratext = {
+StyleDefault.extratext = {
 	typeface =					font,
 	size = 7,
 	width = 98,
@@ -239,7 +259,7 @@ DefaultStyle.extratext = {
 local CopyTable = NeatPlatesUtility.copyTable
 
 -- No Bar
-local StyleTextOnly = CopyTable(DefaultStyle)
+local StyleTextOnly = CopyTable(StyleDefault)
 
 
 StyleTextOnly.healthborder.y = VerticalAdjustment - 24
@@ -261,16 +281,16 @@ StyleTextOnly.name.y = VerticalAdjustment + 1
 StyleTextOnly.level.show = false
 StyleTextOnly.eliteicon.show = false
 StyleTextOnly.highlight.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Highlight"
-StyleTextOnly.target.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
-StyleTextOnly.target.height = 72
-StyleTextOnly.target.y = VerticalAdjustment -8 -18
+StyleTextOnly.targetindicator.texture = "Interface\\Addons\\NeatPlatesHub\\shared\\Target"
+StyleTextOnly.targetindicator.height = 72
+StyleTextOnly.targetindicator.y = VerticalAdjustment -8 -18
 
 StyleTextOnly.raidicon.x = 0
 StyleTextOnly.raidicon.y = VerticalAdjustment - 25
 
 
 -- Active Styles
-Theme["Default"] = DefaultStyle
+Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 

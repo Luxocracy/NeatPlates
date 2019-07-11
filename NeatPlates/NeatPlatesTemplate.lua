@@ -250,6 +250,39 @@ TemplateTheme.frame = {
 	anchor = "CENTER",
 }
 
+TemplateTheme.targetindicator = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
+TemplateTheme.targetindicator_arrowtop = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
+TemplateTheme.targetindicator_arrowsides = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
 TemplateTheme.target = {
 	color = {},
 	texture = EMPTY_TEXTURE,

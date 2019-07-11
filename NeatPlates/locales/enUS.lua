@@ -210,6 +210,7 @@ L["Include Dispellable Debuffs on Friendly Units"] = true
 -- Aura Help Config Help Tip
 -- Important to not translate the prefixes.('My', 'All', 'Not')
 L["AURA_TIP"] = "Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones."
+L["HITBOX_TIP"] = "Tip: |cffCCCCCCNameplates will be displayed with a green overlay while editing these values to help visualize the size of the area."
 
 ------------------------------
 -- Opacity
@@ -346,8 +347,10 @@ L["Target Highlighting:"] = true
 L["Focus Highlighting:"] = true
 L["Mouseover Highlighting:"] = true
 	L["None"] = true
-	L["Border"] = true
+	L["Theme Default"] = true
 	L["Healthbar"] = true
+	L["Arrow(Top)"] = true
+	L["Arrow(Sides)"] = true
 
 ------------------------------
 -- Health
