@@ -46,7 +46,7 @@ StyleDefault.healthborder = {
 
 StyleDefault.targetindicator = {
 	texture		 =				path.."TargetBox_Original",
-	width = 12,
+	width = 128,
 	height = 64,
 	x = 0,
 	y = VerticalAdjustment,
