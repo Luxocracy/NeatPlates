@@ -93,21 +93,21 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 	local scaleStandard = activetheme.SetScale()
 	local clickableWidth, clickableHeight = NeatPlatesPanel.GetClickableArea()
 	local hitbox = {
-		width = activetheme.Default.hitbox.width * scaleStandard * (cWidth or clickableWidth),
-		height = activetheme.Default.hitbox.height * scaleStandard * (cHeight or clickableHeight),
+		width = activetheme.Default.hitbox.width * (cWidth or clickableWidth),
+		height = activetheme.Default.hitbox.height * (cHeight or clickableHeight),
 		x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
 		y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
 	}
 
 	if not InCombatLockdown() then
-		SetNamePlateEnemySize(hitbox.width, hitbox.height) -- Clickable area of the nameplate
-		SetNamePlateFriendlySize(hitbox.width, hitbox.height) -- Clickable area of the nameplate
+		SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
+		SetNamePlateFriendlySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
 	end
 
 	plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
 	plate.extended.visual.hitbox:SetPoint("CENTER", plate)
-	plate.extended.visual.hitbox:SetWidth(hitbox.width + math.abs(hitbox.x))	-- Note sure why the values are off by these amounts but...
-	plate.extended.visual.hitbox:SetHeight(hitbox.height + math.abs(hitbox.y))	-- Note sure why the values are off by these amounts but...
+	plate.extended.visual.hitbox:SetWidth(hitbox.width)	-- Note sure why the values are off by these amounts but...
+	plate.extended.visual.hitbox:SetHeight(hitbox.height)	-- Note sure why the values are off by these amounts but...
 
 	if show then plate.extended.visual.hitbox:Show() else plate.extended.visual.hitbox:Hide() end
 end

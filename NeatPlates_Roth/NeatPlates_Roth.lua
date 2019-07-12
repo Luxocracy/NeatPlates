@@ -18,10 +18,10 @@ local Theme = {}
 local StyleDefault = {}
 
 StyleDefault.hitbox = {
-	width = 140,
-	height = 34,
+	width = 130,
+	height = 30,
 	x = 6,
-	y = -1,
+	y = 0,
 }
 
 StyleDefault.frame = {
@@ -75,7 +75,8 @@ StyleDefault.healthbar = {
 }
 
 StyleDefault.highlight = {
-	texture =					path.."Highlight",
+	--texture =					path.."Highlight",
+	texture = EmptyTexture,
 }
 
 StyleDefault.healthborder = {
@@ -103,7 +104,7 @@ StyleDefault.targetindicator = {
 	texture		 =				path.."Highlight",
 	width = 128,
 	height = 64,
-	x = 0,
+	x = 6,
 	y = 0,
 	anchor = "CENTER",
 	show = true,

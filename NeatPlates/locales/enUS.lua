@@ -37,6 +37,7 @@ L["Use Blizzard Scaling"] = true
 ------------------------------
 -- CVars
 ------------------------------
+L["Enforce required CVars"] = true
 L["Always keep Target Nameplate on Screen"] = true
 L["Stacking Nameplates"] = true
 L["Nameplate Max Distance"] = true
@@ -497,4 +498,5 @@ L["Only uses the 'Mid Range' & 'Out of Range' colors to indicate unit range"] = 
 L["Uses multiple colors to indicate unit range"] = true
 L["Your 'Out of Range' distance"] = true
 L["Requires 'All NPCs' to be unchecked"] = true
+L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
 

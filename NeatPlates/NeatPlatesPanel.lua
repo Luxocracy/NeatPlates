@@ -92,6 +92,7 @@ NeatPlatesOptions = {
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
 	BlizzardScaling = false,
+	EnforceRequiredCVars = true,
 
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
@@ -212,6 +213,13 @@ NeatPlatesPanel.GetClickableArea = GetClickableArea
 -------------------------------------------------------------------------------------
 local ThemeDropdownMenuItems = {}
 
+local function ApplyRequiredCVars()
+	if NeatPlatesOptions.EnforceRequiredCVars then
+		if not NeatPlatesOptions.BlizzardScaling then SetCVar("nameplateMinScale", 1) end
+		SetCVar("showQuestTrackingTooltips", 1)
+	end
+end
+
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
 	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
@@ -315,6 +323,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
+	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
 	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
@@ -341,6 +350,7 @@ local function SetPanelValues(panel)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.HealthFrequent:SetChecked(NeatPlatesOptions.HealthFrequent)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
+	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
 	panel.AutoShowFriendly:SetValue(NeatPlatesOptions.FriendlyAutomation)
@@ -371,6 +381,7 @@ local function OnOkay(panel)
 	GetPanelValues(panel)
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
+	ApplyRequiredCVars()
 end
 
 
@@ -758,10 +769,14 @@ local function BuildInterfacePanel(panel)
 	panel.CVarsLabel:SetPoint("TOPLEFT", panel.BlizzardScaling, "BOTTOMLEFT", 0, -20)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
+	panel.EnforceRequiredCVars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnforceRequiredCVars", panel, L["Enforce required CVars"])
+	panel.EnforceRequiredCVars.tooltipText = L["Helps ensure that everything is working as intended by enforcing certain CVars"]
+	panel.EnforceRequiredCVars:SetPoint("TOPLEFT", panel.CVarsLabel, "BOTTOMLEFT", 0, -8)
+
 	local UpdateSliderValue = function(self, cvar) SetCVar(cvar, self.ceil(self:GetValue())) end
 
 	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])
-	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.CVarsLabel, "BOTTOMLEFT", 0, -8)
+	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.EnforceRequiredCVars, "TOPLEFT", 0, -25)
 	panel.NameplateTargetClamp:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateTargetRadialPosition", 1) else SetCVar("nameplateTargetRadialPosition", 0) end end)
 
 	panel.NameplateStacking = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateStacking", panel, L["Stacking Nameplates"])
@@ -925,6 +940,7 @@ function panelevents:PLAYER_ENTERING_WORLD()
 	VerifySpecSelections()
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
+	ApplyRequiredCVars()
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()

@@ -9,10 +9,10 @@ local Theme = {}
 local StyleDefault = {}
 
 StyleDefault.hitbox = {
-	width = 135,
-	height = 30,
+	width = 108,
+	height = 18,
 	x = 0,
-	y = -8,
+	y = -6,
 }
 
 StyleDefault.healthborder = {
