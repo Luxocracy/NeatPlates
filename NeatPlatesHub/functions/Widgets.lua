@@ -77,6 +77,7 @@ NeatPlatesHubMenus.HighlightTypes = {
 	{ text = L["Theme Default"],  },
 	{ text = L["Arrow(Top)"],  },
 	{ text = L["Arrow(Sides)"],  },
+	{ text = L["Arrow(Right)"],  },
 }
 
 NeatPlatesHubDefaults.WidgetAuraSort = 1

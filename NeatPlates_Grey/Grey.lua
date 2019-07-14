@@ -90,6 +90,16 @@ StyleDefault.targetindicator_arrowsides = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowright = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Right",
+	width = 18,
+	height = 18,
+	x = 22,
+	y = 15+nameplate_verticalOffset,
+	anchor = "RIGHT",
+	show = true,
+}
+
 StyleDefault.threatborder = {
 	texture =			defaultArtPath.."\\RegularThreat",
 	width = 128,

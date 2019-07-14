@@ -193,10 +193,6 @@ local function GetClickableArea()
 	return NeatPlatesOptions.NameplateClickableWidth or 1, NeatPlatesOptions.NameplateClickableHeight or 1
 end
 
---local function SetClickableArea(width, height)
---	if width then NeatPlatesOptions.NameplateClickableWidth = width end
---	if height then NeatPlatesOptions.NameplateClickableHeight = height end
---end
 
 --[[
 function NeatPlates:ReloadTheme()

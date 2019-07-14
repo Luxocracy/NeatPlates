@@ -156,6 +156,16 @@ StyleDefault.targetindicator_arrowsides = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowright = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Right",
+	width = 18,
+	height = 18,
+	x = 22,
+	y = VerticalAdjustment+0,
+	anchor = "RIGHT",
+	show = true,
+}
+
 StyleDefault.raidicon = {
 	width = 16,
 	height = 16,

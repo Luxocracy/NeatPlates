@@ -80,11 +80,21 @@ StyleDefault.targetindicator_arrowtop = {
 
 StyleDefault.targetindicator_arrowsides = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
-	width = 128,
+	width = 138,
 	height = 18,
 	x = 0,
 	y = 0,
 	anchor = "CENTER",
+	show = true,
+}
+
+StyleDefault.targetindicator_arrowright = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Right",
+	width = 18,
+	height = 18,
+	x = 21,
+	y = 0,
+	anchor = "RIGHT",
 	show = true,
 }
 

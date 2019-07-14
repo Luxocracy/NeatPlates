@@ -250,6 +250,8 @@ local function ApplyStyleCustomization(style, defaults)
 			style[k] = CopyTable(style.targetindicator_arrowtop)
 		elseif v == 5 then
 			style[k] = CopyTable(style.targetindicator_arrowsides)
+		elseif v == 6 then
+			style[k] = CopyTable(style.targetindicator_arrowright)
 		end
 	end
 

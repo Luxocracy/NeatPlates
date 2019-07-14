@@ -106,8 +106,8 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 
 	plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
 	plate.extended.visual.hitbox:SetPoint("CENTER", plate)
-	plate.extended.visual.hitbox:SetWidth(hitbox.width)	-- Note sure why the values are off by these amounts but...
-	plate.extended.visual.hitbox:SetHeight(hitbox.height)	-- Note sure why the values are off by these amounts but...
+	plate.extended.visual.hitbox:SetWidth(hitbox.width)
+	plate.extended.visual.hitbox:SetHeight(hitbox.height)
 
 	if show then plate.extended.visual.hitbox:Show() else plate.extended.visual.hitbox:Hide() end
 end
@@ -240,9 +240,9 @@ do
 		visual.raidicon = textFrame:CreateTexture(nil, "ARTWORK")
 		visual.eliteicon = textFrame:CreateTexture(nil, "OVERLAY")
 		visual.skullicon = textFrame:CreateTexture(nil, "OVERLAY")
-		visual.target = textFrame:CreateTexture(nil, "BACKGROUND")
-		visual.focus = textFrame:CreateTexture(nil, "BACKGROUND")
-		visual.mouseover = textFrame:CreateTexture(nil, "BACKGROUND")
+		visual.target = textFrame:CreateTexture(nil, "OVERLAY")
+		visual.focus = textFrame:CreateTexture(nil, "OVERLAY")
+		visual.mouseover = textFrame:CreateTexture(nil, "OVERLAY")
 		-- TextFrame
 		visual.customtext = textFrame:CreateFontString(nil, "OVERLAY")
 		visual.name  = textFrame:CreateFontString(nil, "OVERLAY")
