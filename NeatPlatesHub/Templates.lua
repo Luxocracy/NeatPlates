@@ -1,4 +1,5 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+--local LocalVars = NeatPlatesHubDefaults
 
 local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local divider = "Interface\\Addons\\NeatPlatesHub\\shared\\ThinBlackLine"
@@ -271,6 +272,96 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
+	local ScalePanel
+	local function CreateQuickScalePanel(frame, parent, name, label)
+		if not ScalePanel then
+			-- Build the actual panel
+			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate");
+			
+			ScalePanel:Hide()
+		  ScalePanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
+		  ScalePanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
+		  ScalePanel:SetWidth(200)
+		  ScalePanel:SetHeight(220)
+		  ScalePanel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
+		  ScalePanel:SetFrameStrata("DIALOG")
+
+		  ScalePanel:SetMovable(true)
+		  ScalePanel:EnableMouse(true)
+		  ScalePanel:RegisterForDrag("LeftButton", "RightButton")
+		  ScalePanel:SetScript("OnMouseDown", function(self,arg1)
+		    self:StartMoving()
+		  end)
+		  ScalePanel:SetScript("OnMouseUp", function(self,arg1)
+		    self:StopMovingOrSizing()
+		  end)
+
+		  -- Create SLiders
+		  ScalePanel.Scale = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_Scale", ScalePanel, L["Scale"], 1, .1, 3, .01, nil, 160)
+			ScalePanel.Scale:SetPoint("TOPRIGHT", ScalePanel, "TOPRIGHT", -20, -54)
+			ScalePanel.X = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_X", ScalePanel, L["Offset X"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.X:SetPoint("TOPLEFT", ScalePanel.Scale, "TOPLEFT", 0, -45)
+			ScalePanel.Y = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_Y", ScalePanel, L["Offset Y"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.Y:SetPoint("TOPLEFT", ScalePanel.X, "TOPLEFT", 0, -45)
+
+			-- Create Buttons
+			ScalePanel.CancelButton = CreateFrame("Button", "NeatPlatesScaleCancelButton", ScalePanel, "NeatPlatesPanelButtonTemplate")
+			ScalePanel.CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
+			ScalePanel.CancelButton:SetWidth(80)
+			ScalePanel.CancelButton:SetText(CANCEL)
+
+			ScalePanel.CancelButton:SetScript("OnClick", function(self) ScalePanel:Hide() end)
+
+			ScalePanel.OkayButton = CreateFrame("Button", "NeatPlatesScaleOkayButton", ScalePanel, "NeatPlatesPanelButtonTemplate")
+			ScalePanel.OkayButton:SetPoint("RIGHT", ScalePanel.CancelButton, "LEFT", -6, 0)
+			ScalePanel.OkayButton:SetWidth(80)
+			ScalePanel.OkayButton:SetText(OKAY)
+		end
+
+		ScalePanel.Title:SetText(label)
+		ScalePanel.OkayButton:SetScript("OnClick", function(self)
+			-- Set Values
+			frame.values = {
+				scale = ScalePanel.Scale:GetValue(),
+				x = ScalePanel.X:GetValue(),
+				y = ScalePanel.Y:GetValue()
+			}
+			parent.Callback()
+			ScalePanel:Hide()
+		end)
+
+		-- Restore values
+		local values = frame.values
+		--table.foreach(values, print)
+
+		ScalePanel.Scale:SetValue(values.scale or 1)
+		ScalePanel.X:SetValue(values.x or 0)
+		ScalePanel.Y:SetValue(values.y or 0)
+
+		return ScalePanel
+	end
+
+	local function CreateQuickScale(objectName, name, label, onOkay, parent, ...)
+		local frame = CreateFrame("Button", objectName, parent, "UIPanelButtonTemplate")
+	
+		frame:SetWidth(22)
+		frame:SetHeight(22)
+		frame:SetText("S")
+		frame:SetPoint(...)
+		frame.tooltipText = L["Display Scale Options"]
+
+		-- Create Value handlers
+		frame.SetValue = function(self, values) frame.values = values or {} end
+		frame.GetValue = function() return frame.values end
+
+		frame:SetScript("OnClick", function(self)
+			local panel = CreateQuickScalePanel(self, parent, name, label)
+			panel:Show()
+		end)
+
+		return frame, frame
+	end
+
 local function OnMouseWheelScrollFrame(frame, value, name)
 	local scrollbar = _G[frame:GetName() .. "ScrollBar"];
 	local currentPosition = scrollbar:GetValue()
@@ -292,6 +383,7 @@ NeatPlatesHubRapidPanel.CreateQuickColorbox = CreateQuickColorbox
 NeatPlatesHubRapidPanel.CreateQuickDropdown = CreateQuickDropdown
 NeatPlatesHubRapidPanel.CreateQuickHeadingLabel = CreateQuickHeadingLabel
 NeatPlatesHubRapidPanel.CreateQuickItemLabel = CreateQuickItemLabel
+NeatPlatesHubRapidPanel.CreateQuickScale = CreateQuickScale
 NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame = OnMouseWheelScrollFrame
 
 --[[
@@ -373,7 +465,7 @@ local function RemoveVariableSet(panel)
 end
 
 local function OnPanelItemChange(panel)
-	local LocalVars = GetVariableSet(panel)
+	LocalVars = GetVariableSet(panel)
 	GetPanelValues(panel, LocalVars)
 	panel.RefreshSettings(LocalVars)
 end

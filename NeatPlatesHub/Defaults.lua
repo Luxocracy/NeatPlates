@@ -154,6 +154,9 @@ NeatPlatesHubDefaults = {
 	HighlightTargetMode = 1,
 	HighlightFocusMode = 1,
 	HighlightMouseoverMode = 1,
+	HighlightTargetScale = {scale = 1, x = 0, y = 0,},
+	HighlightFocusScale = {scale = 1, x = 0, y = 0,},
+	HighlightMouseoverScale = {scale = 1, x = 0, y = 0,},
 
 	ColorTarget = {r = 1, g = 1, b = 1,},
 	ColorFocus = {r = 1, g = 1, b = 1,},

@@ -236,23 +236,31 @@ local function ApplyStyleCustomization(style, defaults)
 	style.level.show = (LocalVars.TextShowLevel == true)
 
 	local indicators = {
-		["target"] = LocalVars.HighlightTargetMode,
-		["focus"] = LocalVars.HighlightFocusMode,
-		["mouseover"] = LocalVars.HighlightMouseoverMode
+		["target"] = {mode = LocalVars.HighlightTargetMode, scale = LocalVars.HighlightTargetScale},
+		["focus"] = {mode = LocalVars.HighlightFocusMode, scale = LocalVars.HighlightFocusScale},
+		["mouseover"] = {mode = LocalVars.HighlightMouseoverMode, scale = LocalVars.HighlightMouseoverScale}
 	}
 
-	for k,v in pairs(indicators) do
+	for k,object in pairs(indicators) do
 		style[k] = style[k] or {}
+		local mode = object.mode
+		local scale = object.scale
 		-- Set Indicator style, 3 = Theme Default, 2 = Healthbar, 1 = Disabled
-		if v == 3 then
+		if mode == 3 then
 			style[k] = CopyTable(style.targetindicator)
-		elseif v == 4 then
+		elseif mode == 4 then
 			style[k] = CopyTable(style.targetindicator_arrowtop)
-		elseif v == 5 then
+		elseif mode == 5 then
 			style[k] = CopyTable(style.targetindicator_arrowsides)
-		elseif v == 6 then
+		elseif mode == 6 then
 			style[k] = CopyTable(style.targetindicator_arrowright)
 		end
+
+		style[k].height = style[k].height * scale.scale
+		style[k].width = style[k].width * scale.scale
+		style[k].x = style[k].x * scale.scale + scale.x
+		style[k].y = style[k].y * scale.scale + scale.y
+
 	end
 
 	style.target.show = (LocalVars.HighlightTargetMode > 2)

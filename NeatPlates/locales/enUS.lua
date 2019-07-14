@@ -19,8 +19,8 @@ L["Copy Profile"] = true
 L["Remove Profile"] = true
 
 L["Automation"] = true
-L["Enemy Nameplates:"] = true
-L["Friendly Nameplates:"] = true
+L["Enemy Nameplates"] = true
+L["Friendly Nameplates"] = true
 	-- Automation Dropdown
 	L["No Automation"] = true
 	L["Show during Combat, Hide when Combat ends"] = true
@@ -77,8 +77,8 @@ L["Default Profile"] = true
 ------------------------------
 L["Nameplate Style"] = true
 
-L["Enemy Health Bars:"] = true
-L["Friendly Health Bars:"] = true
+L["Enemy Health Bars"] = true
+L["Friendly Health Bars"] = true
 	-- Healthbar Options
 	L["All NPCs"] = true
 	L["Exclude Instances"] = true
@@ -87,10 +87,10 @@ L["Friendly Health Bars:"] = true
 	L["Active/Damaged Units"] = true
 	L["Clickthrough"] = true
 
-L["Health Bar View:"] = true
+L["Health Bar View"] = true
 L["Force Bars on Targets"] = true
 
-L["Headline View (Text-Only):"] = true
+L["Headline View (Text-Only)"] = true
 L["Force Headline on Neutral Units"] = true
 L["Force Headline while Out-of-Combat"] = true
 L["Force Headline on Mini-Mobs"] = true
@@ -100,23 +100,23 @@ L["Force Headline on Mini-Mobs"] = true
 ------------------------------
 L["Health Bar View"] = true
 
-L["Enemy Bar Color:"] = true
-L["Friendly Bar Color:"] = true
+L["Enemy Bar Color"] = true
+L["Friendly Bar Color"] = true
 	-- Bar Color Dropdown
 	L["By Threat"] = true
 	L["By Reaction"] = true
 	L["By Class"] = true
 	L["By Health"] = true
 
-L["Enemy Name Color:"] = true
-L["Friendly Name Color:"] = true
+L["Enemy Name Color"] = true
+L["Friendly Name Color"] = true
 	-- Name Color Dropdown
 	L["White"] = true
 	L["By Level Color"] = true
 	L["By Normal/Elite/Boss"] = true
 
-L["Enemy Status Text:"] = true
-L["Friendly Status Text:"] = true
+L["Enemy Status Text"] = true
+L["Friendly Status Text"] = true
 	-- StatusText Dropdown
 	L["None"] = true
 	L["Percent Health"] = true
@@ -147,13 +147,13 @@ L["Use Custom Mouseover Color"] = true
 ------------------------------
 L["Headline View (Text-Only)"] = true
 
-L["Enemy Headline Color:"] = true
-L["Friendly Headline Color:"] = true
+L["Enemy Headline Color"] = true
+L["Friendly Headline Color"] = true
 	-- Headline Color Dropdown
 	-- (Same as Name Color Dropdown)
 
-L["Enemy Headline Subtext:"] = true
-L["Friendly Headline Subtext:"] = true
+L["Enemy Headline Subtext"] = true
+L["Friendly Headline Subtext"] = true
 	-- Headline Subtext Dropdown
 	L["NPC Role, Guild, or Level"] = true
 	L["NPC Role, Guild, or Quest"] = true
@@ -178,24 +178,24 @@ L["Enable Aura Widget"] = true
 		L["Border Color"] = true
 		L["Glow"] = true
 
-L["Space Between buffs & debuffs:"] = true
-L["Aura Scale:"] = true
-L["Amount of Emphasized Auras:"] = true
-L["Additional Auras:"] = true
-L["Emphasized Auras:"] = true
+L["Space Between buffs & debuffs"] = true
+L["Aura Scale"] = true
+L["Amount of Emphasized Auras"] = true
+L["Additional Auras"] = true
+L["Emphasized Auras"] = true
 L["Emphasize Hides Normal Aura"] = true
 L["Hide Cooldown Spiral"] = true
 L["Hide Aura Duration"] = true
-L["Icon Style:"] = true
+L["Icon Style"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
 	L["Compact (May require UI reload to take effect)"] = true
 
-L["Sorting Mode:"] = true
+L["Sorting Mode"] = true
 	-- Aura Sorting Dropdown
 	L["By Duration"] = true
 
-L["Aura Alignment:"] = true
+L["Aura Alignment"] = true
 	-- Aura Alignment Dropdown
 	L["Left"] = true
 	L["Center"] = true
@@ -218,8 +218,8 @@ L["HITBOX_TIP"] = "Tip: |cffCCCCCCNameplates will be displayed with a green over
 ------------------------------
 L["Opacity"] = true
 
-L["Enemy Spotlight Mode:"] = true
-L["Friendly Spotlight Mode:"] = true
+L["Enemy Spotlight Mode"] = true
+L["Friendly Spotlight Mode"] = true
 	-- Spotlight Mode Dropdown
 	L["On Low-Health Units"] = true
 	L["On NPC"] = true
@@ -229,9 +229,9 @@ L["Friendly Spotlight Mode:"] = true
 	L["On Players"] = true
 	L["On Damaged Units"] = true
 
-L["Spotlight Opacity:"] = true
-L["Current Target Opacity:"] = true
-L["Non-Target Opacity:"] = true
+L["Spotlight Opacity"] = true
+L["Current Target Opacity"] = true
+L["Non-Target Opacity"] = true
 
 L["Spotlight Casting Units"] = true
 L["Spotlight Mouseover"] = true
@@ -243,8 +243,8 @@ L["Use Target Opacity When No Target Exists"] = true
 ------------------------------
 L["Scale"] = true
 
-L["Normal Scale:"] = true
-L["Scale Spotlight Mode:"] = true
+L["Normal Scale"] = true
+L["Scale Spotlight Mode"] = true
 	-- Scale Spotlight Mode Dropdown
 	L["On Elite Units"] = true
 	L["On Enemy Units"] = true
@@ -252,7 +252,7 @@ L["Scale Spotlight Mode:"] = true
 	L["On Raid Targets"] = true
 	L["On Bosses"] = true
 
-L["Spotlight Scale:"] = true
+L["Spotlight Scale"] = true
 	-- Spotlight Scale Options
 	L["Ignore Neutral Units"] = true
 	L["Ignore Non-Elite Units"] = true
@@ -265,8 +265,8 @@ L["Spotlight Mouseover Units"] = true
 -- Unit Filter
 L["Unit Filter"] = true
 
-L["Filtered Unit Opacity:"] = true
-L["Filtered Unit Scale:"] = true
+L["Filtered Unit Opacity"] = true
+L["Filtered Unit Scale"] = true
 	L["Override Target/Spotlight Scale"] = true
 
 L["Filter Neutral Units"] = true
@@ -279,15 +279,15 @@ L["Filter Players"] = true
 L["Filter Inactive"] = true
 L["Filter Mini-Mobs"] = true
 
-L["Filter By Unit Name:"] = true
+L["Filter By Unit Name"] = true
 
 ------------------------------
 -- Reaction
 ------------------------------
 L["Reaction"] = true
 
-L["Health Bar Color:"] = true
-L["Text Color:"] = true
+L["Health Bar Color"] = true
+L["Text Color"] = true
 	L["Friendly NPC"] = true
 	L["Friendly Player"] = true
 	L["Neutral"] = true
@@ -297,13 +297,13 @@ L["Text Color:"] = true
 	L["Elite"] = true
 	L["Boss"] = true
 
-L["Other Colors:"] = true
+L["Other Colors"] = true
 	L["Tapped Unit"] = true
 	L["Target Unit"] = true
 	L["Focus Unit"] = true
 	L["Mouseover Unit"] = true
 
-L["Custom Color Conditions:"] = true
+L["Custom Color Conditions"] = true
 L["Color Select"] = true
 -- Custom Color Help Tip
 L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by:
@@ -319,7 +319,7 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by
 ------------------------------
 L["Threat & Highlighting"] = true
 
-L["Threat Mode:"] = true
+L["Threat Mode"] = true
 	-- Threat Mode Dropdown
 	L["Auto (Color Swap)"] = true
 	L["Tank"] = true
@@ -327,7 +327,7 @@ L["Threat Mode:"] = true
 
 L["Enable Warning Glow"] = true
 
-L["Threat Colors:"] = true
+L["Threat Colors"] = true
 	L["Warning"] = true
 	L["Transition"] = true
 	L["Safe"] = true
@@ -344,9 +344,9 @@ L["Highlight Group Members holding Aggro"] = true
 	L["Border/Warning Glow"] = true
 	L["Name Text Color"] = true
 
-L["Target Highlighting:"] = true
-L["Focus Highlighting:"] = true
-L["Mouseover Highlighting:"] = true
+L["Target Highlighting"] = true
+L["Focus Highlighting"] = true
+L["Mouseover Highlighting"] = true
 	L["None"] = true
 	L["Theme Default"] = true
 	L["Healthbar"] = true
@@ -360,10 +360,10 @@ L["Mouseover Highlighting:"] = true
 L["Health"] = true
 
 L["Enable Healer Warning Glow"] = true
-L["High Health Threshold:"] = true
-L["Low Health Threshold:"] = true
+L["High Health Threshold"] = true
+L["Low Health Threshold"] = true
 
-L["Health Colors:"] = true
+L["Health Colors"] = true
 	L["High Health"] = true
 	L["Medium Health"] = true
 	L["Low Health"] = true
@@ -377,7 +377,7 @@ L["Show Friendly Cast Bars"] = true
 L["Show Interrupted Cast Bar"] = true
 L["Show who Interrupted Cast"] = true
 
-L["Cast Bar Colors:"] = true
+L["Cast Bar Colors"] = true
 	L["Normal"] = true
 	L["Un-interruptible"] = true
 	L["Interrupted"] = true
@@ -388,10 +388,10 @@ L["Cast Bar Colors:"] = true
 L["Range Indicator"] = true
 
 L["Enable Range Indicator"] = true
-L["Range Threshold:"] = true
+L["Range Threshold"] = true
 L["Scale based on distance"] = true
 
-L["Range Indicator Colors:"] = true
+L["Range Indicator Colors"] = true
 	L["Melee Range"] = true
 	L["Close Range"] = true
 	L["Mid Range"] = true
@@ -401,12 +401,12 @@ L["Range Indicator Colors:"] = true
 	L["Simple"] = true
 	L["Advanced"] = true
 
-L["Style:"] = true
+L["Style"] = true
 	L["Line"] = true
 	L["Icon"] = true
 
-	L["Offset X:"] = true
-	L["Offset Y:"] = true
+	L["Offset X"] = true
+	L["Offset Y"] = true
 
 ------------------------------
 -- Other Widgets
@@ -420,16 +420,16 @@ L["Show Friendly Class Art"] = true
 L["Show Totem Art"] = true
 L["Show Quest Icon on Units"] = true
 L["Show Personal Resource on Target"] = true
-L["Personal Resource Style:"] = true
+L["Personal Resource Style"] = true
 	L["Blizzlike"] = true
 	L["NeatPlates"] = true
 	L["NeatPlatesTraditional"] = true
 
 L["Show Absorb Bars"] = true
-	L["Mode:"] = true
+	L["Mode"] = true
 		L["Blizzlike"] = true
 		L["Overlay"] = true
-	L["Show on:"] = true
+	L["Show on"] = true
 		L["Target Only"] = true
 		L["All Units"] = true
 
@@ -500,4 +500,5 @@ L["Uses multiple colors to indicate unit range"] = true
 L["Your 'Out of Range' distance"] = true
 L["Requires 'All NPCs' to be unchecked"] = true
 L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
+L["Display Scale Options"] = true
 
