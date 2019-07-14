@@ -256,10 +256,10 @@ local function ApplyStyleCustomization(style, defaults)
 			style[k] = CopyTable(style.targetindicator_arrowright)
 		end
 
-		style[k].height = style[k].height * scale.scale
-		style[k].width = style[k].width * scale.scale
-		style[k].x = style[k].x * scale.scale + scale.x
-		style[k].y = style[k].y * scale.scale + scale.y
+		style[k].height = style[k].height * scale.x
+		style[k].width = style[k].width * scale.y
+		style[k].x = style[k].x * scale.x + scale.offset.x
+		style[k].y = style[k].y * scale.y + scale.offset.y
 
 	end
 

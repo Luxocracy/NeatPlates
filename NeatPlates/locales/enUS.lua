@@ -405,9 +405,6 @@ L["Style"] = true
 	L["Line"] = true
 	L["Icon"] = true
 
-	L["Offset X"] = true
-	L["Offset Y"] = true
-
 ------------------------------
 -- Other Widgets
 ------------------------------
@@ -474,6 +471,12 @@ L["Tip"] = true
 L["Default"] = true
 L["Profile"] = true
 L["Interrupted"] = true
+
+-- Scale Panel
+L["Scale X"] = true
+L["Scale Y"] = true
+L["Offset X"] = true
+L["Offset Y"] = true
 
 -- Main Panel
 L["Might resolve some issues with health not updating properly"] = true

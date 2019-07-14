@@ -281,8 +281,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			ScalePanel:Hide()
 		  ScalePanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 		  ScalePanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
-		  ScalePanel:SetWidth(200)
-		  ScalePanel:SetHeight(220)
+		  ScalePanel:SetWidth(390)
+		  ScalePanel:SetHeight(180)
 		  ScalePanel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
 		  ScalePanel:SetFrameStrata("DIALOG")
 
@@ -297,12 +297,14 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  end)
 
 		  -- Create SLiders
-		  ScalePanel.Scale = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_Scale", ScalePanel, L["Scale"], 1, .1, 3, .01, nil, 160)
-			ScalePanel.Scale:SetPoint("TOPRIGHT", ScalePanel, "TOPRIGHT", -20, -54)
-			ScalePanel.X = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_X", ScalePanel, L["Offset X"], 0, -100, 100, 1, "ACTUAL", 160)
-			ScalePanel.X:SetPoint("TOPLEFT", ScalePanel.Scale, "TOPLEFT", 0, -45)
-			ScalePanel.Y = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_Y", ScalePanel, L["Offset Y"], 0, -100, 100, 1, "ACTUAL", 160)
-			ScalePanel.Y:SetPoint("TOPLEFT", ScalePanel.X, "TOPLEFT", 0, -45)
+		  ScalePanel.ScaleX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleX", ScalePanel, L["Scale X"], 1, .1, 3, .01, nil, 160)
+			ScalePanel.ScaleX:SetPoint("TOPLEFT", ScalePanel, "TOPLEFT", 20, -54)
+			ScalePanel.ScaleY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleY", ScalePanel, L["Scale Y"], 1, .1, 3, .01, nil, 160)
+			ScalePanel.ScaleY:SetPoint("TOPLEFT", ScalePanel.ScaleX, "TOPLEFT", 0, -45)
+			ScalePanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetX", ScalePanel, L["Offset X"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.OffsetX:SetPoint("TOPRIGHT", ScalePanel, "TOPRIGHT", -20, -54)
+			ScalePanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetY", ScalePanel, L["Offset Y"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.OffsetY:SetPoint("TOPLEFT", ScalePanel.OffsetX, "TOPLEFT", 0, -45)
 
 			-- Create Buttons
 			ScalePanel.CancelButton = CreateFrame("Button", "NeatPlatesScaleCancelButton", ScalePanel, "NeatPlatesPanelButtonTemplate")
@@ -322,21 +324,25 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		ScalePanel.OkayButton:SetScript("OnClick", function(self)
 			-- Set Values
 			frame.values = {
-				scale = ScalePanel.Scale:GetValue(),
-				x = ScalePanel.X:GetValue(),
-				y = ScalePanel.Y:GetValue()
+				x = ScalePanel.ScaleX:GetValue(),
+				y = ScalePanel.ScaleY:GetValue(),
+				offset = {
+					x = ScalePanel.OffsetX:GetValue(),
+					y = ScalePanel.OffsetY:GetValue(),
+				}
 			}
 			parent.Callback()
 			ScalePanel:Hide()
 		end)
 
 		-- Restore values
-		local values = frame.values
+		local scale = frame.values
 		--table.foreach(values, print)
 
-		ScalePanel.Scale:SetValue(values.scale or 1)
-		ScalePanel.X:SetValue(values.x or 0)
-		ScalePanel.Y:SetValue(values.y or 0)
+		ScalePanel.ScaleX:SetValue(scale.x or 1)
+		ScalePanel.ScaleY:SetValue(scale.y or 1)
+		ScalePanel.OffsetX:SetValue(scale.offset.x or 0)
+		ScalePanel.OffsetY:SetValue(scale.offset.y or 0)
 
 		return ScalePanel
 	end
@@ -351,7 +357,17 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		frame.tooltipText = L["Display Scale Options"]
 
 		-- Create Value handlers
-		frame.SetValue = function(self, values) frame.values = values or {} end
+		frame.SetValue = function(self, values)
+			--frame.values = {
+			--	x = 1,
+			--	y = 1,
+			--	offset = {
+			--		x = 0,
+			--		y = 0,
+			--	}
+			--}
+			frame.values = values or {} 
+		end
 		frame.GetValue = function() return frame.values end
 
 		frame:SetScript("OnClick", function(self)
