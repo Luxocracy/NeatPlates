@@ -366,10 +366,15 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local function CreateQuickScale(objectName, name, label, onOkay, parent, ...)
 		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
 	
-		frame:SetWidth(24)
+		frame:SetWidth(22)
 		frame:SetHeight(22)
-		frame:SetText("S")
 		frame:SetPoint(...)
+		frame.Texture = frame:CreateTexture(nil, "ARTWORK")
+		frame.Texture:SetTexture("Interface\\Addons\\NeatPlatesHub\\shared\\Scale-Icon")
+		frame.Texture:SetPoint("CENTER", frame, "CENTER")
+		frame.Texture:SetWidth(14)
+		frame.Texture:SetHeight(14)
+		frame.Texture:SetBlendMode("ADD")
 		frame.tooltipText = L["Display Scale Options"]
 
 		-- Create Value handlers
