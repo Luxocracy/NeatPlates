@@ -443,9 +443,9 @@ local function BuildHubPanel(panel)
 	panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", "", nil, AlignmentColumn, panel.HighlightFocusMode,  130, -17)
 	panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", "", nil, AlignmentColumn, panel.HighlightMouseoverMode, 130, -17)
 
-	panel.HighlightTargetScale = CreateQuickScale(objectName.."HighlightTargetScale", "HighlightTargetScale", L["Target Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightTargetMode, "RIGHT", 50, 2)
-	panel.HighlightFocusScale = CreateQuickScale(objectName.."HighlightFocusScale", "HighlightFocusScale", L["Focus Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightFocusMode, "RIGHT", 50, 2)
-	panel.HighlightMouseoverScale = CreateQuickScale(objectName.."HighlightMouseoverScale", "HighlightMouseoverScale", L["Mouseover Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightMouseoverMode, "RIGHT", 50, 2)
+	panel.HighlightTargetScale = CreateQuickScale(objectName.."HighlightTargetScale", "HighlightTargetScale", L["Target Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightTargetMode, "RIGHT", 52, 2)
+	panel.HighlightFocusScale = CreateQuickScale(objectName.."HighlightFocusScale", "HighlightFocusScale", L["Focus Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightFocusMode, "RIGHT", 52, 2)
+	panel.HighlightMouseoverScale = CreateQuickScale(objectName.."HighlightMouseoverScale", "HighlightMouseoverScale", L["Mouseover Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightMouseoverMode, "RIGHT", 52, 2)
 
 	--panel.WidgetTargetHighlight, F = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", L["Show Target Highlight"], AlignmentColumn, F, 0)
 	--panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Target Highlight Color"], AlignmentColumn, F, 0)
@@ -500,10 +500,9 @@ local function BuildHubPanel(panel)
 	panel.WidgetRangeMode.tooltipText2 = L["Uses multiple colors to indicate unit range"]
 	panel.WidgetRangeStyle = CreateQuickDropdown(objectName.."WidgetRangeStyle", L["Style"]..':', RangeStyles, 1, AlignmentColumn, panel.WidgetRangeMode, OffsetColumnB+76)
 	panel.WidgetRangeUnits = CreateQuickDropdown(objectName.."WidgetRangeUnits", L["Show on"]..':', RangeUnits, 1, AlignmentColumn, panel.WidgetRangeStyle, OffsetColumnB+76)
-	panel.WidgetMaxRange = CreateQuickSlider(objectName.."WidgetMaxRange", L["Range Threshold"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeUnits, OffsetColumnB+76, 2)
-	panel.WidgetMaxRange.tooltipText = L["Your 'Out of Range' distance"]
-	panel.WidgetOffsetX = CreateQuickSlider(objectName.."WidgetOffsetX", L["Offset X"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetMaxRange, OffsetColumnB+76, 2)
-	panel.WidgetOffsetY, F = CreateQuickSlider(objectName.."WidgetOffsetY", L["Offset Y"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetOffsetX, OffsetColumnB+76, 2)
+	panel.WidgetRangeMax = CreateQuickSlider(objectName.."WidgetRangeMax", L["Range Threshold"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeUnits, OffsetColumnB+76, 2)
+	panel.WidgetRangeMax.tooltipText = L["Your 'Out of Range' distance"]
+	panel.WidgetRangeScaleOptions = CreateQuickScale(objectName.."WidgetRangeScaleOptions", "WidgetRangeScaleOptions", L["Range Indicator"], nil, AlignmentColumn, "LEFT", panel.WidgetRangeStyle, "RIGHT", 28, 2)
 
 	--[[
 	------------------------------
@@ -604,9 +603,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.AuraScale, 1, .5, 2.2, .01)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 
-	SetSliderMechanics(panel.WidgetMaxRange, 0, 1, 100, 1)
-	SetSliderMechanics(panel.WidgetOffsetX, 0, -100, 100, 1)
-	SetSliderMechanics(panel.WidgetOffsetY, 0, -50, 50, 1)
+	SetSliderMechanics(panel.WidgetRangeMax, 0, 1, 100, 1)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)

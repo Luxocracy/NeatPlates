@@ -782,29 +782,22 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
 	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -45)
 	panel.NameplateMaxDistance.Callback = function(self) UpdateSliderValue(self, "nameplateMaxDistance") end
-	panel.NameplateMaxDistance:SetScript("OnMouseUp", function(self) self:Callback() end)
 
 	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
 	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -45)
 	panel.NameplateOverlapH.Callback = function(self) UpdateSliderValue(self, "nameplateOverlapH") end
-	panel.NameplateOverlapH:SetScript("OnMouseUp", function(self) self:Callback() end)
 
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
 	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -45)
 	panel.NameplateOverlapV.Callback = function(self) UpdateSliderValue(self, "nameplateOverlapV") end
-	panel.NameplateOverlapV:SetScript("OnMouseUp", function(self) self:Callback() end)
 
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -45)
 	panel.NameplateClickableWidth.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
-	panel.NameplateClickableWidth:SetScript("OnMouseUp", function(self) self:Callback() end)
-	--panel.NameplateClickableWidth:SetScript("OnMouseUp", function(self) print(self.ceil(self:GetValue())) end)
 
 	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, L["Clickable Height of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -45)
 	panel.NameplateClickableHeight.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
-	panel.NameplateClickableHeight:SetScript("OnMouseUp", function(self) self:Callback() end)
-	--panel.NameplateClickableHeight:SetScript("OnMouseUp", function(self) print("clickableheight", self.ceil(self:GetValue())) end)
 
 	panel.NameplateClickableSizeTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalHitBoxTip", L["HITBOX_TIP"], panel, "BOTTOMRIGHT", panel.NameplateClickableHeight, "TOPRIGHT", 35, -20)
 

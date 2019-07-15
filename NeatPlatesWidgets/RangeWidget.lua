@@ -15,7 +15,7 @@ local WidgetRange = 40
 local WidgetScale = false
 local WidgetWidthMod = 1
 local WidgetColors = {}
-local WidgetPos = {x = 0, y = 0}
+local WidgetScaleOptions = {x = 0, y = 0, offset = {x = 0, y = 0}}
 
 local WidgetIconSize = 10
 
@@ -36,14 +36,41 @@ local function AttachNewTicker(frame)
 	end
 end
 
+local function GetWidgetSize(frame, minRange, maxRange)
+	local width, height
+
+	if WidgetStyle == 1 then
+		width, height = frame:GetParent()._width or 100, 3
+	else
+		width, height = WidgetIconSize, WidgetIconSize
+	end
+
+	-- Apply user scaling
+	width = width * WidgetScaleOptions.x
+	height = height * WidgetScaleOptions.y
+
+	-- Widget scaling by distance
+	if minRange and maxRange then
+		if WidgetScale and WidgetStyle == 1 then
+			width = math.max(width*0.15, width*math.min(1, minRange/WidgetRange))
+		elseif WidgetScale then
+			width = math.max(width*0.15, width*math.min(1, minRange/WidgetRange))
+			height = math.max(height*0.15, height*math.min(1, minRange/WidgetRange))
+		end
+	end
+
+	return width, height
+end
+
 local function UpdateRangeWidget(frame, unit)
 	if not unit or not frame._ticker then return end
 	local minRange, maxRange = rc:GetRange(unit)
 	local height = frame:GetParent()._height or 12;
-	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
+	local width = frame:GetParent()._width or 100;
+
+	if WidgetStyle == 1 then width = width * WidgetWidthMod end -- Account for width scale when using bar style
 	
 	frame:Show()
-
 	frame:SetWidth(width); frame:SetHeight(32)
 
 	if WidgetRange and minRange and maxRange then
@@ -73,14 +100,11 @@ local function UpdateRangeWidget(frame, unit)
 		end
 
 		frame.Texture:SetVertexColor(color.r,color.g,color.b,color.a)
+		width, height = GetWidgetSize(frame, minRange, maxRange)
 
-		if WidgetScale and WidgetStyle == 1 then
-			frame.Texture:SetWidth(math.max(width*0.15, width*math.min(1, minRange/WidgetRange)))
-		elseif WidgetScale then
-			local scaleSize = math.max(WidgetIconSize*0.15, WidgetIconSize*math.min(1, minRange/WidgetRange))
-			frame.Texture:SetHeight(scaleSize)
-			frame.Texture:SetWidth(scaleSize)
-		end
+		frame.Texture:SetWidth(width)
+		frame.Texture:SetHeight(height)
+		
 	else
 		frame.Texture:Hide()
 	end
@@ -88,21 +112,28 @@ end
 
 --[[ Called on Theme Change: Since bars aren't the same size we just have to update them ]]--
 local function UpdateWidgetConfig(frame)
-	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
+	local width = frame:GetParent()._width or 100
 	local height = frame:GetParent()._height or 12
 
-	frame.Texture:SetScale(1)
-	if not WidgetScale then
-		if WidgetStyle == 1 then
-			frame.Texture:SetHeight(3)
-			frame.Texture:SetWidth(width)
-		else
-			frame.Texture:SetHeight(WidgetIconSize)
-			frame.Texture:SetWidth(WidgetIconSize)
-		end
-	end
+	if WidgetStyle == 1 then width = width * WidgetWidthMod end -- Account for width scale when using bar style
 
-	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetPos.x, WidgetPos.y)
+	frame.Texture:SetTexture(artfile[WidgetStyle])
+	frame.Texture:SetScale(1)
+	--if not WidgetScaling then
+	--	if WidgetStyle == 1 then
+	--		frame.Texture:SetHeight(3)
+	--		frame.Texture:SetWidth(width)
+	--	else
+	--		frame.Texture:SetHeight(WidgetIconSize)
+	--		frame.Texture:SetWidth(WidgetIconSize)
+	--	end
+	--end
+	width, height = GetWidgetSize(frame)
+
+	frame.Texture:SetWidth(width)
+	frame.Texture:SetHeight(height)
+
+	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetScaleOptions.offset.x, WidgetScaleOptions.offset.y)
 end
 
 -- [[ Widget frame self update ]] --
@@ -147,22 +178,29 @@ end
 local function CreateWidgetFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
 	local height = frame:GetParent()._height or 12;
-	local width = (frame:GetParent()._width or 100) * WidgetWidthMod;
+	local width = frame:GetParent()._width or 100
+
+	if WidgetStyle == 1 then width = width * WidgetWidthMod end -- Account for width scale when using bar style
 
 	--[[ Widget Config can now pass width or height data from theme config ]]--
 	frame:SetWidth(16); frame:SetHeight(16)
 	frame.Texture = frame:CreateTexture(nil, "OVERLAY")
 	frame.Texture:SetTexture(artfile[WidgetStyle])
-	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetPos.x, WidgetPos.y)
+	frame.Texture:SetPoint("CENTER", frame, "CENTER", WidgetScaleOptions.offset.x, WidgetScaleOptions.offset.y)
 	frame.Texture:SetScale(1)
 
-	if WidgetStyle == 1 then
-		frame.Texture:SetHeight(3)
-		frame.Texture:SetWidth(width)
-	else
-		frame.Texture:SetHeight(WidgetIconSize)
-		frame.Texture:SetWidth(WidgetIconSize)
-	end
+	--if WidgetStyle == 1 then
+	--	frame.Texture:SetHeight(3)
+	--	frame.Texture:SetWidth(width)
+	--else
+	--	frame.Texture:SetHeight(WidgetIconSize)
+	--	frame.Texture:SetWidth(WidgetIconSize)
+	--end
+
+	width, height = GetWidgetSize(frame)
+
+	frame.Texture:SetWidth(width)
+	frame.Texture:SetHeight(height)
 	
 
 	-- Required Widget Code
@@ -185,8 +223,9 @@ local function SetRangeWidgetOptions(LocalVars)
 	WidgetUnits = LocalVars.WidgetRangeUnits
 	WidgetRange = LocalVars.WidgetMaxRange
 	WidgetScale = LocalVars.WidgetRangeScale
-	WidgetPos.x = LocalVars.WidgetOffsetX
-	WidgetPos.y = LocalVars.WidgetOffsetY
+	WidgetScaleOptions = LocalVars.WidgetRangeScaleOptions
+	--WidgetPos.x = LocalVars.WidgetOffsetX
+	--WidgetPos.y = LocalVars.WidgetOffsetY
 	WidgetWidthMod = LocalVars.FrameBarWidth or 1
 	WidgetColors["Melee"] = LocalVars.ColorRangeMelee
 	WidgetColors["Close"] = LocalVars.ColorRangeClose

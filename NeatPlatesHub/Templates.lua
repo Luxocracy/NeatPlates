@@ -274,6 +274,19 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 	local ScalePanel
 	local function CreateQuickScalePanel(frame, parent, name, label)
+		local oldValues = frame.values
+		local function onChange()
+			frame.values = {
+				x = ScalePanel.ScaleX:GetValue(),
+				y = ScalePanel.ScaleY:GetValue(),
+				offset = {
+					x = ScalePanel.OffsetX:GetValue(),
+					y = ScalePanel.OffsetY:GetValue(),
+				}
+			}
+			parent.Callback()
+		end
+
 		if not ScalePanel then
 			-- Build the actual panel
 			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate");
@@ -321,18 +334,21 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		end
 
 		ScalePanel.Title:SetText(label)
+
+		-- Create/Update functions
+		ScalePanel.ScaleX.Callback = onChange
+		ScalePanel.ScaleY.Callback = onChange
+		ScalePanel.OffsetX.Callback = onChange
+		ScalePanel.OffsetY.Callback = onChange
+
 		ScalePanel.OkayButton:SetScript("OnClick", function(self)
-			-- Set Values
-			frame.values = {
-				x = ScalePanel.ScaleX:GetValue(),
-				y = ScalePanel.ScaleY:GetValue(),
-				offset = {
-					x = ScalePanel.OffsetX:GetValue(),
-					y = ScalePanel.OffsetY:GetValue(),
-				}
-			}
-			parent.Callback()
+			ScalePanel:SetScript("OnHide", nil)
 			ScalePanel:Hide()
+		end)
+
+		ScalePanel:SetScript("OnHide", function(self)
+			frame.values = oldValues
+			parent.Callback()
 		end)
 
 		-- Restore values

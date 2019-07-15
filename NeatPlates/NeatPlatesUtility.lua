@@ -586,6 +586,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider.High = _G[reference.."High"]
 	slider.Label:SetText(label or "")
 
+	slider:SetScript("OnMouseUp", function(self) if self.Callback then self:Callback() end end)
+
 	-- Value
 	--slider.Value = slider:CreateFontString(nil, 'ARTWORK', 'GameFontWhite')
 	--slider.Value:SetPoint("BOTTOM", 0, -10)
