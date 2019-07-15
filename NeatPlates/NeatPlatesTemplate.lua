@@ -293,6 +293,17 @@ TemplateTheme.targetindicator_arrowright = {
 	show = false,
 }
 
+TemplateTheme.targetindicator_arrowleft = {
+	color = {},
+	texture = EMPTY_TEXTURE,
+	width = 128,
+	height = 64,
+	x = 0,
+	y = -5,
+	anchor = "CENTER",
+	show = false,
+}
+
 TemplateTheme.target = {
 	color = {},
 	texture = EMPTY_TEXTURE,

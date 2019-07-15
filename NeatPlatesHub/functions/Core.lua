@@ -245,7 +245,7 @@ local function ApplyStyleCustomization(style, defaults)
 		style[k] = style[k] or {}
 		local mode = object.mode
 		local scale = object.scale
-		-- Set Indicator style, 3 = Theme Default, 2 = Healthbar, 1 = Disabled
+		-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
 		if mode == 3 then
 			style[k] = CopyTable(style.targetindicator)
 		elseif mode == 4 then
@@ -254,6 +254,8 @@ local function ApplyStyleCustomization(style, defaults)
 			style[k] = CopyTable(style.targetindicator_arrowsides)
 		elseif mode == 6 then
 			style[k] = CopyTable(style.targetindicator_arrowright)
+		elseif mode == 7 then
+			style[k] = CopyTable(style.targetindicator_arrowleft)
 		end
 
 		style[k].height = style[k].height * scale.x

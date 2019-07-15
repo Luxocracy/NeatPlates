@@ -78,6 +78,15 @@ StyleDefault.targetindicator_arrowright = {
 	anchor = "RIGHT",
 	show = true,
 }
+StyleDefault.targetindicator_arrowleft = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Leftt",
+	width = 18,
+	height = 18,
+	x = -5,
+	y = 0,
+	anchor = "LEFT",
+	show = true,
+}
 StyleDefault.skullicon = {
 	width = 12,
 	height = 12,

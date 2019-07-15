@@ -364,9 +364,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	end
 
 	local function CreateQuickScale(objectName, name, label, onOkay, parent, ...)
-		local frame = CreateFrame("Button", objectName, parent, "UIPanelButtonTemplate")
+		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
 	
-		frame:SetWidth(22)
+		frame:SetWidth(24)
 		frame:SetHeight(22)
 		frame:SetText("S")
 		frame:SetPoint(...)
@@ -374,14 +374,6 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		-- Create Value handlers
 		frame.SetValue = function(self, values)
-			--frame.values = {
-			--	x = 1,
-			--	y = 1,
-			--	offset = {
-			--		x = 0,
-			--		y = 0,
-			--	}
-			--}
 			frame.values = values or {} 
 		end
 		frame.GetValue = function() return frame.values end

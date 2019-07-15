@@ -88,6 +88,16 @@ StyleDefault.targetindicator_arrowright = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowleft = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Left",
+	width = 18,
+	height = 18,
+	x = -33,
+	y = 0,
+	anchor = "LEFT",
+	show = true,
+}
+
 StyleDefault.threatborder = {
 	texture =					"Interface\\TargetingFrame\\UI-TargetingFrame-Flash",
 	width = 140,

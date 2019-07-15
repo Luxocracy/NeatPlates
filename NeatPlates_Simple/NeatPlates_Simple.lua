@@ -76,6 +76,16 @@ StyleDefault.targetindicator_arrowright = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowleft = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Left",
+	width = 18,
+	height = 18,
+	x = -26,
+	y = -3,
+	anchor = "LEFT",
+	show = true,
+}
+
 StyleDefault.threatborder = {
 	texture 				= path.."\\empty.tga",
 	width = 110,

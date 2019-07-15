@@ -84,6 +84,16 @@ StyleDefault.targetindicator_arrowright = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowleft = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Left",
+	width = 18,
+	height = 18,
+	x = -22,
+	y = VerticalAdjustment+15,
+	anchor = "LEFT",
+	show = true,
+}
+
 StyleDefault.highlight = {
 	texture		 =					path.."Highlight",
 	--width = 128,

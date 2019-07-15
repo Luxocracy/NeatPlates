@@ -137,6 +137,16 @@ StyleDefault.targetindicator_arrowright = {
 	show = true,
 }
 
+StyleDefault.targetindicator_arrowleft = {
+	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Left",
+	width = 18,
+	height = 18,
+	x = -13,
+	y = 3.5,
+	anchor = "LEFT",
+	show = true,
+}
+
 StyleDefault.name = {
 	typeface =					font,
 	size = 12,

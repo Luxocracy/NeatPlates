@@ -353,6 +353,7 @@ L["Mouseover Highlighting"] = true
 	L["Arrow(Top)"] = true
 	L["Arrow(Sides)"] = true
 	L["Arrow(Right)"] = true
+	L["Arrow(Left)"] = true
 
 ------------------------------
 -- Health
