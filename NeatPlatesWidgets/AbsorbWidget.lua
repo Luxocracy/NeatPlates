@@ -26,14 +26,7 @@ local function UpdateWidgetConfig(frame)
 
 	frame:SetHeight(32)
 	frame:SetWidth(width)
-	--frame.LineDamage:SetHeight(height)
-	--frame.LineHealing:SetHeight(height)
-	--frame.LineDamage:SetWidth(width)
-	--frame.LineHealing:SetWidth(width)
 	frame._orientation = orientation
-	-- frame:SetWidth(width)
-	-- frame.LineDamage:SetHeight(height)
-	-- frame.LineHealing:SetHeight(height)
 	frame.LineDamage:SetTexture(ArtDamage[orientation], "REPEAT", "REPEAT")
 	frame.LineHealing:SetTexture(ArtHealing[orientation], "REPEAT", "REPEAT")
 	frame.LineDamage:SetTexCoord(0,1,11/32,22/32)
@@ -75,7 +68,8 @@ local function UpdateAbsorbs(frame, unitid)
 	if frame.lastAbsorb ~= nil and frame.lastAbsorb.damage == absorb.damage and
 		frame.lastAbsorb.healing == absorb.healing and
 		frame.lasthp ~= nil and frame.lasthp == health and
-		frame.lastmaxhp ~= nil and frame.lastmaxhp == healthmax then
+		frame.lastmaxhp ~= nil and frame.lastmaxhp == healthmax and
+		frame.lastStyle ~= nil and frame.lastStyle == "Default" then
 		return
 	end
 	
@@ -161,6 +155,7 @@ end
 local function UpdateWidgetContext(frame, unit)
 	local guid = unit.guid
 	frame.unitid = unitid
+	frame.lastStyle = unit.style
 
 	if guid then
 		if frame.guid then WidgetList[frame.guid] = nil end
