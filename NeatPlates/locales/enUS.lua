@@ -482,6 +482,7 @@ L["Offset Y"] = true
 -- Main Panel
 L["Might resolve some issues with health not updating properly"] = true
 L["Allows some CVars to work(Might require a /reload)"] = true
+L["CVars could not applied due to combat"] = true
 
 -- Profile Panel
 L["Makes the Nameplates non-interactable"] = true

@@ -210,9 +210,11 @@ NeatPlatesPanel.GetClickableArea = GetClickableArea
 local ThemeDropdownMenuItems = {}
 
 local function ApplyRequiredCVars()
+	if InCombatLockdown() then return end
 	if NeatPlatesOptions.EnforceRequiredCVars then
-		if not NeatPlatesOptions.BlizzardScaling then SetCVar("nameplateMinScale", 1) end
-		SetCVar("showQuestTrackingTooltips", 1)
+		if not NeatPlatesOptions.BlizzardScaling then SetCVar("nameplateMinScale", 1) end  -- Prevents issues with 'hitbox' of nameplates
+		SetCVar("showQuestTrackingTooltips", 1)	-- Required for QuestIndicator
+		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
 	end
 end
 
@@ -470,6 +472,20 @@ local function OnMouseWheelScrollFrame(frame, value, name)
 	if ( value > 0 ) then scrollbar:SetValue(currentPosition - increment);
 	-- Spin Down
 	else scrollbar:SetValue(currentPosition + increment); end
+end
+
+local function SetCVarValue(self, cvar, isBool)
+	if not InCombatLockdown() then
+		local value
+		if isBool then
+			value = self:GetChecked() and 1 or 0	-- Convert to int bool
+		else
+			value = self.ceil(self:GetValue())
+		end
+		SetCVar(cvar, value)
+	else
+		print(orange.."NeatPlates: "..red..L["CVars could not applied due to combat"])
+	end
 end
 
 local function BuildInterfacePanel(panel)
@@ -769,34 +785,32 @@ local function BuildInterfacePanel(panel)
 	panel.EnforceRequiredCVars.tooltipText = L["Helps ensure that everything is working as intended by enforcing certain CVars"]
 	panel.EnforceRequiredCVars:SetPoint("TOPLEFT", panel.CVarsLabel, "BOTTOMLEFT", 0, -8)
 
-	local UpdateSliderValue = function(self, cvar) SetCVar(cvar, self.ceil(self:GetValue())) end
-
 	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])
 	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.EnforceRequiredCVars, "TOPLEFT", 0, -25)
-	panel.NameplateTargetClamp:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateTargetRadialPosition", 1) else SetCVar("nameplateTargetRadialPosition", 0) end end)
+	panel.NameplateTargetClamp:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateTargetRadialPosition", true) end)
 
 	panel.NameplateStacking = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateStacking", panel, L["Stacking Nameplates"])
 	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
-	panel.NameplateStacking:SetScript("OnClick", function(self) if self:GetChecked() then SetCVar("nameplateMotion", 1) else SetCVar("nameplateMotion", 0) end end)
+	panel.NameplateStacking:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateMotion", true) end)
 
 	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
-	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -45)
-	panel.NameplateMaxDistance.Callback = function(self) UpdateSliderValue(self, "nameplateMaxDistance") end
+	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
 
 	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -45)
-	panel.NameplateOverlapH.Callback = function(self) UpdateSliderValue(self, "nameplateOverlapH") end
+	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -50)
+	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
 
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -45)
-	panel.NameplateOverlapV.Callback = function(self) UpdateSliderValue(self, "nameplateOverlapV") end
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -50)
+	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
 
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
-	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -45)
+	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -50)
 	panel.NameplateClickableWidth.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
 
 	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, L["Clickable Height of Nameplates"], 1, .1, 2, .01, nil, 170)
-	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -45)
+	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -50)
 	panel.NameplateClickableHeight.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
 
 	panel.NameplateClickableSizeTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalHitBoxTip", L["HITBOX_TIP"], panel, "BOTTOMRIGHT", panel.NameplateClickableHeight, "TOPRIGHT", 35, -20)
@@ -879,7 +893,8 @@ local function BuildInterfacePanel(panel)
 	ResetButton:SetScript("OnClick", function()
 		SetCVar("nameplateShowEnemies", 1)
 		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
-
+		SetCVar("nameplateMinScale", 1)
+		SetCVar("showQuestTrackingTooltips", 1)
 
 		if IsShiftKeyDown() then
 			NeatPlatesOptions = wipe(NeatPlatesOptions)
@@ -953,6 +968,8 @@ function panelevents:PLAYER_LOGIN()
 	if not NeatPlatesOptions.WelcomeShown then
 		SetCVar("nameplateShowAll", 1)		--
 
+		SetCVar("nameplateMinScale", 1)
+		SetCVar("showQuestTrackingTooltips", 1)
 
 		SetCVar("nameplateShowEnemies", 1)
 		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection

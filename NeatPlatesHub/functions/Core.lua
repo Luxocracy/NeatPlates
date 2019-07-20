@@ -245,24 +245,26 @@ local function ApplyStyleCustomization(style, defaults)
 		style[k] = style[k] or {}
 		local mode = object.mode
 		local scale = object.scale
-		-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
-		if mode == 3 then
-			style[k] = CopyTable(style.targetindicator)
-		elseif mode == 4 then
-			style[k] = CopyTable(style.targetindicator_arrowtop)
-		elseif mode == 5 then
-			style[k] = CopyTable(style.targetindicator_arrowsides)
-		elseif mode == 6 then
-			style[k] = CopyTable(style.targetindicator_arrowright)
-		elseif mode == 7 then
-			style[k] = CopyTable(style.targetindicator_arrowleft)
+		
+		if mode and scale then
+			-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
+			if mode == 3 then
+				style[k] = CopyTable(style.targetindicator)
+			elseif mode == 4 then
+				style[k] = CopyTable(style.targetindicator_arrowtop)
+			elseif mode == 5 then
+				style[k] = CopyTable(style.targetindicator_arrowsides)
+			elseif mode == 6 then
+				style[k] = CopyTable(style.targetindicator_arrowright)
+			elseif mode == 7 then
+				style[k] = CopyTable(style.targetindicator_arrowleft)
+			end
+
+			style[k].height = style[k].height * scale.x
+			style[k].width = style[k].width * scale.y
+			style[k].x = style[k].x * scale.x + scale.offset.x
+			style[k].y = style[k].y * scale.y + scale.offset.y
 		end
-
-		style[k].height = style[k].height * scale.x
-		style[k].width = style[k].width * scale.y
-		style[k].x = style[k].x * scale.x + scale.offset.x
-		style[k].y = style[k].y * scale.y + scale.offset.y
-
 	end
 
 	style.target.show = (LocalVars.HighlightTargetMode > 2)
