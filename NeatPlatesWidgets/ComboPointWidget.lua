@@ -52,9 +52,10 @@ local t = {
 
 	['WARLOCK'] = {
 		["POWER"] = Enum.PowerType.SoulShards,
-		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.25, ["o"] = 5}, -- all
+		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.25, ["o"] = 4}, -- all
 		["NOMOD"] = true,
 		["MinMax"] = {{-6, 17}, {-6, 17}, {-6, 17}},  -- Actually 0-10, but textures aren't edge to edge so need an offset
+		["SPARK"] = {-28.5, -14.5, 0, 14.5, 28.5}
 	},
 };
 
@@ -157,16 +158,22 @@ local function UpdateWidgetFrame(frame)
 		elseif maxPoints == 50 then -- Warlock Specific
 			local modPoints = math.floor(points/10)
 			local fragments = points % 10
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset - 1), grid *(modPoints + offset))
-			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + offset + 1))
+			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
+			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + 1 + offset), grid*(math.min(6, modPoints + 2) + offset))
 			frame.PartialFill:SetValue(fragments)
-			if modPoints == 5 then frame.PartialFill:Hide() else frame.PartialFill:Show() end
+
+			if t[PlayerClass]["SPARK"] then
+				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", t[PlayerClass]["SPARK"][modPoints], 2) -- Offset texture per shard
+				if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
+				frame.Spark.lastpower = modPoints
+			end
+
+			frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
 		else
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
 		end
 
 		frame.Icon:SetTexture(artfile[artstyle])
-		frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
 
 		frame:Show()
 		return
@@ -273,6 +280,38 @@ local function CreateWidgetFrame(parent)
 	frame.PartialFill:SetWidth(w)
 	frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
 	frame.PartialFill:SetOrientation("VERTICAL")
+
+	frame.Spark = CreateFrame("Frame", nil, frame)
+	frame.Spark.Texture = frame.Spark:CreateTexture(nil, "OVERLAY")
+	frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER")
+	frame.Spark.Texture:SetHeight(16)
+	frame.Spark.Texture:SetWidth(16)
+	frame.Spark.Texture:SetTexture(artpath.."ShardSpark.tga")
+	frame.Spark.Texture:SetBlendMode("ADD")
+	
+	-- Spark Animation
+	frame.Spark:SetAlpha(0)
+	frame.Spark.Anim = frame.Spark:CreateAnimationGroup()
+	frame.Spark.fadeIn = frame.Spark.Anim:CreateAnimation("Alpha")
+	frame.Spark.fadeIn:SetFromAlpha(0)
+	frame.Spark.fadeIn:SetToAlpha(1)
+	frame.Spark.fadeIn:SetDuration(0.2)
+	frame.Spark.fadeIn:SetOrder(1)
+	frame.Spark.scaleIn = frame.Spark.Anim:CreateAnimation("Scale")
+	frame.Spark.scaleIn:SetFromScale(0.6,0.6)
+	frame.Spark.scaleIn:SetToScale(1.2,1.2)
+	frame.Spark.scaleIn:SetDuration(0.25)
+	frame.Spark.scaleIn:SetOrder(1)
+	frame.Spark.scaleOut = frame.Spark.Anim:CreateAnimation("Scale")
+	frame.Spark.scaleOut:SetFromScale(1.2,1.2)
+	frame.Spark.scaleOut:SetToScale(0.1,0.1)
+	frame.Spark.scaleOut:SetDuration(0.3)
+	frame.Spark.scaleOut:SetOrder(2)
+	frame.Spark.fadeOut = frame.Spark.Anim:CreateAnimation("Alpha")
+	frame.Spark.fadeOut:SetFromAlpha(1)
+	frame.Spark.fadeOut:SetToAlpha(0)
+	frame.Spark.fadeOut:SetDuration(0.1)
+	frame.Spark.fadeOut:SetOrder(2)
 
 	if t[PlayerClass] and t[PlayerClass]["MinMax"] then
 		local min, max = unpack(t[PlayerClass]["MinMax"][artstyle])
