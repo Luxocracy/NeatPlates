@@ -13,46 +13,48 @@ local artfile = {
 
 local t = { 
 	['DEATHKNIGHT'] = {
-		["POWER"] = 5,
+		["POWER"] = Enum.PowerType.Runes,
 		[250] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 9}, -- blood
 		[251] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.250, ["o"] = 9}, -- frost
 		[252] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.250, ["r"] = 0.375, ["o"] = 9}, -- unholy
 	},
 	
 	['DRUID'] = {
-		["POWER"] = 4,
+		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
 	},
 	
 	['ROGUE'] = {
-		["POWER"] = 4,
+		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
 	},
 
 	['MAGE'] = {
-		["POWER"] = 16,
+		["POWER"] = Enum.PowerType.ArcaneCharges,
 		[62] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 1}, -- all, since you can cat all the time :P
 	},
 
 	['MONK'] = {
-		["POWER"] = 12,
+		["POWER"] = Enum.PowerType.Chi,
 		["all"] = { ["w"] = 80, ["h"] = 20}, -- all, since you can cat all the time :P
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 9}, -- all, since you can combo all the time :P
 	},
 
 	['PALADIN'] = {
-		["POWER"] = 9,
+		["POWER"] = Enum.PowerType.HolyPower,
 		[70] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 5}, -- retribution
 	},
 
 	['WARLOCK'] = {
-		["POWER"] = 7,
+		["POWER"] = Enum.PowerType.SoulShards,
 		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.25, ["o"] = 5}, -- all
+		["NOMOD"] = true,
+		["MinMax"] = {{-6, 17}, {-6, 17}, {-6, 17}},  -- Actually 0-10, but textures aren't edge to edge so need an offset
 	},
 };
 
@@ -86,8 +88,9 @@ local function GetPlayerPower()
 	if t[PlayerClass] == nil or t[PlayerClass]["POWER"] == nil then return 0, 0 end
 	
 	PlayerPowerType = t[PlayerClass]["POWER"]
+	PlayerPowerUnmodified = t[PlayerClass]["NOMOD"]
 
-	local maxPoints = UnitPowerMax("player", PlayerPowerType)
+	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified)
 	
 	if PlayerPowerType == 4 then
 		points = GetComboPoints("player", "target")
@@ -95,7 +98,7 @@ local function GetPlayerPower()
 		maxPoints = 6
 		points = GetDKRunes()
 	else
-		points = UnitPower("player", PlayerPowerType)
+		points = UnitPower("player", PlayerPowerType, PlayerPowerUnmodified)
 	end
 	return points, maxPoints
 end 
@@ -151,11 +154,19 @@ local function UpdateWidgetFrame(frame)
 		local offset = pattern["o"];
 		if maxPoints == 6 then
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
+		elseif maxPoints == 50 then -- Warlock Specific
+			local modPoints = math.floor(points/10)
+			local fragments = points % 10
+			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset - 1), grid *(modPoints + offset))
+			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + offset + 1))
+			frame.PartialFill:SetValue(fragments)
+			if modPoints == 5 then frame.PartialFill:Hide() else frame.PartialFill:Show() end
 		else
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
 		end
 
 		frame.Icon:SetTexture(artfile[artstyle])
+		frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
 
 		frame:Show()
 		return
@@ -255,6 +266,20 @@ local function CreateWidgetFrame(parent)
 	frame.Icon:SetHeight(h)
 	frame.Icon:SetWidth(w)
 	frame.Icon:SetTexture(artfile[artstyle])
+
+	frame.PartialFill = CreateNeatPlatesStatusbar(frame)
+	frame.PartialFill:SetPoint("CENTER", frame, "CENTER")
+	frame.PartialFill:SetHeight(h)
+	frame.PartialFill:SetWidth(w)
+	frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
+	frame.PartialFill:SetOrientation("VERTICAL")
+
+	if t[PlayerClass] and t[PlayerClass]["MinMax"] then
+		local min, max = unpack(t[PlayerClass]["MinMax"][artstyle])
+		frame.PartialFill:SetMinMaxValues(min, max)
+	else
+		frame.PartialFill:Hide()
+	end
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
