@@ -13,7 +13,7 @@ L["Additional Auras"] = "其他光環"
 L["Advanced"] = "進階"
 L["All NPCs"] = "所有 NPC"
 L["All Units"] = "所有單位"
-L["Allows some CVars to work(Might require a /reload)"] = "允許使用一些 CVars 遊戲參數 (可能需要重新載入介面)"
+L["Allows some CVars to work(Might require a /reload)"] = "允許使用某些 CVar 遊戲參數 (可能需要重新載入介面)"
 L["Always keep Target Nameplate on Screen"] = "選取目標的血條永遠保持在畫面中"
 L["Amount of Emphasized Auras"] = "強調光環數量"
 L["Approximate Health"] = "近似血量"
@@ -67,6 +67,7 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCC顏色為16進位碼(#) 後面加
 
 (例如: #A300FF 古翰幼體)
 |cffff9320優先順序為上到下]=]
+L["CVars could not applied due to combat"] = "戰鬥中無法套用 CVar 遊戲參數"
 L["Default"] = "預設"
 L["Default Profile"] = "預設設定檔"
 L["Disable Cast Bars"] = "停用施法條"

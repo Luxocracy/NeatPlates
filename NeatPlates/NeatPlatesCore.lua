@@ -237,12 +237,12 @@ do
 		visual.highlight = healthbar:CreateTexture(nil, "OVERLAY")
 		visual.hitbox = healthbar:CreateTexture(nil, "OVERLAY")
 		-- Parented to Extended - Middle Frame
-		visual.raidicon = textFrame:CreateTexture(nil, "ARTWORK")
+		visual.raidicon = textFrame:CreateTexture(nil, "OVERLAY")
 		visual.eliteicon = textFrame:CreateTexture(nil, "OVERLAY")
 		visual.skullicon = textFrame:CreateTexture(nil, "OVERLAY")
-		visual.target = textFrame:CreateTexture(nil, "OVERLAY")
-		visual.focus = textFrame:CreateTexture(nil, "OVERLAY")
-		visual.mouseover = textFrame:CreateTexture(nil, "OVERLAY")
+		visual.target = textFrame:CreateTexture(nil, "ARTWORK")
+		visual.focus = textFrame:CreateTexture(nil, "ARTWORK")
+		visual.mouseover = textFrame:CreateTexture(nil, "ARTWORK")
 		-- TextFrame
 		visual.customtext = textFrame:CreateFontString(nil, "OVERLAY")
 		visual.name  = textFrame:CreateFontString(nil, "OVERLAY")
