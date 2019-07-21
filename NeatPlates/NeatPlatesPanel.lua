@@ -209,15 +209,6 @@ NeatPlatesPanel.GetClickableArea = GetClickableArea
 -------------------------------------------------------------------------------------
 local ThemeDropdownMenuItems = {}
 
-local function ApplyRequiredCVars()
-	if InCombatLockdown() then return end
-	if NeatPlatesOptions.EnforceRequiredCVars then
-		if not NeatPlatesOptions.BlizzardScaling then SetCVar("nameplateMinScale", 1) end  -- Prevents issues with 'hitbox' of nameplates
-		SetCVar("showQuestTrackingTooltips", 1)	-- Required for QuestIndicator
-		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
-	end
-end
-
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
 	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
@@ -379,7 +370,7 @@ local function OnOkay(panel)
 	GetPanelValues(panel)
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
-	ApplyRequiredCVars()
+	NeatPlatesHubFunctions.ApplyRequiredCVars(NeatPlatesOptions)
 end
 
 
@@ -944,7 +935,7 @@ function panelevents:PLAYER_ENTERING_WORLD()
 	VerifySpecSelections()
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
-	ApplyRequiredCVars()
+	NeatPlatesHubFunctions.ApplyRequiredCVars(NeatPlatesOptions)
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()

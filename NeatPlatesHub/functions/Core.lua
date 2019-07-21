@@ -341,6 +341,15 @@ local function ApplyProfileSettings(theme, source, ...)
 	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 end
 
+local function ApplyRequiredCVars(NeatPlatesOptions)
+	if InCombatLockdown() then return end
+	if NeatPlatesOptions.EnforceRequiredCVars then
+		if not NeatPlatesOptions.BlizzardScaling then SetCVar("nameplateMinScale", 1) end  -- General requirement, prevents issues with 'hitbox' of nameplates and scaling
+		if LocalVars.WidgetQuestIcon then SetCVar("showQuestTrackingTooltips", 1) end	-- Required for QuestIndicator
+		if LocalVars.ThreatGlowEnable then SetCVar("threatWarning", 3) end		-- Required for threat/aggro detection
+	end
+end
+
 
 -- From Neon.lua...
 local LocalVars = NeatPlatesHubDamageVariables
@@ -419,6 +428,7 @@ NeatPlatesHubFunctions.IsOffTanked = IsOffTanked
 NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions
+NeatPlatesHubFunctions.ApplyRequiredCVars = ApplyRequiredCVars
 
 
 
