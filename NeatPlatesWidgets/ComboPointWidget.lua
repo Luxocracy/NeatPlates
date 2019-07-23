@@ -158,12 +158,13 @@ local function UpdateWidgetFrame(frame)
 		elseif maxPoints == 50 then -- Warlock Specific
 			local modPoints = math.floor(points/10)
 			local fragments = points % 10
+			local fOffset = math.min(1, fragments)
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
-			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + 1 + offset), grid*(math.min(6, modPoints + 2) + offset))
+			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + fOffset + offset), grid*(math.min(6, modPoints + fOffset + 1) + offset))
 			frame.PartialFill:SetValue(fragments)
 
 			if t[PlayerClass]["SPARK"] then
-				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", t[PlayerClass]["SPARK"][modPoints], 2) -- Offset texture per shard
+				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", t[PlayerClass]["SPARK"][modPoints], 1) -- Offset texture per shard
 				if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
 				frame.Spark.lastpower = modPoints
 			end
@@ -255,6 +256,43 @@ local function SetPlayerSpecData()
 	PlayerClass = _class
 end
 
+local function CreateSparkAnimation(parent)
+	local spark = CreateFrame("Frame", nil, parent)
+	spark.Texture = spark:CreateTexture(nil, "OVERLAY")
+	spark.Texture:SetPoint("CENTER", parent, "CENTER")
+	spark.Texture:SetHeight(16)
+	spark.Texture:SetWidth(16)
+	spark.Texture:SetTexture(artpath.."ShardSpark.tga")
+	spark.Texture:SetBlendMode("ADD")
+	
+	spark:SetAlpha(0)
+
+	-- Spark Animation
+	spark.Anim = spark:CreateAnimationGroup()
+	spark.fadeIn = spark.Anim:CreateAnimation("Alpha")
+	spark.fadeIn:SetFromAlpha(0)
+	spark.fadeIn:SetToAlpha(1)
+	spark.fadeIn:SetDuration(0.2)
+	spark.fadeIn:SetOrder(1)
+	spark.scaleIn = spark.Anim:CreateAnimation("Scale")
+	spark.scaleIn:SetFromScale(0.6,0.6)
+	spark.scaleIn:SetToScale(1,1)
+	spark.scaleIn:SetDuration(0.25)
+	spark.scaleIn:SetOrder(1)
+	spark.scaleOut = spark.Anim:CreateAnimation("Scale")
+	spark.scaleOut:SetFromScale(1,1)
+	spark.scaleOut:SetToScale(0.1,0.1)
+	spark.scaleOut:SetDuration(0.3)
+	spark.scaleOut:SetOrder(2)
+	spark.fadeOut = spark.Anim:CreateAnimation("Alpha")
+	spark.fadeOut:SetFromAlpha(1)
+	spark.fadeOut:SetToAlpha(0)
+	spark.fadeOut:SetDuration(0.1)
+	spark.fadeOut:SetOrder(3)
+
+	return spark
+end
+
 -- Widget Creation
 local function CreateWidgetFrame(parent)
 	SetPlayerSpecData()
@@ -281,41 +319,10 @@ local function CreateWidgetFrame(parent)
 	frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
 	frame.PartialFill:SetOrientation("VERTICAL")
 
-	frame.Spark = CreateFrame("Frame", nil, frame)
-	frame.Spark.Texture = frame.Spark:CreateTexture(nil, "OVERLAY")
-	frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER")
-	frame.Spark.Texture:SetHeight(16)
-	frame.Spark.Texture:SetWidth(16)
-	frame.Spark.Texture:SetTexture(artpath.."ShardSpark.tga")
-	frame.Spark.Texture:SetBlendMode("ADD")
-	
-	-- Spark Animation
-	frame.Spark:SetAlpha(0)
-	frame.Spark.Anim = frame.Spark:CreateAnimationGroup()
-	frame.Spark.fadeIn = frame.Spark.Anim:CreateAnimation("Alpha")
-	frame.Spark.fadeIn:SetFromAlpha(0)
-	frame.Spark.fadeIn:SetToAlpha(1)
-	frame.Spark.fadeIn:SetDuration(0.2)
-	frame.Spark.fadeIn:SetOrder(1)
-	frame.Spark.scaleIn = frame.Spark.Anim:CreateAnimation("Scale")
-	frame.Spark.scaleIn:SetFromScale(0.6,0.6)
-	frame.Spark.scaleIn:SetToScale(1.2,1.2)
-	frame.Spark.scaleIn:SetDuration(0.25)
-	frame.Spark.scaleIn:SetOrder(1)
-	frame.Spark.scaleOut = frame.Spark.Anim:CreateAnimation("Scale")
-	frame.Spark.scaleOut:SetFromScale(1.2,1.2)
-	frame.Spark.scaleOut:SetToScale(0.1,0.1)
-	frame.Spark.scaleOut:SetDuration(0.3)
-	frame.Spark.scaleOut:SetOrder(2)
-	frame.Spark.fadeOut = frame.Spark.Anim:CreateAnimation("Alpha")
-	frame.Spark.fadeOut:SetFromAlpha(1)
-	frame.Spark.fadeOut:SetToAlpha(0)
-	frame.Spark.fadeOut:SetDuration(0.1)
-	frame.Spark.fadeOut:SetOrder(2)
-
 	if t[PlayerClass] and t[PlayerClass]["MinMax"] then
 		local min, max = unpack(t[PlayerClass]["MinMax"][artstyle])
 		frame.PartialFill:SetMinMaxValues(min, max)
+		frame.Spark = CreateSparkAnimation(frame)
 	else
 		frame.PartialFill:Hide()
 	end

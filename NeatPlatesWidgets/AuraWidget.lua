@@ -594,8 +594,8 @@ local function CreateAuraIcon(parent)
 	-- Text
 	--frame.TimeLeft = frame:CreateFontString(nil, "OVERLAY")
 	frame.TimeLeft = frame.Cooldown:CreateFontString(nil, "OVERLAY")
-	frame.Stacks = frame:CreateFontString(nil, "OVERLAY")
-	-- frame.Stacks = frame.Cooldown:CreateFontString(nil, "OVERLAY")
+	--frame.Stacks = frame:CreateFontString(nil, "OVERLAY")
+	frame.Stacks = frame.Cooldown:CreateFontString(nil, "OVERLAY")
 
 	-- Information about the currently displayed aura
 	frame.AuraInfo = {
