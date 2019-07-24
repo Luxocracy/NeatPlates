@@ -15,7 +15,7 @@ local WidgetRange = 40
 local WidgetScale = false
 local WidgetWidthMod = 1
 local WidgetColors = {}
-local WidgetScaleOptions = {x = 0, y = 0, offset = {x = 0, y = 0}}
+local WidgetScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 local WidgetIconSize = 10
 

@@ -441,7 +441,7 @@ local function OnVariableChange(vars)
 	end
 
 	if LocalVars.WidgetComboPoints then
-		NeatPlatesWidgets.SetComboPointsStyle(LocalVars.WidgetComboPointsStyle);
+		NeatPlatesWidgets.SetComboPointsWidgetOptions(LocalVars)
 	end
 
 	if LocalVars.WidgetPandemic then

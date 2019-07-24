@@ -10,6 +10,7 @@ local artfile = {
 	artpath.."PowersNeat.tga",
 	artpath.."PowersTrad.tga",
 }
+local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 local t = { 
 	['DEATHKNIGHT'] = {
@@ -131,14 +132,6 @@ local function SelectPattern(maxPower)
 	return selectedPattern
 end
 
--- Set the Combo Points Style
-local function SetComboPointsStyle(style)
-	artstyle = style
-	NeatPlates:ForceUpdate()
-end
-
-NeatPlatesWidgets.SetComboPointsStyle = SetComboPointsStyle
-
 -- Update Graphics
 local function UpdateWidgetFrame(frame)
 	local points, maxPoints = GetPlayerPower()
@@ -164,7 +157,7 @@ local function UpdateWidgetFrame(frame)
 			frame.PartialFill:SetValue(fragments)
 
 			if t[PlayerClass]["SPARK"] then
-				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", t[PlayerClass]["SPARK"][modPoints], 1) -- Offset texture per shard
+				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["SPARK"][modPoints] or 0)*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture per shard
 				if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
 				frame.Spark.lastpower = modPoints
 			end
@@ -176,11 +169,32 @@ local function UpdateWidgetFrame(frame)
 
 		frame.Icon:SetTexture(artfile[artstyle])
 
+		frame:UpdateScale()
 		frame:Show()
 		return
 	end
 
 	frame:_Hide()
+end
+
+local function UpdateWidgetScaling(frame)
+	local pattern = SelectPattern(maxPower)
+	local w = (pattern["w"] or 16)*ScaleOptions.x
+	local h = (pattern["h"] or 64)*ScaleOptions.y
+
+	frame:SetHeight(32)
+	frame:SetWidth(w)
+	frame.Icon:SetHeight(h)
+	frame.Icon:SetWidth(w)
+	frame.PartialFill:SetHeight(h)
+	frame.PartialFill:SetWidth(w)
+	frame.Icon:SetPoint("CENTER", frame, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
+	frame.PartialFill:SetPoint("CENTER", frame, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
+
+	if frame.Spark then
+		frame.Spark.Texture:SetWidth(16*ScaleOptions.x)
+		frame.Spark.Texture:SetHeight(16*ScaleOptions.y)
+	end
 end
 
 -- Context
@@ -329,11 +343,19 @@ local function CreateWidgetFrame(parent)
 
 	-- Required Widget Code
 	frame.UpdateContext = UpdateWidgetContext
+	frame.UpdateScale = UpdateWidgetScaling
 	frame.Update = UpdateWidgetFrame
 	frame._Hide = frame.Hide
 	frame.Hide = function() ClearWidgetContext(frame); frame:_Hide() end
 	if not isEnabled then EnableWatcherFrame(true) end
 	return frame
+end
+
+local function SetComboPointsWidgetOptions(LocalVars)
+	artstyle = LocalVars.WidgetComboPointsStyle
+	ScaleOptions = LocalVars.WidgetComboPointsScaleOptions
+
+	NeatPlates:ForceUpdate()
 end
 
 -- Used to decide whether we should display player power indicator on the target or not
@@ -351,3 +373,4 @@ SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
 SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
 
 NeatPlatesWidgets.CreateComboPointWidget = CreateWidgetFrame
+NeatPlatesWidgets.SetComboPointsWidgetOptions = SetComboPointsWidgetOptions

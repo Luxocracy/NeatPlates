@@ -231,6 +231,7 @@ NeatPlatesHubDefaults = {
 	WidgetTotemIcon = false,
 	WidgetComboPoints = true,
 	WidgetComboPointsStyle = 1,
+	WidgetComboPointsScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
 	WidgetThreatIndicator = true,
 	WidgetRangeIndicator = false,
 	WidgetRangeScale = false,
