@@ -585,17 +585,18 @@ local function CreateAuraIcon(parent)
 	frame.Border = frame:CreateTexture(nil, "ARTWORK")
 	frame.BorderHighlight = frame:CreateTexture(nil, "ARTWORK")
 	frame.Cooldown = CreateFrame("Cooldown", nil, frame, "NeatPlatesAuraWidgetCooldown")
+	frame.Info = CreateFrame("Frame", nil, frame)
 
 	frame.Cooldown:SetAllPoints(frame)
 	frame.Cooldown:SetReverse(true)
 	frame.Cooldown:SetHideCountdownNumbers(true)
 	frame.Cooldown:SetDrawEdge(true)
 
+	frame.Info:SetAllPoints(frame)
+
 	-- Text
-	--frame.TimeLeft = frame:CreateFontString(nil, "OVERLAY")
-	frame.TimeLeft = frame.Cooldown:CreateFontString(nil, "OVERLAY")
-	--frame.Stacks = frame:CreateFontString(nil, "OVERLAY")
-	frame.Stacks = frame.Cooldown:CreateFontString(nil, "OVERLAY")
+	frame.TimeLeft = frame.Info:CreateFontString(nil, "OVERLAY")
+	frame.Stacks = frame.Info:CreateFontString(nil, "OVERLAY")
 
 	-- Information about the currently displayed aura
 	frame.AuraInfo = {
