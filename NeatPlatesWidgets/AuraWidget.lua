@@ -195,11 +195,6 @@ end
 
 local function UpdateIcon(frame, aura)
 	if frame and aura and aura.texture and aura.expiration then
-		--local r, g, b, a = aura.r, aura.g, aura.b, aura.a
-		--local glowType = aura.type
-		--local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and aura.expiration-GetTime() <= aura.duration*0.3
-		--local removeGlow = true
-
 		-- Icon
 		frame.Icon:SetTexture(aura.texture)
 
@@ -209,26 +204,6 @@ local function UpdateIcon(frame, aura)
 
 		-- Hightlighting
 		UpdateAuraHighlighting(frame, aura)
-
-		---- Pandemic and other Hightlighting
-		--if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
-		--	removeGlow = false
-		--	frame.BorderHighlight:Hide()
-		--	frame.Border:Hide()
-		--	ButtonGlow.ShowOverlayGlow(frame)
-		--	frame.__LBGoverlay:SetFrameLevel(frame:GetFrameLevel() or 65)
-		--elseif PandemicEnabled and pandemicThreshold then
-		--	frame.BorderHighlight:SetVertexColor(PandemicColor.r,PandemicColor.g,PandemicColor.b,PandemicColor.a)
-		--	frame.BorderHighlight:Show()
-		--	frame.Border:Hide()
-		--elseif r then
-		--	frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
-		--	frame.BorderHighlight:Show()
-		--	frame.Border:Hide()
-		--else frame.BorderHighlight:Hide(); frame.Border:Show() end
-
-		---- Remove ButtonGlow if appropriate
-		--if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
 
 		-- [[ Cooldown
 		frame.Cooldown.noCooldownCount = not HideAuraDuration -- Disable OmniCC interaction
@@ -248,8 +223,8 @@ local function UpdateIcon(frame, aura)
 		-- Expiration
 		UpdateWidgetTime(frame, aura.expiration)
 		frame:Show()
-		if aura.expiration ~= 0 then PolledHideIn(frame, aura.expiration) end
-
+		--if aura.expiration ~= 0 then PolledHideIn(frame, aura.expiration) end
+		PolledHideIn(frame, aura.expiration, "UpdateIcon")
 	elseif frame then
 		PolledHideIn(frame, 0)
 	end

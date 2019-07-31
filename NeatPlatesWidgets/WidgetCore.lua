@@ -74,11 +74,11 @@ do
 		if framecount == 0 then Watcherframe:SetScript("OnUpdate", nil); WatcherframeActive = false end
 	end
 
-	function PolledHideIn(frame, expiration)
+	function PolledHideIn(frame, expiration, source)
 
 		if expiration == 0 then
 
-			frame:Hide()
+			if source ~= "UpdateIcon" then frame:Hide() end
 			Framelist[frame] = nil
 		else
 			--print("Hiding in", expiration - GetTime())
