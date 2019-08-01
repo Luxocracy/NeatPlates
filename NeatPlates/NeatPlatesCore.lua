@@ -1233,40 +1233,62 @@ do
 	end
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
-		if not ShowIntCast then return end
-		local _,type,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
+		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
 		spellID = spellID or ""
 		local plate = nil
+
+		-- Spell Interrupts
+		if showIntCast then
+			if event == "SPELL_INTERRUPT" or event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED" then
+				-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
+				-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
+				-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
+				plate = PlatesByGUID[destGUID]
+
+				if plate then
+					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
+					local unitType = strsplit("-", sourceGUID)
+					-- If a pet interrupted, we need to change the source from the pet to the owner
+					if unitType == "Pet" then
+							sourceGUID, sourceName = GetPetOwner(sourceName)
+					end
+
+					plate.extended.unit.interruptLogged = true
+					OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
+				end
+			end
+		end
+
+		-- Fixate
 		local fixate = {
 			[268074] = true,	-- Spawn of G'huun(Uldir)
 			[282209] = true,	-- Ravenous Stalker(Dazar'alor)
 		}
-
-		if (type == "SPELL_AURA_APPLIED" or type == "SPELL_AURA_REMOVED") and fixate[spellID] then
+		if (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED") and fixate[spellID] then
 			plate = PlatesByGUID[sourceGUID]
-			if plate and type == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
+			if plate and event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
 				plate.extended.unit.fixate = true 	-- Fixating player
 			elseif plate then
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
 			end
-		elseif type == "SPELL_INTERRUPT" or type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED" then
-			-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
-			-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
-			-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
-			plate = PlatesByGUID[destGUID]
-
-			if plate then
-				if (type == "SPELL_AURA_APPLIED" or type == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
-				local unitType = strsplit("-", sourceGUID)
-				-- If a pet interrupted, we need to change the source from the pet to the owner
-				if unitType == "Pet" then
-						sourceGUID, sourceName = GetPetOwner(sourceName)
-				end
-
-				plate.extended.unit.interruptLogged = true
-				OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
-			end
 		end
+
+		-- Aura Base Duration Modifier
+		-- Might not be necessary to do it this way, commented for now
+		--if true then
+		--	local current = {CombatLogGetCurrentEventInfo()}
+		--	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
+		--	plate = PlatesByGUID[destGUID] or {}
+		--	plate.auraBaseMod = plate.auraBaseMod or {}
+
+		--	if event == "SPELL_AURA_APPLIED" then
+		--		plate.auraBaseMod[spellID] = 1
+		--	elseif event == "SPELL_AURA_REFRESH" then
+		--		plate.auraBaseMod[spellID] = 1.3
+		--	end
+		--	--if event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", sourceName) then print(GetSpellDescription(spellID));for i=1, #current,1 do print(i, current[i]) end elseif event == "SPELL_AURA_REFRESH" and UnitIsUnit("player", sourceName) then print("Spell was resfhred") end
+		--end
+		
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted

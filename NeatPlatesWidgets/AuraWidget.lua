@@ -46,6 +46,7 @@ local EmphasizedAuraFilterFunction = function() end
 local AuraSortFunction = function() end
 local AuraHookFunction
 local AuraCache = {}
+local AuraBaseDuration = {}
 
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
@@ -165,7 +166,7 @@ local function UpdateAuraHighlighting(frame, aura)
 		local r, g, b, a = aura.r, aura.g, aura.b, aura.a
 		local glowType = aura.type
 		local expiration = aura.expiration-GetTime()
-		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and expiration <= aura.duration*0.3
+		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and expiration <= aura.baseduration*0.3
 		local removeGlow = true
 	-- Pandemic and other Hightlighting
 		if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
@@ -189,7 +190,7 @@ local function UpdateAuraHighlighting(frame, aura)
 
 		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
-			frame.PandemicTimer = C_Timer.NewTimer(math.max(expiration-aura.duration*0.3, 0), function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
+			frame.PandemicTimer = C_Timer.NewTimer(math.max(expiration-aura.baseduration*0.3, 0), function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
 		end
 end
 
@@ -281,6 +282,14 @@ local function UpdateIconGrid(frame, unitid)
 				aura.caster = caster
 				aura.spellid = spellid
 				aura.unit = unitid 		-- unitid of the plate
+
+				-- Pandemic Base duration
+				if spellid and caster == "player" then
+					if not AuraBaseDuration[spellid] or AuraBaseDuration[spellid] > duration then
+						AuraBaseDuration[spellid] = duration
+					end
+				end
+				aura.baseduration = AuraBaseDuration[spellid] or duration
 			end
 
 			-- Gnaw , false, icon, 0 stacks, nil type, duration 1, expiration 8850.436, caster pet, false, false, 91800
