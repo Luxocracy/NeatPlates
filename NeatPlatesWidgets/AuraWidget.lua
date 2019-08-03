@@ -237,8 +237,7 @@ end
 --end
 
 
-local function UpdateIconGrid(frame, unitid) 
-
+local function UpdateIconGrid(frame, unitid)
 		if not unitid then return end
 
 		local unitReaction

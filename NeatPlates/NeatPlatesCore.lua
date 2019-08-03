@@ -1238,7 +1238,7 @@ do
 		local plate = nil
 
 		-- Spell Interrupts
-		if showIntCast then
+		if ShowIntCast then
 			if event == "SPELL_INTERRUPT" or event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED" then
 				-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
 				-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.

@@ -201,7 +201,7 @@ local function SmartFilterMode(aura)
 	local AuraPriority = 20
 
 	-- My own Buffs and Debuffs
-	if (aura.caster == "player" or aura.caster == "pet") and aura.duration and aura.duration < 150 then
+	if (aura.caster == "player" or aura.caster == "pet") and aura.baseduration and aura.baseduration < 150 then
 		if LocalVars.WidgetMyBuff and aura.effect == "HELPFUL" then
 			ShowThisAura = true
 		elseif LocalVars.WidgetMyDebuff and aura.effect == "HARMFUL" then
