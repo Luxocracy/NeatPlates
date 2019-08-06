@@ -92,6 +92,7 @@ NeatPlatesOptions = {
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
 	BlizzardScaling = false,
+	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
 
 	NameplateClickableHeight = 1,
@@ -108,6 +109,13 @@ local AutomationDropdownItems = {
 					{ text = DURING_COMBAT, value = DURING_COMBAT } ,
 					{ text = OUT_OF_COMBAT, value = OUT_OF_COMBAT } ,
 					}
+
+local OutlineStyleItems = {
+	{ text = L["Default"],  },
+	{ text = L["None"],  },
+	{ text = L["Thin Outline"],  },
+	{ text = L["Thick Outline"],  },
+}
 
 local HubProfileList = {}
 
@@ -294,6 +302,8 @@ local function ApplyPanelSettings()
 
 	if theme and theme.OnChangeProfile then theme:OnChangeProfile(ActiveProfile) end
 
+	NeatPlates.OverrideOutline(NeatPlatesOptions.OverrideOutline)	-- Set Outline Override
+
 	-- Store it for external usage
 	--NeatPlatesOptions.ActiveProfile = ActiveProfile
 	-- ** Use NeatPlates:GetProfile()
@@ -312,6 +322,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
+	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
@@ -339,6 +350,7 @@ local function SetPanelValues(panel)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.HealthFrequent:SetChecked(NeatPlatesOptions.HealthFrequent)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
+	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
@@ -765,11 +777,21 @@ local function BuildInterfacePanel(panel)
 	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.HealthFrequent, "TOPLEFT", 0, -25)
 	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
 
+	-- Override Outline Style
+	panel.OverrideOutlineLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.OverrideOutlineLabel:SetPoint("TOPLEFT", panel.BlizzardScaling,"BOTTOMLEFT", 0, -8)
+	panel.OverrideOutlineLabel:SetWidth(170)
+	panel.OverrideOutlineLabel:SetJustifyH("LEFT")
+	panel.OverrideOutlineLabel:SetText(L["Outline Override"]..':')
+
+	panel.OverrideOutline = PanelHelpers:CreateDropdownFrame("NeatPlatesOverrideOutline", panel, OutlineStyleItems, 1, nil, true)
+	panel.OverrideOutline:SetPoint("TOPLEFT", panel.OverrideOutlineLabel, "BOTTOMLEFT", -15, -2)
+
 	-- Nameplate Behaviour
 	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.CVarsLabel:SetFont(font, 22)
 	panel.CVarsLabel:SetText("CVars")
-	panel.CVarsLabel:SetPoint("TOPLEFT", panel.BlizzardScaling, "BOTTOMLEFT", 0, -20)
+	panel.CVarsLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -20)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	panel.EnforceRequiredCVars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnforceRequiredCVars", panel, L["Enforce required CVars"])

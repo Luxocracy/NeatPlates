@@ -38,6 +38,7 @@ local ShowServerIndicator = true
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
+local OverrideOutline = 1
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -1329,6 +1330,7 @@ do
 	local function SetObjectBartexture(obj, tex, ori, crop) obj:SetStatusBarTexture(tex); obj:SetOrientation(ori); end
 
 	local function SetObjectFont(object,  font, size, flags)
+		if OverrideOutline == 2 then flags = "NONE" elseif OverrideOutline == 3 then flags = "OUTLINE" elseif OverrideOutline == 4 then flags = "THICKOUTLINE" end
 		if (not OverrideFonts) and font then
 			object:SetFont(font, size or 10, flags)
 		--else
@@ -1511,7 +1513,8 @@ function NeatPlates:Update() SetUpdateAll() end
 function NeatPlates:RequestUpdate(plate) if plate then SetUpdateMe(plate) else SetUpdateAll() end end
 
 function NeatPlates:ActivateTheme(theme) if theme and type(theme) == 'table' then NeatPlates.ActiveThemeTable, activetheme = theme, theme; ResetPlates = true; end end
-function NeatPlates.OverrideFonts( enable) OverrideFonts = enable; end
+function NeatPlates.OverrideFonts(enable) OverrideFonts = enable; end
+function NeatPlates.OverrideOutline(enable) OverrideOutline = enable; end
 
 -- Old and needing deleting - Just here to avoid errors
 function NeatPlates:EnableFadeIn() EnableFadeIn = true; end
