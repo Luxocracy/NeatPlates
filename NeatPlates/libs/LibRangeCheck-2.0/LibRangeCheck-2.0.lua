@@ -945,9 +945,9 @@ function lib:CHARACTER_POINTS_CHANGED()
     self:scheduleInit()
 end
 
-function lib:PLAYER_TALENT_UPDATE()
-    self:scheduleInit()
-end
+--function lib:PLAYER_TALENT_UPDATE()
+--    self:scheduleInit()
+--end
 
 function lib:SPELLS_CHANGED()
     self:scheduleInit()
@@ -1044,7 +1044,7 @@ function lib:activate()
         self.frame = frame
         frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
         frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
-        frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+        --frame:RegisterEvent("PLAYER_TALENT_UPDATE")
         frame:RegisterEvent("SPELLS_CHANGED")
         local _, playerClass = UnitClass("player")
         if playerClass == "MAGE" or playerClass == "SHAMAN" then

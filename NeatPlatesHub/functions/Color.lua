@@ -625,9 +625,6 @@ end
 
 local function OnVariableChange(vars)
 	LocalVars = vars
-	if (EnemyBarFunctions[LocalVars.EnemyBarColorMode] == ColorFunctionByThreat) or LocalVars.ThreatGlowEnable then
-		SetCVar("threatWarning", 3)
-	end
 end
 HubData.RegisterCallback(OnVariableChange)
 

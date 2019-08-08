@@ -69,7 +69,7 @@ local function UpdateRangeWidget(frame, unit)
 	local width = frame:GetParent()._width or 100;
 
 	if WidgetStyle == 1 then width = width * WidgetWidthMod end -- Account for width scale when using bar style
-	
+
 	frame:Show()
 	frame:SetWidth(width); frame:SetHeight(32)
 
@@ -106,7 +106,7 @@ local function UpdateRangeWidget(frame, unit)
 		frame.Texture:SetHeight(height)
 		
 	else
-		frame.Texture:Hide()
+		--frame.Texture:Hide()
 	end
 end
 
@@ -221,7 +221,7 @@ local function SetRangeWidgetOptions(LocalVars)
 	WidgetMode = LocalVars.WidgetRangeMode
 	WidgetStyle = LocalVars.WidgetRangeStyle
 	WidgetUnits = LocalVars.WidgetRangeUnits
-	WidgetRange = LocalVars.WidgetMaxRange
+	WidgetRange = LocalVars.WidgetRangeMax
 	WidgetScale = LocalVars.WidgetRangeScale
 	WidgetScaleOptions = LocalVars.WidgetRangeScaleOptions
 	--WidgetPos.x = LocalVars.WidgetOffsetX

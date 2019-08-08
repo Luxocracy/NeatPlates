@@ -12,70 +12,28 @@ local artfile = {
 }
 local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
-local t = { 
-	['DEATHKNIGHT'] = {
-		["POWER"] = Enum.PowerType.Runes,
-		[250] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 9}, -- blood
-		[251] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.250, ["o"] = 9}, -- frost
-		[252] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.250, ["r"] = 0.375, ["o"] = 9}, -- unholy
-	},
-	
+local t = { 	
 	['DRUID'] = {
-		["POWER"] = Enum.PowerType.ComboPoints,
+		["POWER"] = Enum.PowerType.Energy,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
 	},
 	
 	['ROGUE'] = {
-		["POWER"] = Enum.PowerType.ComboPoints,
+		["POWER"] = Enum.PowerType.Energy,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
-	},
-
-	['MAGE'] = {
-		["POWER"] = Enum.PowerType.ArcaneCharges,
-		[62] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 1}, -- all, since you can cat all the time :P
-	},
-
-	['MONK'] = {
-		["POWER"] = Enum.PowerType.Chi,
-		["all"] = { ["w"] = 80, ["h"] = 20}, -- all, since you can cat all the time :P
-		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 5}, -- all, since you can combo all the time :P
-		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.375, ["r"] = 0.5, ["o"] = 9}, -- all, since you can combo all the time :P
-	},
-
-	['PALADIN'] = {
-		["POWER"] = Enum.PowerType.HolyPower,
-		[70] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 5}, -- retribution
-	},
-
-	['WARLOCK'] = {
-		["POWER"] = Enum.PowerType.SoulShards,
-		["all"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.25, ["o"] = 4}, -- all
-		["NOMOD"] = true,
-		["MinMax"] = {{-6, 17}, {-6, 17}, {-6, 17}},  -- Actually 0-10, but textures aren't edge to edge so need an offset
-		["SPARK"] = {-28.5, -14.5, 0, 14.5, 28.5}
 	},
 };
 
 local grid =  .0625
 local playeRole = "DAMAGER"
-local PlayerClass = "NONE"
+--local PlayerClass = "NONE"
+local PlayerClass = select(2, UnitClass("player"))
 local playerSpec = 0
 local WidgetList = {}
-
-local function GetDKRunes()
-	local runeAmount = 0;
-	for i=1,6 do
-		local _, _, runeReady = GetRuneCooldown(i)
-		if runeReady ~= nil and runeReady == true then
-		  runeAmount = runeAmount+1
-		end
-	end
-	return runeAmount
-end
 
 local function GetPlayerPower()
 	local PlayerPowerType = 0;
@@ -88,17 +46,16 @@ local function GetPlayerPower()
 	end
 
 	if t[PlayerClass] == nil or t[PlayerClass]["POWER"] == nil then return 0, 0 end
-	
 	PlayerPowerType = t[PlayerClass]["POWER"]
 	PlayerPowerUnmodified = t[PlayerClass]["NOMOD"]
 
-	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified)
+	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified) or 5
 	
-	if PlayerPowerType == 4 then
+	if PlayerPowerType == Enum.PowerType.Energy then
 		points = GetComboPoints("player", "target")
 	elseif PlayerPowerType == 5 then
 		maxPoints = 6
-		points = GetDKRunes()
+		--points = GetDKRunes()
 	else
 		points = UnitPower("player", PlayerPowerType, PlayerPowerUnmodified)
 	end
@@ -135,7 +92,7 @@ end
 -- Update Graphics
 local function UpdateWidgetFrame(frame)
 	local points, maxPoints = GetPlayerPower()
-
+	local maxPoints = 5 -- Couldn't go higher in classic?
 	if points and points > 0 then
 		local pattern = SelectPattern(maxPoints)
 
@@ -146,6 +103,7 @@ local function UpdateWidgetFrame(frame)
 		end
 
 		local offset = pattern["o"];
+
 		if maxPoints == 6 then
 			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
 		elseif maxPoints == 50 then -- Warlock Specific
@@ -228,7 +186,6 @@ end
 local WatcherFrame = CreateFrame("Frame", nil, WorldFrame )
 local isEnabled = false
 WatcherFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-WatcherFrame:RegisterEvent("RUNE_POWER_UPDATE")
 WatcherFrame:RegisterEvent("UNIT_POWER_FREQUENT")
 WatcherFrame:RegisterEvent("UNIT_MAXPOWER")
 WatcherFrame:RegisterEvent("UNIT_POWER_UPDATE")
@@ -248,26 +205,6 @@ local function EnableWatcherFrame(arg)
 	if arg then
 		WatcherFrame:SetScript("OnEvent", WatcherFrameHandler); isEnabled = true
 	else WatcherFrame:SetScript("OnEvent", nil); isEnabled = false end
-end
-
-local function SetPlayerSpecData()
-	local _, _class = UnitClass("player")
-	local _specializationIndex = tonumber(GetSpecialization())
-
-	if not _specializationIndex then
-		playeRole = "DAMAGER"
-		return
-	end
-
-	local _role = GetSpecializationRole(_specializationIndex)
-	if _role == "HEALER" then
-		playeRole = _role
-	else
-		playeRole = "DAMAGER"
-	end
-
-	playerSpec = GetSpecializationInfo(_specializationIndex)
-	PlayerClass = _class
 end
 
 local function CreateSparkAnimation(parent)
@@ -309,8 +246,6 @@ end
 
 -- Widget Creation
 local function CreateWidgetFrame(parent)
-	SetPlayerSpecData()
-
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:Hide()
 
@@ -358,19 +293,11 @@ local function SetComboPointsWidgetOptions(LocalVars)
 	NeatPlates:ForceUpdate()
 end
 
--- Used to decide whether we should display player power indicator on the target or not
-local function SpecWatcherEvent(self, event, ...)
-	SetPlayerSpecData()
-end
-
 local SpecWatcher = CreateFrame("Frame")
 SpecWatcher:SetScript("OnEvent", SpecWatcherEvent)
 SpecWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 SpecWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
 SpecWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
-SpecWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
-SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
 
 NeatPlatesWidgets.CreateComboPointWidget = CreateWidgetFrame
 NeatPlatesWidgets.SetComboPointsWidgetOptions = SetComboPointsWidgetOptions

@@ -174,10 +174,6 @@ end
 
 local function OnVariableChange(vars)
 	LocalVars = vars
-	if ScaleFunctionsUniversal[LocalVars.ScaleFunctionMode] == ScaleFunctionByThreat then
-		SetCVar("threatWarning", 3)
-	end
-
 end
 HubData.RegisterCallback(OnVariableChange)
 

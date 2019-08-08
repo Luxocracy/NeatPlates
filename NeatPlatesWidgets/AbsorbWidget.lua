@@ -278,5 +278,5 @@ local function SetAbsorbType(mode, units)
 	NeatPlates:ForceUpdate()
 end
 
-NeatPlatesWidgets.CreateAbsorbWidget = CreateWidgetFrame
+--NeatPlatesWidgets.CreateAbsorbWidget = CreateWidgetFrame
 NeatPlatesWidgets.SetAbsorbType = SetAbsorbType

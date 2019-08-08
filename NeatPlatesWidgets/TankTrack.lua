@@ -31,10 +31,7 @@ end
 local function UpdatePlayerRole()
 	local playerTankAura = false
 
-	-- Look at the Player's Specialization
-	local specializationIndex = tonumber(GetSpecialization())
-
-	if specializationIndex and GetSpecializationRole(specializationIndex) == "TANK" then
+	if playerTankAura then
 		playerTankRole = true
 	else
 		playerTankRole = false
@@ -89,8 +86,6 @@ TankWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
 TankWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 TankWatcher:RegisterEvent("UNIT_PET")
 TankWatcher:RegisterEvent("PET_BAR_UPDATE_USABLE")
-TankWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-TankWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
 TankWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 
 

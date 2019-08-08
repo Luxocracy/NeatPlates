@@ -164,8 +164,8 @@ local function UpdateWidgetContext(frame, unit)
 
 	-- Make it self-aware
 	frame:UnregisterAllEvents()
-	frame:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
-	frame:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE")
+	--frame:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
+	--frame:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE")
 	frame:RegisterUnitEvent("UNIT_HEALTH", unitid)
 	frame:SetScript("OnEvent", UpdateWidget);
 
@@ -252,6 +252,6 @@ local function CreateWidgetFrame(extended)
 	return frame
 end
 
-NeatPlatesWidgets.CreateThreatLineWidget = CreateWidgetFrame
+--NeatPlatesWidgets.CreateThreatLineWidget = CreateWidgetFrame
 
 

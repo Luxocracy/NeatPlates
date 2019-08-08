@@ -11,6 +11,7 @@ L["Second Spec"] = true
 L["Third Spec"] = true
 L["Fourth Spec"] = true
 L["Active"] = true
+L["Active Profile"] = true
 
 L["Profile Management"] = true
 L["Profile Name"] = true
