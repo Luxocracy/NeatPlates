@@ -221,7 +221,7 @@ local function SetRangeWidgetOptions(LocalVars)
 	WidgetMode = LocalVars.WidgetRangeMode
 	WidgetStyle = LocalVars.WidgetRangeStyle
 	WidgetUnits = LocalVars.WidgetRangeUnits
-	WidgetRange = LocalVars.WidgetMaxRange
+	WidgetRange = LocalVars.WidgetRangeMax
 	WidgetScale = LocalVars.WidgetRangeScale
 	WidgetScaleOptions = LocalVars.WidgetRangeScaleOptions
 	--WidgetPos.x = LocalVars.WidgetOffsetX
