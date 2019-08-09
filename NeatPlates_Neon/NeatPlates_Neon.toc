@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 11302
 ## Title: Neat Plates: Neon Theme
 ## Notes: It toasts your Eggo waffles, and butters your bread.
 ## Author: Binny
