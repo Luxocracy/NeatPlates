@@ -131,7 +131,7 @@ local function BuildHubPanel(panel)
 
 	-- Other
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Level"], AlignmentColumn, F, 0, 2)
-	panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 0)
+	--panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 0)
 
@@ -267,10 +267,10 @@ local function BuildHubPanel(panel)
 
 	panel.OpacitySpotlight = CreateQuickSlider(objectName.."OpacitySpotlight", L["Spotlight Opacity"]..':', nil, nil, AlignmentColumn, F, 0, 2)
 	panel.OpacityTarget = CreateQuickSlider(objectName.."OpacityTarget", L["Current Target Opacity"]..':', nil, nil, AlignmentColumn, panel.OpacitySpotlight, 0, 2)
-	panel.OpacityNonTarget = CreateQuickSlider(objectName.."OpacityNonTarget", L["Non-Target Opacity"]..':', nil, nil, AlignmentColumn, panel.OpacityTarget, 0, 2)
+	panel.OpacityNonTarget, F = CreateQuickSlider(objectName.."OpacityNonTarget", L["Non-Target Opacity"]..':', nil, nil, AlignmentColumn, panel.OpacityTarget, 0, 2)
 
-	panel.OpacitySpotlightSpell = CreateQuickCheckbutton(objectName.."OpacitySpotlightSpell", L["Spotlight Casting Units"], AlignmentColumn, panel.OpacityNonTarget, 0)
-	panel.OpacitySpotlightMouseover = CreateQuickCheckbutton(objectName.."OpacitySpotlightMouseover", L["Spotlight Mouseover"], AlignmentColumn, panel.OpacitySpotlightSpell, 0)
+	--panel.OpacitySpotlightSpell, F = CreateQuickCheckbutton(objectName.."OpacitySpotlightSpell", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
+	panel.OpacitySpotlightMouseover = CreateQuickCheckbutton(objectName.."OpacitySpotlightMouseover", L["Spotlight Mouseover"], AlignmentColumn, F, 0)
 	panel.OpacitySpotlightRaidMarked = CreateQuickCheckbutton(objectName.."OpacitySpotlightRaidMarked", L["Spotlight Raid Marked"], AlignmentColumn, panel.OpacitySpotlightMouseover, 0)
 
 	panel.OpacityFullNoTarget = CreateQuickCheckbutton(objectName.."OpacityFullNoTarget", L["Use Target Opacity When No Target Exists"], AlignmentColumn, panel.OpacitySpotlightRaidMarked, 0)
@@ -289,7 +289,7 @@ local function BuildHubPanel(panel)
 	panel.ScaleIgnoreNonEliteUnits= CreateQuickCheckbutton(objectName.."ScaleIgnoreNonEliteUnits", L["Ignore Non-Elite Units"], AlignmentColumn, panel.ScaleIgnoreNeutralUnits, 16)
 	panel.ScaleIgnoreInactive, F = CreateQuickCheckbutton(objectName.."ScaleIgnoreInactive", L["Ignore Inactive Units"], AlignmentColumn, panel.ScaleIgnoreNonEliteUnits, 16)
 
-	panel.ScaleCastingSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleCastingSpotlight", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
+	--panel.ScaleCastingSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleCastingSpotlight", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
 	panel.ScaleTargetSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleTargetSpotlight", L["Spotlight Target Units"], AlignmentColumn, F, 0)
 	panel.ScaleMouseoverSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleMouseoverSpotlight", L["Spotlight Mouseover Units"], AlignmentColumn, F, 0)
 	--panel.ScaleMiniMobs, F = CreateQuickCheckbutton(objectName.."ScaleMiniMobs", "Auto-Scale Mini/Trivial Mobs", AlignmentColumn, F, 0)
@@ -421,7 +421,7 @@ local function BuildHubPanel(panel)
 	--panel.ColorThreatColorLabels = CreateQuickItemLabel(nil, L["Threat Colors"]..':', AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
 
 	panel.WidgetThreatIndicator, F = CreateQuickCheckbutton(objectName.."WidgetThreatIndicator", L["Show Tug-o-Threat Indicator"], AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
-	panel.WidgetThreatPercentage, F = CreateQuickCheckbutton(objectName.."WidgetThreatPercentage", L["Show Threat Percentage"], AlignmentColumn, panel.WidgetThreatIndicator, 0, 2)
+	--panel.WidgetThreatPercentage, F = CreateQuickCheckbutton(objectName.."WidgetThreatPercentage", L["Show Threat Percentage"], AlignmentColumn, panel.WidgetThreatIndicator, 0, 2)
 
 	--[[
 	-- Warning Border Glow
@@ -472,14 +472,14 @@ local function BuildHubPanel(panel)
 	------------------------------
   -- Cast Bars
 	------------------------------
-  panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
-  panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
-  panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
-  panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
-	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, L["Cast Bar Colors"]..':', AlignmentColumn, F, 0, 2)
-	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", L["Normal"], nil, AlignmentColumn, F , 16)
-	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", L["Un-interruptible"], nil, AlignmentColumn, F , 16)
-	panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", L["Interrupted"], nil, AlignmentColumn, F , 16)
+ -- panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
+ -- panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
+ -- panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
+ -- panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
+	--panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, L["Cast Bar Colors"]..':', AlignmentColumn, F, 0, 2)
+	--panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", L["Normal"], nil, AlignmentColumn, F , 16)
+	--panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", L["Un-interruptible"], nil, AlignmentColumn, F , 16)
+	--panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", L["Interrupted"], nil, AlignmentColumn, F , 16)
 
 
 	------------------------------
@@ -531,9 +531,9 @@ local function BuildHubPanel(panel)
 	panel.WidgetEliteIndicator = CreateQuickCheckbutton(objectName.."WidgetEliteIndicator", L["Show Elite Icon"], AlignmentColumn, panel.WidgetLabel)
 	panel.ClassEnemyIcon = CreateQuickCheckbutton(objectName.."ClassEnemyIcon", L["Show Enemy Class Art"], AlignmentColumn, panel.WidgetEliteIndicator)
 	panel.ClassPartyIcon = CreateQuickCheckbutton(objectName.."ClassPartyIcon", L["Show Friendly Class Art"], AlignmentColumn, panel.ClassEnemyIcon)
-	panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)
-	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.WidgetTotemIcon)
-	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, panel.WidgetQuestIcon)
+	panel.WidgetTotemIcon, F = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)
+	--panel.WidgetQuestIcon, F = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.WidgetTotemIcon)
+	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, F)
 	panel.WidgetComboPointsStyle, F =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", L["Personal Resource Style"]..':', ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
 	panel.WidgetComboPointsScaleOptions = CreateQuickScale(objectName.."WidgetComboPointsScaleOptions", "WidgetComboPointsScaleOptions", L["Personal Resource Style"], nil, AlignmentColumn, "LEFT", panel.WidgetComboPointsStyle, "RIGHT", 28, 2)
 
@@ -541,9 +541,9 @@ local function BuildHubPanel(panel)
 
 	--panel.WidgetThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetThreatIndicator, OffsetColumnB+16)
 	
-	panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", L["Show Absorb Bars"], AlignmentColumn, panel.WidgetLabel, OffsetColumnB+60)
-	panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", L["Mode"]..':', AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
-	panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", L["Show on"]..':', AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
+	--panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", L["Show Absorb Bars"], AlignmentColumn, panel.WidgetLabel, OffsetColumnB+60)
+	--panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", L["Mode"]..':', AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
+	--panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", L["Show on"]..':', AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
 
 	------------------------------
 	-- Advanced

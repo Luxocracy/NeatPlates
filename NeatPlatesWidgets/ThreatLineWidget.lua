@@ -251,6 +251,6 @@ local function CreateWidgetFrame(extended)
 	return frame
 end
 
---NeatPlatesWidgets.CreateThreatLineWidget = CreateWidgetFrame
+NeatPlatesWidgets.CreateThreatLineWidget = CreateWidgetFrame
 
 
