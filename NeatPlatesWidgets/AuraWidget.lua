@@ -7,6 +7,7 @@
 	frame.Cooldown:SetHideCountdownNumbers(true)
 	--]]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 NeatPlatesWidgets.DebuffWidgetBuild = 2
 
@@ -47,6 +48,7 @@ local AuraSortFunction = function() end
 local AuraHookFunction
 local AuraCache = {}
 local AuraBaseDuration = {}
+local AuraExpiration = {}
 
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
@@ -121,6 +123,25 @@ local function EventUnitAura(unitid)
 
 end
 
+local function EventCombatLog(...)
+	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+	-- Tracking Aura Durations
+	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+		spellID = select(7, GetSpellInfo(spellName))
+		local desc = GetSpellDescription(spellID)
+		local duration, expiration
+
+		if desc then duration = tonumber(strmatch(desc, L["CLASSIC_DURATION_PATTERN"]) or 0) end
+		if duration and duration > 0 then
+				expiration = GetTime()+duration
+
+				AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
+				AuraExpiration[destGUID][spellID] = {expiration = expiration, duration = duration}
+		end
+		
+	end
+end
+
 
 
 -----------------------------------------------------
@@ -130,6 +151,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
+	["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -239,6 +261,7 @@ end
 
 local function UpdateIconGrid(frame, unitid)
 		if not unitid then return end
+		local guid = UnitGUID(unitid)
 
 		local unitReaction
 		if UnitIsFriend("player", unitid) then unitReaction = AURA_TARGET_FRIENDLY
@@ -275,12 +298,18 @@ local function UpdateIconGrid(frame, unitid)
 				aura.stacks = stacks
 				aura.type = auraType
 				aura.effect = auraFilter
-				aura.duration = duration
 				aura.reaction = unitReaction
-				aura.expiration = expiration
 				aura.caster = caster
 				aura.spellid = spellid
 				aura.unit = unitid 		-- unitid of the plate
+
+				if AuraExpiration[guid] and AuraExpiration[guid][spellid] then
+					aura.duration = AuraExpiration[guid][spellid].duration
+					aura.expiration = AuraExpiration[guid][spellid].expiration
+				else
+					aura.duration = 0
+					aura.expiration = 0
+				end		
 
 				-- Pandemic Base duration
 				if spellid and caster == "player" then

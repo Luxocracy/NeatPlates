@@ -511,3 +511,8 @@ L["Requires 'All NPCs' to be unchecked"] = true
 L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
 L["Display Scale Options"] = true
 
+
+
+-- Classic Specific
+
+L["CLASSIC_DURATION_PATTERN"] = "([0-9]+)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' where the number is '([0-9]+)', the white space between the word is '%s', and the suffix is 'sec'

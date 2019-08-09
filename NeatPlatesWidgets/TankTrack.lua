@@ -19,7 +19,7 @@ local function IsEnemyTanked(unit)
 	local unitid = unit.unitid
 	local targetOf = unitid.."target"
 	-- GetPartyAssignment("MAINTANK", raidid)
-	local targetIsTank = UnitIsUnit(targetOf, "pet") or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
+	local targetIsTank = UnitIsUnit(targetOf, "pet")
 
 	return targetIsTank
 end
@@ -56,7 +56,7 @@ local function UpdateGroupRoles()
 			local raidid = "raid"..tostring(raidIndex)
 			local guid = UnitGUID(raidid)
 
-			local isTank = GetPartyAssignment("MAINTANK", raidid) or ("TANK" == UnitGroupRolesAssigned(raidid))
+			local isTank = GetPartyAssignment("MAINTANK", raidid)
 
 			if isTank then
 				RaidTankList[guid] = true

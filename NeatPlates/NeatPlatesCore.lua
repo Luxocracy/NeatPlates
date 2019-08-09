@@ -20,8 +20,6 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-local UnitChannelInfo = ChannelInfo
-local UnitCastingInfo = CastingInfo
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
@@ -858,13 +856,13 @@ do
 
 		local name, text, texture, startTime, endTime, isTradeSkill, castID
 
-		if channeled then
-			name, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unitid)
-			castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
-		else
-			name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
-			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
-		end
+		--if channeled then
+		--	name, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unitid)
+		--	castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
+		--else
+		--	name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
+		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
+		--end
 
 		if isTradeSkill then return end
 
@@ -1008,11 +1006,11 @@ do
 		local currentTime = GetTime() * 1000
 
 		
-		if UnitCastingInfo(unitid) then
-			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
-		elseif UnitChannelInfo(unitid) then
-			OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
-		end
+		--if UnitCastingInfo(unitid) then
+		--	OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
+		--elseif UnitChannelInfo(unitid) then
+		--	OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
+		--end
 	end
 
 
@@ -1237,23 +1235,6 @@ do
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
 			end
 		end
-
-		-- Aura Base Duration Modifier
-		-- Might not be necessary to do it this way, commented for now
-		--if true then
-		--	local current = {CombatLogGetCurrentEventInfo()}
-		--	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
-		--	plate = PlatesByGUID[destGUID] or {}
-		--	plate.auraBaseMod = plate.auraBaseMod or {}
-
-		--	if event == "SPELL_AURA_APPLIED" then
-		--		plate.auraBaseMod[spellID] = 1
-		--	elseif event == "SPELL_AURA_REFRESH" then
-		--		plate.auraBaseMod[spellID] = 1.3
-		--	end
-		--	--if event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", sourceName) then print(GetSpellDescription(spellID));for i=1, #current,1 do print(i, current[i]) end elseif event == "SPELL_AURA_REFRESH" and UnitIsUnit("player", sourceName) then print("Spell was resfhred") end
-		--end
-		
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
