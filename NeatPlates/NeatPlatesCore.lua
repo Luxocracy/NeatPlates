@@ -31,14 +31,15 @@ local numChildren = -1                                                          
 local activetheme = {}                                                              -- Table Placeholder
 local InCombat, HasTarget, HasMouseover = false, false, false					    -- Player State Data
 local EnableFadeIn = true
-local ShowCastBars = false
-local ShowIntCast = false
-local ShowIntWhoCast = false
+local ShowCastBars = true
+local ShowIntCast = true
+local ShowIntWhoCast = true
 local ShowServerIndicator = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
 local OverrideOutline = 1
+local SpellCastCache = {}
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -174,6 +175,12 @@ do
 				plate.UpdateHealth = false
 
 				plate:GetChildren():Hide()
+
+				if plate.UpdateCastbar then -- Check if spell is being cast
+					local unitGUID = UnitGUID(unit.unitid)
+					if unitGUID and SpellCastCache[unitGUID] then OnStartCasting(plate, unitGUID, false) end
+					plate.UpdateCastbar = false
+				end
 
 			end
 
@@ -425,6 +432,7 @@ do
 
 		-- Skip the initial data gather and let the second cycle do the work.
 		plate.UpdateMe = true
+		plate.UpdateCastbar = true
 
 	end
 
@@ -847,14 +855,14 @@ do
 
 
 	-- OnShowCastbar
-	function OnStartCasting(plate, unitid, channeled)
+	function OnStartCasting(plate, guid, channeled)
 		UpdateReferences(plate)
 		--if not extended:IsShown() then return end
 		if not extended:IsShown() then return end
 
 		local castBar = extended.visual.castbar
 
-		local name, text, texture, startTime, endTime, isTradeSkill, castID
+		--local name, text, texture, cast, time, startTime, endTime, isTradeSkill, castID
 
 		--if channeled then
 		--	name, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unitid)
@@ -863,6 +871,8 @@ do
 		--	name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
 		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		--end
+
+		local name = SpellCastCache[guid]
 
 		if isTradeSkill then return end
 
@@ -874,9 +884,10 @@ do
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
-		visual.spelltext:SetText(text)
-		visual.spellicon:SetTexture(texture)
-		castBar:SetMinMaxValues( startTime, endTime )
+		visual.spelltext:SetText(name)
+		--visual.spellicon:SetTexture(texture)
+		visual.spellicon:Hide()
+		castBar:SetMinMaxValues(0, 0)
 
 		local r, g, b, a = 1, 1, 0, 1
 
@@ -1196,10 +1207,11 @@ do
 	end
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
-		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
-		spellID = spellID or ""
+		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+		spellID = select(7, GetSpellInfo(spellName)) or ""
 		local plate = nil
-
+		local unitType = strsplit("-", sourceGUID)
+		
 		-- Spell Interrupts
 		if ShowIntCast then
 			if event == "SPELL_INTERRUPT" or event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED" then
@@ -1210,7 +1222,7 @@ do
 
 				if plate then
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
-					local unitType = strsplit("-", sourceGUID)
+
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
 							sourceGUID, sourceName = GetPetOwner(sourceName)
@@ -1233,6 +1245,19 @@ do
 				plate.extended.unit.fixate = true 	-- Fixating player
 			elseif plate then
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
+			end
+		end
+
+		-- Spellcasts (Classic)
+		if ShowIntCast then
+			plate = PlatesByGUID[sourceGUID]
+
+			if event == "SPELL_CAST_START" then
+				SpellCastCache[sourceGUID] = spellName
+				if plate then OnStartCasting(plate, sourceGUID, false) end
+			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
+				SpellCastCache[sourceGUID] = nil
+				if plate then OnStopCasting(plate) end
 			end
 		end
 	end

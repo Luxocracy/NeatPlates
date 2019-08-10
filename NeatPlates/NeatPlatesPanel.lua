@@ -88,7 +88,7 @@ NeatPlatesOptions = {
 
 	FriendlyAutomation = NO_AUTOMATION,
 	EnemyAutomation = NO_AUTOMATION,
-	DisableCastBars = true,
+	DisableCastBars = false,
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
 	BlizzardScaling = false,
@@ -307,7 +307,7 @@ local function GetPanelValues(panel)
 
 	NeatPlatesOptions.FriendlyAutomation = panel.AutoShowFriendly:GetValue()
 	NeatPlatesOptions.EnemyAutomation = panel.AutoShowEnemy:GetValue()
-	--NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
+	NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
@@ -329,7 +329,7 @@ local function SetPanelValues(panel)
 
 	panel.FirstSpecDropdown:SetValue(NeatPlatesOptions.FirstSpecProfile)
 
-	--panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
+	panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.HealthFrequent:SetChecked(NeatPlatesOptions.HealthFrequent)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
@@ -657,13 +657,13 @@ local function BuildInterfacePanel(panel)
 	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Cast Bars
-	--panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
-	--panel.DisableCastBars:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
-	--panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
+	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
+	panel.DisableCastBars:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
+	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont
 	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceBlizzardFont", panel, L["Force Multi-Lingual Font (Requires /reload)"])
-	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "TOPLEFT", 0, -25)
+	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) NeatPlates.OverrideFonts( self:GetChecked()) end)
 
 	-- Frequent Health Updates

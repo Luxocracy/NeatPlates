@@ -269,7 +269,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityTarget = CreateQuickSlider(objectName.."OpacityTarget", L["Current Target Opacity"]..':', nil, nil, AlignmentColumn, panel.OpacitySpotlight, 0, 2)
 	panel.OpacityNonTarget, F = CreateQuickSlider(objectName.."OpacityNonTarget", L["Non-Target Opacity"]..':', nil, nil, AlignmentColumn, panel.OpacityTarget, 0, 2)
 
-	--panel.OpacitySpotlightSpell, F = CreateQuickCheckbutton(objectName.."OpacitySpotlightSpell", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
+	panel.OpacitySpotlightSpell, F = CreateQuickCheckbutton(objectName.."OpacitySpotlightSpell", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
 	panel.OpacitySpotlightMouseover = CreateQuickCheckbutton(objectName.."OpacitySpotlightMouseover", L["Spotlight Mouseover"], AlignmentColumn, F, 0)
 	panel.OpacitySpotlightRaidMarked = CreateQuickCheckbutton(objectName.."OpacitySpotlightRaidMarked", L["Spotlight Raid Marked"], AlignmentColumn, panel.OpacitySpotlightMouseover, 0)
 
@@ -289,7 +289,7 @@ local function BuildHubPanel(panel)
 	panel.ScaleIgnoreNonEliteUnits= CreateQuickCheckbutton(objectName.."ScaleIgnoreNonEliteUnits", L["Ignore Non-Elite Units"], AlignmentColumn, panel.ScaleIgnoreNeutralUnits, 16)
 	panel.ScaleIgnoreInactive, F = CreateQuickCheckbutton(objectName.."ScaleIgnoreInactive", L["Ignore Inactive Units"], AlignmentColumn, panel.ScaleIgnoreNonEliteUnits, 16)
 
-	--panel.ScaleCastingSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleCastingSpotlight", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
+	panel.ScaleCastingSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleCastingSpotlight", L["Spotlight Casting Units"], AlignmentColumn, F, 0)
 	panel.ScaleTargetSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleTargetSpotlight", L["Spotlight Target Units"], AlignmentColumn, F, 0)
 	panel.ScaleMouseoverSpotlight, F = CreateQuickCheckbutton(objectName.."ScaleMouseoverSpotlight", L["Spotlight Mouseover Units"], AlignmentColumn, F, 0)
 	--panel.ScaleMiniMobs, F = CreateQuickCheckbutton(objectName.."ScaleMiniMobs", "Auto-Scale Mini/Trivial Mobs", AlignmentColumn, F, 0)
@@ -472,14 +472,14 @@ local function BuildHubPanel(panel)
 	------------------------------
   -- Cast Bars
 	------------------------------
- -- panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
- -- panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
- -- panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
- -- panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
-	--panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, L["Cast Bar Colors"]..':', AlignmentColumn, F, 0, 2)
-	--panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", L["Normal"], nil, AlignmentColumn, F , 16)
-	--panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", L["Un-interruptible"], nil, AlignmentColumn, F , 16)
-	--panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", L["Interrupted"], nil, AlignmentColumn, F , 16)
+  panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
+  panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
+  panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
+  panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)
+	panel.SpellCastColorLabel, F = CreateQuickItemLabel(nil, L["Cast Bar Colors"]..':', AlignmentColumn, F, 0, 2)
+	panel.ColorNormalSpellCast, F = CreateQuickColorbox(objectName.."ColorNormalSpellCast", L["Normal"], nil, AlignmentColumn, F , 16)
+	panel.ColorUnIntpellCast, F = CreateQuickColorbox(objectName.."ColorUnIntpellCast", L["Un-interruptible"], nil, AlignmentColumn, F , 16)
+	panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", L["Interrupted"], nil, AlignmentColumn, F , 16)
 
 
 	------------------------------
