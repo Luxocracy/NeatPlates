@@ -872,11 +872,12 @@ do
 		--	name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
 		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		--end
+		local unitType = strsplit("-", guid)
 		local spellName = SpellCastCache[guid]
 		local startTime, endTime
-		if NeatPlatesSpellDB[spellName] and NeatPlatesSpellDB[spellName].castTime then
-			startTime = NeatPlatesSpellDB[spellName].startTime
-			endTime = NeatPlatesSpellDB[spellName].startTime + NeatPlatesSpellDB[spellName].castTime
+		if NeatPlatesSpellDB[unitType][spellName] and NeatPlatesSpellDB[unitType][spellName].castTime then
+			startTime = NeatPlatesSpellDB[unitType][spellName].startTime
+			endTime = NeatPlatesSpellDB[unitType][spellName].startTime + NeatPlatesSpellDB[unitType][spellName].castTime
 
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
@@ -1259,25 +1260,26 @@ do
 		if ShowIntCast and spellName and type(spellName) == "string" then
 			local currentTime = GetTime() * 1000
 			plate = PlatesByGUID[sourceGUID]
-			NeatPlatesSpellDB[spellName] = NeatPlatesSpellDB[spellName] or {}
+			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
+			NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
 
 			if event == "SPELL_CAST_START" then
 				-- Add spell to SpellDB
-				NeatPlatesSpellDB[spellName] = {
+				NeatPlatesSpellDB[unitType][spellName] = {
 					startTime = currentTime,
-					endTime = NeatPlatesSpellDB[spellName].endTime or 0,
-					castTime = NeatPlatesSpellDB[spellName].castTime or nil,
+					endTime = NeatPlatesSpellDB[unitType][spellName].endTime or 0,
+					castTime = NeatPlatesSpellDB[unitType][spellName].castTime or nil,
 				}
 
 				SpellCastCache[sourceGUID] = spellName
 				if plate then OnStartCasting(plate, sourceGUID, false) end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
-				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[spellName].startTime then 
-					NeatPlatesSpellDB[spellName] = {
-						startTime = NeatPlatesSpellDB[spellName].startTime or 0,
+				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[unitType][spellName].startTime then 
+					NeatPlatesSpellDB[unitType][spellName] = {
+						startTime = NeatPlatesSpellDB[unitType][spellName].startTime or 0,
 						endTime = currentTime or 0,
-						castTime = currentTime-NeatPlatesSpellDB[spellName].startTime,
+						castTime = currentTime-NeatPlatesSpellDB[unitType][spellName].startTime,
 					}
 				end
 				SpellCastCache[sourceGUID] = nil
