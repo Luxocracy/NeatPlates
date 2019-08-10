@@ -1285,6 +1285,9 @@ do
 				SpellCastCache[sourceGUID] = nil
 				if plate then OnStopCasting(plate) end
 			end
+
+			-- Remove empty entries as the only take up space
+			if not NeatPlatesSpellDB[unitType][spellName].startTime then NeatPlatesSpellDB[unitType][spellName] = nil end
 		end
 	end
 
