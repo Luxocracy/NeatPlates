@@ -740,6 +740,13 @@ local function BuildInterfacePanel(panel)
 	ResetButton:SetWidth(155)
 	ResetButton:SetText(L["Reset Configuration"])
 
+	-- Clear Spell DB
+	-- Reset
+	local ClearSpellDB = CreateFrame("Button", "NeatPlatesOptions_ClearSpellDB", panel, "NeatPlatesPanelButtonTemplate")
+	ClearSpellDB:SetPoint("TOPLEFT", ResetButton, "TOPRIGHT", 0, 0)
+	ClearSpellDB:SetWidth(155)
+	ClearSpellDB:SetText(L["Clear Spell Database"])
+
 
 	-- Update Functions
 	_panel.okay = OnOkay
@@ -818,6 +825,12 @@ local function BuildInterfacePanel(panel)
 			print(ReplaceColorPatterns(L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."]))
 		end
 
+	end)
+
+	-- Clear Spell DB Button
+	ClearSpellDB:SetScript("OnClick", function()
+		NeatPlatesSpellDB = wipe(NeatPlatesSpellDB)
+		print(orange.."NeatPlates: "..red..L["Cleared Spell Database of entries."]);
 	end)
 end
 

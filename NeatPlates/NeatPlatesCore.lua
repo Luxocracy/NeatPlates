@@ -9,6 +9,7 @@ local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
 local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 NeatPlates = {}
+NeatPlatesSpellDB = {}
 
 -- Local References
 local _
@@ -871,8 +872,14 @@ do
 		--	name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
 		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		--end
+		local spellName = SpellCastCache[guid]
+		local startTime, endTime
+		if NeatPlatesSpellDB[spellName] and NeatPlatesSpellDB[spellName].castTime then
+			startTime = NeatPlatesSpellDB[spellName].startTime
+			endTime = NeatPlatesSpellDB[spellName].startTime + NeatPlatesSpellDB[spellName].castTime
 
-		local name = SpellCastCache[guid]
+			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
+		end
 
 		if isTradeSkill then return end
 
@@ -884,10 +891,10 @@ do
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
-		visual.spelltext:SetText(name)
+		visual.spelltext:SetText(spellName)
 		--visual.spellicon:SetTexture(texture)
 		visual.spellicon:Hide()
-		castBar:SetMinMaxValues(0, 0)
+		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
 
 		local r, g, b, a = 1, 1, 0, 1
 
@@ -1234,28 +1241,45 @@ do
 			end
 		end
 
-		-- Fixate
-		local fixate = {
-			[268074] = true,	-- Spawn of G'huun(Uldir)
-			[282209] = true,	-- Ravenous Stalker(Dazar'alor)
-		}
-		if (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED") and fixate[spellID] then
-			plate = PlatesByGUID[sourceGUID]
-			if plate and event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
-				plate.extended.unit.fixate = true 	-- Fixating player
-			elseif plate then
-				plate.extended.unit.fixate = false 	-- NOT Fixating player
-			end
-		end
+		---- Fixate
+		--local fixate = {
+		--	[268074] = true,	-- Spawn of G'huun(Uldir)
+		--	[282209] = true,	-- Ravenous Stalker(Dazar'alor)
+		--}
+		--if (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED") and fixate[spellID] then
+		--	plate = PlatesByGUID[sourceGUID]
+		--	if plate and event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
+		--		plate.extended.unit.fixate = true 	-- Fixating player
+		--	elseif plate then
+		--		plate.extended.unit.fixate = false 	-- NOT Fixating player
+		--	end
+		--end
 
 		-- Spellcasts (Classic)
-		if ShowIntCast then
+		if ShowIntCast and spellName and type(spellName) == "string" then
+			local currentTime = GetTime() * 1000
 			plate = PlatesByGUID[sourceGUID]
+			NeatPlatesSpellDB[spellName] = NeatPlatesSpellDB[spellName] or {}
 
 			if event == "SPELL_CAST_START" then
+				-- Add spell to SpellDB
+				NeatPlatesSpellDB[spellName] = {
+					startTime = currentTime,
+					endTime = NeatPlatesSpellDB[spellName].endTime or 0,
+					castTime = NeatPlatesSpellDB[spellName].castTime or nil,
+				}
+
 				SpellCastCache[sourceGUID] = spellName
 				if plate then OnStartCasting(plate, sourceGUID, false) end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
+				-- Update SpellDB with castTime
+				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[spellName].startTime then 
+					NeatPlatesSpellDB[spellName] = {
+						startTime = NeatPlatesSpellDB[spellName].startTime or 0,
+						endTime = currentTime or 0,
+						castTime = currentTime-NeatPlatesSpellDB[spellName].startTime,
+					}
+				end
 				SpellCastCache[sourceGUID] = nil
 				if plate then OnStopCasting(plate) end
 			end
