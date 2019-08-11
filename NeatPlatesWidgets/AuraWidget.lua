@@ -131,7 +131,7 @@ local function EventCombatLog(...)
 		local desc = GetSpellDescription(spellID)
 		local duration, expiration
 
-		if desc then duration = tonumber(strmatch(desc, L["CLASSIC_DURATION_PATTERN"]) or 0) end
+		if desc then duration = tonumber(strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or 0)*60 or 0) end
 		if duration and duration > 0 then
 			expiration = GetTime()+duration
 
