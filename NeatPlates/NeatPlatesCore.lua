@@ -35,6 +35,7 @@ local EnableFadeIn = true
 local ShowCastBars = true
 local ShowIntCast = true
 local ShowIntWhoCast = true
+local ColorCastBars = true
 local ShowServerIndicator = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
@@ -862,6 +863,14 @@ do
 		if not extended:IsShown() then return end
 
 		local castBar = extended.visual.castbar
+		local schoolColor = {
+			[2] = {1, 0.9, 0.5}, -- Holy
+			[4] = {1, 0.5, 0}, -- Fire
+			[8] = {0.3, 1, 0.3}, -- Nature
+			[16] = {0.5, 1, 1}, -- Frost
+			[32] = {0.5, 0.5, 1}, -- Shadow
+			[64] = {1, 0.5, 1}, -- Arcane
+		}
 
 		--local name, text, texture, cast, time, startTime, endTime, isTradeSkill, castID
 
@@ -873,7 +882,7 @@ do
 		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		--end
 		local unitType = strsplit("-", guid)
-		local spellName = SpellCastCache[guid]
+		local spellName, spellSchool = unpack(SpellCastCache[guid])
 		local startTime, endTime
 		if NeatPlatesSpellDB[unitType][spellName] and NeatPlatesSpellDB[unitType][spellName].castTime then
 			startTime = NeatPlatesSpellDB[unitType][spellName].startTime
@@ -899,9 +908,11 @@ do
 
 		local r, g, b, a = 1, 1, 0, 1
 
-		if activetheme.SetCastbarColor then
+		if activetheme.SetCastbarColor and not ColorCastBars then
 			r, g, b, a = activetheme.SetCastbarColor(unit)
 			if not (r and g and b and a) then return end
+		elseif ColorCastBars and schoolColor[spellSchool] then
+			r, g, b = unpack(schoolColor[spellSchool])
 		end
 
 		castBar:SetStatusBarColor( r, g, b)
@@ -1215,7 +1226,7 @@ do
 	end
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
-		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName,spellSchool = CombatLogGetCurrentEventInfo()
 		spellID = select(7, GetSpellInfo(spellName)) or ""
 		local plate = nil
 		local unitType = strsplit("-", sourceGUID)
@@ -1242,22 +1253,8 @@ do
 			end
 		end
 
-		---- Fixate
-		--local fixate = {
-		--	[268074] = true,	-- Spawn of G'huun(Uldir)
-		--	[282209] = true,	-- Ravenous Stalker(Dazar'alor)
-		--}
-		--if (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED") and fixate[spellID] then
-		--	plate = PlatesByGUID[sourceGUID]
-		--	if plate and event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
-		--		plate.extended.unit.fixate = true 	-- Fixating player
-		--	elseif plate then
-		--		plate.extended.unit.fixate = false 	-- NOT Fixating player
-		--	end
-		--end
-
 		-- Spellcasts (Classic)
-		if ShowIntCast and spellName and type(spellName) == "string" then
+		if ShowIntCast and (spellSchool and spellSchool > 1) and (spellName and type(spellName) == "string") then
 			local currentTime = GetTime() * 1000
 			plate = PlatesByGUID[sourceGUID]
 			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
@@ -1271,8 +1268,18 @@ do
 					castTime = NeatPlatesSpellDB[unitType][spellName].castTime or nil,
 				}
 
-				SpellCastCache[sourceGUID] = spellName
+				-- Add Spell ot Cast Cache
+				SpellCastCache[sourceGUID] = {spellName, spellSchool}
 				if plate then OnStartCasting(plate, sourceGUID, false) end
+
+				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after 12 seconds or the pre-recorded cast time, which ever is longer)
+				C_Timer.After(math.max(NeatPlatesSpellDB[unitType][spellName].castTime or 0, 12000)/1000, function()
+					-- Make sure it is the same spell
+					if currentTime == NeatPlatesSpellDB[unitType][spellName].startTime then
+						SpellCastCache[sourceGUID] = nil
+						if plate then OnStopCasting(plate) end
+					end
+				end)
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
 				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[unitType][spellName].startTime then 
@@ -1282,11 +1289,13 @@ do
 						castTime = currentTime-NeatPlatesSpellDB[unitType][spellName].startTime,
 					}
 				end
+
+				-- Clear Cast Cache
 				SpellCastCache[sourceGUID] = nil
 				if plate then OnStopCasting(plate) end
 			end
 
-			-- Remove empty entries as the only take up space
+			-- Remove empty entries as they only take up space
 			if not NeatPlatesSpellDB[unitType][spellName].startTime then NeatPlatesSpellDB[unitType][spellName] = nil end
 		end
 	end
@@ -1494,6 +1503,7 @@ end
 --------------------------------------------------------------------------------------------------------------
 function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
+function NeatPlates.ColorCastBars(enable) ColorCastBars = enable end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end

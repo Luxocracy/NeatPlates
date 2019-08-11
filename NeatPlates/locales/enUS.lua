@@ -519,3 +519,4 @@ L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+)%ssec" -- Used to determine aura du
 L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+)%smin" -- Used to determine aura durations ex. in english it's '15 sec' where the number is '([0-9]+)', the white space between the word is '%s', and the suffix is 'sec'
 L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
+L["Color Cast Bars by School"] = true
