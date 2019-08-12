@@ -515,8 +515,8 @@ L["Display Scale Options"] = true
 
 -- Classic Specific
 
-L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' where the number is '([0-9]+)', the white space between the word is '%s', and the suffix is 'sec'
-L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+)%smin" -- Used to determine aura durations ex. in english it's '2 min' where the number is '([0-9]+)', the white space between the word is '%s', and the suffix is 'min'
+L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+%.?[0-9]?)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' or '15.5 sec' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'sec'
+L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+%.?[0-9]?)%smin" -- Used to determine aura durations ex. in english it's '15 min' or '15.5 min' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'min'
 L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
 L["Color Cast Bars by School"] = true

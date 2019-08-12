@@ -622,8 +622,13 @@ do
 		unit.red, unit.green, unit.blue = UnitSelectionColor(unitid)
 		unit.reaction = GetReactionByColor(unit.red, unit.green, unit.blue) or "HOSTILE"
 
-		unit.health = UnitHealth(unitid) or 0
-		unit.healthmax = UnitHealthMax(unitid) or 1
+		if RealMobHealth then 
+			unit.health, unit.healthmax = RealMobHealth.GetUnitHealth(unitid)
+		else
+			unit.health = UnitHealth(unitid) or 0
+			unit.healthmax = UnitHealthMax(unitid) or 1
+		end
+		
 
 		--unit.threatValue = UnitThreatSituation("player", unitid) or 0
 		unit.threatValue = 0 -- Disabled until I figure out how threat is handled in Classic
