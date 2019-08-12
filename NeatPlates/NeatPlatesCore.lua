@@ -180,7 +180,8 @@ do
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					local unitGUID = UnitGUID(unit.unitid)
-					if unitGUID and SpellCastCache[unitGUID] then OnStartCasting(plate, unitGUID, false) end
+					if unitGUID and SpellCastCache[unitGUID] then OnStartCasting(plate, unitGUID, false)
+					else OnStopCasting(plate) end
 					plate.UpdateCastbar = false
 				end
 
@@ -1230,7 +1231,7 @@ do
 		spellID = select(7, GetSpellInfo(spellName)) or ""
 		local plate = nil
 		local unitType = strsplit("-", sourceGUID)
-		
+
 		-- Spell Interrupts
 		if ShowIntCast then
 			if event == "SPELL_INTERRUPT" or event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED" then
@@ -1270,16 +1271,19 @@ do
 
 				-- Add Spell ot Cast Cache
 				SpellCastCache[sourceGUID] = {spellName, spellSchool}
-				if plate then OnStartCasting(plate, sourceGUID, false) end
+				if plate then
+					local timeout = 12
+					OnStartCasting(plate, sourceGUID, false)
 
-				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after 12 seconds or the pre-recorded cast time, which ever is longer)
-				C_Timer.After(math.max(NeatPlatesSpellDB[unitType][spellName].castTime or 0, 12000)/1000, function()
-					-- Make sure it is the same spell
-					if currentTime == NeatPlatesSpellDB[unitType][spellName].startTime then
+					-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 2 seconds, or 12 seconds if the spell is unknown)
+					-- The FAILED event doesn't seem to trigger properly in the current beta test.
+					if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+2000)/1000 end
+					if plate.spellTimeout then plate.spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
+					plate.spellTimeout = C_Timer.NewTimer(timeout, function()
 						SpellCastCache[sourceGUID] = nil
 						if plate then OnStopCasting(plate) end
-					end
-				end)
+					end)
+				end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
 				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[unitType][spellName].startTime then 
@@ -1292,7 +1296,10 @@ do
 
 				-- Clear Cast Cache
 				SpellCastCache[sourceGUID] = nil
-				if plate then OnStopCasting(plate) end
+				if plate then
+					OnStopCasting(plate)
+					if plate.spellTimeout then plate.spellTimeout:Cancel() end	-- Cancel the spell Timeout
+				end
 			end
 
 			-- Remove empty entries as they only take up space

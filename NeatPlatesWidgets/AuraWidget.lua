@@ -12,6 +12,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 NeatPlatesWidgets.DebuffWidgetBuild = 2
 
 local PlayerGUID = UnitGUID("player")
+local PlayerClass = select(2, UnitClass("player"))
 local PolledHideIn = NeatPlatesWidgets.PolledHideIn
 local FilterFunction = function() return 1 end
 local AuraMonitor = CreateFrame("Frame")
@@ -55,6 +56,8 @@ local AURA_TARGET_FRIENDLY = 2
 
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
+
+local ComboPoints = 0
 
 local ButtonGlow = LibStub("LibButtonGlow-1.0")
 local ButtonGlowEnabled = {
@@ -123,15 +126,23 @@ local function EventUnitAura(unitid)
 
 end
 
+-- Combat logging for aura applications in Classic
 local function EventCombatLog(...)
 	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+	local points = -1
+
 	-- Tracking Aura Durations
+	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
+
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+		if ComboPoints > GetComboPoints("player", "target") then points = ComboPoints end
 		spellID = select(7, GetSpellInfo(spellName))
 		local desc = GetSpellDescription(spellID)
 		local duration, expiration
 
-		if desc then duration = tonumber(strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or 0)*60 or 0) end
+		if desc then
+			duration = tonumber(strmatch(desc, points..".-"..L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or 0)*60 or 0)
+		end
 		if duration and duration > 0 then
 			expiration = GetTime()+duration
 
