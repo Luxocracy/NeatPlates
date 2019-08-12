@@ -309,9 +309,21 @@ end
 -- Cast Bar Color
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
-local function CastBarDelegate(unit)
+local function CastBarDelegate(unit, school)
 	local color, alpha
-	if unit.interrupted then
+	local schoolColor = {
+		[2] = LocalVars.ColorSchoolHoly, -- Holy
+		[4] = LocalVars.ColorSchoolFire, -- Fire
+		[8] = LocalVars.ColorSchoolNature, -- Nature
+		[16] = LocalVars.ColorSchoolFrost, -- Frost
+		[32] = LocalVars.ColorSchoolShadow, -- Shadow
+		[64] = LocalVars.ColorSchoolArcane, -- Arcane
+	}
+
+
+	if LocalVars.ColorCastBySchool and school then
+		color = schoolColor[school]
+	elseif unit.interrupted then
 		color = LocalVars.ColorIntpellCast
 	elseif unit.spellInterruptible then
 		color = LocalVars.ColorNormalSpellCast

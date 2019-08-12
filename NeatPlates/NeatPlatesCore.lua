@@ -869,24 +869,6 @@ do
 		if not extended:IsShown() then return end
 
 		local castBar = extended.visual.castbar
-		local schoolColor = {
-			[2] = {1, 0.9, 0.5}, -- Holy
-			[4] = {1, 0.5, 0}, -- Fire
-			[8] = {0.3, 1, 0.3}, -- Nature
-			[16] = {0.5, 1, 1}, -- Frost
-			[32] = {0.5, 0.5, 1}, -- Shadow
-			[64] = {1, 0.5, 1}, -- Arcane
-		}
-
-		--local name, text, texture, cast, time, startTime, endTime, isTradeSkill, castID
-
-		--if channeled then
-		--	name, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unitid)
-		--	castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
-		--else
-		--	name, text, texture, startTime, endTime, isTradeSkill, castID = UnitCastingInfo(unitid)
-		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
-		--end
 		local unitType = strsplit("-", guid)
 		local spell = SpellCastCache[guid]
 		local startTime, endTime
@@ -902,6 +884,7 @@ do
 		unit.isCasting = true
 		unit.interrupted = false
 		unit.interruptLogged = false
+		unit.spellInterruptible = true -- Always true for Classic as we cannot tell.
 
 		-- Clear registered events incase they weren't
 		castBar:SetScript("OnEvent", nil)
@@ -914,11 +897,9 @@ do
 
 		local r, g, b, a = 1, 1, 0, 1
 
-		if activetheme.SetCastbarColor and not ColorCastBars then
-			r, g, b, a = activetheme.SetCastbarColor(unit)
+		if activetheme.SetCastbarColor then
+			r, g, b, a = activetheme.SetCastbarColor(unit, spell.school)
 			if not (r and g and b and a) then return end
-		elseif ColorCastBars and schoolColor[spell.school] then
-			r, g, b = unpack(schoolColor[spell.school])
 		end
 
 		castBar:SetStatusBarColor( r, g, b)
@@ -1259,7 +1240,7 @@ do
 		end
 
 		-- Spellcasts (Classic)
-		if ShowIntCast and (spellSchool and spellSchool > 1) and (spellName and type(spellName) == "string") then
+		if ShowCastBars and (spellSchool and spellSchool > 1) and (spellName and type(spellName) == "string") then
 			local currentTime = GetTime() * 1000
 			plate = PlatesByGUID[sourceGUID]
 			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
