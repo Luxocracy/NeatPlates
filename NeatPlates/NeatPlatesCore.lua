@@ -888,11 +888,11 @@ do
 		--	castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		--end
 		local unitType = strsplit("-", guid)
-		local spellName, spellSchool = unpack(SpellCastCache[guid])
+		local spell = SpellCastCache[guid]
 		local startTime, endTime
-		if NeatPlatesSpellDB[unitType][spellName] and NeatPlatesSpellDB[unitType][spellName].castTime then
-			startTime = NeatPlatesSpellDB[unitType][spellName].startTime
-			endTime = NeatPlatesSpellDB[unitType][spellName].startTime + NeatPlatesSpellDB[unitType][spellName].castTime
+		if NeatPlatesSpellDB[unitType][spell.name] and NeatPlatesSpellDB[unitType][spell.name].castTime then
+			startTime = NeatPlatesSpellDB[unitType][spell.name].startTime
+			endTime = NeatPlatesSpellDB[unitType][spell.name].startTime + NeatPlatesSpellDB[unitType][spell.name].castTime
 
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
@@ -907,7 +907,7 @@ do
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
-		visual.spelltext:SetText(spellName)
+		visual.spelltext:SetText(spell.name)
 		--visual.spellicon:SetTexture(texture)
 		visual.spellicon:Hide()
 		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
@@ -917,8 +917,8 @@ do
 		if activetheme.SetCastbarColor and not ColorCastBars then
 			r, g, b, a = activetheme.SetCastbarColor(unit)
 			if not (r and g and b and a) then return end
-		elseif ColorCastBars and schoolColor[spellSchool] then
-			r, g, b = unpack(schoolColor[spellSchool])
+		elseif ColorCastBars and schoolColor[spell.school] then
+			r, g, b = unpack(schoolColor[spell.school])
 		end
 
 		castBar:SetStatusBarColor( r, g, b)
@@ -1190,7 +1190,6 @@ do
 	function CoreEvents:UNIT_SPELLCAST_START(...)
 		local unitid = ...
 		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
 		local plate = GetNamePlateForUnit(unitid)
 
 		if plate then
@@ -1275,20 +1274,18 @@ do
 				}
 
 				-- Add Spell ot Cast Cache
-				SpellCastCache[sourceGUID] = {spellName, spellSchool}
-				if plate then
-					local timeout = 12
-					OnStartCasting(plate, sourceGUID, false)
-
-					-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 2 seconds, or 12 seconds if the spell is unknown)
-					-- The FAILED event doesn't seem to trigger properly in the current beta test.
-					if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+2000)/1000 end
-					if plate.spellTimeout then plate.spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
-					plate.spellTimeout = C_Timer.NewTimer(timeout, function()
-						SpellCastCache[sourceGUID] = nil
-						if plate then OnStopCasting(plate) end
-					end)
-				end
+				SpellCastCache[sourceGUID] = {name = spellName, school = spellSchool}
+				local timeout = 12
+				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 2 seconds, or 12 seconds if the spell is unknown)
+				-- The FAILED event doesn't seem to trigger properly in the current beta test.
+				if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+2000)/1000 end -- If we have a recorded cast time, use that as timeout base
+				if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
+				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
+					local plate = PlatesByGUID[sourceGUID]
+					SpellCastCache[sourceGUID] = nil
+					if plate then OnStopCasting(plate) end
+				end)
+				if plate then OnStartCasting(plate, sourceGUID, false) end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
 				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[unitType][spellName].startTime then 
@@ -1300,10 +1297,10 @@ do
 				end
 
 				-- Clear Cast Cache
+				if SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the spell Timeout
 				SpellCastCache[sourceGUID] = nil
 				if plate then
 					OnStopCasting(plate)
-					if plate.spellTimeout then plate.spellTimeout:Cancel() end	-- Cancel the spell Timeout
 				end
 			end
 
