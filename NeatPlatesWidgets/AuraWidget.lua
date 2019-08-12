@@ -147,8 +147,8 @@ local function EventCombatLog(...)
 			expiration = GetTime()+duration
 
 			AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
-			AuraExpiration[destGUID][sourceName] = AuraExpiration[destGUID][sourceName] or {}
-			AuraExpiration[destGUID][sourceName][spellID] = {expiration = expiration, duration = duration}
+			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
+			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
 		end
 		
 	end
@@ -304,7 +304,7 @@ local function UpdateIconGrid(frame, unitid)
 
 			do
 				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
-				local casterName
+				local casterGUID
 
 				aura.name = name
 				aura.texture = icon
@@ -317,10 +317,10 @@ local function UpdateIconGrid(frame, unitid)
 				aura.unit = unitid 		-- unitid of the plate
 
 
-				if caster then casterName = UnitName(caster) end
-				if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterName] and AuraExpiration[unitGUID][casterName][spellid] then
-					aura.duration = AuraExpiration[unitGUID][casterName][spellid].duration
-					aura.expiration = AuraExpiration[unitGUID][casterName][spellid].expiration
+				if caster then casterGUID = UnitGUID(caster) end
+				if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterGUID] and AuraExpiration[unitGUID][casterGUID][spellid] then
+					aura.duration = AuraExpiration[unitGUID][casterGUID][spellid].duration
+					aura.expiration = AuraExpiration[unitGUID][casterGUID][spellid].expiration
 				else
 					aura.duration = 0
 					aura.expiration = 0
