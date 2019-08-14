@@ -872,14 +872,14 @@ do
 		local unitType = strsplit("-", guid)
 		local spell = SpellCastCache[guid]
 		local startTime, endTime
+
+		if isTradeSkill or not spell then return end
 		if NeatPlatesSpellDB[unitType][spell.name] and NeatPlatesSpellDB[unitType][spell.name].castTime then
 			startTime = NeatPlatesSpellDB[unitType][spell.name].startTime
 			endTime = NeatPlatesSpellDB[unitType][spell.name].startTime + NeatPlatesSpellDB[unitType][spell.name].castTime
 
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
-
-		if isTradeSkill then return end
 
 		unit.isCasting = true
 		unit.interrupted = false

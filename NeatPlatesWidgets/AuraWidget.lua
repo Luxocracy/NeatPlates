@@ -129,7 +129,7 @@ end
 -- Combat logging for aura applications in Classic
 local function EventCombatLog(...)
 	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
-	local points = -1
+	local points = 0
 
 	-- Tracking Aura Durations
 	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
@@ -141,7 +141,9 @@ local function EventCombatLog(...)
 		local duration, expiration
 
 		if desc then
-			duration = tonumber(strmatch(desc, points..".-"..L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or 0)*60 or 0)
+			-- Attempt to match using locale duration pattern, if that fails fallback to english local pattern
+			-- Combo Point pattern variation, seconds pattern variation, minutes pattern variation
+			duration = tonumber(strmatch(desc, "%s%s"..points.."%s.-"..L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, "%s%s"..points..".-".."([0-9]+%.?[0-9]?)%ssec") or strmatch(desc, "([0-9]+%.?[0-9]?)%ssec") or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or strmatch(desc, "([0-9]+%.?[0-9]?)%smin") or 0)*60 or 0)
 		end
 		if duration and duration > 0 then
 			expiration = GetTime()+duration
