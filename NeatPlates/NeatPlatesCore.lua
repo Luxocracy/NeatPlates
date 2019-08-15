@@ -23,14 +23,14 @@ local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 -- Internal Data
-local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            	-- Plate Lists
+local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	         	-- Plate Lists
 local PlatesByUnit = {}
 local PlatesByGUID = {}
-local nameplate, extended, bars, regions, visual, carrier, plateid			    	-- Temp/Local References
-local unit, unitcache, style, stylename, unitchanged				    			-- Temp/Local References
-local numChildren = -1                                                              -- Cache the current number of plates
-local activetheme = {}                                                              -- Table Placeholder
-local InCombat, HasTarget, HasMouseover = false, false, false					    -- Player State Data
+local nameplate, extended, bars, regions, visual, carrier, plateid			    -- Temp/Local References
+local unit, unitcache, style, stylename, unitchanged, threatborder				  -- Temp/Local References
+local numChildren = -1                                                     	-- Cache the current number of plates
+local activetheme = {}                                                    	-- Table Placeholder
+local InCombat, HasTarget, HasMouseover = false, false, false					   		-- Player State Data
 local EnableFadeIn = true
 local ShowCastBars = true
 local ShowCastDuration = false
@@ -478,7 +478,7 @@ do
 		-- plate:GetChildren():Hide()
 
 		-- Gather Information
-		unitid = PlatesVisible[plate]
+		local unitid = PlatesVisible[plate]
 		UpdateReferences(plate)
 
 		UpdateUnitIdentity(plate, unitid)
@@ -490,7 +490,7 @@ do
 
 	-- OnHealthUpdate
 	function OnHealthUpdate(plate)
-		unitid = PlatesVisible[plate]
+		local unitid = PlatesVisible[plate]
 
 		UpdateUnitCondition(plate, unitid)
 		ProcessUnitChanges()
@@ -503,7 +503,7 @@ do
 		plate.UpdateMe = true
 		extended.unitcache = ClearIndices(extended.unitcache)
 		extended.stylename = ""
-		unitid = PlatesVisible[plate]
+		local unitid = PlatesVisible[plate]
 
 		UpdateNameplateSize(plate)
 		OnShowNameplate(plate, unitid)
@@ -679,7 +679,7 @@ end		-- End of Nameplate/Unit Events
 ---------------------------------------------------------------------------------------------------------------------
 do
 	local color = {}
-	local threatborder, alpha, forcealpha, scale
+	local alpha, forcealpha, scale
 
 
 	-- UpdateIndicator_HealthBar: Updates the value on the health bar
@@ -997,6 +997,8 @@ do
 			local _unit = unit -- Store this reference as the unit might have change once the fade function uses it.
 
 			castBar:Show()
+
+			local r, g, b, a = 1, 1, 0, 1
 
 			if activetheme.SetCastbarColor then
 				r, g, b, a = activetheme.SetCastbarColor(unit)
