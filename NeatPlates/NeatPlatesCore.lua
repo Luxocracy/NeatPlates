@@ -936,7 +936,6 @@ do
 		end
 
 		castBar:SetStatusBarColor( r, g, b)
-		--print("started cast", unitid, a)
 		castBar:SetAlpha(a or 1)
 
 		if unit.spellIsShielded then
