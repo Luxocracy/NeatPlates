@@ -329,6 +329,7 @@ local function ApplyProfileSettings(theme, source, ...)
 
 	-- There might be a better way to handle these settings, but this works for now.
 	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
+	NeatPlates:ToggleCastbarDuration(LocalVars.SpellCastEnableDuration)	-- Toggle Duration on Castbars
 	NeatPlates:ToggleServerIndicator(LocalVars.TextShowServerIndicator)	-- Toggle Server Indicator
 
 	-- Manage ClickThrough option of nameplate bars.

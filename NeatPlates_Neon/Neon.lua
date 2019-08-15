@@ -112,6 +112,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface = font,
+	size = fontsize-1,
+	width = 130,
+	height = 11,
+	x = CastBarHorizontalAdjustment - 10,
+	--NameTextVerticalAdjustment +
+	y = CastBarVerticalAdjustment - 16,
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	show = true,
+}
+
 --]]
 
 StyleDefault.threatborder = {

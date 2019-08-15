@@ -165,6 +165,20 @@ StyleDefault.spelltext = {
 	flags = "NONE",
 	show = true,
 }
+StyleDefault.durationtext = {
+	typeface = font,
+	size = 7,
+	height = 12,
+	width = 90,
+	x = 0,
+	y = -6,
+	align = "RIGHT",
+	anchor = "TOP",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 StyleDefault.raidicon = {
 	width = 12,
 	height = 12,

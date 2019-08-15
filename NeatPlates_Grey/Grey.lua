@@ -219,6 +219,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface =					font,
+	size = 8,
+	width = 92,
+	height = 10,
+	x = 1,
+	y = castBar_verticalOffset-8+nameplate_verticalOffset,
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.spellicon = {
 	width = 18,
 	height = 18,

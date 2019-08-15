@@ -147,12 +147,19 @@ local function RGBToHex(r,g,b)
 end
 
 
+-- Round to x decimals
+local function round(number, decimals)
+    return (("%%.%df"):format(decimals)):format(number)
+end
+
+
 NeatPlatesUtility.abbrevNumber = valueToString
 NeatPlatesUtility.copyTable = copytable
 NeatPlatesUtility.mergeTable = mergetable
 NeatPlatesUtility.updateTable = updatetable
 NeatPlatesUtility.HexToRGB = HexToRGB
 NeatPlatesUtility.RGBToHex = RGBToHex
+NeatPlatesUtility.round = round
 
 ------------------------------------------
 -- GameTooltipScanner

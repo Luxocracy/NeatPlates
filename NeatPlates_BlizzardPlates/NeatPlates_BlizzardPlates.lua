@@ -185,6 +185,19 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface =					font,
+	size = 7,
+	x = 5,
+	y = vert+2,
+	width = 122,
+	align = "RIGHT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.skullicon = {
 	texture =					"Interface\\TARGETINGFRAME\\UI-TargetingFrame-Skull",
 	width = 13,

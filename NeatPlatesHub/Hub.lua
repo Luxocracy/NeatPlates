@@ -473,6 +473,7 @@ local function BuildHubPanel(panel)
   -- Cast Bars
 	------------------------------
   panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
+  panel.SpellCastEnableDuration, F = CreateQuickCheckbutton(objectName.."SpellCastEnableDuration", L["Show Duration on Cast Bars"], AlignmentColumn, F)
   panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
   panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
   panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)

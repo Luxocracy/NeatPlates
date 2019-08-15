@@ -198,6 +198,21 @@ TemplateTheme.spelltext = {
 	show = false,
 }
 
+TemplateTheme.durationtext = {
+	typeface =					font,
+	size = 9,
+	width = 93,
+	height = 10,
+	x = 0,
+	y = 11,
+	align = "RIGHT",
+	anchor = "RIGHT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = false,
+}
+
 TemplateTheme.customtext = {
 	typeface =					font,
 	size = 8,
