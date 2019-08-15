@@ -197,6 +197,19 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface =					font,
+	size = 9,
+	x = -24,
+	y = -21,
+	width = 70,
+	align = "RIGHT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.spellicon = {
 	width =10,
 	height = 10,

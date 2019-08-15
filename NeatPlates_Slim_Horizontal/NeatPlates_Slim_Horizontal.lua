@@ -212,6 +212,20 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface = font,
+	size = fontsize - 2,
+	width = 90,
+	height = 11,
+	x = 3,
+	y = VerticalAdjustment - CastBarOffset,
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	show = true,
+}
+
 StyleDefault.customart = {
 	width = 14,
 	height = 14,

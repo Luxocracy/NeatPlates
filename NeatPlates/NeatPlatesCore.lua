@@ -14,6 +14,7 @@ NeatPlatesSpellDB = {}
 -- Local References
 local _
 local max = math.max
+local round = NeatPlatesUtility.round
 local select, pairs, tostring  = select, pairs, tostring 			    -- Local function copy
 local CreateNeatPlatesStatusbar = CreateNeatPlatesStatusbar			    -- Local function copy
 local WorldFrame, UIParent = WorldFrame, UIParent
@@ -33,6 +34,7 @@ local activetheme = {}                                                          
 local InCombat, HasTarget, HasMouseover = false, false, false					    -- Player State Data
 local EnableFadeIn = true
 local ShowCastBars = true
+local ShowCastDuration = false
 local ShowIntCast = true
 local ShowIntWhoCast = true
 local ColorCastBars = true
@@ -260,6 +262,8 @@ do
 		visual.castnostop = castbar:CreateTexture(nil, "ARTWORK")
 		visual.spellicon = castbar:CreateTexture(nil, "OVERLAY")
 		visual.spelltext = castbar:CreateFontString(nil, "OVERLAY")
+		visual.durationtext = castbar:CreateFontString(nil, "OVERLAY")
+		castbar.durationtext = visual.durationtext -- Extra reference for updating castbars duration text
 		-- Set Base Properties
 		visual.raidicon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
 		visual.highlight:SetAllPoints(visual.healthborder)
@@ -287,6 +291,7 @@ do
 		visual.name:SetFontObject("NeatPlatesFontNormal")
 		visual.level:SetFontObject("NeatPlatesFontSmall")
 		visual.spelltext:SetFontObject("NeatPlatesFontNormal")
+		visual.durationtext:SetFontObject("NeatPlatesFontNormal")
 		visual.customtext:SetFontObject("NeatPlatesFontSmall")
 
 		-- Neat Plates Frame References
@@ -841,11 +846,14 @@ do
 
 	local function OnUpdateCastBarForward(self)
 		local currentTime = GetTime() * 1000
-		--local startTime, endTime = self:GetMinMaxValues()
+		local startTime, endTime = self:GetMinMaxValues()
+		local text = tonumber(round((endTime - currentTime)/1000, 1))
+		if text <= 0 then text = "" end
 
 		--if currentTime > endTime then OnStopCasting(self)
 		--else self:SetValue(currentTime) end
 
+		if ShowCastDuration then self.durationtext:SetText(text) end
 		self:SetValue(currentTime)
 	end
 
@@ -853,10 +861,13 @@ do
 	local function OnUpdateCastBarReverse(self)
 		local currentTime = GetTime() * 1000
 		local startTime, endTime = self:GetMinMaxValues()
+		local text = tonumber(round((endTime - currentTime)/1000, 1))
+		if text <= 0 then text = "" end
 
 		--if currentTime > endTime then OnStopCasting(self)
 		--else self:SetValue((endTime + startTime) - currentTime) end
 
+		if ShowCastDuration then self.durationtext:SetText(text) end
 		self:SetValue((endTime + startTime) - currentTime)
 	end
 
@@ -891,6 +902,7 @@ do
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
 		visual.spelltext:SetText(spell.name)
+		visual.durationtext:SetText("")
 		--visual.spellicon:SetTexture(texture)
 		visual.spellicon:Hide()
 		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
@@ -949,6 +961,7 @@ do
 			end	
 
 			visual.spelltext:SetText(spellString)
+			visual.durationtext:SetText("")
 		end
 
 		-- Main function
@@ -975,7 +988,7 @@ do
 			setSpellText()
 
 			-- Fade out the castbar
-			local alpha, ticks, duration, delay = 1, 25, 2, 0.8
+			local alpha, ticks, duration, delay = a, 25, 2, 0.8
 			local perTick = alpha/(ticks-(delay/(duration/ticks)))
 			local stopFade = false
 			fade(ticks, duration, delay, function()
@@ -1381,10 +1394,10 @@ do
 
 
 	-- Style Groups
-	local fontgroup = {"name", "level", "spelltext", "customtext"}
+	local fontgroup = {"name", "level", "spelltext", "durationtext", "customtext"}
 
 	local anchorgroup = {"healthborder", "threatborder", "castborder", "castnostop",
-						"name", "spelltext", "customtext", "level",
+						"name", "spelltext", "durationtext", "customtext", "level",
 						"spellicon", "raidicon", "skullicon", "eliteicon", "target", "focus", "mouseover"}
 
 	local bargroup = {"castbar", "healthbar"}
@@ -1496,6 +1509,7 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates.ColorCastBars(enable) ColorCastBars = enable end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
+function NeatPlates:ToggleCastbarDuration(showCastDuration) ShowCastDuration = showCastDuration end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 function NeatPlates:ToggleServerIndicator(showIndicator) ShowServerIndicator = showIndicator end
 

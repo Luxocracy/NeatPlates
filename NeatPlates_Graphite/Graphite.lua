@@ -205,6 +205,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.durationtext = {
+	typeface =					font,
+	size = 8,
+	width = (barwidth-4)*widthfactor,
+	height = 14,
+	x = 0,
+	y = -16+castoffset,		-- For UNDER the bar
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	--flags = "",
+	shadow = false,
+	show = true,
+}
+
 StyleDefault.spellicon = {
 	height = 12,
 	width = 12,
