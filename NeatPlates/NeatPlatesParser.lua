@@ -12,6 +12,7 @@ local mergetable = NeatPlatesUtility.mergeTable
 
 local function SetTheme(...)
 	local arg1, arg2 = ...
+	local themeName
 
 	if arg1 == NeatPlates then themeName = arg2
 	else themeName = arg1 end
