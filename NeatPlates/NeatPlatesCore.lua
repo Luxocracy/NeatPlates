@@ -1032,7 +1032,6 @@ do
 
 	function OnUpdateCastMidway(plate, unitid)
 		if not ShowCastBars then return end
-
 		local currentTime = GetTime() * 1000
 
 		
