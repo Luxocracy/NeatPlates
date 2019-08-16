@@ -14,6 +14,7 @@ local currentSpec = 0
 
 local cachedAura = false
 local cachedRole = false
+local TankWatcher
 
 local function IsEnemyTanked(unit)
 	local unitid = unit.unitid
