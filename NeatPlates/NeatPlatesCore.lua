@@ -1251,25 +1251,30 @@ do
 			NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
 
 			if event == "SPELL_CAST_START" then
-				-- Add spell to SpellDB
+				-- Add/Update spell to SpellDB
 				NeatPlatesSpellDB[unitType][spellName] = {
 					startTime = currentTime,
 					endTime = NeatPlatesSpellDB[unitType][spellName].endTime or 0,
 					castTime = NeatPlatesSpellDB[unitType][spellName].castTime or nil,
 				}
 
-				-- Add Spell ot Cast Cache
-				SpellCastCache[sourceGUID] = {name = spellName, school = spellSchool}
-				local timeout = 12
-				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 2 seconds, or 12 seconds if the spell is unknown)
+				-- Add Spell to Spell Cast Cache
+				SpellCastCache[sourceGUID] = SpellCastCache[sourceGUID] or {}
+				SpellCastCache[sourceGUID].name = spellName
+				SpellCastCache[sourceGUID].school = spellSchool
+				
+				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 1 seconds, or 12 seconds if the spell is unknown)
 				-- The FAILED event doesn't seem to trigger properly in the current beta test.
-				if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+2000)/1000 end -- If we have a recorded cast time, use that as timeout base
+				local timeout = 12
+				if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+1000)/1000 end -- If we have a recorded cast time, use that as timeout base
 				if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
+
 				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
 					local plate = PlatesByGUID[sourceGUID]
 					SpellCastCache[sourceGUID] = nil
 					if plate then OnStopCasting(plate) end
 				end)
+
 				if plate then OnStartCasting(plate, sourceGUID, false) end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
