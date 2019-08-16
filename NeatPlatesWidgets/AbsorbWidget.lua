@@ -154,6 +154,7 @@ end
 -- Context
 local function UpdateWidgetContext(frame, unit)
 	local guid = unit.guid
+	local unitid = unit.unitid
 	frame.unitid = unitid
 	frame.lastStyle = unit.style
 
