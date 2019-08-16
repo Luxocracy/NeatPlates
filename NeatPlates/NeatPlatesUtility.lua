@@ -152,6 +152,19 @@ local function round(number, decimals)
     return (("%%.%df"):format(decimals)):format(number)
 end
 
+-- Fade frame function
+function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
+	if not timer then timer = 0 end
+
+	local interval = duration/intervals
+	timer = timer+interval
+
+	if duration > timer then
+		if timer > delay then onUpdate() end
+		C_Timer.After(interval, function() fade(intervals, duration, delay, onUpdate, onDone, timer) end)
+	else onDone() end
+end
+
 
 NeatPlatesUtility.abbrevNumber = valueToString
 NeatPlatesUtility.copyTable = copytable
@@ -160,6 +173,7 @@ NeatPlatesUtility.updateTable = updatetable
 NeatPlatesUtility.HexToRGB = HexToRGB
 NeatPlatesUtility.RGBToHex = RGBToHex
 NeatPlatesUtility.round = round
+NeatPlatesUtility.fade = fade
 
 ------------------------------------------
 -- GameTooltipScanner

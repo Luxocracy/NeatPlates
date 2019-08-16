@@ -488,7 +488,7 @@ local function TextLevelColored(unit)
 end
 
 -- Guild, Role, Level, Health
-function TextAll(unit)
+local function TextAll(unit)
 	-- local color = ColorFunctionByHealth(unit) --6.0
 	local color = HubData.Colors.White
 	if unit.health < unit.healthmax then

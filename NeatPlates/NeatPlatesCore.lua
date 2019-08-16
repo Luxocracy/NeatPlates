@@ -15,6 +15,7 @@ NeatPlatesSpellDB = {}
 local _
 local max = math.max
 local round = NeatPlatesUtility.round
+local fade = NeatPlatesUtility.fade
 local select, pairs, tostring  = select, pairs, tostring 			    -- Local function copy
 local CreateNeatPlatesStatusbar = CreateNeatPlatesStatusbar			    -- Local function copy
 local WorldFrame, UIParent = WorldFrame, UIParent
@@ -80,8 +81,8 @@ local UpdateStyle, CheckNameplateStyle
 local UpdateIndicator_CustomScaleText, UpdateIndicator_Standard, UpdateIndicator_CustomAlpha
 local UpdateIndicator_Level, UpdateIndicator_ThreatGlow, UpdateIndicator_RaidIcon
 local UpdateIndicator_EliteIcon, UpdateIndicator_UnitColor, UpdateIndicator_Name
-local UpdateIndicator_HealthBar, UpdateIndicator_Highlight
-local OnUpdateCasting, OnStartCasting, OnStopCasting, OnUpdateCastMidway
+local UpdateIndicator_HealthBar, UpdateIndicator_Highlight, UpdateIndicator_ExtraBar
+local OnUpdateCasting, OnStartCasting, OnStopCasting, OnUpdateCastMidway, OnInterruptedCast
 
 -- Event Functions
 local OnShowNameplate, OnHideNameplate, OnUpdateNameplate, OnResetNameplate
@@ -929,17 +930,6 @@ do
 
 	end
 
-	function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
-		if not timer then timer = 0 end
-
-		local interval = duration/intervals
-		timer = timer+interval
-
-		if duration > timer then
-			if timer > delay then onUpdate() end
-			C_Timer.After(interval, function() fade(intervals, duration, delay, onUpdate, onDone, timer) end)
-		else onDone() end
-	end
 
 	-- OnInterruptedCasting
 	function OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
