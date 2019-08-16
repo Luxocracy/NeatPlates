@@ -79,10 +79,10 @@ StyleDefault.castnostop = {
 
 StyleDefault.castbar = {
 	texture =					 ArtworkPath.."Neon_Bar",
-	width = 100,
-	height = 32,
-	x = CastBarHorizontalAdjustment-10,
-	y = CastBarVerticalAdjustment-6,
+	width = 102,
+	height = 30,
+	x = CastBarHorizontalAdjustment-11,
+	y = CastBarVerticalAdjustment-5,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
 }
