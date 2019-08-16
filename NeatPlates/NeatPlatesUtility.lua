@@ -179,7 +179,7 @@ local function round(number, decimals)
 end
 
 -- Fade frame function
-function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
+local function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
 	if not timer then timer = 0 end
 
 	local interval = duration/intervals
