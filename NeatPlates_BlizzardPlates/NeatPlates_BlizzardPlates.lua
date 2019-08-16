@@ -112,19 +112,19 @@ StyleDefault.threatborder = {
 }
 
 StyleDefault.castborder = {
-	texture =					"Interface\\Tooltips\\Nameplate-CastBar",
+	texture =					path.."Nameplate-CastBar",
 	width = 128,
 	height = 32,
-	x = 0,
+	x = -16,
 	y = vert,
 	show = true,
 }
 
 StyleDefault.castnostop = {
-	texture = 					"Interface\\Tooltips\\Nameplate-CastBar-Shield",
+	texture = 					path.."Nameplate-CastBar-Shield",
 	width = 128,
 	height = 32,
-	x = 0,
+	x = -16,
 	y = vert,
 	show = true,
 }
@@ -159,7 +159,7 @@ StyleDefault.castbar = {
 	backdrop = 					EMPTY_TEXTURE,
 	height = 10,
 	width = 104,
-	x = 9, 
+	x = -9, 
 	y = vert,
 	show = true,
 }
@@ -175,7 +175,7 @@ StyleDefault.spellicon = {
 StyleDefault.spelltext = {
 	typeface =					font,
 	size = 7,
-	x = 5,
+	x = -6,
 	y = vert+2,
 	width = 140,
 	align = "CENTER",
@@ -188,7 +188,7 @@ StyleDefault.spelltext = {
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = 7,
-	x = 5,
+	x = -11,
 	y = vert+2,
 	width = 122,
 	align = "RIGHT",

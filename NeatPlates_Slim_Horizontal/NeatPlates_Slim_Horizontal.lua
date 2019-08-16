@@ -84,8 +84,8 @@ StyleDefault.castbar = {
 	texture =					 ArtworkPath.."Slim_Bar",
 	backdrop =					 ArtworkPath.."Slim_Bar_Backdrop",
 	height = 6,
-	width = 94,
-	x = 3,
+	width = 100,
+	x = 0,
 	y = VerticalAdjustment - CastBarOffset,
 	orientation = "HORIZONTAL",
 }
