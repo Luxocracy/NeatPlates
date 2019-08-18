@@ -5,6 +5,7 @@
 ---------------------------------------------------------------------------------------------------------------------
 local addonName, NeatPlatesInternal = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+local CT = LibStub('ClassicThreat')
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
 local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
@@ -636,8 +637,7 @@ do
 		end
 		
 
-		--unit.threatValue = UnitThreatSituation("player", unitid) or 0
-		unit.threatValue = 0 -- Disabled until I figure out how threat is handled in Classic
+		unit.threatValue = select(2, CT.DetailedThreatSituation("player", unitid)) or 0
 		unit.threatSituation = ThreatReference[unit.threatValue]
 		unit.isInCombat = UnitAffectingCombat(unitid)
 
@@ -1306,6 +1306,7 @@ do
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
 
 	CoreEvents.UNIT_LEVEL = UnitConditionChanged
+	CoreEvents.UNIT_THREAT_SITUATION_UPDATE = UnitConditionChanged
 	CoreEvents.UNIT_FACTION = UnitConditionChanged
 
 	CoreEvents.RAID_TARGET_UPDATE = WorldConditionChanged

@@ -1,0 +1,9 @@
+## Interface: 80100
+## Version: 1.0
+## X-CompatibleWith: 80000
+## Title: Lib: Threat-1.0
+## Notes: Provides enhanced threat checking functionality
+## Author: Ipse
+## X-Category: Library
+
+lib.xml

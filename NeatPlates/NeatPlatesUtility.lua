@@ -5,6 +5,7 @@ NeatPlatesUtility = {}
 -------------------------------------------------------------------------------------
 local _
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+local CT = LibStub('ClassicThreat')
 
 local copytable         -- Allows self-reference
 copytable = function(original)
@@ -307,7 +308,8 @@ local function GetFriendlyThreat(unitid)
 		local isUnitPet = (unit == "pet")
 
 		--if isUnitInParty then
-			local unitaggro = UnitThreatSituation(unitid)
+			--local unitaggro = UnitThreatSituation(unitid)
+			local unitaggro = 0 -- Currently disabled in Classic
 			if unitaggro and unitaggro > 1 then return true end
 		--end
 	end
@@ -402,7 +404,7 @@ do
 		if groupType then
 			for allyIndex = startAt, groupSize do
 				tempUnitid = groupType..allyIndex
-				tempThreat = select(3, UnitDetailedThreatSituation(tempUnitid, enemyUnitid))
+				tempThreat = select(3, CT.DetailedThreatSituation(tempUnitid, enemyUnitid))
 				if tempThreat and tempThreat > friendlyThreatval then
 					friendlyThreatval = tempThreat
 					friendlyUnitid = tempUnitid
@@ -412,7 +414,7 @@ do
 
 		-- Request Pet Threat (if possible)
 		if HasPetUI() and UnitExists("pet") then
-			tempThreat = select(3, UnitDetailedThreatSituation("pet", enemyUnitid)) or 0
+			tempThreat = select(3, CT.DetailedThreatSituation("pet", enemyUnitid)) or 0
 			if tempThreat > friendlyThreatval then
 				friendlyThreatval = tempThreat
 				friendlyUnitid = "pet"
@@ -426,7 +428,7 @@ do
 	local function GetRelativeThreat(enemyUnitid)		-- 'enemyUnitid' is a target/enemy
 		if not UnitExists(enemyUnitid) then return end
 		
-		local playerIsTanking, playerSituation, playerThreat = UnitDetailedThreatSituation("player", enemyUnitid)
+		local playerIsTanking, playerSituation, playerThreat = CT.DetailedThreatSituation("player", enemyUnitid)
 		if not playerThreat then return end
 
 		local friendlyUnitid, friendlyThreat = GetGroupThreatLeader(enemyUnitid)

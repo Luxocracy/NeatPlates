@@ -1,0 +1,4 @@
+<Ui>
+	<Script file="LibClassicThreat.lua"/>
+	<Script file="LibClassicThreatLocalization.lua"/>
+</Ui>
