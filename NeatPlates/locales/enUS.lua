@@ -11,6 +11,7 @@ L["Second Spec"] = true
 L["Third Spec"] = true
 L["Fourth Spec"] = true
 L["Active"] = true
+L["Active Profile"] = true
 
 L["Profile Management"] = true
 L["Profile Name"] = true
@@ -467,6 +468,13 @@ L["Don't show this again"] = true
 L["Import TPC Settings"] = true
 	L["Import Settings from TidyPlatesContinued."] = true
 
+------------------------------
+-- Version Warning Prompt
+------------------------------
+L["VERSION_WARNING_PROMPT_TEXT"] = [=[You seem to be running the wrong version of this addon for your client, things will most likely not work correctly.
+
+Please ensure that you are on the correct version before continuing to use this addon.]=]
+
 
 ------------------------------
 -- Various stuff & Tooltips
@@ -511,3 +519,19 @@ L["Requires 'All NPCs' to be unchecked"] = true
 L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
 L["Display Scale Options"] = true
 
+
+
+-- Classic Specific
+
+L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+%.?[0-9]?)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' or '15.5 sec' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'sec'
+L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+%.?[0-9]?)%smin" -- Used to determine aura durations ex. in english it's '15 min' or '15.5 min' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'min'
+L["Clear Spell Database"] = true
+L["Cleared Spell Database of entries."] = true
+L["Color Cast Bars by School"] = true
+L["Spell School Colors"] = true
+L["Holy"] = true
+L["Fire"] = true
+L["Nature"] = true
+L["Frost"] = true
+L["Shadow"] = true
+L["Arcane"] = true
