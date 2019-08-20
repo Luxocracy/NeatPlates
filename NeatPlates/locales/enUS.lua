@@ -468,6 +468,13 @@ L["Don't show this again"] = true
 L["Import TPC Settings"] = true
 	L["Import Settings from TidyPlatesContinued."] = true
 
+------------------------------
+-- Version Warning Prompt
+------------------------------
+L["VERSION_WARNING_PROMPT_TEXT"] = [=[You seem to be running the wrong version of this addon for your client, things will most likely not work correctly.
+
+Please ensure that you are on the correct version before continuing to use this addon.]=]
+
 
 ------------------------------
 -- Various stuff & Tooltips

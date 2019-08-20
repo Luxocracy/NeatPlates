@@ -721,6 +721,10 @@ local function ImportSettingsPrompt()
 
 	frame:SetPoint("CENTER",0,0)
 
+	frame.Label = CreateQuickItemLabel(nil, "Neat Plates", frame, frame, 0, 2)
+	frame.Label.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 22)
+	frame.Label:SetPoint("TOPLEFT", 12, 0)
+
 	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	frame.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 14)
 	frame.Text:SetTextColor(255/255, 105/255, 6/255)
@@ -756,14 +760,65 @@ local function ImportSettingsPrompt()
 
 	frame:Show()
 end
+
+local function VersionWarning()
+	local frame = CreateFrame("Frame", "VersionWarningPrompt", UIParent)
+	local version = GetAddOnMetadata("NeatPlates", "version")
+	local versionString = "|cFF666666"..version
+
+	frame:SetBackdrop({	bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 },})
+	frame:SetBackdropColor(.1, .1, .1, .6)
+	frame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1)
+
+	frame:SetWidth(500)
+	frame:SetHeight(140)
+
+	frame:SetPoint("CENTER",0,0)
+
+	frame.Label = CreateQuickItemLabel(nil, "Neat Plates", frame, frame, 0, 2)
+	frame.Label.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 22)
+	frame.Label:SetPoint("TOPLEFT", 12, 0)
+
+	frame.Version = CreateQuickItemLabel(nil, versionString, frame, frame, 0, 2)
+	frame.Version.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 16)
+	frame.Version.Text:SetJustifyV("TOP")
+	frame.Version.Text:SetJustifyH("RIGHT")
+	frame.Version:SetPoint("TOPLEFT", -8, 6)
+
+	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	frame.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 14)
+	frame.Text:SetWidth(400)
+	frame.Text:SetHeight(100)
+	frame.Text:SetTextColor(255/255, 105/255, 6/255)
+	frame.Text:SetPoint("TOPLEFT", 12, -24)
+	frame.Text:SetJustifyH("LEFT")
+	frame.Text:SetJustifyV("TOP")
+	frame.Text:SetWordWrap(true)
+
+
+	frame.Text:SetText(L["VERSION_WARNING_PROMPT_TEXT"])
+
+	local OkayButton = CreateFrame("Button", "VersionWarningPromptOkayButton", frame, "NeatPlatesPanelButtonTemplate")
+	OkayButton:SetPoint("BOTTOMRIGHT", -12, 12)
+	OkayButton:SetWidth(80)
+	OkayButton:SetText(OKAY)
+
+	OkayButton:SetScript("OnClick", function() frame:Hide() end)
+
+	frame:Show()
+end
 -- END --
 
 local HubHandler = CreateFrame("Frame")
 HubHandler:SetScript("OnEvent", function(...)
 	local _,_,addon = ...
+	local version, build, date, tocversion = GetBuildInfo()
 	local player = UnitName("player");
 	local TPCEnabled = GetAddOnEnableState(player, "TidyPlatesContinued") ~= 0
 	local TPCHubEnabled = GetAddOnEnableState(player, "TidyPlatesContinuedHub") ~= 0
+
+	-- Determine which client we are on (Retail or Classic)
+	if tonumber(strmatch(version, "[0-9]")) > 1 then VersionWarning() end
 
 	if addon == "NeatPlatesHub" and (not TPCEnabled or not TPCHubEnabled) then
 		LoadProfiles(NeatPlatesHubSettings.profiles)
