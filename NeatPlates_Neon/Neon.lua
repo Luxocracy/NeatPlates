@@ -117,9 +117,9 @@ StyleDefault.durationtext = {
 	size = fontsize-1,
 	width = 130,
 	height = 11,
-	x = CastBarHorizontalAdjustment - 8,
+	x = CastBarHorizontalAdjustment - 30,
 	--NameTextVerticalAdjustment +
-	y = CastBarVerticalAdjustment - 6,
+	y = CastBarVerticalAdjustment - 5,
 	align = "RIGHT",
 	anchor = "CENTER",
 	vertical = "CENTER",

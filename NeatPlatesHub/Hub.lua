@@ -47,6 +47,7 @@ local ThreatWidgetModes = NeatPlatesHubMenus.ThreatWidgetModes
 local EnemyNameColorModes = NeatPlatesHubMenus.EnemyNameColorModes
 local FriendlyNameColorModes = NeatPlatesHubMenus.FriendlyNameColorModes
 local EnemyNameSubtextModes = NeatPlatesHubMenus.EnemyNameSubtextModes
+local CastbarDurationModes = NeatPlatesHubMenus.CastbarDurationModes
 local ArtStyles = NeatPlatesHubMenus.ArtStyles
 local ArtModes = NeatPlatesHubMenus.ArtModes
 local ThreatWarningModes = NeatPlatesHubMenus.ThreatWarningModes
@@ -473,8 +474,8 @@ local function BuildHubPanel(panel)
   -- Cast Bars
 	------------------------------
   panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
+  panel.CastbarDurationMode, F =  CreateQuickDropdown(objectName.."CastbarDurationMode", L["Castbar Duration Style"]..':', CastbarDurationModes, 1, AlignmentColumn, F )
   panel.ColorCastBySchool, F = CreateQuickCheckbutton(objectName.."ColorCastBySchool", L["Color Cast Bars by School"], AlignmentColumn, F)
-  panel.SpellCastEnableDuration, F = CreateQuickCheckbutton(objectName.."SpellCastEnableDuration", L["Show Duration on Cast Bars"], AlignmentColumn, F)
   panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
   panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)
   panel.IntCastWhoEnable, F = CreateQuickCheckbutton(objectName.."IntCastWhoEnable", L["Show who Interrupted Cast"], AlignmentColumn, F)

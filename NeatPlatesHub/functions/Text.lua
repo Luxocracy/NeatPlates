@@ -24,6 +24,7 @@ local CachedUnitDescription = NeatPlatesUtility.CachedUnitDescription
 
 local GetUnitSubtitle = NeatPlatesUtility.GetUnitSubtitle
 local GetUnitQuestInfo = NeatPlatesUtility.GetUnitQuestInfo
+local round = NeatPlatesUtility.round
 
 
 local AddHubFunction = NeatPlatesHubHelpers.AddHubFunction
@@ -544,7 +545,40 @@ local function CustomTextBinaryDelegate(unit)
 	return HealthTextDelegate(unit)
 end
 
+local function CastbarDurationRemaining(currentTime, startTime, endTime, isChannel)
+	local text = tonumber(round((endTime - currentTime)/1000, 1))
+	if text <= 0 then text = "" end
+	return text
+end
 
+local function CastbarDurationElapsed(currentTime, startTime, endTime, isChannel)
+	local maxCast = round((endTime - startTime)/1000, 1)
+	return math.min(maxCast, round((currentTime - startTime)/1000, 1))
+end
+
+local function CastbarDurationCastTime(currentTime, startTime, endTime, isChannel)
+	local text = ""
+	local maxCast = round((endTime - startTime)/1000, 1)
+	if isChannel then
+		text = math.max(0, round((endTime - currentTime)/1000, 1)).."/"..maxCast
+	else
+		text = math.min(maxCast, round((currentTime - startTime)/1000, 1)).."/"..maxCast
+	end
+	return text
+end
+
+local CastbarDurationFunctions = {}
+NeatPlatesHubMenus.CastbarDurationModes = {}
+NeatPlatesHubDefaults.CastbarDurationMode = "None"
+AddHubFunction(CastbarDurationFunctions, NeatPlatesHubMenus.CastbarDurationModes, DummyFunction, L["None"], "None")
+AddHubFunction(CastbarDurationFunctions, NeatPlatesHubMenus.CastbarDurationModes, CastbarDurationRemaining, L["Time Remaining"], "TimeRemaining")
+AddHubFunction(CastbarDurationFunctions, NeatPlatesHubMenus.CastbarDurationModes, CastbarDurationElapsed, L["Time Elapsed"], "TimeElapsed")
+AddHubFunction(CastbarDurationFunctions, NeatPlatesHubMenus.CastbarDurationModes, CastbarDurationCastTime, L["Time Elapsed/Cast Time"], "TimeCastTime")
+
+local function CastbarDurationDelegate(...)
+	local func = CastbarDurationFunctions[LocalVars.CastbarDurationMode or 0] or DummyFunction
+	return func(...)
+end
 
 ------------------------------------------------------------------------------
 -- Local Variable
@@ -562,4 +596,5 @@ HubData.RegisterCallback(OnVariableChange)
 
 NeatPlatesHubFunctions.SetCustomText = HealthTextDelegate
 NeatPlatesHubFunctions.SetCustomTextBinary = CustomTextBinaryDelegate
+NeatPlatesHubFunctions.SetCastbarDuration = CastbarDurationDelegate
 

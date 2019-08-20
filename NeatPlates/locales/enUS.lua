@@ -378,7 +378,10 @@ L["Health Colors"] = true
 ------------------------------
 L["Cast Bars"] = true
 
-L["Show Duration on Cast Bars"] = true
+L["Castbar Duration Style"] = true
+	L["Time Remaining"] = true
+	L["Time Elapsed"] = true
+	L["Time Elapsed/Cast Time"] = true
 L["Show Friendly Cast Bars"] = true
 L["Show Interrupted Cast Bar"] = true
 L["Show who Interrupted Cast"] = true
