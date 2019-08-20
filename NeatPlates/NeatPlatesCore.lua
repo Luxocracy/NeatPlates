@@ -34,7 +34,6 @@ local activetheme = {}                                                    	-- Ta
 local InCombat, HasTarget, HasMouseover = false, false, false					   		-- Player State Data
 local EnableFadeIn = true
 local ShowCastBars = true
-local ShowCastDuration = false
 local ShowIntCast = true
 local ShowIntWhoCast = true
 local ShowServerIndicator = true
@@ -868,13 +867,10 @@ do
 	local function OnUpdateCastBarForward(self)
 		local currentTime = GetTime() * 1000
 		local startTime, endTime = self:GetMinMaxValues()
-		local text = tonumber(round((endTime - currentTime)/1000, 1))
-		if text <= 0 then text = "" end
+		local text = ""
+		if activetheme.SetCastbarDuration then text = activetheme.SetCastbarDuration(currentTime, startTime, endTime) end
 
-		--if currentTime > endTime then OnStopCasting(self)
-		--else self:SetValue(currentTime) end
-
-		if ShowCastDuration then self.durationtext:SetText(text) end
+		self.durationtext:SetText(text)
 		self:SetValue(currentTime)
 	end
 
@@ -882,13 +878,10 @@ do
 	local function OnUpdateCastBarReverse(self)
 		local currentTime = GetTime() * 1000
 		local startTime, endTime = self:GetMinMaxValues()
-		local text = tonumber(round((endTime - currentTime)/1000, 1))
-		if text <= 0 then text = "" end
+		local text = ""
+		if activetheme.SetCastbarDuration then text = activetheme.SetCastbarDuration(currentTime, startTime, endTime, true) end
 
-		--if currentTime > endTime then OnStopCasting(self)
-		--else self:SetValue((endTime + startTime) - currentTime) end
-
-		if ShowCastDuration then self.durationtext:SetText(text) end
+		self.durationtext:SetText(text)
 		self:SetValue((endTime + startTime) - currentTime)
 	end
 
@@ -1504,7 +1497,6 @@ function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
-function NeatPlates:ToggleCastbarDuration(showCastDuration) ShowCastDuration = showCastDuration end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 function NeatPlates:ToggleServerIndicator(showIndicator) ShowServerIndicator = showIndicator end
 

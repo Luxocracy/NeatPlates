@@ -151,7 +151,7 @@ StyleDefault.castbar = {
 	height = 18,
 	width = 110,
 	x = 0,
-	y = -20,
+	y = -16,
 	anchor = "BOTTOM",
 	orientation = "HORIZONTAL",
 	show = true,
@@ -161,7 +161,7 @@ StyleDefault.spellicon = {
 	width = 10,
 	height = 10,
 	x = 52,
- 	y = -6,
+ 	y = -9,
 	anchor = "TOP",
 	show = true,
 }
