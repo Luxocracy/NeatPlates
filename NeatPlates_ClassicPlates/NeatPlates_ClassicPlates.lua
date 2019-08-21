@@ -184,14 +184,18 @@ StyleDefault.customtext = {
 StyleDefault.spelltext = {
 	typeface =					font,
 	size = 9,
-	x = 2,
+	x = 0,
 	y = -21,
 	width = 70,
-	align = "RIGHT",
+	align = "CENTER",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
 	show = true,
+	durationtext = {
+		x = 2,
+		align = "RIGHT",
+	},
 }
 
 StyleDefault.durationtext = {

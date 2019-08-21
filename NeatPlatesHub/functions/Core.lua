@@ -277,6 +277,20 @@ local function ApplyStyleCustomization(style, defaults)
 	style.focus.color = LocalVars.ColorFocus
 	style.mouseover.color = LocalVars.ColorMouseover
 
+	-- Spelltext offset when durationtext is enabled
+	if style.spelltext and style.spelltext.durationtext then
+		local ref
+		if LocalVars.CastbarDurationMode ~= "None" then
+			ref = style.spelltext.durationtext	-- Override values
+		else
+			ref = defaults.spelltext -- Original values
+		end
+		for k,v in pairs(ref) do
+			style.spelltext[k] = v
+		end
+	end
+
+
  	ApplyCustomBarSize(style, defaults)
 	ApplyFontCustomization(style, defaults)
 end
