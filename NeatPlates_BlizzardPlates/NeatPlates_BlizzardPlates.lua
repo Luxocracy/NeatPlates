@@ -175,14 +175,18 @@ StyleDefault.spellicon = {
 StyleDefault.spelltext = {
 	typeface =					font,
 	size = 7,
-	x = 15,
+	x = -6,
 	y = vert+2,
 	width = 140,
-	align = "LEFT",
+	align = "CENTER",
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
 	show = true,
+	durationtext = {
+		x = 15,
+		align = "LEFT",
+	},
 }
 
 StyleDefault.durationtext = {

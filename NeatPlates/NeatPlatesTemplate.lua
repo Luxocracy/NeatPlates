@@ -196,6 +196,7 @@ TemplateTheme.spelltext = {
 	shadow = true,
 	flags = "NONE",
 	show = false,
+	durationtext = false,
 }
 
 TemplateTheme.durationtext = {
