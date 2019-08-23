@@ -874,14 +874,18 @@ do
 		if not extended:IsShown() then return end
 
 		local castBar = extended.visual.castbar
-		local unitType = strsplit("-", guid)
+		local unitType,_,_,_,_,creatureID = strsplit("-", guid)
 		local spell = SpellCastCache[guid]
 		local startTime, endTime
+		local spellEntry
 
 		if isTradeSkill or not spell then return end
-		if NeatPlatesSpellDB[unitType][spell.name] and NeatPlatesSpellDB[unitType][spell.name].castTime then
-			startTime = NeatPlatesSpellDB[unitType][spell.name].startTime
-			endTime = NeatPlatesSpellDB[unitType][spell.name].startTime + NeatPlatesSpellDB[unitType][spell.name].castTime
+		if creatureID then spellEntry = NeatPlatesSpellDB[unitType][spell.name][creatureID]
+		else spellEntry = NeatPlatesSpellDB[unitType][spell.name] end
+
+		if spellEntry.castTime then
+			startTime = SpellCastCache[guid].startTime
+			endTime = SpellCastCache[guid].startTime + spellEntry.castTime
 
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
@@ -1212,7 +1216,10 @@ do
 		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName,spellSchool = CombatLogGetCurrentEventInfo()
 		spellID = select(7, GetSpellInfo(spellName)) or ""
 		local plate = nil
-		local unitType = strsplit("-", sourceGUID)
+		local unitType,_,_,_,_,creatureID = strsplit("-", sourceGUID)
+		local spellBlacklist = {
+			[select(1, GetSpellInfo(75))] = true, -- Auto Shot
+		}
 
 		-- Spell Interrupts
 		if ShowIntCast then
@@ -1237,46 +1244,47 @@ do
 		end
 
 		-- Spellcasts (Classic)
-		if ShowCastBars and (spellSchool and spellSchool > 1) and (spellName and type(spellName) == "string") then
+		if ShowCastBars and (spellSchool) and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
+			if sourceName == "Sassin" then print(spellName, event) end
 			local currentTime = GetTime() * 1000
+			local spellEntry
 			plate = PlatesByGUID[sourceGUID]
 			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
 			NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
+			if creatureID then
+				NeatPlatesSpellDB[unitType][spellName][creatureID] = NeatPlatesSpellDB[unitType][spellName][creatureID] or {}
+				spellEntry = NeatPlatesSpellDB[unitType][spellName][creatureID]
+			else
+				spellEntry = NeatPlatesSpellDB[unitType][spellName]
+			end
 
 			if event == "SPELL_CAST_START" then
-				-- Add/Update spell to SpellDB
-				NeatPlatesSpellDB[unitType][spellName] = {
-					startTime = currentTime,
-					endTime = NeatPlatesSpellDB[unitType][spellName].endTime or 0,
-					castTime = NeatPlatesSpellDB[unitType][spellName].castTime or nil,
-				}
+				-- Change database to new structure
 
 				-- Add Spell to Spell Cast Cache
 				SpellCastCache[sourceGUID] = SpellCastCache[sourceGUID] or {}
 				SpellCastCache[sourceGUID].name = spellName
 				SpellCastCache[sourceGUID].school = spellSchool
-				
+				SpellCastCache[sourceGUID].startTime = currentTime
+
 				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 1 seconds, or 12 seconds if the spell is unknown)
 				-- The FAILED event doesn't seem to trigger properly in the current beta test.
 				local timeout = 12
-				if NeatPlatesSpellDB[unitType][spellName].castTime then timeout = (NeatPlatesSpellDB[unitType][spellName].castTime+1000)/1000 end -- If we have a recorded cast time, use that as timeout base
+				if spellEntry.castTime then timeout = (spellEntry.castTime+1000)/1000 end -- If we have a recorded cast time, use that as timeout base
 				if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
 
 				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
 					local plate = PlatesByGUID[sourceGUID]
-					SpellCastCache[sourceGUID] = nil
+					SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(30, function() SpellCastCache[sourceGUID] = nil end)	-- Create another timer to cleanup the cache(So that we don't clear this entry if the spellcast is just really long)
 					if plate then OnStopCasting(plate) end
 				end)
 
 				if plate then OnStartCasting(plate, sourceGUID, false) end
 			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
 				-- Update SpellDB with castTime
-				if event == "SPELL_CAST_SUCCESS" and NeatPlatesSpellDB[unitType][spellName].startTime then 
-					NeatPlatesSpellDB[unitType][spellName] = {
-						startTime = NeatPlatesSpellDB[unitType][spellName].startTime or 0,
-						endTime = currentTime or 0,
-						castTime = currentTime-NeatPlatesSpellDB[unitType][spellName].startTime,
-					}
+				if event == "SPELL_CAST_SUCCESS" and SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].startTime then
+					local castTime = currentTime-SpellCastCache[sourceGUID].startTime -- Cast Time
+					if castTime > 0 then spellEntry.castTime = castTime end
 				end
 
 				-- Clear Cast Cache
@@ -1288,7 +1296,8 @@ do
 			end
 
 			-- Remove empty entries as they only take up space
-			if not NeatPlatesSpellDB[unitType][spellName].startTime then NeatPlatesSpellDB[unitType][spellName] = nil end
+			if not NeatPlatesSpellDB[unitType][spellName] then NeatPlatesSpellDB[unitType][spellName] = nil
+			elseif creatureID and not NeatPlatesSpellDB[unitType][spellName][creatureID] then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
 		end
 	end
 

@@ -312,6 +312,7 @@ end
 local function CastBarDelegate(unit, school)
 	local color, alpha
 	local schoolColor = {
+		[1] = LocalVars.ColorSchoolPhysical, -- Physical
 		[2] = LocalVars.ColorSchoolHoly, -- Holy
 		[4] = LocalVars.ColorSchoolFire, -- Fire
 		[8] = LocalVars.ColorSchoolNature, -- Nature

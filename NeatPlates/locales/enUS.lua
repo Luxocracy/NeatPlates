@@ -532,6 +532,7 @@ L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
 L["Color Cast Bars by School"] = true
 L["Spell School Colors"] = true
+L["Physical"] = true
 L["Holy"] = true
 L["Fire"] = true
 L["Nature"] = true

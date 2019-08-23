@@ -485,6 +485,7 @@ local function BuildHubPanel(panel)
 	panel.ColorIntpellCast, F = CreateQuickColorbox(objectName.."ColorIntpellCast", L["Interrupted"], nil, AlignmentColumn, F , 16)
 
 	panel.SpellSchoolColorLabel, F = CreateQuickItemLabel(nil, L["Spell School Colors"]..':', AlignmentColumn, panel.IntCastWhoEnable, OffsetColumnB, 2)
+	panel.ColorSchoolPhysical, F = CreateQuickColorbox(objectName.."ColorSchoolPhysical", L["Physical"], nil, AlignmentColumn, F , OffsetColumnB + 16)
 	panel.ColorSchoolHoly, F = CreateQuickColorbox(objectName.."ColorSchoolHoly", L["Holy"], nil, AlignmentColumn, F , OffsetColumnB + 16)
 	panel.ColorSchoolFire, F = CreateQuickColorbox(objectName.."ColorSchoolFire", L["Fire"], nil, AlignmentColumn, F , OffsetColumnB + 16)
 	panel.ColorSchoolNature, F = CreateQuickColorbox(objectName.."ColorSchoolNature", L["Nature"], nil, AlignmentColumn, F , OffsetColumnB + 16)
