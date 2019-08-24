@@ -158,7 +158,7 @@ end
 -- TargetOf
 local function HealthFunctionTargetOf(unit)
 	if unit.reaction ~= "FRIENDLY" and unit.isInCombat then
-		return UnitName(unitid.."target")
+		return UnitName(unit.unitid.."target")
 	end
 	--[[
 	if (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)) then return UnitName("targettarget")
