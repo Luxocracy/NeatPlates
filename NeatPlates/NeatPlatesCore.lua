@@ -879,7 +879,8 @@ do
 		local startTime, endTime
 		local spellEntry
 
-		if isTradeSkill or not spell then return end
+		if not spell or not unitType then return end -- Return if neccessary info is missing
+
 		if creatureID then spellEntry = NeatPlatesSpellDB[unitType][spell.name][creatureID]
 		else spellEntry = NeatPlatesSpellDB[unitType][spell.name] end
 
@@ -901,8 +902,7 @@ do
 
 		visual.spelltext:SetText(spell.name)
 		visual.durationtext:SetText("")
-		--visual.spellicon:SetTexture(texture)
-		visual.spellicon:Hide()
+		visual.spellicon:SetTexture(NeatPlatesSpellDB.texture[spell.name])
 		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
 
 		local r, g, b, a = 1, 1, 0, 1
@@ -1092,6 +1092,7 @@ do
 	----------------------------------------
 	function CoreEvents:PLAYER_ENTERING_WORLD()
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
+		if not NeatPlatesSpellDB.texture then NeatPlates.BuildTextureDB() end
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1244,7 +1245,7 @@ do
 		end
 
 		-- Spellcasts (Classic)
-		if ShowCastBars and (spellSchool) and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
+		if ShowCastBars and unitType and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
 			if sourceName == "Sassin" then print(spellName, event) end
 			local currentTime = GetTime() * 1000
 			local spellEntry
@@ -1497,6 +1498,17 @@ local function OnResetWidgets(plate)
 
 	plate.UpdateMe = true
 end
+
+-- Build classic texture DB
+local function BuildTextureDB()
+	NeatPlatesSpellDB.texture = {}
+	for i = 1, 100000 do
+		local spellName,_,icon = GetSpellInfo(i)
+		if spellName then NeatPlatesSpellDB.texture[spellName] = icon end
+	end
+end
+
+NeatPlates.BuildTextureDB = BuildTextureDB
 
 --------------------------------------------------------------------------------------------------------------
 -- External Commands: Allows widgets and themes to request updates to the plates.

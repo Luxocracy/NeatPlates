@@ -193,7 +193,7 @@ StyleDefault.spelltext = {
 	flags = "NONE",
 	show = true,
 	durationtext = {
-		x = 6,
+		x = 2,
 		align = "RIGHT",
 	},
 }

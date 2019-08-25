@@ -181,10 +181,10 @@ StyleDefault.castbar = {
 	texture =					defaultArtPath.."\\Statusbar",
 	backdrop = 				EmptyTexture,
 	--backdrop = 				defaultArtPath.."\\Statusbar",
-	height = 10,
+	height = 12,
 	width = 99,
 	x = 0,
-	y = -9+castBar_verticalOffset+nameplate_verticalOffset,
+	y = -8+castBar_verticalOffset+nameplate_verticalOffset,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
 }

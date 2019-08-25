@@ -830,6 +830,7 @@ local function BuildInterfacePanel(panel)
 	-- Clear Spell DB Button
 	ClearSpellDB:SetScript("OnClick", function()
 		NeatPlatesSpellDB = wipe(NeatPlatesSpellDB)
+		NeatPlates.BuildTextureDB()
 		print(orange.."NeatPlates: "..red..L["Cleared Spell Database of entries."]);
 	end)
 end
