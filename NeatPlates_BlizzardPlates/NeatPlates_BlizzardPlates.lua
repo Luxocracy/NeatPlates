@@ -115,7 +115,7 @@ StyleDefault.castborder = {
 	texture =					path.."Nameplate-CastBar",
 	width = 128,
 	height = 32,
-	x = -16,
+	x = 0,
 	y = vert,
 	show = true,
 }
