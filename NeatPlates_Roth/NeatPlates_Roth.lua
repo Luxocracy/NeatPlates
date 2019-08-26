@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Neat Plates: Roth 1.0.1 - 7.1 - Nov/18/2016.
+-- NeatPlates: Roth 1.0.1 - 7.1 - Nov/18/2016.
 -------------------------------------------------------------------------------
 
 local path = "Interface\\Addons\\NeatPlates_Roth\\Media\\"
@@ -349,7 +349,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Roth"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

@@ -1,6 +1,6 @@
 
 ------------------------------------------------------------------------------------
--- Neat Plates Hub
+-- NeatPlates Hub
 ------------------------------------------------------------------------------------
 local AddonName, HubData = ...;
 local LocalVars = NeatPlatesHubDefaults
@@ -415,7 +415,7 @@ local function ApplyHubFunctions(theme)
 	theme.SetCustomText = NeatPlatesHubFunctions.SetCustomTextBinary
 	theme.SetCastbarDuration = NeatPlatesHubFunctions.SetCastbarDuration
 	theme.OnInitialize = OnInitialize		-- Need to provide widget positions
-	theme.OnActivateTheme = OnActivateTheme -- called by Neat Plates Core, Theme Loader
+	theme.OnActivateTheme = OnActivateTheme -- called by NeatPlates Core, Theme Loader
 	theme.ApplyProfileSettings = ApplyProfileSettings
 	theme.OnChangeProfile = OnChangeProfile
 

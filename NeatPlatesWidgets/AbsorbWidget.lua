@@ -1,5 +1,5 @@
 ---------------------------------------------
----- Neat Plates Absorb Widget ----
+---- NeatPlates Absorb Widget ----
 ---------------------------------------------
 
 local font = "FONTS\\arialn.ttf"

@@ -4,7 +4,7 @@ if not L then return end
 
 L = L or {}
 L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."] = "%yellow%按住 %blue%Shift %yellow%再按下 %red%重置設定 %yellow%會清空已儲存的設定，並且重新載入介面。"
-L["%yellow%Resetting %orange%Neat Plates%yellow% Theme Selection to Default"] = "%yellow%重置 %orange%Neat 血條%yellow% 主題為預設值。"
+L["%yellow%Resetting %orange%NeatPlates%yellow% Theme Selection to Default"] = "%yellow%重置 %orange%Neat 血條%yellow% 主題為預設值。"
 L["A profile with this name already exists, do you wish to overwrite it?"] = "已有相同名稱的設定檔，是否要取代?"
 L["Active"] = "戰鬥中"
 L["Active Profile"] = "目前設定檔"

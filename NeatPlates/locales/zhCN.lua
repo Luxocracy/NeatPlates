@@ -4,7 +4,7 @@ if not L then return end
 
 L = L or {}
 L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."] = "%yellow%按住 %blue%Shift %yellow%同时点击 %red%重置选项  %yellow%将清除您的已保存的设置，并重新加载用户界面。"
-L["%yellow%Resetting %orange%Neat Plates%yellow% Theme Selection to Default"] = "%yellow%重置 %orange%Neat Plates%yellow% 主题选项为默认值"
+L["%yellow%Resetting %orange%NeatPlates%yellow% Theme Selection to Default"] = "%yellow%重置 %orange%NeatPlates%yellow% 主题选项为默认值"
 L["A profile with this name already exists, do you wish to overwrite it?"] = "配置文件名称已经存在，是否覆盖？"
 L["Active"] = "当前专精"
 L["Active/Damaged Units"] = "激活/受伤的目标"
@@ -152,8 +152,8 @@ L["Ignore Neutral Units"] = "忽略中立单位"
 L["Ignore Non-Elite Units"] = "忽略非精英单位"
 L["Import Settings from TidyPlatesContinued."] = "从TidyPlatesContinued导入设置。"
 L["Import TPC Settings"] = "导入TPC设置"
-L["IMPORT_PROMPT_TEXT"] = [=[您似乎同时运行Neat Plates和Tidy Plates Continued。
-是否要将TPC的配置文件导入到Neat Plates？
+L["IMPORT_PROMPT_TEXT"] = [=[您似乎同时运行NeatPlates和Tidy Plates Continued。
+是否要将TPC的配置文件导入到NeatPlates？
  
 （导入完成后将禁用TPC并重新加载UI。
 同时您必须为专精重新选择配置文件，抱歉…）]=]

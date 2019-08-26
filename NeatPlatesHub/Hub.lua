@@ -1,6 +1,6 @@
 
 --[[
-Neat Plates Hub: Interface Panel
+NeatPlates Hub: Interface Panel
 
 Color Guide:
 |cffffdd00		for Yellow
@@ -573,7 +573,7 @@ local function BuildHubPanel(panel)
 	ClearCacheButton:SetScript("OnClick", function()
 			local count = 0
 
-			print("Neat Plates Hub: Cleared", count, "entries from cache.")
+			print("NeatPlates Hub: Cleared", count, "entries from cache.")
 		end)
 
 	local BlizzOptionsButton = CreateFrame("Button", objectName.."BlizzButton", AlignmentColumn, "NeatPlatesPanelButtonTemplate")
@@ -649,7 +649,7 @@ local function CreateProfile(label, color)
 
 	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
 	if not Panels[label] then -- If panel doesn't exist, create it
-		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." "..L["Profile"]..suffix, "Neat Plates" )	-- Create the basic settings panel
+		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." "..L["Profile"]..suffix, "NeatPlates" )	-- Create the basic settings panel
 		NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
 		BuildHubPanel(Panels[label])	-- Fill the settings panel with options
 	else
@@ -713,7 +713,7 @@ local function ImportSettingsPrompt()
 
 	frame:SetPoint("CENTER",0,0)
 
-	frame.Label = CreateQuickItemLabel(nil, "Neat Plates", frame, frame, 0, 2)
+	frame.Label = CreateQuickItemLabel(nil, "NeatPlates", frame, frame, 0, 2)
 	frame.Label.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 22)
 	frame.Label:SetPoint("TOPLEFT", 12, 0)
 
@@ -767,7 +767,7 @@ local function VersionWarning()
 
 	frame:SetPoint("CENTER",0,0)
 
-	frame.Label = CreateQuickItemLabel(nil, "Neat Plates", frame, frame, 0, 2)
+	frame.Label = CreateQuickItemLabel(nil, "NeatPlates", frame, frame, 0, 2)
 	frame.Label.Text:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 22)
 	frame.Label:SetPoint("TOPLEFT", 12, 0)
 
@@ -829,26 +829,26 @@ HubHandler:RegisterEvent("ADDON_LOADED")
 
 
 
---Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "Neat Plates" )
+--Panels.Tank = CreateHubInterfacePanel( "HubPanelSettingsTank", "|cFF3782D1Tank Profile", "NeatPlates" )
 --NeatPlatesPanel:AddProfile("Tank")
 --BuildHubPanel(Panels.Tank)
 --function ShowNeatPlatesHubTankPanel() NeatPlatesUtility.OpenInterfacePanel(Panels.Tank) end
 
 
---Panels.Damage = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "Neat Plates" )
+--Panels.Damage = CreateHubInterfacePanel( "HubPanelSettingsDamage", "|cFFFF1100Damage Profile", "NeatPlates" )
 --NeatPlatesPanel:AddProfile("Damage")
 --BuildHubPanel(Panels.Damage)
 --function ShowNeatPlatesHubDamagePanel() NeatPlatesUtility.OpenInterfacePanel(Panels.Damage) end
 
 
 
---Panels.Healer = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "Neat Plates"  )
+--Panels.Healer = CreateHubInterfacePanel( "HubPanelSettingsHealer", "|cFF44DD55Healer Profile", "NeatPlates"  )
 --NeatPlatesPanel:AddProfile("Healer")
 --BuildHubPanel(Panels.Healer)
 --function ShowNeatPlatesHubHealerPanel() NeatPlatesUtility.OpenInterfacePanel(Panels.Healer) end
 
 
---Panels.Gladiator = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "Neat Plates"  )
+--Panels.Gladiator = CreateHubInterfacePanel( "HubPanelSettingsGladiator", "|cFFAA6600Gladiator Profile", "NeatPlates"  )
 --NeatPlatesPanel:AddProfile("Gladiator")
 --BuildHubPanel(Panels.Gladiator)
 --function ShowNeatPlatesHubGladiatorPanel() NeatPlatesUtility.OpenInterfacePanel(Panels.Gladiator) end
@@ -906,7 +906,7 @@ SlashCmdList['HUB'] = SlashCommandHub
 
 
 --[[
-	local ColorPanel = CreateInterfacePanel( "HubPanelSettingsColors", "Neat Plates Hub: Colors", nil )
+	local ColorPanel = CreateInterfacePanel( "HubPanelSettingsColors", "NeatPlates Hub: Colors", nil )
 	ColorPanel.RefreshSettings = function() end
 	InterfaceOptions_AddCategory(ColorPanel)
 --]]
@@ -921,7 +921,7 @@ SlashCmdList['HUB'] = SlashCommandHub
 
 
 --[[
-local GladiatorPanel = CreateInterfacePanel( "HubPanelSettingsGladiator", "Neat Plates Hub: |cFFAA6600Gladiator", nil )
+local GladiatorPanel = CreateInterfacePanel( "HubPanelSettingsGladiator", "NeatPlates Hub: |cFFAA6600Gladiator", nil )
 BuildHubPanel(GladiatorPanel)
 function ShowNeatPlatesHubGladiatorPanel() InterfaceOptionsFrame_OpenToCategory(GladiatorPanel) end
 --]]
@@ -938,7 +938,7 @@ HubDamageConfigFrame = DamagePanel
 
 
 StaticPopupDialogs["NeatPlatesHUB_RESETCHECK"] = {
-  text = "Neat Plates Hub: Your current settings are outdated...",
+  text = "NeatPlates Hub: Your current settings are outdated...",
   button1 = "Reset + Reload UI",
   button2 = "Ignore",
 

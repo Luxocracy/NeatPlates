@@ -787,7 +787,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	end
 
         local function OpenNeatPlatesConfig()
-            InterfaceOptionsFrame_OpenToCategory("Neat Plates")
+            InterfaceOptionsFrame_OpenToCategory("NeatPlates")
         end
 
         local RefreshPanel = function(self)

@@ -1,7 +1,7 @@
 
 
 --[[
-	The Neat Plates Healer Tracking system uses two concurrent methods:
+	The NeatPlates Healer Tracking system uses two concurrent methods:
 		1. Direct query of the Battleground Scoreboard for Talent Specialization
 		2. Active monitoring of the combat log for Healer-Only spells
 

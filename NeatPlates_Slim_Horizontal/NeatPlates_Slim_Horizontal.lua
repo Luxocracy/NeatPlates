@@ -352,7 +352,7 @@ local ThemeName = "Slim Horizontal"
 
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 
 NeatPlatesThemeList[ThemeName] = Theme

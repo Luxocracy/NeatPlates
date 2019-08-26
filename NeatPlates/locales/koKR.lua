@@ -4,7 +4,7 @@ if not L then return end
 
 L = L or {}
 L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."] = "%blue%Shift %yellow%키를 %yellow%누른 상태에서 %red%구성 재설정 %yellow%을 클릭하면 저장된 설정이 지워지고 사용자 인터페이스가 다시로드됩니다."
-L["%yellow%Resetting %orange%Neat Plates%yellow% Theme Selection to Default"] = "%yellow%재설정 %orange%Neat Plates%yellow% 기본 테마 선택"
+L["%yellow%Resetting %orange%NeatPlates%yellow% Theme Selection to Default"] = "%yellow%재설정 %orange%NeatPlates%yellow% 기본 테마 선택"
 L["A profile with this name already exists, do you wish to overwrite it?"] = "이 이름의 프로필이 이미 있습니다. 덮어 쓰시겠습니까?"
 L["Active"] = "활성화"
 L["Active/Damaged Units"] = "활성/피해 입은 유닛"

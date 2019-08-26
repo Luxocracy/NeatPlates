@@ -1,5 +1,5 @@
 -----------------------------------------------------
--- Neat Plates Grey
+-- NeatPlates Grey
 -----------------------------------------------------
 local Theme = {}
 local CopyTable = NeatPlatesUtility.copyTable
@@ -355,7 +355,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Grey"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 
 NeatPlatesThemeList[ThemeName] = Theme
