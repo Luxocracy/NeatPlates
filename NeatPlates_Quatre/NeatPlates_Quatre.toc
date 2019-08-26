@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: Quatre Theme
+## Title: NeatPlates: Quatre Theme
 ## Notes: It's the 4th!
 ## Author: Binny
 ## Dependencies: NeatPlates, NeatPlatesHub

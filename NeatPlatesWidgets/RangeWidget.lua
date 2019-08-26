@@ -1,5 +1,5 @@
 ---------------------------------------------
----- Neat Plates Range Widget ----
+---- NeatPlates Range Widget ----
 ---------------------------------------------
 
 local AddonName, NeatPlatesInternal = ...

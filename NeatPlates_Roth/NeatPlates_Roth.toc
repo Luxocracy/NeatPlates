@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: Roth
+## Title: NeatPlates: Roth
 ## Notes: Vanilla-Style Plates.
 ## Author: Reinhart
 ## Dependencies: NeatPlates, NeatPlatesHub

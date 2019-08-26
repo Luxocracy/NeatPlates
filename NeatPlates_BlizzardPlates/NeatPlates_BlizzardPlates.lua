@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Neat Plates: BlizzardPlates 1.5b (7.1) - Dic/01/2016
+-- NeatPlates: BlizzardPlates 1.5b (7.1) - Dic/01/2016
 -------------------------------------------------------------------------------
 
 local path = "Interface\\Addons\\NeatPlates_BlizzardPlates\\media\\"
@@ -323,7 +323,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Blizzard"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

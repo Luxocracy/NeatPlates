@@ -288,7 +288,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Alvara"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

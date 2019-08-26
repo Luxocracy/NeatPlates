@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------------------------
--- Neat Plates Interface Panel
+-- NeatPlates Interface Panel
 ---------------------------------------------------------------------------------------------------------------------
 
 local AddonName, NeatPlatesInternal = ...
@@ -13,7 +13,7 @@ local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
-local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "Neat Plates", nil )
+local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil )
 InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
 
 local CallIn = NeatPlatesUtility.CallIn
@@ -821,7 +821,7 @@ local function BuildInterfacePanel(panel)
 			for i, v in pairs(NeatPlatesOptionsDefaults) do NeatPlatesOptions[i] = v end
 			OnRefresh(_panel)
 			ApplyPanelSettings()
-			print(ReplaceColorPatterns(L["%yellow%Resetting %orange%Neat Plates%yellow% Theme Selection to Default"]))
+			print(ReplaceColorPatterns(L["%yellow%Resetting %orange%NeatPlates%yellow% Theme Selection to Default"]))
 			print(ReplaceColorPatterns(L["%yellow%Holding down %blue%Shift %yellow%while clicking %red%Reset Configuration %yellow%will clear your saved settings, AND reload the user interface."]))
 		end
 

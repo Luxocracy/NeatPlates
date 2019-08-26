@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: Slim Vertical|r
+## Title: NeatPlates: Slim Vertical|r
 ## Author: Dotfix
 ## Version: 2.2
 ## Dependencies: NeatPlates, NeatPlatesHub

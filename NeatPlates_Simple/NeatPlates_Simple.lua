@@ -288,7 +288,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Simple"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

@@ -458,7 +458,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Neon"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

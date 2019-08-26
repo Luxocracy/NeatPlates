@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: Graphite
+## Title: NeatPlates: Graphite
 ## Notes: Minimalisty
 ## Author: Binny
 ## Dependencies: NeatPlates, NeatPlatesHub

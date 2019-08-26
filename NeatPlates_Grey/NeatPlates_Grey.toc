@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: Grey Theme
+## Title: NeatPlates: Grey Theme
 ## Notes: Use apostrophes wisely.
 ## Author: Binny
 ## Dependencies: NeatPlates, NeatPlatesHub

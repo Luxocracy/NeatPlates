@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Neat Plates: ClassicPlates 2.5b - 7.1 - Dic/01/2016.
+-- NeatPlates: ClassicPlates 2.5b - 7.1 - Dic/01/2016.
 -------------------------------------------------------------------------------
 
 local path = "Interface\\Addons\\NeatPlates_ClassicPlates\\Media\\"
@@ -350,7 +350,7 @@ Theme.WidgetConfig = WidgetConfig
 local ThemeName = "Classic"
 
 ---------------------------------------------
--- Neat Plates Hub Integration
+-- NeatPlates Hub Integration
 ---------------------------------------------
 NeatPlatesThemeList[ThemeName] = Theme
 NeatPlatesHubFunctions.ApplyHubFunctions(Theme)

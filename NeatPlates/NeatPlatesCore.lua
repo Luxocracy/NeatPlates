@@ -1,4 +1,4 @@
--- Neat Plates - SMILE! :-D
+-- NeatPlates - SMILE! :-D
 
 ---------------------------------------------------------------------------------------------------------------------
 -- Variables and References
@@ -214,7 +214,7 @@ do
 	-- ApplyPlateExtesion
 	function OnNewNameplate(plate, plateid)
 
-    -- Neat Plates Frame
+    -- NeatPlates Frame
     --------------------------------
     local bars, regions = {}, {}
 		local carrier
@@ -294,7 +294,7 @@ do
 		visual.durationtext:SetFontObject("NeatPlatesFontNormal")
 		visual.customtext:SetFontObject("NeatPlatesFontSmall")
 
-		-- Neat Plates Frame References
+		-- NeatPlates Frame References
 		extended.regions = regions
 		extended.bars = bars
 		extended.visual = visual

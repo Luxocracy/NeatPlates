@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: Neat Plates: |cffff6060ClassicPlates
+## Title: NeatPlates: |cffff6060ClassicPlates
 ## Notes: Vanilla-Style Plates.
 ## Author: delabarra 
 ## Dependencies: NeatPlates, NeatPlatesHub
