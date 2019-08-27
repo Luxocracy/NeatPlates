@@ -902,7 +902,7 @@ do
 
 		visual.spelltext:SetText(spell.name)
 		visual.durationtext:SetText("")
-		visual.spellicon:SetTexture(NeatPlatesSpellDB.texture[spell.name])
+		visual.spellicon:SetTexture(NeatPlatesSpellDB.texture[spell.name] or 136243) -- 136243 (Default to Engineering Cog)
 		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
 
 		local r, g, b, a = 1, 1, 0, 1
@@ -1092,7 +1092,8 @@ do
 	----------------------------------------
 	function CoreEvents:PLAYER_ENTERING_WORLD()
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
-		if not NeatPlatesSpellDB.texture then NeatPlates.BuildTextureDB() end
+		--if not NeatPlatesSpellDB.texture then NeatPlates.BuildTextureDB() end
+		NeatPlates.BuildTextureDB() -- Temporarily force a rebuild on login as this is a work in progress
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1246,7 +1247,6 @@ do
 
 		-- Spellcasts (Classic)
 		if ShowCastBars and unitType and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
-			if sourceName == "Sassin" then print(spellName, event) end
 			local currentTime = GetTime() * 1000
 			local spellEntry
 			plate = PlatesByGUID[sourceGUID]
@@ -1276,7 +1276,7 @@ do
 
 				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
 					local plate = PlatesByGUID[sourceGUID]
-					SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(30, function() SpellCastCache[sourceGUID] = nil end)	-- Create another timer to cleanup the cache(So that we don't clear this entry if the spellcast is just really long)
+					if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID] = nil	end -- Make sure we are on the same cast
 					if plate then OnStopCasting(plate) end
 				end)
 
@@ -1504,7 +1504,8 @@ local function BuildTextureDB()
 	NeatPlatesSpellDB.texture = {}
 	for i = 1, 100000 do
 		local spellName,_,icon = GetSpellInfo(i)
-		if spellName then NeatPlatesSpellDB.texture[spellName] = icon end
+		-- 136235(Default Placeholder Icon)
+		if spellName and (not NeatPlatesSpellDB.texture[spellName] and icon ~= 136235) then NeatPlatesSpellDB.texture[spellName] = icon end
 	end
 end
 
