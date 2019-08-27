@@ -627,7 +627,7 @@ do
 		unit.red, unit.green, unit.blue = UnitSelectionColor(unitid)
 		unit.reaction = GetReactionByColor(unit.red, unit.green, unit.blue) or "HOSTILE"
 
-		if RealMobHealth then 
+		if RealMobHealth and RealMobHealth.GetUnitHealth then 
 			unit.health, unit.healthmax = RealMobHealth.GetUnitHealth(unitid)
 		else
 			unit.health = UnitHealth(unitid) or 0
@@ -1221,6 +1221,11 @@ do
 		local unitType,_,_,_,_,creatureID = strsplit("-", sourceGUID)
 		local spellBlacklist = {
 			[select(1, GetSpellInfo(75))] = true, -- Auto Shot
+			[select(1, GetSpellInfo(5019))] = true, -- Shoot
+			[select(1, GetSpellInfo(2480))] = true, -- Shoot Bow
+			[select(1, GetSpellInfo(7918))] = true, -- Shoot Gun
+			[select(1, GetSpellInfo(7919))] = true, -- Shoot Crossbow
+			[select(1, GetSpellInfo(2764))] = true, -- Throw
 		}
 
 		-- Spell Interrupts
