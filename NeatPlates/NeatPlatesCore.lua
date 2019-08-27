@@ -182,7 +182,7 @@ do
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					local unitGUID = UnitGUID(unit.unitid)
-					if unitGUID and SpellCastCache[unitGUID] then OnStartCasting(plate, unitGUID, false)
+					if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
 					else OnStopCasting(plate) end
 					plate.UpdateCastbar = false
 				end
@@ -885,8 +885,8 @@ do
 		else spellEntry = NeatPlatesSpellDB[unitType][spell.name] end
 
 		if spellEntry.castTime then
-			startTime = SpellCastCache[guid].startTime
-			endTime = SpellCastCache[guid].startTime + spellEntry.castTime
+			startTime = spell.startTime
+			endTime = spell.startTime + spellEntry.castTime
 
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
@@ -1272,6 +1272,7 @@ do
 				SpellCastCache[sourceGUID].name = spellName
 				SpellCastCache[sourceGUID].school = spellSchool
 				SpellCastCache[sourceGUID].startTime = currentTime
+				SpellCastCache[sourceGUID].finished = false
 
 				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 1 seconds, or 12 seconds if the spell is unknown)
 				-- The FAILED event doesn't seem to trigger properly in the current beta test.
@@ -1281,7 +1282,7 @@ do
 
 				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
 					local plate = PlatesByGUID[sourceGUID]
-					if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID] = nil	end -- Make sure we are on the same cast
+					if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID].finished = true end -- Make sure we are on the same cast
 					if plate then OnStopCasting(plate) end
 				end)
 
