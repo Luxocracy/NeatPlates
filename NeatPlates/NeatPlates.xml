@@ -312,6 +312,7 @@
     <Script file="libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
     <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
     <Include file="libs\AceLocale-3.0\AceLocale-3.0.xml"/>
+    <Include file="libs\LibClassicDurations\LibClassicDurations.xml"/>
     <Include file="locales.xml"/>
 	<Script file="NeatPlatesStatusbar.lua"/>
     <Script file="NeatPlatesUtility.lua"/>

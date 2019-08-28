@@ -8,6 +8,9 @@
 	--]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+local LCD = LibStub("LibClassicDurations")
+LCD:Register("NeatPlates") -- tell library it's being used and should start working
+
 
 NeatPlatesWidgets.DebuffWidgetBuild = 2
 
@@ -126,35 +129,35 @@ local function EventUnitAura(unitid)
 
 end
 
--- Combat logging for aura applications in Classic
-local function EventCombatLog(...)
-	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
-	local points = 0
+---- Combat logging for aura applications in Classic
+--local function EventCombatLog(...)
+--	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+--	local points = 0
 
-	-- Tracking Aura Durations
-	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
+--	-- Tracking Aura Durations
+--	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
 
-	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
-		if ComboPoints > GetComboPoints("player", "target") then points = ComboPoints end
-		spellID = select(7, GetSpellInfo(spellName))
-		local desc = GetSpellDescription(spellID)
-		local duration, expiration
+--	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+--		if ComboPoints > GetComboPoints("player", "target") then points = ComboPoints end
+--		spellID = select(7, GetSpellInfo(spellName))
+--		local desc = GetSpellDescription(spellID)
+--		local duration, expiration
 
-		if desc then
-			-- Attempt to match using locale duration pattern, if that fails fallback to english local pattern
-			-- Combo Point pattern variation, seconds pattern variation, minutes pattern variation
-			duration = tonumber(strmatch(desc, "%s%s"..points.."%s.-"..L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, "%s%s"..points..".-".."([0-9]+%.?[0-9]?)%ssec") or strmatch(desc, "([0-9]+%.?[0-9]?)%ssec") or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or strmatch(desc, "([0-9]+%.?[0-9]?)%smin") or 0)*60 or 0)
-		end
-		if duration and duration > 0 then
-			expiration = GetTime()+duration
+--		if desc then
+--			-- Attempt to match using locale duration pattern, if that fails fallback to english local pattern
+--			-- Combo Point pattern variation, seconds pattern variation, minutes pattern variation
+--			duration = tonumber(strmatch(desc, "%s%s"..points.."%s.-"..L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, L["CLASSIC_DURATION_SEC_PATTERN"]) or strmatch(desc, "%s%s"..points..".-".."([0-9]+%.?[0-9]?)%ssec") or strmatch(desc, "([0-9]+%.?[0-9]?)%ssec") or (strmatch(desc, L["CLASSIC_DURATION_MIN_PATTERN"]) or strmatch(desc, "([0-9]+%.?[0-9]?)%smin") or 0)*60 or 0)
+--		end
+--		if duration and duration > 0 then
+--			expiration = GetTime()+duration
 
-			AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
-			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
-			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
-		end
+--			AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
+--			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
+--			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
+--		end
 		
-	end
-end
+--	end
+--end
 
 
 
@@ -165,7 +168,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
-	["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
+	--["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -305,7 +308,8 @@ local function UpdateIconGrid(frame, unitid)
 			local aura = {}
 
 			do
-				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				--local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = LCD:UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
 				local casterGUID
 
 				aura.name = name
@@ -317,16 +321,24 @@ local function UpdateIconGrid(frame, unitid)
 				aura.caster = caster
 				aura.spellid = spellid
 				aura.unit = unitid 		-- unitid of the plate
+				aura.expiration = expiration
+				aura.duration = duration
 
 
-				if caster then casterGUID = UnitGUID(caster) end
-				if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterGUID] and AuraExpiration[unitGUID][casterGUID][spellid] then
-					aura.duration = AuraExpiration[unitGUID][casterGUID][spellid].duration
-					aura.expiration = AuraExpiration[unitGUID][casterGUID][spellid].expiration
-				else
-					aura.duration = 0
-					aura.expiration = 0
-				end		
+				--local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
+		  --  if duration == 0 and durationNew then
+		  --      duration = durationNew
+		  --      expirationTime = expirationTimeNew
+		  --  end
+
+				--if caster then casterGUID = UnitGUID(caster) end
+				--if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterGUID] and AuraExpiration[unitGUID][casterGUID][spellid] then
+				--	aura.duration = AuraExpiration[unitGUID][casterGUID][spellid].duration
+				--	aura.expiration = AuraExpiration[unitGUID][casterGUID][spellid].expiration
+				--else
+				--	aura.duration = 0
+				--	aura.expiration = 0
+				--end		
 
 				-- Pandemic Base duration
 				if spellid and caster == "player" then
