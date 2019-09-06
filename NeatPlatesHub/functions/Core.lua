@@ -222,7 +222,11 @@ local function ApplyCustomBarSize(style, defaults)
 		style.healthborder.width = defaults.healthborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthbar.width = defaults.healthbar.width * (LocalVars.FrameBarWidth or 1)
 		style.frame.width = defaults.frame.width * (LocalVars.FrameBarWidth or 1)
+		style.customtext.width = defaults.customtext.width * (LocalVars.FrameBarWidth or 1)
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
+		style.level.x = defaults.level.x * (LocalVars.FrameBarWidth or 1)
+
+		
 	
 		-- Defined elsewhere so they need to be handled differently
 		style.target.width = style.target.width * (LocalVars.FrameBarWidth or 1)
@@ -289,7 +293,6 @@ local function ApplyStyleCustomization(style, defaults)
 			style.spelltext[k] = v
 		end
 	end
-
 
  	ApplyCustomBarSize(style, defaults)
 	ApplyFontCustomization(style, defaults)

@@ -200,6 +200,9 @@ local function SmartFilterMode(aura)
 	local ShowThisAura = false
 	local AuraPriority = 20
 
+	-- Show All Auras
+	if LocalVars.WidgetAllAuras then ShowThisAura = true end
+
 	-- My own Buffs and Debuffs
 	if (aura.caster == "player" or aura.caster == "pet") and aura.baseduration and aura.baseduration < 150 then
 		if LocalVars.WidgetMyBuff and aura.effect == "HELPFUL" then
