@@ -86,6 +86,8 @@ L["Friendly Health Bars"] = true
 	-- Healthbar Options
 	L["All NPCs"] = true
 	L["Exclude Instances"] = true
+	L["Exclude Minions"] = true
+	L["Exclude Totems"] = true
 	L["Elite Units"] = true
 	L["Players"] = true
 	L["Active/Damaged Units"] = true
@@ -173,6 +175,7 @@ L["Buffs & Debuffs"] = true
 
 L["Enable Aura Widget"] = true
 	-- Aura Widget Options
+	L["Include All Auras"] = true
 	L["Include My Debuffs"] = true
 	L["Include My Buffs"] = true
 	L["Enable Pandemic Highlighting"] = true
@@ -298,6 +301,7 @@ L["Text Color"] = true
 	L["Hostile NPC"] = true
 	L["Hostile Player"] = true
 	L["Guild Member"] = true
+	L["Party Member"] = true
 	L["Elite"] = true
 	L["Boss"] = true
 
@@ -501,6 +505,7 @@ L["CVars could not applied due to combat"] = true
 
 -- Profile Panel
 L["Makes the Nameplates non-interactable"] = true
+L["Display all auras that have been applied regardless of source or duration."] = true
 L["Display Debuffs that have been applied by you"] = true
 L["Display Buffs that have been applied by you"] = true
 L["Highlight auras when they have less than 30% of their original duration remaining"] = true

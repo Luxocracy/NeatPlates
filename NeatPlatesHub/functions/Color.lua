@@ -30,6 +30,7 @@ local GetFriendlyThreat = NeatPlatesUtility.GetFriendlyThreat
 local IsFriend = NeatPlatesUtility.IsFriend
 local IsHealer = NeatPlatesUtility.IsHealer
 local IsGuildmate = NeatPlatesUtility.IsGuildmate
+local IsPartyMember = NeatPlatesUtility.IsPartyMember
 local HexToRGB = NeatPlatesUtility.HexToRGB
 
 local IsOffTanked = NeatPlatesHubFunctions.IsOffTanked
@@ -99,8 +100,9 @@ unit.threatValue
 
 local function ColorFunctionByReaction(unit)
 	if unit.reaction == "FRIENDLY" and unit.type == "PLAYER" then
-		if IsGuildmate(unit.name) then return LocalVars.ColorGuildMember
-		elseif IsFriend(unit.name) then return LocalVars.ColorGuildMember end
+		if IsGuildmate(unit.unitid) then return LocalVars.ColorGuildMember
+		elseif IsFriend(unit.unitid) then return LocalVars.ColorGuildMember 
+		elseif IsPartyMember(unit.unitid) then return LocalVars.ColorPartyMember end
 	end
 
 	return ReactionColors[unit.reaction][unit.type]
@@ -461,8 +463,9 @@ end
 
 -- By Reaction
 local function NameColorByReaction(unit)
-	if IsGuildmate(unit.name) then return LocalVars.TextColorGuildMember
-	elseif IsFriend(unit.name) then return LocalVars.TextColorGuildMember end
+	if IsGuildmate(unit.unitid) then return LocalVars.TextColorGuildMember
+	elseif IsFriend(unit.unitid) then return LocalVars.TextColorGuildMember
+	elseif IsPartyMember(unit.unitid) then return LocalVars.TextColorPartyMember end
 
 	return NameReactionColors[unit.reaction][unit.type]
 end

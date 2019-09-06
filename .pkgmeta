@@ -19,3 +19,6 @@ move-folders:
     NeatPlates/NeatPlates_Alvara: NeatPlates_Alvara
     NeatPlates/NeatPlatesHub: NeatPlatesHub
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
+
+externals:
+  NeatPlates/libs/LibClassicDurations: https://repos.curseforge.com/wow/libclassicdurations

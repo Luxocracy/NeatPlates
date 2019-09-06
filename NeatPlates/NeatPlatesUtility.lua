@@ -19,7 +19,10 @@ end
 
 NeatPlatesUtility.IsFriend = function(...) end
 --NeatPlatesUtility.IsHealer =
-NeatPlatesUtility.IsGuildmate = function(...) end
+--NeatPlatesUtility.IsGuildmate = function(...) end
+--NeatPlatesUtility.IsPartyMember = function(...) end
+NeatPlatesUtility.IsGuildmate = UnitIsInMyGuild
+NeatPlatesUtility.IsPartyMember = function(unitid) return UnitInParty(unitid) or UnitInRaid(unitid) end
 
 local function RaidMemberCount()
 	if UnitInRaid("player") then
@@ -307,7 +310,7 @@ local function GetFriendlyThreat(unitid)
 		local isUnitPet = (unit == "pet")
 
 		--if isUnitInParty then
-			local unitaggro = UnitThreatSituation(unitid)
+			--local unitaggro = UnitThreatSituation(unitid)
 			if unitaggro and unitaggro > 1 then return true end
 		--end
 	end

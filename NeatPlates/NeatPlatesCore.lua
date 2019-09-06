@@ -582,6 +582,7 @@ do
 		unit.isRare = RareReference[classification]
 		unit.isMini = classification == "minus"
 		--unit.isPet = UnitIsOtherPlayersPet(unitid)
+		unit.isPet = ("Pet" == strsplit("-", UnitGUID(unitid)))
 
 		if UnitIsPlayer(unitid) then
 			_, unit.class = UnitClass(unitid)
