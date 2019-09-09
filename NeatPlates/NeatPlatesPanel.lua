@@ -715,7 +715,7 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
 
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 200, -50)
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 210, -50)
 	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
 
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)

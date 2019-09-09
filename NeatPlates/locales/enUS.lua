@@ -172,6 +172,7 @@ L["Friendly Headline Subtext"] = true
 -- Buffs & Debuffs
 ------------------------------
 L["Buffs & Debuffs"] = true
+L["Aura Widget"] = true
 
 L["Enable Aura Widget"] = true
 	-- Aura Widget Options

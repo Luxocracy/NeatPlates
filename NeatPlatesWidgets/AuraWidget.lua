@@ -40,6 +40,7 @@ local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
 local AuraScale = 1
 local AuraAlignment = "BOTTOMLEFT"
+local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 local function DummyFunction() end
 
@@ -829,6 +830,7 @@ local function SetAuraOptions(LocalVars)
 	HideAuraDuration = LocalVars.HideAuraDuration
 	AuraScale = LocalVars.AuraScale
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
+	ScaleOptions = LocalVars.WidgetAuraScaleOptions
 end
 
 local function SetPandemic(enabled, color)

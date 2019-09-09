@@ -273,7 +273,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	end
 
 	local ScalePanel
-	local function CreateQuickScalePanel(frame, parent, name, label)
+	local function CreateQuickScalePanel(frame, parent, name, label, options)
 		local oldValues = frame.values
 		local function onChange()
 			frame.values = {
@@ -360,10 +360,19 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		ScalePanel.OffsetX:SetValue(scale.offset.x or 0)
 		ScalePanel.OffsetY:SetValue(scale.offset.y or 0)
 
+		if options then ScalePanel:SetWidth(200) else ScalePanel:SetWidth(390) end
+		if options == "noScale" then
+			ScalePanel.ScaleX:Hide()
+			ScalePanel.ScaleY:Hide()
+		elseif options == "noPos" then
+			ScalePanel.OffsetX:Hide()
+			ScalePanel.OffsetY:Hide()
+		end
+
 		return ScalePanel
 	end
 
-	local function CreateQuickScale(objectName, name, label, onOkay, parent, ...)
+	local function CreateQuickScale(objectName, name, label, onOkay, options, parent, ...)
 		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
 	
 		frame:SetWidth(22)
@@ -384,7 +393,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		frame.GetValue = function() return frame.values end
 
 		frame:SetScript("OnClick", function(self)
-			local panel = CreateQuickScalePanel(self, parent, name, label)
+			local panel = CreateQuickScalePanel(self, parent, name, label, options)
 			panel:Show()
 		end)
 

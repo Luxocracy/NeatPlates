@@ -214,6 +214,20 @@ local function ApplyFontCustomization(style, defaults)
 
 end
 
+local function ApplyScaleOptions(style, default, scale)
+	if not style then return style end
+	if style.width then style.width = default.width * (scale.x or 1) end
+	if style.height then style.height = default.height * (scale.y or 1) end
+	if style.x then style.x = default.x + (scale.offset.x or 0) end
+	if style.y then style.y = default.y + (scale.offset.y or 0) end
+	return style
+end
+
+local function ApplyScaleOptionCustomization(style, defaults)
+	style.DebuffWidget = ApplyScaleOptions(style.DebuffWidget, defaults.DebuffWidget, LocalVars.WidgetAuraScaleOptions)
+	style.DebuffWidgetPlus = ApplyScaleOptions(style.DebuffWidgetPlus, defaults.DebuffWidgetPlus, LocalVars.WidgetAuraScaleOptions)
+end
+
 local function ApplyCustomBarSize(style, defaults)
 
 	if defaults then
@@ -225,7 +239,6 @@ local function ApplyCustomBarSize(style, defaults)
 		style.customtext.width = defaults.customtext.width * (LocalVars.FrameBarWidth or 1)
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
 		style.level.x = defaults.level.x * (LocalVars.FrameBarWidth or 1)
-
 		
 	
 		-- Defined elsewhere so they need to be handled differently
@@ -339,6 +352,7 @@ local function ApplyProfileSettings(theme, source, ...)
 	EnableWatchers()
 	ApplyStyleCustomization(theme["Default"], theme["DefaultBackup"])
 	ApplyFontCustomization(theme["NameOnly"], theme["NameOnlyBackup"])
+	ApplyScaleOptionCustomization(theme["WidgetConfig"], theme["WidgetConfigBackup"])
 
 	-- Set Space Between Buffs & Debuffs
 	NeatPlatesWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
@@ -423,6 +437,7 @@ local function ApplyHubFunctions(theme)
 	-- Make Backup Copies of the default settings of the theme styles
 	theme["DefaultBackup"] = CopyTable(theme["Default"])
 	theme["NameOnlyBackup"] = CopyTable(theme["NameOnly"])
+	theme["WidgetConfigBackup"] = CopyTable(theme["WidgetConfig"])
 
 	if barStyle then
 		backupStyle.threatborder.default_width = barStyle.threatborder.width

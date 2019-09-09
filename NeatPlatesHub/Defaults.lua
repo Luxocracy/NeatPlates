@@ -284,6 +284,7 @@ NeatPlatesHubDefaults = {
 	BorderBuffEnrage = 1,
 	SpacerSlots = 1,
 	AuraScale = 1,
+	WidgetAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
 	EmphasizedSlots = 1,
 	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetDebuffLookup = {},
