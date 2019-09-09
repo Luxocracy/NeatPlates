@@ -227,6 +227,7 @@ local function BuildHubPanel(panel)
 	panel.EmphasizedSlots.tooltipText = L["The amount of Emphasized auras that can be displayed at once"]
 
 	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style"]..':', DebuffStyles, 1, AlignmentColumn, panel.EmphasizedSlots, 16)
+	panel.WidgetAuraScaleOptions = CreateQuickScale(objectName.."WidgetAuraScaleOptions", "WidgetAuraScaleOptions", L["Aura Widget"], nil, "noScale", AlignmentColumn, "LEFT", panel.WidgetDebuffStyle, "RIGHT", 28, 2)
 	panel.WidgetAuraSort =  CreateQuickDropdown(objectName.."WidgetAuraSort", L["Sorting Mode"]..':', AuraSortModes, 1, AlignmentColumn, panel.EmphasizedSlots, OffsetColumnB)
 	panel.WidgetAuraAlignment =  CreateQuickDropdown(objectName.."WidgetAuraAlignment", L["Aura Alignment"]..':', AuraAlignmentModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)
 
@@ -455,9 +456,9 @@ local function BuildHubPanel(panel)
 	panel.ColorFocus = CreateQuickColorbox(objectName.."ColorFocus", "", nil, AlignmentColumn, panel.HighlightFocusMode,  130, -17)
 	panel.ColorMouseover = CreateQuickColorbox(objectName.."ColorMouseover", "", nil, AlignmentColumn, panel.HighlightMouseoverMode, 130, -17)
 
-	panel.HighlightTargetScale = CreateQuickScale(objectName.."HighlightTargetScale", "HighlightTargetScale", L["Target Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightTargetMode, "RIGHT", 52, 2)
-	panel.HighlightFocusScale = CreateQuickScale(objectName.."HighlightFocusScale", "HighlightFocusScale", L["Focus Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightFocusMode, "RIGHT", 52, 2)
-	panel.HighlightMouseoverScale = CreateQuickScale(objectName.."HighlightMouseoverScale", "HighlightMouseoverScale", L["Mouseover Highlighting"], nil, AlignmentColumn, "LEFT", panel.HighlightMouseoverMode, "RIGHT", 52, 2)
+	panel.HighlightTargetScale = CreateQuickScale(objectName.."HighlightTargetScale", "HighlightTargetScale", L["Target Highlighting"], nil, nil, AlignmentColumn, "LEFT", panel.HighlightTargetMode, "RIGHT", 52, 2)
+	panel.HighlightFocusScale = CreateQuickScale(objectName.."HighlightFocusScale", "HighlightFocusScale", L["Focus Highlighting"], nil, nil, AlignmentColumn, "LEFT", panel.HighlightFocusMode, "RIGHT", 52, 2)
+	panel.HighlightMouseoverScale = CreateQuickScale(objectName.."HighlightMouseoverScale", "HighlightMouseoverScale", L["Mouseover Highlighting"], nil, nil, AlignmentColumn, "LEFT", panel.HighlightMouseoverMode, "RIGHT", 52, 2)
 
 	--panel.WidgetTargetHighlight, F = CreateQuickCheckbutton(objectName.."WidgetTargetHighlight", L["Show Target Highlight"], AlignmentColumn, F, 0)
 	--panel.CustomTargetColor, F = CreateQuickCheckbutton(objectName.."CustomTargetColor", L["Use Target Highlight Color"], AlignmentColumn, F, 0)
@@ -515,7 +516,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetRangeUnits = CreateQuickDropdown(objectName.."WidgetRangeUnits", L["Show on"]..':', RangeUnits, 1, AlignmentColumn, panel.WidgetRangeStyle, OffsetColumnB+76)
 	panel.WidgetRangeMax = CreateQuickSlider(objectName.."WidgetRangeMax", L["Range Threshold"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetRangeUnits, OffsetColumnB+76, 2)
 	panel.WidgetRangeMax.tooltipText = L["Your 'Out of Range' distance"]
-	panel.WidgetRangeScaleOptions = CreateQuickScale(objectName.."WidgetRangeScaleOptions", "WidgetRangeScaleOptions", L["Range Indicator"], nil, AlignmentColumn, "LEFT", panel.WidgetRangeStyle, "RIGHT", 28, 2)
+	panel.WidgetRangeScaleOptions = CreateQuickScale(objectName.."WidgetRangeScaleOptions", "WidgetRangeScaleOptions", L["Range Indicator"], nil, nil, AlignmentColumn, "LEFT", panel.WidgetRangeStyle, "RIGHT", 28, 2)
 
 	--[[
 	------------------------------
@@ -548,7 +549,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.WidgetTotemIcon)
 	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, panel.WidgetQuestIcon)
 	panel.WidgetComboPointsStyle, F =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", L["Personal Resource Style"]..':', ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
-	panel.WidgetComboPointsScaleOptions = CreateQuickScale(objectName.."WidgetComboPointsScaleOptions", "WidgetComboPointsScaleOptions", L["Personal Resource Style"], nil, AlignmentColumn, "LEFT", panel.WidgetComboPointsStyle, "RIGHT", 28, 2)
+	panel.WidgetComboPointsScaleOptions = CreateQuickScale(objectName.."WidgetComboPointsScaleOptions", "WidgetComboPointsScaleOptions", L["Personal Resource Style"], nil, nil, AlignmentColumn, "LEFT", panel.WidgetComboPointsStyle, "RIGHT", 28, 2)
 
 	--panel.WidgetEnableExternal = CreateQuickCheckbutton(objectName.."WidgetEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetComboPoints)
 
