@@ -23,6 +23,8 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
+local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            -- Plate Lists
@@ -636,8 +638,7 @@ do
 		end
 		
 
-		--unit.threatValue = UnitThreatSituation("player", unitid) or 0
-		unit.threatValue = 0 -- Disabled until I figure out how threat is handled in Classic
+		unit.threatValue = UnitThreatSituation("player", unitid) or 0
 		unit.threatSituation = ThreatReference[unit.threatValue]
 		unit.isInCombat = UnitAffectingCombat(unitid)
 
@@ -1316,6 +1317,7 @@ do
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
 
 	CoreEvents.UNIT_LEVEL = UnitConditionChanged
+	--CoreEvents.UNIT_THREAT_SITUATION_UPDATE = UnitConditionChanged
 	CoreEvents.UNIT_FACTION = UnitConditionChanged
 
 	CoreEvents.RAID_TARGET_UPDATE = WorldConditionChanged
