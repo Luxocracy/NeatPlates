@@ -1096,6 +1096,7 @@ do
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
 		--if not NeatPlatesSpellDB.texture then NeatPlates.BuildTextureDB() end
 		NeatPlates.BuildTextureDB() -- Temporarily force a rebuild on login as this is a work in progress
+		NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1305,8 +1306,8 @@ do
 			end
 
 			-- Remove empty entries as they only take up space
-			if not NeatPlatesSpellDB[unitType][spellName] then NeatPlatesSpellDB[unitType][spellName] = nil
-			elseif creatureID and not NeatPlatesSpellDB[unitType][spellName][creatureID] then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
+			if not next(NeatPlatesSpellDB[unitType][spellName]) then NeatPlatesSpellDB[unitType][spellName] = nil
+			elseif creatureID and not next(NeatPlatesSpellDB[unitType][spellName][creatureID]) then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
 		end
 	end
 
@@ -1508,6 +1509,23 @@ local function OnResetWidgets(plate)
 	plate.UpdateMe = true
 end
 
+-- Cleanup Spell DB
+local function CleanSpellDB()
+	local checkTable
+	checkTable = function(t)
+		for k,v in pairs(t) do
+			if type(v) == "table" then
+				if next(v) then
+					checkTable(v)
+				else
+					t[k] = nil
+				end
+			end
+		end
+	end
+	checkTable(NeatPlatesSpellDB)
+end
+
 -- Build classic texture DB
 local function BuildTextureDB()
 	NeatPlatesSpellDB.texture = {}
@@ -1519,6 +1537,7 @@ local function BuildTextureDB()
 end
 
 NeatPlates.BuildTextureDB = BuildTextureDB
+NeatPlates.CleanSpellDB = CleanSpellDB
 
 --------------------------------------------------------------------------------------------------------------
 -- External Commands: Allows widgets and themes to request updates to the plates.
