@@ -74,7 +74,7 @@ local function ThreatExceptions(unit, isTank, noSafeColor)
 
 	-- Classic temporary fix, if enemy unit is in combat & the player is either in a party or has a pet.
 	local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-	local showClassicThreat = (UnitAffectingCombat(unit.unitid) and playerIsTarget)
+	local showClassicThreat = (UnitAffectingCombat(unit.unitid) and playerIsTarget and (UnitInParty("player") or UnitExists("pet")))
 
 	-- Special case dealing with mobs from Reaping affix and units that fixate
 	if showClassicThreat or souls[unitGUID] or unit.fixate then
