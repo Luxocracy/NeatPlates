@@ -170,7 +170,7 @@ local function ColorFunctionByThreat(unit)
 
 	if classColor then
 		return classColor
-	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank)
 
@@ -377,7 +377,7 @@ end
 
 -- Warning Glow (Auto Detect)
 local function WarningBorderFunctionByThreat(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank, true)
 
@@ -533,7 +533,7 @@ end
 
 local function NameColorByThreat(unit)
 	if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return NameReactionColors[unit.reaction][unit.type]
-	elseif InCombatLockdown() then return ColorFunctionByThreat(unit)
+	elseif InCombatLockdown() and unit.isInCombat then return ColorFunctionByThreat(unit)
 	else return RaidClassColors[unit.class or ""] or NameReactionColors[unit.reaction][unit.type] end
 end
 
