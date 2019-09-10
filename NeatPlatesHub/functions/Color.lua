@@ -74,7 +74,7 @@ local function ThreatExceptions(unit, isTank, noSafeColor)
 
 	-- Classic temporary fix, if enemy unit is in combat & the player is either in a party or has a pet.
 	local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-	local showClassicThreat = (UnitAffectingCombat(unit.unitid) and playerIsTarget and (UnitInParty("player") or UnitExists("pet")))
+	local showClassicThreat = (unit.isInCombat and playerIsTarget and (UnitInParty("player") or UnitExists("pet")))
 
 	-- Special case dealing with mobs from Reaping affix and units that fixate
 	if showClassicThreat or souls[unitGUID] or unit.fixate then
@@ -173,7 +173,7 @@ local function ColorFunctionByThreat(unit)
 
 	if classColor then
 		return classColor
-	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank)
 
@@ -393,7 +393,7 @@ end
 
 -- Warning Glow (Auto Detect)
 local function WarningBorderFunctionByThreat(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" then
+	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank, true)
 
@@ -549,7 +549,7 @@ end
 
 local function NameColorByThreat(unit)
 	if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return NameReactionColors[unit.reaction][unit.type]
-	elseif InCombatLockdown() then return ColorFunctionByThreat(unit)
+	elseif InCombatLockdown() and unit.isInCombat then return ColorFunctionByThreat(unit)
 	else return RaidClassColors[unit.class or ""] or NameReactionColors[unit.reaction][unit.type] end
 end
 

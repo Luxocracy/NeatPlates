@@ -40,7 +40,7 @@ end
 
 -- By Threat (High) DPS Mode
 local function ScaleFunctionByThreatHigh(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" then
+	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.isInCombat then
 		if unit.type == "NPC" and unit.threatValue > 1 and unit.health > 2 then return LocalVars.ScaleSpotlight end
 	elseif LocalVars.ColorShowPartyAggro and unit.reaction == "FRIENDLY" then
 		if GetFriendlyThreat(unit.unitid) then return LocalVars.ScaleSpotlight end
@@ -49,7 +49,7 @@ end
 
 -- By Threat (Low) Tank Mode
 local function ScaleFunctionByThreatLow(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" then
+	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.isInCombat then
 		if IsOffTanked(unit) then return end
 		if unit.type == "NPC" and unit.health > 2 and unit.threatValue < 2 then return LocalVars.ScaleSpotlight end
 	elseif LocalVars.ColorShowPartyAggro and unit.reaction == "FRIENDLY" then
