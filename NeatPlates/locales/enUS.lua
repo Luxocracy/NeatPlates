@@ -188,6 +188,7 @@ L["Enable Aura Widget"] = true
 
 L["Space Between buffs & debuffs"] = true
 L["Aura Scale"] = true
+L["Aura Offsets"] = true
 L["Amount of Emphasized Auras"] = true
 L["Additional Auras"] = true
 L["Emphasized Auras"] = true
@@ -429,6 +430,8 @@ L["Show Target Highlight"] = true
 L["Show Elite Icon"] = true
 L["Show Enemy Class Art"] = true
 L["Show Friendly Class Art"] = true
+L["Class Icon"] = true
+L["Class Icon Scale Options"] = true
 L["Show Totem Art"] = true
 L["Show Quest Icon on Units"] = true
 L["Show Personal Resource on Target"] = true

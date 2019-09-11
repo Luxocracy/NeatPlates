@@ -314,9 +314,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			ScalePanel.ScaleX:SetPoint("TOPLEFT", ScalePanel, "TOPLEFT", 20, -54)
 			ScalePanel.ScaleY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleY", ScalePanel, L["Scale Y"], 1, .1, 3, .01, nil, 160)
 			ScalePanel.ScaleY:SetPoint("TOPLEFT", ScalePanel.ScaleX, "TOPLEFT", 0, -45)
-			ScalePanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetX", ScalePanel, L["Offset X"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetX", ScalePanel, L["Offset X"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			ScalePanel.OffsetX:SetPoint("TOPRIGHT", ScalePanel, "TOPRIGHT", -20, -54)
-			ScalePanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetY", ScalePanel, L["Offset Y"], 0, -100, 100, 1, "ACTUAL", 160)
+			ScalePanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_OffsetY", ScalePanel, L["Offset Y"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			ScalePanel.OffsetY:SetPoint("TOPLEFT", ScalePanel.OffsetX, "TOPLEFT", 0, -45)
 
 			-- Create Buttons
@@ -351,20 +351,31 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			parent.Callback()
 		end)
 
+		ScalePanel:SetScript("OnShow", function(self)
+			self.ScaleX:updateValues()
+			self.ScaleY:updateValues()
+			self.OffsetX:updateValues()
+			self.OffsetY:updateValues()
+		end)
+
 		-- Restore values
 		local scale = frame.values
 		--table.foreach(values, print)
 
+		ScalePanel.ScaleX:Show()
+		ScalePanel.ScaleY:Show()
+		ScalePanel.OffsetX:Show()
+		ScalePanel.OffsetY:Show()
 		ScalePanel.ScaleX:SetValue(scale.x or 1)
 		ScalePanel.ScaleY:SetValue(scale.y or 1)
 		ScalePanel.OffsetX:SetValue(scale.offset.x or 0)
 		ScalePanel.OffsetY:SetValue(scale.offset.y or 0)
 
-		if options then ScalePanel:SetWidth(200) else ScalePanel:SetWidth(390) end
-		if options == "noScale" then
+		if options and (options.noScale or options.noPos) then ScalePanel:SetWidth(200) else ScalePanel:SetWidth(390) end
+		if options and options.noScale then
 			ScalePanel.ScaleX:Hide()
 			ScalePanel.ScaleY:Hide()
-		elseif options == "noPos" then
+		elseif options and options.noPos then
 			ScalePanel.OffsetX:Hide()
 			ScalePanel.OffsetY:Hide()
 		end
@@ -378,13 +389,19 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		frame:SetWidth(22)
 		frame:SetHeight(22)
 		frame:SetPoint(...)
-		frame.Texture = frame:CreateTexture(nil, "ARTWORK")
-		frame.Texture:SetTexture("Interface\\Addons\\NeatPlatesHub\\shared\\Scale-Icon")
-		frame.Texture:SetPoint("CENTER", frame, "CENTER")
-		frame.Texture:SetWidth(14)
-		frame.Texture:SetHeight(14)
-		frame.Texture:SetBlendMode("ADD")
-		frame.tooltipText = L["Display Scale Options"]
+		if not options or (options and not options.label) then
+			frame.Texture = frame:CreateTexture(nil, "ARTWORK")
+			frame.Texture:SetTexture("Interface\\Addons\\NeatPlatesHub\\shared\\Scale-Icon")
+			frame.Texture:SetPoint("CENTER", frame, "CENTER")
+			frame.Texture:SetWidth(14)
+			frame.Texture:SetHeight(14)
+			frame.Texture:SetBlendMode("ADD")
+		else
+			frame:SetText(options.label)
+			frame:SetWidth(frame:GetTextWidth()+16)
+		end
+		
+		if not (options and options.label) then frame.tooltipText = L["Display Scale Options"] end
 
 		-- Create Value handlers
 		frame.SetValue = function(self, values)

@@ -4,6 +4,7 @@
 local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
 local classWidgetCustomPath = "Interface\\NeatPlatesTextures\\ClassWidget\\"
 local classIcon = {}
+local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 function VerifyTextures()
 		local classes = {"WARRIOR","PALADIN","HUNTER","ROGUE","PRIEST","DEATHKNIGHT","SHAMAN","MAGE","WARLOCK","MONK","DRUID","DEMONHUNTER"}
@@ -36,6 +37,11 @@ local function UpdateClassWidget(self, unit, showFriendly)
 			class = unit.class
 		elseif unit.type == "PLAYER" then class = unit.class end
 
+		self.Icon:SetWidth(24*ScaleOptions.x)
+		self.Icon:SetHeight(24*ScaleOptions.y)
+		self.Icon:ClearAllPoints()
+		self.Icon:SetPoint("CENTER", self, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
+
 		if class then
 			self.Icon:SetTexture(classIcon[class])
 			self:Show()
@@ -56,8 +62,15 @@ local function CreateClassWidget(parent)
 	return frame
 end
 
+local function SetClassWidgetOptions(LocalVars)
+	ScaleOptions = LocalVars.ClassIconScaleOptions
+
+	NeatPlates:ForceUpdate()
+end
+
 local ClassWidgetWatcher = CreateFrame("Frame")
 ClassWidgetWatcher:SetScript("OnEvent", VerifyTextures)
 ClassWidgetWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 NeatPlatesWidgets.CreateClassWidget = CreateClassWidget
+NeatPlatesWidgets.SetClassWidgetOptions = SetClassWidgetOptions
