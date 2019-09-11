@@ -362,6 +362,9 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
 	--NeatPlates:ToggleServerIndicator(LocalVars.TextShowServerIndicator)	-- Toggle Server Indicator
 
+	-- Toggle Threat lib activation for solo play
+	NeatPlatesUtility.RequestActiveOnSolo(LocalVars.ThreatSoloEnable)
+
 	-- Manage ClickThrough option of nameplate bars.
 	if ValidateCombatRestrictedSettings() then
 		C_NamePlate.SetNamePlateFriendlyClickThrough(LocalVars.StyleFriendlyBarsClickThrough or false)

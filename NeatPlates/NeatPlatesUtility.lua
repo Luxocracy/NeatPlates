@@ -16,6 +16,10 @@ end
 NeatPlatesUtility.UnitDetailedThreatSituation = function (unit, mob)
     return ThreatLib:UnitDetailedThreatSituation (unit, mob)
 end
+
+NeatPlatesUtility.RequestActiveOnSolo = function(value)
+	ThreatLib:RequestActiveOnSolo(value)
+end
 local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
 local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
 
