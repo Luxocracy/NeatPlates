@@ -24,6 +24,7 @@ local RGBToHex = NeatPlatesUtility.RGBToHex
 local NO_AUTOMATION = L["No Automation"]
 local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
 local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
+local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances."]
 
 -- Localized fonts
 if (LOCALE_koKR) then
@@ -108,6 +109,7 @@ local AutomationDropdownItems = {
 					{ text = NO_AUTOMATION, value = NO_AUTOMATION } ,
 					{ text = DURING_COMBAT, value = DURING_COMBAT } ,
 					{ text = OUT_OF_COMBAT, value = OUT_OF_COMBAT } ,
+					{ text = NOT_IN_INSTANCE, value = NOT_IN_INSTANCE } ,
 					}
 
 local OutlineStyleItems = {
@@ -181,7 +183,7 @@ local function ValidateProfileName(name, callback)
 	end
 end
 
-local function SetNameplateVisibility(cvar, mode, combat)
+local function SetNameplateVisibility(cvar, mode, combat, inInstance)
 	if mode == DURING_COMBAT then
 		if combat then
 			SetCVar(cvar, 1)
@@ -190,6 +192,12 @@ local function SetNameplateVisibility(cvar, mode, combat)
 		end
 	elseif mode == OUT_OF_COMBAT then
 		if combat then
+			SetCVar(cvar, 0)
+		else
+			SetCVar(cvar, 1)
+		end
+	elseif mode == NOT_IN_INSTANCE then
+		if inInstance then
 			SetCVar(cvar, 0)
 		else
 			SetCVar(cvar, 1)
@@ -958,6 +966,11 @@ function panelevents:PLAYER_ENTERING_WORLD()
 	ApplyPanelSettings()
 	ApplyAutomationSettings()
 	NeatPlatesHubFunctions.ApplyRequiredCVars(NeatPlatesOptions)
+
+	-- Nameplate automation in case of instance
+	local inInstance, instanceType = IsInInstance()
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false, instanceType == "party" or instanceType == "raid")
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false, instanceType == "party" or instanceType == "raid")
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()
