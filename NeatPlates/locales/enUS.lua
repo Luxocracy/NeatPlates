@@ -26,6 +26,7 @@ L["Friendly Nameplates"] = true
 	L["No Automation"] = true
 	L["Show during Combat, Hide when Combat ends"] = true
 	L["Hide when Combat starts, Show when Combat ends"] = true
+	L["Hide in instances, Show outside of instances"] = true
 
 L["General Aura Filters"] = true
 

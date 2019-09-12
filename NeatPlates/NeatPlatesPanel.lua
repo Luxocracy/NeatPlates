@@ -24,7 +24,7 @@ local RGBToHex = NeatPlatesUtility.RGBToHex
 local NO_AUTOMATION = L["No Automation"]
 local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
 local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
-local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances."]
+local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances"]
 
 -- Localized fonts
 if (LOCALE_koKR) then
