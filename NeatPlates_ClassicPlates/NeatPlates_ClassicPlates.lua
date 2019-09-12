@@ -67,7 +67,7 @@ StyleDefault.healthbar = {
 	texture = 					path.."StatusBar",
 	width =105,
 	height = 9,
-	x = 6,
+	x = 6.5,
 	y = 3.5,
 	orientation = "HORIZONTAL",
 }

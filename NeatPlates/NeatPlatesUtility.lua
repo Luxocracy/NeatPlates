@@ -602,6 +602,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	slider:SetValueStep(step or .1)
 	slider:SetValue(val or .5)
 	slider:SetOrientation("HORIZONTAL")
+	slider:SetObeyStepOnDrag(true)
 	slider:Enable()
 	-- Labels
 	slider.Label = slider:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')

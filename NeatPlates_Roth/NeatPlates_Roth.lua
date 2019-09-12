@@ -20,7 +20,7 @@ local StyleDefault = {}
 StyleDefault.hitbox = {
 	width = 130,
 	height = 30,
-	x = 6,
+	x = 0,
 	y = 0,
 }
 
@@ -32,7 +32,7 @@ StyleDefault.frame = {
 StyleDefault.skullicon = {
 	width = 11,
 	height = 11,
-	x = 14.5,
+	x = 8.5,
 	y = -4,
 	anchor = "LEFT",
 	show = true,
@@ -42,7 +42,7 @@ StyleDefault.castborder = {
 	texture =					path.."CastStop",
 	width = 128,
 	height = 64,
-	x = -5,
+	x = -11,
 	y = -8,
 	show = true,
 }
@@ -51,7 +51,7 @@ StyleDefault.castnostop = {
 	texture = 					path.."CastNoStop",
 	width = 128,
 	height = 64,
-	x = -5,
+	x = -11,
 	y = -8,
 	show = true,
 }
@@ -60,7 +60,7 @@ StyleDefault.castbar = {
 	texture =					path.."StatusBar",
 	width = 86,
 	height = 8,
-	x = 2,
+	x = -4,
 	y = -22,
 	orientation = "HORIZONTAL",
 }
@@ -69,7 +69,7 @@ StyleDefault.healthbar = {
 	texture = 					path.."StatusBar",
 	width =108,
 	height = 9,
-	x = 6,
+	x = 0,
 	y = 3.5,
 	orientation = "HORIZONTAL",
 }
@@ -84,7 +84,7 @@ StyleDefault.healthborder = {
 	glowtexture =				path.."Highlight",
 	width = 180,
 	height = 60,
-	x = 6,
+	x = 0,
 	y = 4,
 	anchor = "CENTER",
 }
@@ -94,7 +94,7 @@ StyleDefault.eliteicon = {
 	glowtexture =				path.."HighlightElite",
 	width = 180,
 	height = 60,
-	x = 6,
+	x = 0,
 	y = 4,
 	anchor = "CENTER",
 	show = true,
@@ -104,7 +104,7 @@ StyleDefault.targetindicator = {
 	texture		 =				path.."Highlight",
 	width = 128,
 	height = 64,
-	x = 6,
+	x = 0,
 	y = 0,
 	anchor = "CENTER",
 	show = true,
@@ -114,7 +114,7 @@ StyleDefault.targetindicator_arrowtop = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
 	width = 64,
 	height = 12,
-	x = 6,
+	x = 0,
 	y = 36,
 	anchor = "CENTER",
 	show = true,
@@ -124,7 +124,7 @@ StyleDefault.targetindicator_arrowsides = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
 	width = 176,
 	height = 18,
-	x = 6,
+	x = 0,
 	y = 4,
 	anchor = "CENTER",
 	show = true,
@@ -134,7 +134,7 @@ StyleDefault.targetindicator_arrowright = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Right",
 	width = 18,
 	height = 18,
-	x = 28,
+	x = 22,
 	y = 4,
 	anchor = "RIGHT",
 	show = true,
@@ -144,7 +144,7 @@ StyleDefault.targetindicator_arrowleft = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Left",
 	width = 18,
 	height = 18,
-	x = -22,
+	x = -28,
 	y = 4,
 	anchor = "LEFT",
 	show = true,
@@ -155,7 +155,7 @@ StyleDefault.name = {
 	size = 16,
 	width = 128,
 	y = 18,
-	x = 6,
+	x = 0,
 	align = "CENTER",
 	--anchor = "CENTER",
 	--vertical = "CENTER",
@@ -165,7 +165,7 @@ StyleDefault.name = {
 StyleDefault.level = {
 	typeface =					font,
 	size = 8,
-	x = -42,
+	x = -48,
 	y = -3,
 	align = "CENTER",
 	shadow = true,
@@ -175,7 +175,7 @@ StyleDefault.customtext = {
 	typeface =					fontroboto,
 	size = 8,
 	width = 90,
-	x = 6,
+	x = 0,
 	y = 4.3,
 	align = "CENTER",
 	anchor = "CENTER",
@@ -187,7 +187,7 @@ StyleDefault.customtext = {
 StyleDefault.spelltext = {
 	typeface =					font,
 	size = 9,
-	x = 0,
+	x = -6,
 	y = -21,
 	width = 70,
 	align = "LEFT",
@@ -200,7 +200,7 @@ StyleDefault.spelltext = {
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = 9,
-	x = -25,
+	x = -31,
 	y = -21,
 	width = 70,
 	align = "RIGHT",
@@ -213,7 +213,7 @@ StyleDefault.durationtext = {
 StyleDefault.spellicon = {
 	width =10,
 	height = 10,
-	x = -10,
+	x = -16,
 	y = -21,
 	anchor = "RIGHT",
 }
@@ -221,7 +221,7 @@ StyleDefault.spellicon = {
 StyleDefault.raidicon = {
 	width = 14,
 	height = 14,
-	x = -66,
+	x = -72,
 	y = 22,
 	anchor = "CENTER",
 }
@@ -230,7 +230,7 @@ StyleDefault.threatborder = {
 	texture =					path.."ThreatBar",
 	width = 180,
 	height = 60,
-	x = 6,
+	x = 0,
 	y = 4,
 	anchor = "CENTER",
 }
@@ -246,7 +246,7 @@ StyleDefault.extrabar = {
 	backdrop =					"Interface/Tooltips/UI-Tooltip-Background",
 	width = 108,
 	height = 4,
-	x = 6,
+	x = 0,
 	y = -3.5,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
@@ -257,7 +257,7 @@ StyleDefault.extratext = {
 	size = 9,
 	width = 108,
 	height = 4,
-	x = 6,
+	x = 0,
 	y = -5.5,
 	align = "CENTER",
 	anchor = "CENTER",
@@ -280,8 +280,8 @@ StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 60
 StyleTextOnly.extrabar.y = -8
 StyleTextOnly.extratext.y = -10
-StyleTextOnly.extrabar.x = 0
-StyleTextOnly.extratext.x = 0
+StyleTextOnly.extrabar.x = -6
+StyleTextOnly.extratext.x = -6
 StyleTextOnly.name.show = true
 StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
@@ -289,29 +289,29 @@ StyleTextOnly.name.size = 16
 StyleTextOnly.name.width = 150
 StyleTextOnly.name.height = 20
 StyleTextOnly.name.y = 17
-StyleTextOnly.name.x = 0
+StyleTextOnly.name.x = -6
 StyleTextOnly.customtext.show = true
 StyleTextOnly.customtext.align = "CENTER"
 StyleTextOnly.customtext.anchor = "CENTER"
 StyleTextOnly.customtext.vertical = "BOTTOM"
 StyleTextOnly.customtext.size = 13
 StyleTextOnly.customtext.width = 500
-StyleTextOnly.customtext.x = 0
+StyleTextOnly.customtext.x = -6
 StyleTextOnly.customtext.y = 0
 StyleTextOnly.level.show = false
 StyleTextOnly.castbar.y = -28
-StyleTextOnly.castbar.x = 0
+StyleTextOnly.castbar.x = -6
 StyleTextOnly.castborder.y = -15
-StyleTextOnly.castborder.x = -7
+StyleTextOnly.castborder.x = -13
 StyleTextOnly.castnostop.y = -15
-StyleTextOnly.castnostop.x = -7
+StyleTextOnly.castnostop.x = -13
 StyleTextOnly.spelltext.y = -28
-StyleTextOnly.spelltext.x = 0
+StyleTextOnly.spelltext.x = -6
 StyleTextOnly.spellicon.y = -28
-StyleTextOnly.spellicon.x = -13
+StyleTextOnly.spellicon.x = -19
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false
-StyleTextOnly.raidicon.x = -66
+StyleTextOnly.raidicon.x = -72
 StyleTextOnly.raidicon.y = 10
 StyleTextOnly.raidicon.height = 14
 StyleTextOnly.raidicon.width = 14
@@ -328,17 +328,17 @@ Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon = { anchor = "RIGHT", x = 25, y = 2 }
-WidgetConfig.TotemIcon = { anchor = "RIGHT", x = 25, y = 2 }
-WidgetConfig.ThreatWheelWidget = { anchor = "LEFT", x = -52, y = 3 }
-WidgetConfig.ThreatLineWidget = {  x = 0 ,y = -10 }
-WidgetConfig.ComboWidget = { x = 8 ,y = -27 }
-WidgetConfig.RangeWidget = { anchor = "BOTTOM", x = 0 ,y = 0 }
-WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = -3 }
-WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 6 , y = 5, w = 107, h = 7}
-WidgetConfig.QuestWidget = { anchor = "LEFT" , x = 4,y = 5 }
-WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = 8,y = 14 }
-WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 8,y = VerticalAdjustment - 18 }
+WidgetConfig.ClassIcon = { anchor = "RIGHT", x = 19, y = 2 }
+WidgetConfig.TotemIcon = { anchor = "RIGHT", x = 19, y = 2 }
+WidgetConfig.ThreatWheelWidget = { anchor = "LEFT", x = -58, y = 3 }
+WidgetConfig.ThreatLineWidget = {  x = -6 ,y = -10 }
+WidgetConfig.ComboWidget = { x = 2 ,y = -27 }
+WidgetConfig.RangeWidget = { anchor = "BOTTOM", x = -6 ,y = 0 }
+WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = -6 ,y = -3 }
+WidgetConfig.AbsorbWidget =	{ anchor="CENTER", x = 0 , y = 5, w = 107, h = 7}
+WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -2,y = 5 }
+WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = 2,y = 14 }
+WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 2,y = VerticalAdjustment - 18 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=6, y=-2, w = 107, h = 7}
 --if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
 	--WidgetConfig.DebuffWidgetPlus = { anchor = "CENTER" , x = 15 ,y = VerticalAdjustment + 24 }

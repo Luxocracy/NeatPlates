@@ -303,5 +303,6 @@ NeatPlatesHubDefaults = {
 	FocusAsTarget = false,
 	AltShortening = (LOCALE_zhCN or LOCALE_zhTW) or false,
 	FrameBarWidth = 1,
+	CastBarWidth = 1,
 	--AdvancedHealthTextList = [[return unit.health]],
 }

@@ -570,6 +570,7 @@ local function BuildHubPanel(panel)
 	panel.AdvancedEnableUnitCache, F = CreateQuickCheckbutton(objectName.."AdvancedEnableUnitCache", L["Enable Title Caching"], AlignmentColumn, F)
 	panel.FrameVerticalPosition, F = CreateQuickSlider(objectName.."FrameVerticalPosition", L["Vertical Position of Artwork: (May cause targeting problems)"], nil, nil, AlignmentColumn, F, 0, 4)
 	panel.FrameBarWidth, F = CreateQuickSlider(objectName.."FrameBarWidth", L["Health Bar Width (%)"], nil, nil, AlignmentColumn, F, 0, 4)
+	panel.CastBarWidth, F = CreateQuickSlider(objectName.."CastBarWidth", L["Cast Bar Width (%)"], nil, nil, AlignmentColumn, F, 0, 4)
 
 	--panel.AdvancedCustomCodeLabel = CreateQuickItemLabel(nil, "Custom Theme Code:", AlignmentColumn, panel.FrameVerticalPosition, 0, 4)
 	--panel.AdvancedCustomCodeTextbox = CreateQuickEditbox(objectName.."AdvancedCustomCodeTextbox", nil, nil, AlignmentColumn, panel.AdvancedHealthTextLabel, 8)
@@ -623,6 +624,7 @@ local function BuildHubPanel(panel)
 
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)
+	SetSliderMechanics(panel.CastBarWidth, 1, .3, 1.7, .02)
 
 	SetSliderMechanics(panel.HighHealthThreshold, .7, .01, 1, .01)
 	SetSliderMechanics(panel.LowHealthThreshold, .3, .01, 1, .01)
