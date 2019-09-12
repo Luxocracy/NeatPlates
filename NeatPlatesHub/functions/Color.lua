@@ -34,6 +34,7 @@ local IsPartyMember = NeatPlatesUtility.IsPartyMember
 local HexToRGB = NeatPlatesUtility.HexToRGB
 
 local IsOffTanked = NeatPlatesHubFunctions.IsOffTanked
+local ThreatExceptions = NeatPlatesHubFunctions.ThreatExceptions
 local IsTankingAuraActive = NeatPlatesWidgets.IsPlayerTank
 local InCombatLockdown = InCombatLockdown
 local StyleDelegate = NeatPlatesHubFunctions.SetStyleNamed
@@ -63,28 +64,6 @@ local function ColorFunctionBlack()
 	return HubData.Colors.Black
 end
 
-local function ThreatExceptions(unit, isTank, noSafeColor)
-	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
-	-- Mobs from Reaping affix
-	local souls = {
-		["148893"] = true,
-		["148894"] = true,
-		["148716"] = true,
-	}
-
-	-- Classic temporary fix, if enemy unit is in combat & the player is either in a party or has a pet.
-	local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-	local showClassicThreat = (unit.isInCombat and playerIsTarget and (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")))
-
-	-- Special case dealing with mobs from Reaping affix and units that fixate
-	if showClassicThreat or souls[unitGUID] or unit.fixate then
-		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-				return noSafeColor or LocalVars.ColorThreatSafe
-		else
-			return LocalVars.ColorThreatWarning
-		end
-	end
-end
 
 --[[
 unit.threatValue
@@ -173,7 +152,8 @@ local function ColorFunctionByThreat(unit)
 
 	if classColor then
 		return classColor
-	elseif InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
+	elseif (LocalVars.SafeColorSolo and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat and not (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet"))) then return LocalVars.ColorThreatSafe
+	elseif (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")) and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank)
 
@@ -393,7 +373,7 @@ end
 
 -- Warning Glow (Auto Detect)
 local function WarningBorderFunctionByThreat(unit)
-	if InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
+	if (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")) and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and unit.isInCombat then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
 		local threatException = ThreatExceptions(unit, isTank, true)
 

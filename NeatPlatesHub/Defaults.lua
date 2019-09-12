@@ -151,6 +151,7 @@ NeatPlatesHubDefaults = {
 	ThreatMode = 1,
 	ThreatGlowEnable = true,
 	ThreatSoloEnable = false,
+	SafeColorSolo = false,
 	ColorShowPartyAggro = false,
 	ColorPartyAggroBar = false,
 	ColorPartyAggroGlow = true,
