@@ -280,6 +280,7 @@ do
 		widgetParent:SetFrameStrata("BACKGROUND")
 
 		widgetParent:SetFrameLevel(textFrame:GetFrameLevel() - 1)
+		castbar:SetFrameLevel(widgetParent:GetFrameLevel() + 1)
 
 		topFrameLevel = topFrameLevel + 20
 		extended.defaultLevel = topFrameLevel
