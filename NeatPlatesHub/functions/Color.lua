@@ -34,6 +34,7 @@ local IsPartyMember = NeatPlatesUtility.IsPartyMember
 local HexToRGB = NeatPlatesUtility.HexToRGB
 
 local IsOffTanked = NeatPlatesHubFunctions.IsOffTanked
+local ThreatExceptions = NeatPlatesHubFunctions.ThreatExceptions
 local IsTankingAuraActive = NeatPlatesWidgets.IsPlayerTank
 local InCombatLockdown = InCombatLockdown
 local StyleDelegate = NeatPlatesHubFunctions.SetStyleNamed
@@ -61,26 +62,6 @@ HubData.Functions.ColorFunctionByHealth = ColorFunctionByHealth
 
 local function ColorFunctionBlack()
 	return HubData.Colors.Black
-end
-
-local function ThreatExceptions(unit, isTank, noSafeColor)
-	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
-	-- Mobs from Reaping affix
-	local souls = {
-		["148893"] = true,
-		["148894"] = true,
-		["148716"] = true,
-	}
-
-	-- Special case dealing with mobs from Reaping affix and units that fixate
-	if souls[unitGUID] or unit.fixate then
-		local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
-				return noSafeColor or LocalVars.ColorThreatSafe
-		else
-			return LocalVars.ColorThreatWarning
-		end
-	end
 end
 
 --[[

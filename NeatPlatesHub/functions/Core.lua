@@ -71,6 +71,25 @@ local function IsOffTanked(unit)
 	end
 end
 
+local function ThreatExceptions(unit, isTank, noSafeColor)
+	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
+	-- Mobs from Reaping affix
+	local souls = {
+		["148893"] = true,
+		["148894"] = true,
+		["148716"] = true,
+	}
+
+	-- Special case dealing with mobs from Reaping affix and units that fixate
+	if souls[unitGUID] or unit.fixate then
+		local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
+		if (playerIsTarget and isTank) or (not playerIsTarget and not isTank) then
+				return noSafeColor or LocalVars.ColorThreatSafe
+		else
+			return LocalVars.ColorThreatWarning
+		end
+	end
+end
 
 -- General
 local function DummyFunction() return end
@@ -487,6 +506,7 @@ end
 -- Function List
 ---------------------------------------------
 NeatPlatesHubFunctions.IsOffTanked = IsOffTanked
+NeatPlatesHubFunctions.ThreatExceptions = ThreatExceptions
 NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions

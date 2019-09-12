@@ -11,6 +11,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local InCombatLockdown = InCombatLockdown
 local GetFriendlyThreat = NeatPlatesUtility.GetFriendlyThreat
 local IsOffTanked = NeatPlatesHubFunctions.IsOffTanked
+local ThreatExceptions = NeatPlatesHubFunctions.ThreatExceptions
 local IsTankingAuraActive = NeatPlatesWidgets.IsPlayerTank
 local IsHealer = NeatPlatesUtility.IsHealer
 local UnitFilter = NeatPlatesHubFunctions.UnitFilter
@@ -97,9 +98,18 @@ end
 -- By Threat (Auto Detect)
 local function ScaleFunctionByThreat(unit)
 	if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return ScaleFunctionByThreatHigh(unit) end
+	local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
+	local threatException = ThreatExceptions(unit, isTank, true)
 
-	if (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
-		or LocalVars.ThreatWarningMode == "Tank" then
+	if threatException then
+		if threatException == true then
+			return
+		else
+			return LocalVars.ScaleSpotlight
+		end
+	end
+
+	if isTank then
 			return ScaleFunctionByThreatLow(unit)	-- tank mode
 	else return ScaleFunctionByThreatHigh(unit) end
 
