@@ -460,6 +460,7 @@ L["Enable Title Caching"] = true
 
 L["Vertical Position of Artwork: (May cause targeting problems)"] = true
 L["Health Bar Width (%)"] = true
+L["Cast Bar Width (%)"] = true
 
 L["Clear Cache"] = true
 L["Blizzard Nameplate Motion & Visibility..."] = true

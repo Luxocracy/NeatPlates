@@ -35,9 +35,9 @@ end
 local function UpdatePlayerRole(playerTankAura)
 	if not playerTankAura then
 		if playerClass == "WARRIOR" then
-			playerTankAura = GetShapeshiftForm(2) -- Defensive Stance
+			playerTankAura = GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
 		elseif playerClass == "DRUID" then
-			playerTankAura = GetShapeshiftForm(1) -- Bear Form
+			playerTankAura = GetShapeshiftForm() == 1 -- Bear Form
 		elseif playerClass == "PALADIN" then
 			for i=1,40 do
 			  local spellId = select(10, UnitBuff("player",i))
@@ -121,6 +121,7 @@ TankWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 TankWatcher:RegisterEvent("UNIT_PET")
 TankWatcher:RegisterEvent("PET_BAR_UPDATE_USABLE")
 TankWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+TankWatcher:RegisterEvent("UNIT_INVENTORY_CHANGED")
 if playerClass == "PALADIN" then
 	TankWatcher:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end

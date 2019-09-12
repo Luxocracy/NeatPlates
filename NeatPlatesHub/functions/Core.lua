@@ -232,14 +232,24 @@ local function ApplyCustomBarSize(style, defaults)
 
 	if defaults then
 		-- Alter Widths
+		-- Healthbar
 		style.threatborder.width = defaults.threatborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthborder.width = defaults.healthborder.width * (LocalVars.FrameBarWidth or 1)
 		style.healthbar.width = defaults.healthbar.width * (LocalVars.FrameBarWidth or 1)
 		style.frame.width = defaults.frame.width * (LocalVars.FrameBarWidth or 1)
 		style.customtext.width = defaults.customtext.width * (LocalVars.FrameBarWidth or 1)
+		style.level.width = defaults.level.width * (LocalVars.FrameBarWidth or 1)
+		style.healthbar.x = defaults.healthbar.x * (LocalVars.FrameBarWidth or 1)
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
 		style.level.x = defaults.level.x * (LocalVars.FrameBarWidth or 1)
 		
+		-- Castbar
+		style.castborder.width = defaults.castborder.width * (LocalVars.CastBarWidth or 1)
+		style.castnostop.width = defaults.castnostop.width * (LocalVars.CastBarWidth or 1)
+		style.castbar.width = defaults.castbar.width * (LocalVars.CastBarWidth or 1)
+		style.spellicon.x = defaults.spellicon.x * (LocalVars.CastBarWidth or 1)
+		style.spelltext.x = defaults.spelltext.x * (LocalVars.CastBarWidth or 1)
+		style.durationtext.x = defaults.durationtext.x * (LocalVars.CastBarWidth or 1)
 	
 		-- Defined elsewhere so they need to be handled differently
 		style.target.width = style.target.width * (LocalVars.FrameBarWidth or 1)
