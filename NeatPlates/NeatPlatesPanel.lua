@@ -183,20 +183,23 @@ local function ValidateProfileName(name, callback)
 	end
 end
 
-local function SetNameplateVisibility(cvar, mode, combat, inInstance)
-	if mode == DURING_COMBAT then
+local function SetNameplateVisibility(cvar, mode, combat)
+	if mode == DURING_COMBAT and combat ~= nil then
 		if combat then
 			SetCVar(cvar, 1)
 		else
 			SetCVar(cvar, 0)
 		end
-	elseif mode == OUT_OF_COMBAT then
+	elseif mode == OUT_OF_COMBAT and combat ~= nil then
 		if combat then
 			SetCVar(cvar, 0)
 		else
 			SetCVar(cvar, 1)
 		end
 	elseif mode == NOT_IN_INSTANCE then
+		local inInstance, instanceType = IsInInstance()
+		inInstance = instanceType == "party" or instanceType == "raid"
+
 		if inInstance then
 			SetCVar(cvar, 0)
 		else
@@ -872,9 +875,8 @@ function panelevents:PLAYER_ENTERING_WORLD()
 	NeatPlatesHubFunctions.ApplyRequiredCVars(NeatPlatesOptions)
 
 	-- Nameplate automation in case of instance
-	local inInstance, instanceType = IsInInstance()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false, instanceType == "party" or instanceType == "raid")
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false, instanceType == "party" or instanceType == "raid")
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation)
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation)
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()
