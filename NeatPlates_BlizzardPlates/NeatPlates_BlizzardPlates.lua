@@ -32,7 +32,7 @@ StyleDefault.targetindicator = {
 
 
 StyleDefault.healthborder = {
-	texture		 =				path.."BlizzarPlates-Border",
+	texture		 =				path.."BlizzardPlates-Border",
 	width = 128,
 	height = 32,
 	anchor = "CENTER",
@@ -50,7 +50,7 @@ StyleDefault.healthbar = {
 }
 
 StyleDefault.eliteicon = {
-	texture = 					path.."EliteBlizzarPlatesIcon",
+	texture = 					path.."EliteBlizzardPlatesIcon",
 	width = 64,
 	height = 32,
 	x = 48,
@@ -112,7 +112,7 @@ StyleDefault.threatborder = {
 }
 
 StyleDefault.castborder = {
-	texture =					path.."BlizzarPlates-CastBar",
+	texture =					path.."BlizzardPlates-CastBar",
 	width = 128,
 	height = 32,
 	x = 0,
@@ -121,7 +121,7 @@ StyleDefault.castborder = {
 }
 
 StyleDefault.castnostop = {
-	texture = 					path.."BlizzarPlates-CastBar-Shield",
+	texture = 					path.."BlizzardPlates-CastBar-Shield",
 	width = 128,
 	height = 32,
 	x = 0,
