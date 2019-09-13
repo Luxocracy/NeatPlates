@@ -31,6 +31,7 @@ L["Friendly Nameplates"] = true
 L["General Aura Filters"] = true
 
 L["Other Options"] = true
+L["Emulate Target Nameplate"] = true
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
@@ -510,6 +511,7 @@ L["Offset Y"] = true
 L["Might resolve some issues with health not updating properly"] = true
 L["Allows some CVars to work(Might require a /reload)"] = true
 L["CVars could not applied due to combat"] = true
+L["This feature is highly experimental, use on your own risk"] = true
 
 -- Profile Panel
 L["Makes the Nameplates non-interactable"] = true
@@ -539,8 +541,6 @@ L["Display Scale Options"] = true
 
 -- Classic Specific
 
-L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+%.?[0-9]?)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' or '15.5 sec' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'sec'
-L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+%.?[0-9]?)%smin" -- Used to determine aura durations ex. in english it's '15 min' or '15.5 min' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'min'
 L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
 L["Color Cast Bars by School"] = true

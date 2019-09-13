@@ -6,6 +6,7 @@
 local addonName, NeatPlatesInternal = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
+local NeatPlatesTarget
 local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 NeatPlates = {}
@@ -96,6 +97,20 @@ local OnUpdate
 local OnNewNameplate
 local ForEachPlate
 
+-- Show Custom NeatPlates target frame
+local ShowEmulatedTargetPlate = false
+local function toggleNeatPlatesTarget(show, ...)
+	if not ShowEmulatedTargetPlate then return end
+	local _,_,_,x,y = ...
+	local target = UnitExists("target")
+	if not show then OnHideNameplate(NeatPlatesTarget, "target"); return end
+	if target then
+		OnShowNameplate(NeatPlatesTarget, "target")
+		if not x then x, y = GetCursorPosition() end
+		NeatPlatesTarget:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y+20)
+	end
+end
+
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 	local scaleStandard = activetheme.SetScale()
@@ -180,7 +195,8 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				plate:GetChildren():Hide()
+				local children = plate:GetChildren()
+				if children then children:Hide() end
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					local unitGUID = UnitGUID(unit.unitid)
@@ -405,7 +421,7 @@ do
 
 		PlatesVisible[plate] = unitid
 		PlatesByUnit[unitid] = plate
-		if unitGUID then PlatesByGUID[unitGUID] = plate end
+		if unitGUID and unitid ~= "target" then PlatesByGUID[unitGUID] = plate end
 
 		unit.frame = extended
 		unit.alpha = 0
@@ -460,7 +476,7 @@ do
 
 		PlatesVisible[plate] = nil
 		PlatesByUnit[unitid] = nil
-		if unitGUID then PlatesByGUID[unitGUID] = nil end
+		if unitGUID and unitid ~= "target" then PlatesByGUID[unitGUID] = nil end
 
 		visual.castbar:Hide()
 		visual.castbar:SetScript("OnUpdate", nil)
@@ -1122,6 +1138,9 @@ do
 		if plate and not UnitIsUnit("player", unitid) then
 			local children = plate:GetChildren()
 			if children then children:Hide() end --Avoids errors incase the plate has no children
+
+			if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
+
 	 		OnShowNameplate(plate, unitid)
 	 	end
 	end
@@ -1130,11 +1149,23 @@ do
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
 
+		if NeatPlatesTarget and plate.extended.unit.guid == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(true, plate:GetPoint()) end
+
 		OnHideNameplate(plate, unitid)
 	end
 
 	function CoreEvents:PLAYER_TARGET_CHANGED()
+		local unitAlive = UnitIsDead("target") == false;
+		local guid = UnitGUID("target")
 		HasTarget = UnitExists("target") == true;
+		-- Create a new target frame if needed
+		if not NeatPlatesTarget then
+			NeatPlatesTarget = NeatPlatesUtility:CreateTargetFrame()
+			OnNewNameplate(NeatPlatesTarget)
+		end
+		-- Show Target frame, if other frame doesn't exist and nisn't dead
+		if HasTarget then NeatPlatesTarget.unitGUID = guid end
+		toggleNeatPlatesTarget(HasTarget and unitAlive and not PlatesByGUID[guid])
 		SetUpdateAll()
 	end
 
@@ -1547,6 +1578,7 @@ NeatPlates.CleanSpellDB = CleanSpellDB
 function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates.ColorCastBars(enable) ColorCastBars = enable end
+function NeatPlates:ToggleEmulatedTargetPlate(show) if not show then toggleNeatPlatesTarget(false) end; ShowEmulatedTargetPlate = show end
 
 function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
