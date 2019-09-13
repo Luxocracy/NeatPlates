@@ -32,7 +32,7 @@ StyleDefault.targetindicator = {
 
 
 StyleDefault.healthborder = {
-	texture		 =				path.."Nameplate-Border",
+	texture		 =				path.."BlizzardPlates-Border",
 	width = 128,
 	height = 32,
 	anchor = "CENTER",
@@ -50,7 +50,7 @@ StyleDefault.healthbar = {
 }
 
 StyleDefault.eliteicon = {
-	texture = 					path.."EliteNameplateIcon",
+	texture = 					path.."EliteBlizzardPlatesIcon",
 	width = 64,
 	height = 32,
 	x = 48,
