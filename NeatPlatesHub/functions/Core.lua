@@ -72,6 +72,7 @@ local function IsOffTanked(unit)
 end
 
 local function ThreatExceptions(unit, isTank, noSafeColor)
+	if not unit or not unit.unitid then return end
 	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
 	-- Mobs from Reaping affix
 	local souls = {
@@ -254,8 +255,8 @@ local function ApplyCustomBarSize(style, defaults)
 		-- Healthbar
 		local Healthbar = {"threatborder", "healthborder", "healthbar", "frame", "customtext", "level", "name"}
 		for k,v in pairs(Healthbar) do
-			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.CastBarWidth or 1) end
-			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.CastBarWidth or 1) end
+			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.FrameBarWidth or 1) end
+			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.FrameBarWidth or 1) end
 		end
 
 		
