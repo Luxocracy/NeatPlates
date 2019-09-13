@@ -357,7 +357,7 @@ local function SetPanelValues(panel)
 	-- CVars
 	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
 	panel.NameplateStacking:SetChecked((function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)())
-	panel.NameplateMaxDistance:SetValue(string.gsub(GetCVar("nameplateMaxDistance"), "e1", "0"))
+	--panel.NameplateMaxDistance:SetValue(string.gsub(GetCVar("nameplateMaxDistance"), "e1", "0"))
 	panel.NameplateOverlapH:SetValue(GetCVar("nameplateOverlapH"))
 	panel.NameplateOverlapV:SetValue(GetCVar("nameplateOverlapV"))
 end
@@ -717,17 +717,17 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
 	panel.NameplateStacking:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateMotion", true) end)
 
-	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 20, 10, 100, 10, "ACTUAL", 250)
-	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
-	--panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
-	panel.NameplateMaxDistance.Callback = function(self) local val = self:GetValue(); SetCVar("nameplateMaxDistance", tostring((val-val%10)/10).."e1") end
+	--panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 20, 10, 100, 10, "ACTUAL", 250)
+	--panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	----panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
+	--panel.NameplateMaxDistance.Callback = function(self) local val = self:GetValue(); SetCVar("nameplateMaxDistance", tostring((val-val%10)/10).."e1") end
 
 	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -50)
+	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
 	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
 
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -50)
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 210, -50)
 	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
 
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)

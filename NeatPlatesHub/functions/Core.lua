@@ -83,7 +83,7 @@ local function ThreatExceptions(unit, isTank, noSafeColor)
 
 	-- Classic temporary fix, if enemy unit is in combat & the player is either in a party or has a pet.
 	local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-	local showClassicThreat = (unit.isInCombat and playerIsTarget and (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")))
+	local showClassicThreat = (unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and playerIsTarget and (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")))
 
 	-- Special case dealing with mobs from Reaping affix and units that fixate
 	if showClassicThreat or souls[unitGUID] or unit.fixate then
@@ -259,8 +259,8 @@ local function ApplyCustomBarSize(style, defaults)
 		-- Healthbar
 		local Healthbar = {"threatborder", "healthborder", "healthbar", "frame", "customtext", "level", "name"}
 		for k,v in pairs(Healthbar) do
-			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.CastBarWidth or 1) end
-			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.CastBarWidth or 1) end
+			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.FrameBarWidth or 1) end
+			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.FrameBarWidth or 1) end
 		end
 
 		
