@@ -73,7 +73,9 @@ end
 
 local function ThreatExceptions(unit, isTank, noSafeColor)
 	if not unit or not unit.unitid then return end
-	local unitGUID = select(6, strsplit("-", UnitGUID(unit.unitid)))
+	local unitGUID = UnitGUID(unit.unitid)
+	if not unitGUID then return end
+	unitGUID = select(6, strsplit("-", unitGUID))
 	-- Mobs from Reaping affix
 	local souls = {
 		["148893"] = true,
