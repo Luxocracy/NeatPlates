@@ -674,7 +674,7 @@ local function BuildInterfacePanel(panel)
 	-- Emulated Target Plate
 	panel.EmulatedTargetPlate = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EmulatedTargetPlate", panel, L["Emulate Target Nameplate"].."*")
 	panel.EmulatedTargetPlate:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
-	panel.EmulatedTargetPlate:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
+	panel.EmulatedTargetPlate:SetScript("OnClick", function(self) NeatPlates:ToggleEmulatedTargetPlate(self:GetChecked()) end)
 	panel.EmulatedTargetPlate.tooltipText = L["This feature is highly experimental, use on your own risk"]
 
 	-- Cast Bars

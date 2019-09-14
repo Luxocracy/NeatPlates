@@ -1,7 +1,9 @@
 ## Interface: 11302
 ## Title: LibClassicDurations
-## Version: 1.13
+## Version: 1.19
 ## Author: d87
+
+## X-Curse-Project-ID: 323800
 
 LibStub\LibStub.lua
 CallbackHandler-1.0\CallbackHandler-1.0.lua

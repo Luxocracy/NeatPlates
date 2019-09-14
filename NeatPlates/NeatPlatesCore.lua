@@ -99,11 +99,25 @@ local ForEachPlate
 
 -- Show Custom NeatPlates target frame
 local ShowEmulatedTargetPlate = false
+
+local function IsEmulatedFrame(guid)
+	if NeatPlatesTarget and NeatPlatesTarget.unitGUID == guid then return NeatPlatesTarget else return end
+end
+
 local function toggleNeatPlatesTarget(show, ...)
 	if not ShowEmulatedTargetPlate then return end
+	local friendlyPlates, enemyPlates = GetCVar("nameplateShowFriends") == "0" and UnitIsFriend("player", "target"), GetCVar("nameplateShowEnemies") == "0" and UnitIsEnemy("player", "target")
+
+	-- Create a new target frame if needed
+	if not NeatPlatesTarget then
+		NeatPlatesTarget = NeatPlatesUtility:CreateTargetFrame()
+		OnNewNameplate(NeatPlatesTarget)
+	end
+
 	local _,_,_,x,y = ...
 	local target = UnitExists("target")
-	if not show then OnHideNameplate(NeatPlatesTarget, "target"); return end
+
+	if not show or friendlyPlates or enemyPlates then OnHideNameplate(NeatPlatesTarget, "target"); return end
 	if target then
 		OnShowNameplate(NeatPlatesTarget, "target")
 		if not x then x, y = GetCursorPosition() end
@@ -1164,7 +1178,7 @@ do
 			OnNewNameplate(NeatPlatesTarget)
 		end
 		-- Show Target frame, if other frame doesn't exist and nisn't dead
-		if HasTarget then NeatPlatesTarget.unitGUID = guid end
+		if HasTarget and NeatPlatesTarget then NeatPlatesTarget.unitGUID = guid end
 		toggleNeatPlatesTarget(HasTarget and unitAlive and not PlatesByGUID[guid])
 		SetUpdateAll()
 	end
@@ -1269,7 +1283,7 @@ do
 				-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
 				-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
 				-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
-				plate = PlatesByGUID[destGUID]
+				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
 
 				if plate then
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
@@ -1289,7 +1303,7 @@ do
 		if ShowCastBars and unitType and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
 			local currentTime = GetTime() * 1000
 			local spellEntry
-			plate = PlatesByGUID[sourceGUID]
+			plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
 			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
 			NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
 			if creatureID then
@@ -1316,7 +1330,7 @@ do
 				if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
 
 				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
-					local plate = PlatesByGUID[sourceGUID]
+					local plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
 					if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID].finished = true end -- Make sure we are on the same cast
 					if plate then OnStopCasting(plate) end
 				end)

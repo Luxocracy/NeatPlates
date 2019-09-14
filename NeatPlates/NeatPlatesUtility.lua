@@ -208,6 +208,7 @@ TooltipScanner:SetOwner( WorldFrame, "ANCHOR_NONE" );
 local UnitSubtitles = {}
 local function GetUnitSubtitle(unit)
 	local unitid = unit.unitid
+	local colorblindMode = GetCVar("colorblindMode") == "1" -- Color blind mode seems to shift this down one row.
 
 	-- Bypass caching while in an instance
 	--if inInstance or (not UnitExists(unitid)) then return end
@@ -233,7 +234,12 @@ local function GetUnitSubtitle(unit)
 
 
 		-- Tooltip Format Priority:  Faction, Description, Level
-		local toolTipText = TooltipTextLeft2:GetText() or "UNKNOWN"
+		local toolTipText
+		if colorblindMode then 
+			toolTipText = TooltipTextLeft3:GetText() or "UNKNOWN"
+		else
+			toolTipText = TooltipTextLeft2:GetText() or "UNKNOWN"
+		end
 
 		if string.match(toolTipText, UNIT_LEVEL_TEMPLATE) then
 			subTitle = ""
