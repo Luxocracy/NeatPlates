@@ -27,7 +27,7 @@ local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	         	-- Plate Lists
 local PlatesByUnit = {}
 local PlatesByGUID = {}
-local nameplate, extended, bars, regions, visual, carrier, plateid			    -- Temp/Local References
+local nameplate, extended, bars, regions, visual, carrier			    					-- Temp/Local References
 local unit, unitcache, style, stylename, unitchanged, threatborder				  -- Temp/Local References
 local numChildren = -1                                                     	-- Cache the current number of plates
 local activetheme = {}                                                    	-- Table Placeholder
@@ -202,7 +202,7 @@ do
 	local topFrameLevel = 0
 
 	-- ApplyPlateExtesion
-	function OnNewNameplate(plate, plateid)
+	function OnNewNameplate(plate, unitid)
 
     -- NeatPlates Frame
     --------------------------------
@@ -410,7 +410,7 @@ do
 		unit.alpha = 0
 		unit.isTarget = false
 		unit.isMouseover = false
-		unit.unitid = plateid
+		unit.unitid = unitid
 		extended.unitcache = ClearIndices(extended.unitcache)
 		extended.stylename = ""
 		extended.Active = true
