@@ -146,6 +146,8 @@ local function AlphaDelegate(...)
 	local unit = ...
 	local alpha
 
+	if not unit or not unit.unitid then return LocalVars.OpacitySpotlight end
+
 	if LocalVars.UnitSpotlightOpacityEnable and LocalVars.UnitSpotlightLookup[unit.name] then
 		return LocalVars.UnitSpotlightOpacity
 	end

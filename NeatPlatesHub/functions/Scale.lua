@@ -150,7 +150,7 @@ local function ScaleDelegate(...)
 	--if LocalVars.UnitSpotlightScaleEnable and LocalVars.UnitSpotlightLookup[unit.name] then
 	--	return LocalVars.UnitSpotlightScale
 	--end
-	if not unit then return LocalVars.ScaleStandard end
+	if not unit or not unit.unitid then return LocalVars.ScaleStandard end
 
 	-- Filter
 	if (LocalVars.FilterScaleLock or (not (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)))) and UnitFilter(unit) then
