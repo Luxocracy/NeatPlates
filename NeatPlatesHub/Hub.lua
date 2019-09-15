@@ -825,7 +825,11 @@ HubHandler:SetScript("OnEvent", function(...)
 	local TPCHubEnabled = GetAddOnEnableState(player, "TidyPlatesContinuedHub") ~= 0
 
 	-- Determine which client we are on (Retail or Classic)
-	if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then VersionWarning() end
+	if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then
+		VersionWarning()
+		HubHandler:UnregisterEvent("ADDON_LOADED")
+		return
+	end
 
 	if addon == "NeatPlatesHub" and (not TPCEnabled or not TPCHubEnabled) then
 		LoadProfiles(NeatPlatesHubSettings.profiles)
