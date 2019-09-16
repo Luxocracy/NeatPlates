@@ -185,6 +185,12 @@ function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
 	else onDone() end
 end
 
+-- Split guid
+local function ParseGUID(guid)
+	if guid then return strsplit("-", guid) end
+	return
+end
+
 
 NeatPlatesUtility.abbrevNumber = valueToString
 NeatPlatesUtility.copyTable = copytable
@@ -194,6 +200,7 @@ NeatPlatesUtility.HexToRGB = HexToRGB
 NeatPlatesUtility.RGBToHex = RGBToHex
 NeatPlatesUtility.round = round
 NeatPlatesUtility.fade = fade
+NeatPlatesUtility.ParseGUID = ParseGUID
 
 ------------------------------------------
 -- GameTooltipScanner
@@ -1132,6 +1139,7 @@ local function CreateTargetFrame()
 	NeatPlatesTarget:SetPoint("CENTER", UIParent, "CENTER", 0, 300)
 	NeatPlatesTarget:SetWidth(200)
 	NeatPlatesTarget:SetHeight(200)
+	NeatPlatesTarget:SetClampedToScreen(true)
 	return frame
 end
 
