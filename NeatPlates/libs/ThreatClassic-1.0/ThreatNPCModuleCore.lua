@@ -1,11 +1,5 @@
-local MAJOR_VERSION = "ThreatClassic-1.0"
-local MINOR_VERSION = 4
-
-if MINOR_VERSION > _G.ThreatLib_MINOR_VERSION then
-	_G.ThreatLib_MINOR_VERSION = MINOR_VERSION
-end
-
-ThreatLib_funcs[#ThreatLib_funcs + 1] = function()
+local ThreatLib = LibStub and LibStub("ThreatClassic-1.0", true)
+if not ThreatLib then return end
 
 ---------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------
@@ -100,7 +94,6 @@ local REACTION_ATTACKABLE = bit_bor(COMBATLOG_OBJECT_REACTION_HOSTILE, COMBATLOG
 ---------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------
 
-local ThreatLib = _G.ThreatLib
 local new, del, newHash, newSet = ThreatLib.new, ThreatLib.del, ThreatLib.newHash, ThreatLib.newSet
 local ThreatLibNPCModuleCore = ThreatLib:GetModule("NPCCore", true) or ThreatLib:NewModule("NPCCore", nil, "AceEvent-3.0", "AceTimer-3.0")
 
@@ -144,9 +137,9 @@ end
 
 local onyThreat = function(mob, target)
 	local npcID = ThreatLib:NPCID(mob)
-	if npcID and npcID == 10184 then
-		ModifyThreat(mob, target, 0.75, 0) -- set Onyxia threat *0.75 on Knock Away
-	end
+	if npcID and npcID ~= 10184 then return end
+
+	ModifyThreat(mob, target, 0.75, 0) -- set Onyxia threat *0.75 on Knock Away
 end
 
 local halveThreat = function(mob, target)
@@ -210,7 +203,7 @@ function ThreatLibNPCModuleCore:OnInitialize()
 	self.ModifyThreatSpells = {}
 
 	-- Necessary for WoW Classic
-	self.ModifyThreatSpells[19633] = onyThreat
+	self.ModifyThreatSpells[10101] = onyThreat -- 10101 (instead of 19633) because that's what in the lookup
 
 	for i = 1, #threatHalveSpellIDs do
 		self.ModifyThreatSpells[threatHalveSpellIDs[i]] = halveThreat
@@ -337,7 +330,8 @@ function ThreatLibNPCModuleCore:COMBAT_LOG_EVENT_UNFILTERED(event, ...)
 			unitID = "pet"
 		end
 		if unitID then
-			spellId = ThreatLib.Classic and ThreatLib:GetNPCSpellID(spellName) or spellId
+			-- spellId = ThreatLib.Classic and ThreatLib:GetNPCSpellID(spellName) or spellId
+			spellId = ThreatLib:GetNPCSpellID(spellName) or spellId
 			local func = self.ModifyThreatSpells[spellId]
 			if func then
 				func(sourceGUID, unitID)
@@ -453,7 +447,8 @@ function ThreatLibNPCModuleCore.modulePrototype:COMBAT_LOG_EVENT_UNFILTERED(even
 
 	local timestamp, subEvent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, _, auraType = CombatLogGetCurrentEventInfo()
 
-	spellId = ThreatLib.Classic and ThreatLib:GetNPCSpellID(spellName) or spellId
+	-- spellId = ThreatLib.Classic and ThreatLib:GetNPCSpellID(spellName) or spellId
+	spellId = ThreatLib:GetNPCSpellID(spellName) or spellId
 
 	if subEvent == "UNIT_DIED" then
 		if bit_band(destFlags, COMBATLOG_OBJECT_TYPE_NPC) == COMBATLOG_OBJECT_TYPE_NPC then
@@ -611,6 +606,4 @@ end
 
 function ThreatLibNPCModuleCore.modulePrototype:WipeAllRaidThreat()
 	ThreatLib:RequestThreatClear()
-end
-
 end

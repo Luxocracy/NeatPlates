@@ -1229,11 +1229,15 @@ do
 	----------------------------------------
 	-- Game Events
 	----------------------------------------
+	local builtThisSession = false
 	function CoreEvents:PLAYER_ENTERING_WORLD()
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
 		--if not NeatPlatesSpellDB.default then NeatPlates.BuildDefaultSpellDB() end
-		NeatPlates.BuildDefaultSpellDB() -- Temporarily force a rebuild on login as this is a work in progress
-		NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
+		if not builtThisSession then
+			NeatPlates.BuildDefaultSpellDB() -- Temporarily force a rebuild on login as this is a work in progress
+			NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
+			builtThisSession = true
+		end
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1384,7 +1388,7 @@ do
 				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
 
 				if plate then
-					if event == "SPELL_AURA_APPLIED" and spellCCList[spellName] then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
+					if event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and not spellCCList[spellName] and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
 
 					-- If a pet interrupted, we need to change the source from the pet to the owner

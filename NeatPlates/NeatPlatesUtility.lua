@@ -18,7 +18,10 @@ NeatPlatesUtility.UnitDetailedThreatSituation = function (unit, mob)
 end
 
 NeatPlatesUtility.RequestActiveOnSolo = function(value)
-	ThreatLib:RequestActiveOnSolo(value)
+	C_Timer.After(1, function()
+		if ThreatLib.alwaysRunOnSolo == value then return
+		else ThreatLib.alwaysRunOnSolo = value end
+	end)
 end
 local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
 local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation

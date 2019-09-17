@@ -1,10 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 
-	<Script file="ThreatUtils.lua" />
-	<Script file="ThreatBlacklist.lua" />
+	<!-- <Script file="ChatThrottleLib.lua.lua" /> -->
 	<Script file="ThreatClassic-1.0.lua" />
-	<Script file="ThreatTPS.lua" />
 
 	<Script file="ThreatClassModuleCore.lua" />
 
@@ -53,6 +51,4 @@
 	<Script file="NPCModules\TempestKeep\TheEye\Solarian.lua" />
 	<Script file="NPCModules\ZulAman\Zuljin.lua" />
 	-->
-
-	<Script file="ThreatBoot.lua" />
 </Ui>
