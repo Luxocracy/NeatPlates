@@ -133,40 +133,40 @@ local function EventUnitAura(unitid)
 
 end
 
--- Combat logging for aura applications in Classic
-local function EventCombatLog(...)
-	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
-	local points = 0
+---- Combat logging for aura applications in Classic
+--local function EventCombatLog(...)
+--	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName = CombatLogGetCurrentEventInfo()
+--	local points = 0
 
-	-- Tracking Aura Durations
-	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
+--	-- Tracking Aura Durations
+--	if event == "SPELL_CAST_SUCCESS" then ComboPoints = GetComboPoints("player", "target") end
 
-	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
-		--if ComboPoints > GetComboPoints("player", "target") then points = ComboPoints end
-		spellID = select(7, GetSpellInfo(spellName))
-		--local desc = GetSpellDescription(spellID)
-		local duration, expiration
+--	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+--		--if ComboPoints > GetComboPoints("player", "target") then points = ComboPoints end
+--		spellID = select(7, GetSpellInfo(spellName))
+--		--local desc = GetSpellDescription(spellID)
+--		local duration, expiration
 
-		-- Lib workaround until NPC abilities get properly implemented
-		local spell = LibClassicDurations.spells[spellID]
-		if not spell then
-			spell = LibClassicDurations.npc_spells[spellID]
-			if spell then spell = {duration = spell} end
-		end
-		if spell then
-			duration = spell.duration
-		end
+--		-- Lib workaround until NPC abilities get properly implemented
+--		local spell = LibClassicDurations.spells[spellID]
+--		if not spell then
+--			spell = LibClassicDurations.npc_spells[spellID]
+--			if spell then spell = {duration = spell} end
+--		end
+--		if spell then
+--			duration = spell.duration
+--		end
 
-		if duration and type(duration) == "function" and duration > 0 then
-			expiration = GetTime()+duration
+--		if duration and type(duration) ~= "function" and duration > 0 then
+--			expiration = GetTime()+duration
 
-			AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
-			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
-			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
-		end
+--			AuraExpiration[destGUID] = AuraExpiration[destGUID] or {}
+--			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
+--			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
+--		end
 		
-	end
-end
+--	end
+--end
 
 
 
@@ -177,7 +177,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
-	["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
+	--["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -332,13 +332,13 @@ local function UpdateIconGrid(frame, unitid)
 				aura.expiration = expiration
 				aura.duration = duration
 
-				if aura.duration == 0 and aura.expiration == 0 then
-					if caster then casterGUID = UnitGUID(caster) end
-					if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterGUID] and AuraExpiration[unitGUID][casterGUID][spellid] then
-						aura.duration = AuraExpiration[unitGUID][casterGUID][spellid].duration
-						aura.expiration = AuraExpiration[unitGUID][casterGUID][spellid].expiration
-					end
-				end
+				--if aura.duration == 0 and aura.expiration == 0 then
+				--	if caster then casterGUID = UnitGUID(caster) end
+				--	if AuraExpiration[unitGUID] and AuraExpiration[unitGUID][casterGUID] and AuraExpiration[unitGUID][casterGUID][spellid] then
+				--		aura.duration = AuraExpiration[unitGUID][casterGUID][spellid].duration
+				--		aura.expiration = AuraExpiration[unitGUID][casterGUID][spellid].expiration
+				--	end
+				--end
 
 				-- Pandemic Base duration
 				if spellid and caster == "player" then
