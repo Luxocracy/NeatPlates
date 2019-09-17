@@ -1387,7 +1387,7 @@ do
 				-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
 				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
 
-				if plate then
+				if plate and plate.extended.unit.isCasting then
 					if event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and not spellCCList[spellName] and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
 
