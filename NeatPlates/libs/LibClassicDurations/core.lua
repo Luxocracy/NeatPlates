@@ -654,12 +654,6 @@ end
 function lib.GetAuraDurationByUnitDirect(unit, spellID, casterUnit, spellName)
     assert(spellID, "spellID is nil")
     local opts = spells[spellID]
-    if not opts then
-        local npc_aura_duration = npc_spells[spellID]
-        if npc_aura_duration then
-            opts = { duration = npc_aura_duration }
-        end
-    end
     if not opts then return end
     local dstGUID = UnitGUID(unit)
     local srcGUID = casterUnit and UnitGUID(casterUnit)
