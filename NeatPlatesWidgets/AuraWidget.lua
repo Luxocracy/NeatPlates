@@ -9,9 +9,10 @@
 
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local LibClassicDurations = LibStub("LibClassicDurations", true)
+local LCDUnitAura = function() end
 if LibClassicDurations then
     LibClassicDurations:Register("NeatPlates")
-    UnitAura = LibClassicDurations.UnitAuraWrapper
+    LCDUnitAura = LibClassicDurations.UnitAuraWrapper
 end
 
 
@@ -317,7 +318,7 @@ local function UpdateIconGrid(frame, unitid)
 			local aura = {}
 
 			do
-				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = LCDUnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
 				local casterGUID
 
 				aura.name = name

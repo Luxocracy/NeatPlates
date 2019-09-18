@@ -1416,7 +1416,7 @@ do
 				CTICache[sourceGUID] = {}
 			end)
 		elseif event == "SPELL_AURA_REMOVED" and spellCTI[spellName] then
-			CTICache[sourceGUID].timeout:Cancel()
+			if CTICache[sourceGUID] and CTICache[sourceGUID].timeout then CTICache[sourceGUID].timeout:Cancel() end
 			CTICache[sourceGUID] = {}
 		end
 		
