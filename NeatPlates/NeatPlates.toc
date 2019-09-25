@@ -1,8 +1,8 @@
-## Interface: 80200
+## Interface: 80205
 ## Title: NeatPlates
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Luxocracy and friends
-## Version: 8.2.0.15
+## Version: 8.2.5.1
 ## SavedVariables: NeatPlatesSettings
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 

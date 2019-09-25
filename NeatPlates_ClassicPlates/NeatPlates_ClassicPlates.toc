@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 80205
 ## Title: NeatPlates: |cffff6060ClassicPlates
 ## Notes: Vanilla-Style Plates.
 ## Author: delabarra 

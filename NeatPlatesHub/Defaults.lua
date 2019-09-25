@@ -106,6 +106,8 @@ NeatPlatesHubDefaults = {
 	OpacityFilterNonElite = false,			-- OpacityHideNonElites = false,
 	OpacityFilterEnemyNPC = false,
 	OpacityFilterPlayers = false,
+	OpacityFilterPartyMembers = false,
+	OpacityFilterNonPartyMembers = false,
 	OpacityFilterFriendlyNPC = false,
 	OpacityFilterInactive = false,
 	OpacityFilterMini = false,
