@@ -1244,8 +1244,6 @@ do
 			NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
 			builtThisSession = true
 		end
-
-		UpdateNameplateSize()
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1752,6 +1750,8 @@ function NeatPlates:RequestUpdate(plate) if plate then SetUpdateMe(plate) else S
 function NeatPlates:ActivateTheme(theme) if theme and type(theme) == 'table' then NeatPlates.ActiveThemeTable, activetheme = theme, theme; ResetPlates = true; end end
 function NeatPlates.OverrideFonts(enable) OverrideFonts = enable; end
 function NeatPlates.OverrideOutline(enable) OverrideOutline = enable; end
+
+function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
 
 function NeatPlates.THREAT_UPDATE(...)
 	local guid = select(3, ...)

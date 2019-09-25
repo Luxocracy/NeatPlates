@@ -408,6 +408,8 @@ local function ApplyProfileSettings(theme, source, ...)
 		C_NamePlate.SetNamePlateEnemyClickThrough(LocalVars.StyleEnemyBarsClickThrough or false)
 	end
 
+	NeatPlates.UpdateNameplateSize() -- Set/Update nameplate size
+
 	NeatPlates:ForceUpdate()
 	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 end
