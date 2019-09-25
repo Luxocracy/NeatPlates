@@ -23,6 +23,9 @@ NeatPlatesUtility.RequestActiveOnSolo = function(value)
 		else ThreatLib.alwaysRunOnSolo = value end
 	end)
 end
+
+ThreatLib.RegisterCallback(ThreatLib, "ThreatUpdated", function(...) NeatPlates.THREAT_UPDATE(...) end)
+
 local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
 local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
 
@@ -42,7 +45,7 @@ NeatPlatesUtility.IsFriend = function(...) end
 --NeatPlatesUtility.IsGuildmate = function(...) end
 --NeatPlatesUtility.IsPartyMember = function(...) end
 NeatPlatesUtility.IsGuildmate = UnitIsInMyGuild
-NeatPlatesUtility.IsPartyMember = function(unitid) return UnitInParty(unitid) or UnitInRaid(unitid) end
+NeatPlatesUtility.IsPartyMember = function(unitid) if not  unitid then return false end; return UnitInParty(unitid) or UnitInRaid(unitid) end
 
 local function RaidMemberCount()
 	if UnitInRaid("player") then

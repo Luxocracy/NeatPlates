@@ -14,6 +14,7 @@ local IsTankingAuraActive = NeatPlatesWidgets.IsPlayerTank
 local IsHealer = function() return false end
 local IsAuraShown = function() return false end
 local UnitFilter = NeatPlatesHubFunctions.UnitFilter
+local IsPartyMember = NeatPlatesUtility.IsPartyMember
 local function DummyFunction() end
 
 ------------------------------------------------------------------------------
@@ -96,8 +97,7 @@ end
 
 
 local function AlphaFunctionGroupMembers(unit)
-	local unitid = unit.unitid
-	if UnitInParty(unitid) then return LocalVars.OpacitySpotlight end
+	if IsPartyMember(unit.unitid) then return LocalVars.OpacitySpotlight end
 end
 
 

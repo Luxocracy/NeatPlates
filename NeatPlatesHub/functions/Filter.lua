@@ -4,6 +4,7 @@ local LocalVars = NeatPlatesHubDefaults
 
 local GetUnitSubtitle = NeatPlatesUtility.GetUnitSubtitle
 local GetUnitQuestInfo = NeatPlatesUtility.GetUnitQuestInfo
+local IsPartyMember = NeatPlatesUtility.IsPartyMember
 
 ------------------------------------------------------------------------------
 -- Unit Filter
@@ -15,6 +16,8 @@ local function UnitFilter(unit)
 	elseif LocalVars.OpacityFilterFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" then return true
 	elseif LocalVars.OpacityFilterEnemyNPC and unit.type == "NPC" and unit.reaction == "HOSTILE" then return true
 	elseif LocalVars.OpacityFilterPlayers and unit.type == "PLAYER" then return true
+	elseif LocalVars.OpacityFilterPartyMembers and unit.type == "PLAYER" and IsPartyMember(unit.unitid) then return true
+	elseif LocalVars.OpacityFilterNonPartyMembers and unit.type == "PLAYER" and not IsPartyMember(unit.unitid) then return true
 	elseif LocalVars.OpacityFilterMini and unit.isMini then return true
 	elseif LocalVars.OpacityFilterNonElite and (not unit.isElite) then return true
 	elseif LocalVars.OpacityFilterInactive then
