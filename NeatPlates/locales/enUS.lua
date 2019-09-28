@@ -31,6 +31,7 @@ L["Friendly Nameplates"] = true
 L["General Aura Filters"] = true
 
 L["Other Options"] = true
+L["Emulate Target Nameplate"] = true
 L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
@@ -136,12 +137,14 @@ L["Friendly Status Text"] = true
 	L["Health Deficit"] = true
 	L["Health Total & Percent"] = true
 	L["Target Of"] = true
+	L["Target Of (Class Colored)"] = true
 	L["Level"] = true
 	L["Level and Approx Health"] = true
 	L["Arena ID"] = true
 	L["Arena ID, Health, and Power"] = true
 
 L["Show Level"] = true
+L["Force Shadow on Status Text"] = true
 L["Show Different Server Indicator (*)"] = true
 L["Show Status Text on Target & Mouseover"] = true
 L["Show Status Text on Active/Damaged Units"] = true
@@ -393,6 +396,7 @@ L["Castbar Duration Style"] = true
 	L["Time Remaining"] = true
 	L["Time Elapsed"] = true
 	L["Time Elapsed/Cast Time"] = true
+L["Show Spell Icon"] = true
 L["Show Friendly Cast Bars"] = true
 L["Show Interrupted Cast Bar"] = true
 L["Show who Interrupted Cast"] = true
@@ -512,6 +516,7 @@ L["Offset Y"] = true
 L["Might resolve some issues with health not updating properly"] = true
 L["Allows some CVars to work(Might require a /reload)"] = true
 L["CVars could not applied due to combat"] = true
+L["This feature is highly experimental, use on your own risk"] = true
 
 -- Profile Panel
 L["Makes the Nameplates non-interactable"] = true
@@ -541,8 +546,6 @@ L["Display Scale Options"] = true
 
 -- Classic Specific
 
-L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+%.?[0-9]?)%ssec" -- Used to determine aura durations ex. in english it's '15 sec' or '15.5 sec' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'sec'
-L["CLASSIC_DURATION_MIN_PATTERN"] = "([0-9]+%.?[0-9]?)%smin" -- Used to determine aura durations ex. in english it's '15 min' or '15.5 min' where the numbers are '([0-9]+%.?[0-9]?)', the white space between the word is '%s', and the suffix is 'min'
 L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
 L["Color Cast Bars by School"] = true

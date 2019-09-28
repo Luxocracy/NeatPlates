@@ -166,6 +166,20 @@ local function HealthFunctionTargetOf(unit)
 	else return "" end
 	--]]
 end
+-- TargetOf(Class Color)
+local function HealthFunctionTargetOfClass(unit)
+	if unit.reaction ~= "FRIENDLY" and unit.isInCombat then
+		local targetof = unit.unitid.."target"
+		local name = UnitName(targetof) or ""
+
+		if UnitIsPlayer(targetof) then
+			local targetclass = select(2, UnitClass(targetof))
+			return ConvertRGBtoColorString(RaidClassColors[targetclass])..name
+		else
+			return name
+		end	
+	end
+end
 -- Level
 local function HealthFunctionLevel(unit)
 	local level = unit.level
@@ -355,6 +369,7 @@ AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunc
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionDeficit, L["Health Deficit"], "HealthFunctionDeficit")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTotal, L["Health Total & Percent"], "HealthFunctionTotal")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTargetOf, L["Target Of"], "HealthFunctionTargetOf")
+AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTargetOfClass, L["Target Of (Class Colored)"], "HealthFunctionTargetOfClass")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionLevel, L["Level"], "HealthFunctionLevel")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionLevelHealth, L["Level and Approx Health"], "HealthFunctionLevelHealth")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionArenaIDOnly, L["Arena ID"], "HealthFunctionArenaIDOnly")

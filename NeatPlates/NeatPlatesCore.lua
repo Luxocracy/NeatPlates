@@ -1503,9 +1503,12 @@ end
 function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
 
-function NeatPlates:ToggleInterruptedCastbars(showIntCast, showIntWhoCast) ShowIntCast = showIntCast; ShowIntWhoCast = showIntWhoCast end
 function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
-function NeatPlates:ToggleServerIndicator(showIndicator) ShowServerIndicator = showIndicator end
+function NeatPlates:SetCoreVariables(LocalVars)
+	ShowIntCast = LocalVars.IntCastEnable
+	ShowIntWhoCast = LocalVars.IntCastWhoEnable
+	ShowServerIndicator = LocalVars.TextShowServerIndicator
+end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end
 
