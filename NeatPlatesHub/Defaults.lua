@@ -132,6 +132,7 @@ NeatPlatesHubDefaults = {
 	-- Text
 	---------------------------------------
 	TextShowLevel = false,
+	TextStatusForceShadow = false,
 	TextUseBlizzardFont = false,
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
@@ -219,6 +220,7 @@ NeatPlatesHubDefaults = {
 	SpellCastEnableFriendly = false,
 	IntCastEnable = true,
 	IntCastWhoEnable = true,
+	SpellIconEnable = true,
 
 	-- Status Text
 	---------------------------------------

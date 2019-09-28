@@ -39,6 +39,7 @@ local InstanceStatus = NeatPlatesUtility.InstanceStatus
 
 local LastErrorMessage = 0
 
+local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 
 -- Combat
 local IsEnemyTanked = NeatPlatesWidgets.IsEnemyTanked
@@ -325,7 +326,18 @@ local function ApplyStyleCustomization(style, defaults)
 	style.focus.show = (LocalVars.HighlightFocusMode > 2)
 	style.mouseover.show = (LocalVars.HighlightMouseoverMode > 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
+	style.spellicon.show = (defaults.spellicon.show and LocalVars.SpellIconEnable)
+	style.customtext.shadow = LocalVars.TextStatusForceShadow or defaults.customtext.shadow
 	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
+
+	if not style.spellicon.show and style.castborder.noicon ~= EMPTY_TEXTURE and style.castnostop.noicon ~= EMPTY_TEXTURE then
+		style.castborder.texture = defaults.castborder.noicon
+		style.castnostop.texture = defaults.castnostop.noicon
+	else
+		style.castborder.texture = defaults.castborder.texture
+		style.castnostop.texture = defaults.castnostop.texture
+	end
+	
 
 	style.target.color = LocalVars.ColorTarget
 	style.focus.color = LocalVars.ColorFocus
@@ -396,8 +408,7 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlatesWidgets.SetEmphasizedSlots(math.ceil(LocalVars.EmphasizedSlots))
 
 	-- There might be a better way to handle these settings, but this works for now.
-	NeatPlates:ToggleInterruptedCastbars(LocalVars.IntCastEnable, LocalVars.IntCastWhoEnable)	-- Toggle Interrupt Castbar
-	--NeatPlates:ToggleServerIndicator(LocalVars.TextShowServerIndicator)	-- Toggle Server Indicator
+	NeatPlates:SetCoreVariables(LocalVars)
 
 	-- Toggle Threat lib activation for solo play
 	NeatPlatesUtility.RequestActiveOnSolo(LocalVars.ThreatSoloEnable)

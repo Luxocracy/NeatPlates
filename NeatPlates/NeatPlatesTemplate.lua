@@ -86,6 +86,7 @@ TemplateTheme.threatborder = {
 
 TemplateTheme.castborder = {
 	texture =					EMPTY_TEXTURE,
+	noicon =					EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,
@@ -96,6 +97,7 @@ TemplateTheme.castborder = {
 
 TemplateTheme.castnostop = {
 	texture = 				EMPTY_TEXTURE,
+	noicon = 				EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,

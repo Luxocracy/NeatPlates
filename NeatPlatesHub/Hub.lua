@@ -140,6 +140,7 @@ local function BuildHubPanel(panel)
 
 	-- Other
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Level"], AlignmentColumn, F, 0, 2)
+	panel.TextStatusForceShadow, F = CreateQuickCheckbutton(objectName.."TextStatusForceShadow", L["Force Shadow on Status Text"], AlignmentColumn, F, 0, 0)
 	--panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 0)
@@ -491,6 +492,7 @@ local function BuildHubPanel(panel)
 	------------------------------
   panel.SpellCastLabel, F = CreateQuickHeadingLabel(nil, L["Cast Bars"], AlignmentColumn, F, 0, 5)
   panel.CastbarDurationMode, F =  CreateQuickDropdown(objectName.."CastbarDurationMode", L["Castbar Duration Style"]..':', CastbarDurationModes, 1, AlignmentColumn, F )
+  panel.SpellIconEnable, F = CreateQuickCheckbutton(objectName.."SpellIconEnable", L["Show Spell Icon"], AlignmentColumn, F)
   panel.ColorCastBySchool, F = CreateQuickCheckbutton(objectName.."ColorCastBySchool", L["Color Cast Bars by School"], AlignmentColumn, F)
   panel.SpellCastEnableFriendly, F = CreateQuickCheckbutton(objectName.."SpellCastEnableFriendly", L["Show Friendly Cast Bars"], AlignmentColumn, F)
   panel.IntCastEnable, F = CreateQuickCheckbutton(objectName.."IntCastEnable", L["Show Interrupted Cast Bar"], AlignmentColumn, F)

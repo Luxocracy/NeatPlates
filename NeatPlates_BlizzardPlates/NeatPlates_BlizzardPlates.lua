@@ -113,6 +113,7 @@ StyleDefault.threatborder = {
 
 StyleDefault.castborder = {
 	texture =					path.."BlizzardPlates-CastBar",
+	noicon = 					path.."BlizzardPlates-CastBar-noicon",
 	width = 128,
 	height = 32,
 	x = 0,
@@ -122,6 +123,7 @@ StyleDefault.castborder = {
 
 StyleDefault.castnostop = {
 	texture = 					path.."BlizzardPlates-CastBar-Shield",
+	noicon = 					path.."BlizzardPlates-CastBar-Shield-noicon",
 	width = 128,
 	height = 32,
 	x = 0,

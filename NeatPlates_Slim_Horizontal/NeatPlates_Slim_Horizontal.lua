@@ -56,6 +56,7 @@ StyleDefault.healthbar = {
 
 StyleDefault.castborder = {
 	texture =					 ArtworkPath.."Slim_CastOverlay",
+	noicon =					 ArtworkPath.."Slim_CastOverlay-noicon",
 	width = 128,
 	height = 16,
 	x = 0,
@@ -65,6 +66,7 @@ StyleDefault.castborder = {
 
 StyleDefault.castnostop = {
 	texture =					 ArtworkPath.."Slim_CastShield",
+	noicon =					 ArtworkPath.."Slim_CastShield-noicon",
 	width = 128,
 	height = 16,
 	x = 0,
