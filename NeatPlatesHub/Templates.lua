@@ -6,6 +6,7 @@ local divider = "Interface\\Addons\\NeatPlatesHub\\shared\\ThinBlackLine"
 
 local PanelHelpers = NeatPlatesUtility.PanelHelpers 		-- PanelTools
 local DropdownFrame = CreateFrame("Frame", "NeatPlatesHubCategoryFrame", UIParent, "UIDropDownMenuTemplate" )
+local OnMouseWheelScrollFrame
 
 -- Menu Templates
 NeatPlatesHubMenus = NeatPlatesHubMenus or {}
@@ -272,6 +273,223 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
+	local function CreateQuickScrollList(parent, name, lists, buttonFunc)
+		-- Create scroll frame
+		local frame = CreateFrame("ScrollFrame", name.."_Scrollframe", parent, 'UIPanelScrollFrameTemplate')
+		local child = CreateFrame("Frame", name.."_ScrollList")
+		frame:SetWidth(160)
+		frame:SetHeight(260)
+		child:SetWidth(160)
+		child:SetHeight(100)
+
+		-- Populate with list
+		local lastItem
+		for k,list in pairs(lists) do
+			-- Create Label
+			if list.label then
+				local label = child:CreateFontString(nil, "OVERLAY")
+				label:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 18)
+				label:SetTextColor(255/255, 105/255, 6/255)
+				label:SetText(list.label)
+
+				-- attach below previous item
+				if lastItem then
+					label:SetPoint("TOPLEFT", lastItem, "BOTTOMLEFT", 0, -8)
+				else
+					label:SetPoint("TOPLEFT", 0, 0)
+				end
+				lastItem = label
+			end
+
+			-- Create Buttons
+			for i,item in pairs(list.list) do
+				if item.text and item.value then
+					-- create button
+					local button = CreateFrame("Button", item.value.."_Button", child, 'NeatPlatesOptionsListButtonTemplate')
+					button.value = item.value
+					button.tooltipText = item.tooltip
+					button.category = list.label
+					button:SetText(item.text)
+					button:SetScript("OnClick", buttonFunc)
+
+					-- attach below previous item
+					if lastItem then
+						button:SetPoint("TOPLEFT", lastItem, "BOTTOMLEFT", 0, 0)
+					else
+						button:SetPoint("TOPLEFT", 0, 0)
+					end
+					lastItem = button
+				end
+			end
+		end
+		
+
+		frame:SetScrollChild(child)
+		frame:SetScript("OnMouseWheel", OnMouseWheelScrollFrame)
+
+		return frame
+	end
+
+	local CustomizationPanel
+	local function CreateQuickCustomizationPanel(frame, parent)
+		-- Things to add:
+		-- 	Style selection dropdown(Default, NameOnly)
+		-- 	Anchor Dropdown
+		-- 	Align Dropdown(If Applicable)
+		-- Bonus Stuff
+		-- 	Advanced Button(edit code directly)
+		--  Import/Export Theme Modifications
+		-- 	Reset Button
+		local list = {
+			{
+				list = NeatPlatesHubMenus.StyleOptions,
+			},
+			{
+				label = "Widgets",
+				list = NeatPlatesHubMenus.WidgetOptions,
+			}
+		}
+
+
+		if not CustomizationPanel then
+			-- Build the actual panel
+			CustomizationPanel = CreateFrame("Frame", "NeatPlatesCustomizationPanel", UIParent, "UIPanelDialogTemplate");
+			CustomizationPanel:Hide()
+		  CustomizationPanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
+		  CustomizationPanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
+		  CustomizationPanel:SetWidth(600)
+		  CustomizationPanel:SetHeight(300)
+		  CustomizationPanel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
+		  CustomizationPanel:SetFrameStrata("DIALOG")
+
+		  CustomizationPanel:SetMovable(true)
+		  CustomizationPanel:EnableMouse(true)
+		  CustomizationPanel:RegisterForDrag("LeftButton", "RightButton")
+		  CustomizationPanel:SetScript("OnMouseDown", function(self,arg1)
+		    self:StartMoving()
+		  end)
+		  CustomizationPanel:SetScript("OnMouseUp", function(self,arg1)
+		    self:StopMovingOrSizing()
+		  end)
+
+		  -- Create List Items
+		  CustomizationPanel.List = CreateQuickScrollList(CustomizationPanel, "NeatPlatesCustomizationList", list, function(self)
+		  	local theme = NeatPlates:GetTheme()
+		  	local style = CustomizationPanel.StyleDropdown:GetValue()
+		  	local current = theme[style][self.value] or theme["WidgetConfig"][self.value] or {}
+		  	-- Button OnClick
+		  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
+
+		  	if self.category == "Widgets" then
+		  		CustomizationPanel.StyleDropdown:Hide()
+		  	else
+		  		CustomizationPanel.StyleDropdown:Show()
+		  	end
+
+		  	if current.anchor then
+					CustomizationPanel.AnchorOptions:Show()
+		  	else
+		  		CustomizationPanel.AnchorOptions:Hide()
+		  	end
+
+		  	if current.align then
+					CustomizationPanel.AlignOptions:Show()
+		  	else
+		  		CustomizationPanel.AlignOptions:Hide()
+		  	end
+
+		  end)
+		  CustomizationPanel.List:SetWidth(170)
+		  CustomizationPanel.List:SetPoint("TOPLEFT", 15, -29)
+
+		  local StyleOptions = {
+		  	{ text = L["Default/Healthbar"], value = "Default"  },
+				{ text = L["Headline/Text-Only"], value = "NameOnly"  },
+		  }
+
+		  local AnchorOptions = {
+				{ text = L["CENTER"], value = "CENTER"  },
+				{ text = L["TOP"], value = "TOP"  },
+				{ text = L["LEFT"], value = "LEFT"  },
+				{ text = L["RIGHT"], value = "RIGHT"  },
+				{ text = L["BOTTOM"], value = "BOTTOM"  },
+				{ text = L["TOPLEFT"], value = "TOPLEFT"  },
+				{ text = L["TOPRIGHT"], value = "TOPRIGHT"  },
+				{ text = L["BOTTOMLEFT"], value = "BOTTOMLEFT"  },
+				{ text = L["BOTTOMRIGHT"], value = "BOTTOMRIGHT"  },
+			}
+
+		  local AlignOptions = {
+				{ text = L["LEFT"], value = "LEFT" },
+				{ text = L["CENTER"], value = "CENTER" },
+				{ text = L["RIGHT"], value = "RIGHT" },
+			}
+
+		  -- Create Options
+		  CustomizationPanel.StyleDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_StyleDropdown", CustomizationPanel, StyleOptions, "Default", L["Style Mode"], true)
+			CustomizationPanel.StyleDropdown:SetPoint("TOPRIGHT", CustomizationPanel, "TOPRIGHT", -45, -54)
+			CustomizationPanel.AnchorOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AnchorOptions", CustomizationPanel, AnchorOptions, "CENTER", L["Frame Anchor"], true)
+			CustomizationPanel.AnchorOptions:SetPoint("TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 20, -20)
+			CustomizationPanel.AlignOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AlignOptions", CustomizationPanel, AlignOptions, "LEFT", L["Text Align"], true)
+			CustomizationPanel.AlignOptions:SetPoint("TOPLEFT", CustomizationPanel.AnchorOptions, "BOTTOMLEFT", 0, -20)
+
+			CustomizationPanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetX", CustomizationPanel, L["Offset X"], 0, -50, 50, 1, "ACTUAL", 160, true)
+			CustomizationPanel.OffsetX:SetPoint("TOPRIGHT", CustomizationPanel.StyleDropdown, "BOTTOMRIGHT", 20, -84)
+			CustomizationPanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetY", CustomizationPanel, L["Offset Y"], 0, -50, 50, 1, "ACTUAL", 160, true)
+			CustomizationPanel.OffsetY:SetPoint("TOPLEFT", CustomizationPanel.OffsetX, "TOPLEFT", 0, -45)
+			CustomizationPanel.OffsetWidth = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetWidth", CustomizationPanel, L["Offset Width"], 0, -50, 50, 1, "ACTUAL", 160, true)
+			CustomizationPanel.OffsetWidth:SetPoint("RIGHT", CustomizationPanel.OffsetX, "LEFT", -30, 0)
+			CustomizationPanel.OffsetHeight = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetHeight", CustomizationPanel, L["Offset Height"], 0, -50, 50, 1, "ACTUAL", 160, true)
+			CustomizationPanel.OffsetHeight:SetPoint("TOPLEFT", CustomizationPanel.OffsetWidth, "TOPLEFT", 0, -45)
+
+			-- Create Buttons
+			CustomizationPanel.CancelButton = CreateFrame("Button", "NeatPlatesCustomizationCancelButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
+			CustomizationPanel.CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
+			CustomizationPanel.CancelButton:SetWidth(80)
+			CustomizationPanel.CancelButton:SetText(CANCEL)
+
+			CustomizationPanel.CancelButton:SetScript("OnClick", function(self) CustomizationPanel:Hide() end)
+
+			CustomizationPanel.OkayButton = CreateFrame("Button", "NeatPlatesCustomizationOkayButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
+			CustomizationPanel.OkayButton:SetPoint("RIGHT", CustomizationPanel.CancelButton, "LEFT", -6, 0)
+			CustomizationPanel.OkayButton:SetWidth(80)
+			CustomizationPanel.OkayButton:SetText(OKAY)
+
+			CustomizationPanel.AdvancedButton = CreateFrame("Button", "NeatPlatesCustomizationAdvancedButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
+			CustomizationPanel.AdvancedButton:SetPoint("RIGHT", CustomizationPanel.CancelButton, "LEFT", -6, 0)
+			CustomizationPanel.AdvancedButton:SetWidth(80)
+			CustomizationPanel.AdvancedButton:SetText(OKAY)
+
+
+			-- Scripts
+
+		end
+
+		CustomizationPanel.Title:SetText(L["Theme Customization"])
+
+
+		return CustomizationPanel
+	end
+
+	local function CreateQuickCustomization(parent, ...)
+		local frame = CreateFrame("Button", "NeatPlatesCustomizationButton", parent, "NeatPlatesPanelButtonTemplate")
+	
+		frame:SetWidth(22)
+		frame:SetHeight(22)
+		frame:SetPoint(...)
+		if not options or (options and not options.label) then
+			frame:SetText(L["Theme Customization"])
+			frame:SetWidth(frame:GetTextWidth()+16)
+		end
+
+		frame:SetScript("OnClick", function(self)
+			local panel = CreateQuickCustomizationPanel(self, parent)
+			panel:Show()
+		end)
+
+		return frame, frame
+	end
+
 	local ScalePanel
 	local function CreateQuickScalePanel(frame, parent, name, label, options)
 		local oldValues = frame.values
@@ -290,6 +508,21 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		if not ScalePanel then
 			-- Build the actual panel
 			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate");
+
+			--local panel = CreateFrame( "Frame", "OffsetAndScale_InterfaceOptionsPanel", UIParent);
+		
+			--panel.MainFrame = CreateFrame("Frame")
+			--panel.MainFrame:SetWidth(412)
+			--panel.MainFrame:SetHeight(2760) 		-- This can be set VERY long since we've got it in a scrollable window.
+
+			---- Scrollable Panel Window
+			--------------------------------
+			--panel.ScrollFrame = CreateFrame("ScrollFrame","OffsetAndScale_Scrollframe", panel, "UIPanelScrollFrameTemplate")
+			--panel.ScrollFrame:SetPoint("LEFT", 16 )
+			--panel.ScrollFrame:SetPoint("TOP", panel.MainLabel, "BOTTOM", 0, -8 )
+			--panel.ScrollFrame:SetPoint("BOTTOMRIGHT", -32 , 16 )
+			--panel.ScrollFrame:SetScrollChild(panel.MainFrame)
+			--panel.ScrollFrame:SetScript("OnMouseWheel", OnMouseWheelScrollFrame)
 			
 			ScalePanel:Hide()
 		  ScalePanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
@@ -417,7 +650,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
-local function OnMouseWheelScrollFrame(frame, value, name)
+OnMouseWheelScrollFrame = function (frame, value, name)
 	local scrollbar = _G[frame:GetName() .. "ScrollBar"];
 	local currentPosition = scrollbar:GetValue()
 	local increment = 50
@@ -439,6 +672,8 @@ NeatPlatesHubRapidPanel.CreateQuickDropdown = CreateQuickDropdown
 NeatPlatesHubRapidPanel.CreateQuickHeadingLabel = CreateQuickHeadingLabel
 NeatPlatesHubRapidPanel.CreateQuickItemLabel = CreateQuickItemLabel
 NeatPlatesHubRapidPanel.CreateQuickScale = CreateQuickScale
+NeatPlatesHubRapidPanel.CreateQuickCustomization = CreateQuickCustomization
+NeatPlatesHubRapidPanel.CreateOffsetAndScalePanel = CreateOffsetAndScalePanel
 NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame = OnMouseWheelScrollFrame
 
 --[[

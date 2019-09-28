@@ -286,6 +286,36 @@ local function ApplyCustomBarSize(style, defaults)
 	end
 end
 
+local function ApplyThemeCustomization(theme)
+	local categories = {"Default", "NameOnly", "WidgetConfig"}
+
+	LocalVars.Customization = {
+		Default = {},
+		NameOnly = {},
+		WidgetConfig = {}
+	}
+
+	for i,category in pairs(categories) do
+		local style, defaults = theme[category], theme[category.."Backup"]
+		local modifications = LocalVars.Customization[category]
+
+		-- Style Customization through the in-game options
+		if modifications then
+			for k,v in pairs(modifications) do
+				if defaults[k] then
+					for k2,v2 in pairs(v) do
+						if type(style[k][k2]) == "number" then
+							style[k][k2] = defaults[k][k2] + v2
+						else
+							style[k][k2] = v2
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 local function ApplyStyleCustomization(style, defaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
@@ -461,6 +491,7 @@ local function OnChangeProfile(theme, profile)
 		if theme then
 			if theme.ApplyProfileSettings then
 				ApplyProfileSettings(theme, "From OnChangeProfile")
+				ApplyThemeCustomization(theme)
 				NeatPlates:ForceUpdate()
 			end
 		end

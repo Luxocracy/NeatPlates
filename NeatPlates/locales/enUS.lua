@@ -473,6 +473,119 @@ L["Cast Bar Width (%)"] = true
 L["Clear Cache"] = true
 L["Blizzard Nameplate Motion & Visibility..."] = true
 
+
+------------------------------
+-- Theme Customization
+------------------------------
+L["Theme Customization"] = true
+L["Offset Width"] = true
+L["Offset Height"] = true
+
+L["customtext"] = "Custom Text"
+--L["targetindicator"] = "Target Indicator"
+L["eliteicon"] =  "Elite Icon/Border"
+L["castnostop"] = "Castborder (non-interruptible)"
+L["spellicon"] = "Spell Icon"
+L["extratext"] = "Extra/Bodyguard Text"
+L["extrabar"] = "Extra/Bodyguard Bar"
+--L["hitbox"] = "Hitbox(Clickable Area)"
+L["focus"] = "Focus Highlighting"
+L["target"] = "Target Highlighting"
+L["mouseover"] = "Mouseover Highlighting"
+L["level"] = "Level Indicator"
+L["name"] = "Unit Name"
+L["extraborder"] = "Extra/Bodyguard Border"
+L["castbar"] = "Castbar"
+L["spelltext"] = "Castbar Spell Text"
+L["healthbar"] = "Healthbar"
+--L["targetindicator_arrowleft"] = 
+--L["targetindicator_arrowright"] = 
+L["threatborder"] = "Threat Glow"
+L["healthborder"] = "Healthbar Border"
+L["skullicon"] = "Skull Icon"
+L["durationtext"] = "Duration/Cast time Text"
+L["castborder"] = "Castbar Border"
+--L["targetindicator_arrowsides"] = 
+L["highlight"] = "Highlight"
+--L["targetindicator_arrowtop"] = 
+--L["rangeindicator"] = "Range Indicator"
+L["raidicon"] = "Raid Icon"
+L["ComboWidget"] = "Personal Resource Widget"
+L["AbsorbWidget"] = "Absorb Widget"
+L["QuestWidgetNameOnly"] = "Quest Widget(Headline View)"
+L["ThreatPercentageWidget"] = "Threat Percent Widget"
+L["DebuffWidget"] = "Aura Widget"
+--L["DebuffWidgetPlus"] = "Aura Widget(Combo Points)"
+L["ThreatLineWidget"] = "Threat Line Widget"
+L["TotemIcon"] = "Totem Icon"
+--L["ThreatWheelWidget"] = "Threat Wheel Widget"
+L["QuestWidget"] = "Quest Widget"
+L["RangeWidget"] = "Range Indicator"
+L["ClassIcon"] = "Class Icon"
+
+-- Tooltips
+L["customtext_tooltip"] = "Placeholder Tooltip"
+--L["targetindicator_tooltip"] = "Placeholder Tooltip"
+L["eliteicon_tooltip"] = "Placeholder Tooltip"
+L["castnostop_tooltip"] = "Placeholder Tooltip"
+L["spellicon_tooltip"] = "Placeholder Tooltip"
+L["extratext_tooltip"] = "Bar Text for Nazjatar Bodyguards"
+L["extrabar_tooltip"] = "Bar used for Nazjatar Bodyguard XP"
+--L["hitbox_tooltip"] = "Placeholder Tooltip"
+L["focus_tooltip"] = "Placeholder Tooltip"
+L["target_tooltip"] = "Placeholder Tooltip"
+L["level_tooltip"] = "Placeholder Tooltip"
+L["name_tooltip"] = "Placeholder Tooltip"
+L["extraborder_tooltip"] = "Placeholder Tooltip"
+L["castbar_tooltip"] = "Placeholder Tooltip"
+L["spelltext_tooltip"] = "Placeholder Tooltip"
+L["healthbar_tooltip"] = "Placeholder Tooltip"
+--L["targetindicator_arrowleft_tooltip"] = "Placeholder Tooltip"
+--L["targetindicator_arrowright_tooltip"] = "Placeholder Tooltip"
+L["threatborder_tooltip"] = "Placeholder Tooltip"
+L["mouseover_tooltip"] = "Placeholder Tooltip"
+L["healthborder_tooltip"] = "Placeholder Tooltip"
+L["skullicon_tooltip"] = "Placeholder Tooltip"
+L["durationtext_tooltip"] = "Placeholder Tooltip"
+L["castborder_tooltip"] = "Placeholder Tooltip"
+--L["targetindicator_arrowsides_tooltip"] = "Placeholder Tooltip"
+L["highlight_tooltip"] = "Placeholder Tooltip"
+--L["targetindicator_arrowtop_tooltip"] = "Placeholder Tooltip"
+--L["rangeindicator_tooltip"] = "Placeholder Tooltip"
+L["raidicon_tooltip"] = "Placeholder Tooltip"
+L["ComboWidget_tooltip"] = "Placeholder Tooltip"
+L["AbsorbWidget_tooltip"] = "Placeholder Tooltip"
+L["QuestWidgetNameOnly_tooltip"] = "Placeholder Tooltip"
+L["ThreatPercentageWidget_tooltip"] = "Placeholder Tooltip"
+L["DebuffWidget_tooltip"] = "Placeholder Tooltip"
+--L["DebuffWidgetPlus_tooltip"] = "Same as 'Aura Widget', but used when combo points are enabled(Not all themes use this)"
+L["ThreatLineWidget_tooltip"] = "Placeholder Tooltip"
+L["TotemIcon_tooltip"] = "Placeholder Tooltip"
+--L["ThreatWheelWidget_tooltip"] = "Placeholder Tooltip"
+L["QuestWidget_tooltip"] = "Placeholder Tooltip"
+L["RangeWidget_tooltip"] = "Placeholder Tooltip"
+L["ClassIcon_tooltip"] = "Placeholder Tooltip"
+
+-- Dropdown Labels
+L["Style Mode"] = true
+L["Frame Anchor"] = true
+L["Text Align"] = true
+
+-- Dropdown Options
+L["Default/Healthbar"] = true
+L["Headline/TextOnly"] = true
+L["CENTER"] = true
+L["TOP"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["BOTTOM"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+
+
+
 ------------------------------
 -- Import Settings Prompt
 ------------------------------

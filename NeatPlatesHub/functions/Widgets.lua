@@ -94,6 +94,213 @@ NeatPlatesHubMenus.AuraAlignmentModes = {
 				{ text = L["Right"],  },
 			}
 
+NeatPlatesHubMenus.StyleOptions = {
+	{
+		text = L["customtext"],
+		value = "customtext",
+		tooltip = L["customtext_tooltip"],
+	},
+	--{
+	--	text = L["targetindicator"],
+	--	value = "targetindicator",
+	--	tooltip = L["targetindicator_tooltip"],
+	--},
+	{
+		text = L["eliteicon"],
+		value = "eliteicon",
+		tooltip = L["eliteicon_tooltip"],
+	},
+	{
+		text = L["castnostop"],
+		value = "castnostop",
+		tooltip = L["castnostop_tooltip"],
+	},
+	{
+		text = L["spellicon"],
+		value = "spellicon",
+		tooltip = L["spellicon_tooltip"],
+	},
+	{
+		text = L["extratext"],
+		value = "extratext",
+		tooltip = L["extratext_tooltip"],
+	},
+	{
+		text = L["extrabar"],
+		value = "extrabar",
+		tooltip = L["extrabar_tooltip"],
+	},
+	--{
+	--	text = L["hitbox"],
+	--	value = "hitbox",
+	--	tooltip = L["hitbox_tooltip"],
+	--},
+	{
+		text = L["focus"],
+		value = "focus",
+		tooltip = L["focus_tooltip"],
+	},
+	{
+		text = L["target"],
+		value = "target",
+		tooltip = L["target_tooltip"],
+	},
+	{
+		text = L["mouseover"],
+		value = "mouseover",
+		tooltip = L["mouseover_tooltip"],
+	},
+	{
+		text = L["level"],
+		value = "level",
+		tooltip = L["level_tooltip"],
+	},
+	{
+		text = L["name"],
+		value = "name",
+		tooltip = L["name_tooltip"],
+	},
+	{
+		text = L["extraborder"],
+		value = "extraborder",
+		tooltip = L["extraborder_tooltip"],
+	},
+	{
+		text = L["castbar"],
+		value = "castbar",
+		tooltip = L["castbar_tooltip"],
+	},
+	{
+		text = L["spelltext"],
+		value = "spelltext",
+		tooltip = L["spelltext_tooltip"],
+	},
+	{
+		text = L["healthbar"],
+		value = "healthbar",
+		tooltip = L["healthbar_tooltip"],
+	},
+	--{
+	--	text = L["targetindicator_arrowleft"],
+	--	value = "targetindicator_arrowleft",
+	--	tooltip = L["targetindicator_arrowleft_tooltip"],
+	--},
+	--{
+	--	text = L["targetindicator_arrowright"],
+	--	value = "targetindicator_arrowright",
+	--	tooltip = L["targetindicator_arrowright_tooltip"],
+	--},
+	{
+		text = L["threatborder"],
+		value = "threatborder",
+		tooltip = L["threatborder_tooltip"],
+	},
+	{
+		text = L["healthborder"],
+		value = "healthborder",
+		tooltip = L["healthborder_tooltip"],
+	},
+	{
+		text = L["skullicon"],
+		value = "skullicon",
+		tooltip = L["skullicon_tooltip"],
+	},
+	{
+		text = L["durationtext"],
+		value = "durationtext",
+		tooltip = L["durationtext_tooltip"],
+	},
+	{
+		text = L["castborder"],
+		value = "castborder",
+		tooltip = L["castborder_tooltip"],
+	},
+	--{
+	--	text = L["targetindicator_arrowsides"],
+	--	value = "targetindicator_arrowsides",
+	--	tooltip = L["targetindicator_arrowsides_tooltip"],
+	--},
+	{
+		text = L["highlight"],
+		value = "highlight",
+		tooltip = L["highlight_tooltip"],
+	},
+	--{
+	--	text = L["targetindicator_arrowtop"],
+	--	value = "targetindicator_arrowtop",
+	--	tooltip = L["targetindicator_arrowtop_tooltip"],
+	--},
+	--{
+	--	text = L["rangeindicator"],
+	--	value = "rangeindicator",
+	--	tooltip = L["rangeindicator_tooltip"],
+	--},
+	{
+		text = L["raidicon"],
+		value = "raidicon",
+		tooltip = L["raidicon_tooltip"],
+	},
+}
+
+NeatPlatesHubMenus.WidgetOptions = {
+	{
+		text = L["ComboWidget"],
+		value = "ComboWidget",
+		tooltip = L["ComboWidget_tooltip"],
+	},
+	{
+		text = L["AbsorbWidget"],
+		value = "AbsorbWidget",
+		tooltip = L["AbsorbWidget_tooltip"],
+	},
+	{
+		text = L["QuestWidgetNameOnly"],
+		value = "QuestWidgetNameOnly",
+		tooltip = L["QuestWidgetNameOnly_tooltip"],
+	},
+	{
+		text = L["ThreatPercentageWidget"],
+		value = "ThreatPercentageWidget",
+		tooltip = L["ThreatPercentageWidget_tooltip"],
+	},
+	{
+		text = L["DebuffWidget"],
+		value = "DebuffWidget",
+		tooltip = L["DebuffWidget_tooltip"],
+	},
+	{
+		text = L["ThreatLineWidget"],
+		value = "ThreatLineWidget",
+		tooltip = L["ThreatLineWidget_tooltip"],
+	},
+	{
+		text = L["TotemIcon"],
+		value = "TotemIcon",
+		tooltip = L["TotemIcon_tooltip"],
+	},
+	--{
+	--	text = L["ThreatWheelWidget"],
+	--	value = "ThreatWheelWidget",
+	--	tooltip = L["ThreatWheelWidget_tooltip"],
+	--},
+	{
+		text = L["QuestWidget"],
+		value = "QuestWidget",
+		tooltip = L["QuestWidget_tooltip"],
+	},
+	{
+		text = L["RangeWidget"],
+		value = "RangeWidget",
+		tooltip = L["RangeWidget_tooltip"],
+	},
+	{
+		text = L["ClassIcon"],
+		value = "ClassIcon",
+		tooltip = L["ClassIcon_tooltip"],
+	},
+}
+
+
 ------------------------------------------------------------------------------
 -- Aura Widget
 ------------------------------------------------------------------------------
