@@ -83,12 +83,14 @@ function Pet:ClassEnable()
 	self.petScaling = (playerClass == "HUNTER") or (playerClass == "WARLOCK")
 
 	local function castHandler(self, spellID, target) self:AddSkillThreat(spellID, target) end
+	local function castMissHandler(self, spellID, target) self:RollbackSkillThreat(spellID, target) end
 	for name, data in pairs(skillData) do
 		for i = 1, #data.spellIDs do
 			local v = data.spellIDs[i]
 			spellIDRanks[v] = i
 			spellLookups[v] = name
 			self.CastLandedHandlers[v] = castHandler
+			self.CastMissHandlers[v] = castMissHandler
 		end
 	end
 
@@ -110,7 +112,7 @@ function Pet:ScanPetSkillRanks()
 	end
 end
 
-function Pet:AddSkillThreat(spellID, target)
+function Pet:GetSkillThreat(spellID, target)
 	local rank = spellIDRanks[spellID]
 	local skill = skillData[spellLookups[spellID]]
 	local rankLevel = skill.rankLevel
@@ -137,8 +139,21 @@ function Pet:AddSkillThreat(spellID, target)
 		end
 	end
 
+	return threat
+end
+
+function Pet:AddSkillThreat(spellID, target)
+	local threat = self:GetSkillThreat(spellID, target)
 	if not threat then return end
+
 	self:AddTargetThreat(target, threat * self:threatMods())
+end
+
+function Pet:RollbackSkillThreat(spellID, target)
+	local threat = self:GetSkillThreat(spellID, target)
+	if not threat then return end
+
+	self:AddTargetThreat(target, -(threat * self:threatMods()))
 end
 
 function Pet:LOCALPLAYER_PET_RENAMED()
