@@ -262,13 +262,21 @@ local function GetUnitQuestInfo(unit)
     local unitid = unit.unitid
     local questName, questUnit, questProgress
     local questList = {}
+    local questTexture = {[628564] = true, [3083385] = true}
+    local objectiveCount = 0
 
     if not unitid then return end
 
-    -- Tooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
     TooltipScanner:ClearLines()
     TooltipScanner:SetUnit(unitid)
 
+    -- Get amount of quest objectives through counting textures
+    for line = 1, 30 do
+    	local texture = _G[ScannerName .. "Texture" .. line]
+    	if texture and questTexture[texture:GetTexture()] then objectiveCount = objectiveCount + 1 end
+  	end
+
+  	-- Get lines with quest information on them
     for line = 3, TooltipScanner:NumLines() do
         local tooltipText, r, g, b = GetTooltipLineText( line )
         local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
@@ -276,9 +284,10 @@ local function GetUnitQuestInfo(unit)
         -- If the Quest Name exists, the following tooltip lines list quest progress and unit
         if questName and questColor then
         	questUnit = tooltipText
-        elseif questName and (not questUnit or questUnit == UnitName("player")) then
+        elseif questName and (not questUnit or questUnit == UnitName("player")) and objectiveCount > 0 then
           questProgress = tooltipText
           table.insert(questList, {questName, questProgress})
+          objectiveCount = objectiveCount - 1 -- Decrease objective Count
         elseif questColor then
           questName = tooltipText
         end
