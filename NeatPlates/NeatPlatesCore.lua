@@ -1240,6 +1240,7 @@ do
 		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
 		spellID = spellID or ""
 		local plate = nil
+		local ownerGUID
 
 		-- Spell Interrupts
 		if ShowIntCast then
@@ -1254,11 +1255,11 @@ do
 					local unitType = strsplit("-", sourceGUID)
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
-							sourceGUID, sourceName = GetPetOwner(sourceName)
+							ownerGUID, sourceName = GetPetOwner(sourceName)
 					end
 
 					plate.extended.unit.interruptLogged = true
-					OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
+					OnInterruptedCast(plate, ownerGUID or sourceGUID, sourceName, destGUID)
 				end
 			end
 		end
