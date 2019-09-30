@@ -1287,9 +1287,9 @@ do
 	end
 
 	local function UpdateCustomTarget()
-		local unitAlive = UnitIsDead("target") == false;
+		local unitAlive = UnitIsDead("target") == false
 		local guid = UnitGUID("target")
-		HasTarget = UnitExists("target") == true;
+		HasTarget = (UnitExists("target") == true and not UnitIsUnit("target", "player"))
 		-- Create a new target frame if needed
 		if not NeatPlatesTarget then
 			NeatPlatesTarget = NeatPlatesUtility:CreateTargetFrame()
@@ -1389,6 +1389,7 @@ do
 		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName,spellSchool = CombatLogGetCurrentEventInfo()
 		--spellID = select(7, GetSpellInfo(spellName)) or ""
 		local plate = nil
+		local ownerGUID
 		local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
 
 		-- Spell Interrupts
@@ -1405,16 +1406,16 @@ do
 
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
-							sourceGUID, sourceName = GetPetOwner(sourceName)
+							ownerGUID, sourceName = GetPetOwner(sourceName)
 					end
 
 					plate.extended.unit.interruptLogged = true
-					OnInterruptedCast(plate, sourceGUID, sourceName, destGUID)
+					OnInterruptedCast(plate, ownerGUID or sourceGUID, sourceName, destGUID)
 				end
 
 				-- Set spell cast cache to finished
-				if SpellCastCache[sourceGUID] and (event ~= "SPELL_AURA_APPLIED" or spellCCList[spellName]) then
-					SpellCastCache[sourceGUID].finished = true
+				if SpellCastCache[destGUID] and (event ~= "SPELL_AURA_APPLIED" or spellCCList[spellName]) then
+					SpellCastCache[destGUID].finished = true
 				end
 			end
 		end
