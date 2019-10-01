@@ -270,15 +270,14 @@ local function GetUnitQuestInfo(unit)
     TooltipScanner:ClearLines()
     TooltipScanner:SetUnit(unitid)
 
-    -- Get amount of quest objectives through counting textures
-    for line = 1, 30 do
+  	-- Get lines with quest information on them
+    for line = 1, TooltipScanner:NumLines() do
+    	 -- Get amount of quest objectives through counting textures
     	local texture = _G[ScannerName .. "Texture" .. line]
     	if texture and questTexture[texture:GetTexture()] then objectiveCount = objectiveCount + 1 end
-  	end
 
-  	-- Get lines with quest information on them
-    for line = 3, TooltipScanner:NumLines() do
-        local tooltipText, r, g, b = GetTooltipLineText( line )
+    	local tooltipText, r, g, b = GetTooltipLineText( line )
+  		if unit.name and unit.name ~= tooltipText then
         local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
 
         -- If the Quest Name exists, the following tooltip lines list quest progress and unit
@@ -291,6 +290,7 @@ local function GetUnitQuestInfo(unit)
         elseif questColor then
           questName = tooltipText
         end
+     	end
     end
 
     return questList
