@@ -276,22 +276,21 @@ local function GetUnitQuestInfo(unit)
     	local texture = _G[ScannerName .. "Texture" .. line]
     	if texture and questTexture[texture:GetTexture()] then objectiveCount = objectiveCount + 1 end
 
-    	local tooltipText, r, g, b = GetTooltipLineText( line )
-  		if unit.name and unit.name ~= tooltipText then
-        local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
-
-        -- If the Quest Name exists, the following tooltip lines list quest progress and unit
-        if questName and questColor then
-        	questUnit = tooltipText
-        elseif questName and (not questUnit or questUnit == UnitName("player")) and objectiveCount > 0 then
-          questProgress = tooltipText
-          table.insert(questList, {questName, questProgress})
-          objectiveCount = objectiveCount - 1 -- Decrease objective Count
-        elseif questColor then
-          questName = tooltipText
-        end
-     	end
-    end
+    	if line > 1 then 
+	    	local tooltipText, r, g, b = GetTooltipLineText( line )
+	      local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
+	      -- If the Quest Name exists, the following tooltip lines list quest progress and unit
+	      if questName and questColor then
+	      	questUnit = tooltipText
+	      elseif questName and (not questUnit or questUnit == UnitName("player")) and objectiveCount > 0 then
+	        questProgress = tooltipText
+	        table.insert(questList, {questName, questProgress})
+	        objectiveCount = objectiveCount - 1 -- Decrease objective Count
+	      elseif questColor then
+	        questName = tooltipText
+	      end
+	    end
+	  end
 
     return questList
 end
