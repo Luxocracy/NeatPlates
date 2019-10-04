@@ -312,6 +312,7 @@ StyleTextOnly.extratext.x = 0
 StyleTextOnly.customtext.size = fontsize - 2
 StyleTextOnly.customtext.flags = "NONE"
 StyleTextOnly.customtext.y = VerticalAdjustment-8
+StyleTextOnly.customtext.width = 500
 StyleTextOnly.name.size = fontsize
 StyleTextOnly.name.y = VerticalAdjustment + 1
 StyleTextOnly.level.show = false
