@@ -258,6 +258,7 @@ StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12
 StyleTextOnly.name.x = 0
 StyleTextOnly.name.y = 14
+StyleTextOnly.customtext.width = 500
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15

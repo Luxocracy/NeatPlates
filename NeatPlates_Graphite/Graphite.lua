@@ -299,6 +299,7 @@ StyleTextOnly.extratext.x = 0
 StyleTextOnly.customtext.align = "CENTER"
 StyleTextOnly.customtext.size = 9
 StyleTextOnly.customtext.y = -2
+StyleTextOnly.customtext.width = 500
 StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false

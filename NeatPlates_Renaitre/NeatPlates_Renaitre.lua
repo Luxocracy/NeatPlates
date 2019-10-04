@@ -337,6 +337,7 @@ StyleTextOnly.customtext.align = "CENTER"
 --StyleTextOnly.customtext.size = 10
 StyleTextOnly.customtext.size = fontsize - 2
 StyleTextOnly.customtext.y = VerticalAdjustment + 16
+StyleTextOnly.customtext.width = 500
 StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false

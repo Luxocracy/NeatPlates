@@ -261,6 +261,7 @@ StyleTextOnly.name.y = 6
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15
+StyleTextOnly.customtext.width = 500
 
 
 Theme["Default"] = StyleDefault
