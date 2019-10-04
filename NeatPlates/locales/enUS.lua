@@ -573,7 +573,7 @@ L["Text Align"] = true
 
 -- Dropdown Options
 L["Default/Healthbar"] = true
-L["Headline/TextOnly"] = true
+L["Headline/Text-Only"] = true
 L["CENTER"] = true
 L["TOP"] = true
 L["LEFT"] = true
