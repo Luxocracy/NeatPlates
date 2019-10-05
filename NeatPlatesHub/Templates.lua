@@ -273,10 +273,27 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
+	local function OptionsList_ClearSelection(listFrame, buttons)
+		for _, button in pairs(buttons) do
+			button.highlight:SetVertexColor(.196, .388, .8);
+			button:UnlockHighlight();
+		end
+
+		listFrame.selection = nil;
+	end
+
+	local function OptionsList_SelectButton(listFrame, button)
+		button.highlight:SetVertexColor(1, 1, 0);
+		button:LockHighlight()
+
+		listFrame.selection = button;
+	end
+
 	local function CreateQuickScrollList(parent, name, lists, buttonFunc)
 		-- Create scroll frame
 		local frame = CreateFrame("ScrollFrame", name.."_Scrollframe", parent, 'UIPanelScrollFrameTemplate')
 		local child = CreateFrame("Frame", name.."_ScrollList")
+		frame.listFrame = child
 		frame:SetWidth(160)
 		frame:SetHeight(260)
 		child:SetWidth(160)
@@ -309,8 +326,14 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					button.value = item.value
 					button.tooltipText = item.tooltip
 					button.category = list.label
+					button.highlight = button:GetHighlightTexture()
 					button:SetText(item.text)
-					button:SetScript("OnClick", buttonFunc)
+					button:SetScript("OnClick", function(self)
+						OptionsList_ClearSelection(child, {child:GetChildren()})
+						OptionsList_SelectButton(child, self)
+
+						buttonFunc(self)
+					end)
 
 					-- attach below previous item
 					if lastItem then
@@ -341,13 +364,18 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		--  Import/Export Theme Modifications
 		-- 	Reset Button
 		local list = {
-			{
-				list = NeatPlatesHubMenus.StyleOptions,
-			},
-			{
-				label = "Widgets",
-				list = NeatPlatesHubMenus.WidgetOptions,
-			}
+			{ list = NeatPlatesHubMenus.StyleOptions },
+			{ label = "Widgets", list = NeatPlatesHubMenus.WidgetOptions }
+		}
+
+		local options = {
+  		StyleDropdown = function(self, current) return self.category ~= "Widgets" end,
+  		AnchorOptions = function(self, current) return current.anchor end,
+  		AlignOptions = function(self, current) return current.align end,
+  		OffsetX = function(self, current) return current.x end,
+  		OffsetY = function(self, current) return current.y end,
+  		OffsetWidth = function(self, current) return current.width or current.w or self.category == "Widgets" end,
+  		OffsetHeight = function(self, current) return current.height or current.h or self.category == "Widgets" end,
 		}
 
 
@@ -377,27 +405,17 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  	local theme = NeatPlates:GetTheme()
 		  	local style = CustomizationPanel.StyleDropdown:GetValue()
 		  	local current = theme[style][self.value] or theme["WidgetConfig"][self.value] or {}
+
 		  	-- Button OnClick
 		  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
 
-		  	if self.category == "Widgets" then
-		  		CustomizationPanel.StyleDropdown:Hide()
-		  	else
-		  		CustomizationPanel.StyleDropdown:Show()
+		  	for k,option in pairs(options) do
+		  		if option(self, current) then
+		  			CustomizationPanel[k]:Show()
+		  		else
+		  			CustomizationPanel[k]:Hide()
+		  		end
 		  	end
-
-		  	if current.anchor then
-					CustomizationPanel.AnchorOptions:Show()
-		  	else
-		  		CustomizationPanel.AnchorOptions:Hide()
-		  	end
-
-		  	if current.align then
-					CustomizationPanel.AlignOptions:Show()
-		  	else
-		  		CustomizationPanel.AlignOptions:Hide()
-		  	end
-
 		  end)
 		  CustomizationPanel.List:SetWidth(170)
 		  CustomizationPanel.List:SetPoint("TOPLEFT", 15, -29)
@@ -462,6 +480,16 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 
 			-- Scripts
+			CustomizationPanel:SetScript("OnHide", function(self)
+				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()})
+			end)
+
+			CustomizationPanel:SetScript("OnShow", function(self)
+				-- Hide Settings sliders etc.
+				for k,_ in pairs(options) do
+		  		self[k]:Hide()
+		  	end
+			end)
 
 		end
 
