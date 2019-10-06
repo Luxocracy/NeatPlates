@@ -358,9 +358,12 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local CustomizationPanel
 	local function CreateQuickCustomizationPanel(frame, parent)
 		-- Things to add:
-		-- 	Advanced Button(edit code directly)
-		--  Import/Export Theme Modifications
 		-- 	Reset Button
+		-- Sort the order of options to make more sense.
+			 -- See if it's possible to combine some options (Might not be doable since were not changing the values with a multiplier but rather adding to them)
+		--  Import/Export Theme Modifications
+		-- 	Advanced Button(edit code directly)
+		
 		local list = {
 			{ list = NeatPlatesHubMenus.StyleOptions },
 			{ label = "Widgets", list = NeatPlatesHubMenus.WidgetOptions }

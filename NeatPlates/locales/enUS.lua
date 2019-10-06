@@ -570,6 +570,7 @@ L["ClassIcon_tooltip"] = "Placeholder Tooltip"
 L["Style Mode"] = true
 L["Frame Anchor"] = true
 L["Text Align"] = true
+L["Show Element"] = true
 
 -- Dropdown Options
 L["Default/Healthbar"] = true
