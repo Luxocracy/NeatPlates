@@ -8,6 +8,8 @@ local PanelHelpers = NeatPlatesUtility.PanelHelpers 		-- PanelTools
 local DropdownFrame = CreateFrame("Frame", "NeatPlatesHubCategoryFrame", UIParent, "UIDropDownMenuTemplate" )
 local OnMouseWheelScrollFrame
 
+local CopyTable = NeatPlatesUtility.copyTable
+
 -- Menu Templates
 NeatPlatesHubMenus = NeatPlatesHubMenus or {}
 
@@ -356,10 +358,6 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local CustomizationPanel
 	local function CreateQuickCustomizationPanel(frame, parent)
 		-- Things to add:
-		-- 	Style selection dropdown(Default, NameOnly)
-		-- 	Anchor Dropdown
-		-- 	Align Dropdown(If Applicable)
-		-- Bonus Stuff
 		-- 	Advanced Button(edit code directly)
 		--  Import/Export Theme Modifications
 		-- 	Reset Button
@@ -369,14 +367,55 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		}
 
 		local options = {
-  		StyleDropdown = function(self, current) return self.category ~= "Widgets" end,
-  		AnchorOptions = function(self, current) return current.anchor end,
-  		AlignOptions = function(self, current) return current.align end,
-  		OffsetX = function(self, current) return current.x end,
-  		OffsetY = function(self, current) return current.y end,
-  		OffsetWidth = function(self, current) return current.width or current.w or self.category == "Widgets" end,
-  		OffsetHeight = function(self, current) return current.height or current.h or self.category == "Widgets" end,
+  		StyleDropdown = function(self, option) return self.category ~= "Widgets" end,
+  		EnableCheckbox = function(self, option) return self.category ~= "Widgets" end,
+  		AnchorOptions = function(self, option) return option.anchor end,
+  		AlignOptions = function(self, option) return option.align end,
+  		OffsetX = function(self, option) return option.x end,
+  		OffsetY = function(self, option) return option.y end,
+  		OffsetWidth = function(self, option) return option.width or option.w or self.category == "Widgets" end,
+  		OffsetHeight = function(self, option) return option.height or option.h or self.category == "Widgets" end,
 		}
+
+		-- Update Panel Values
+		local function updatePanelValues(self)
+	  	local theme = NeatPlates:GetTheme()
+	  	local category = "WidgetConfig"
+			if self.category ~= "Widgets" then
+				category = CustomizationPanel.StyleDropdown:GetValue()
+	  	end
+	  	local current = NeatPlatesHubFunctions.GetCustomizationOption(category, self.value) or {}
+	  	local default = theme[category.."Backup"][self.value] or {}
+
+	  	CustomizationPanel.activeOption = self.value
+	  	CustomizationPanel.activeCategory = category
+
+	  	-- Button OnClick
+	  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
+
+	  	-- Set Customization Values & Show/Hide Elements
+	  	for k,option in pairs(options) do
+	  		local item = CustomizationPanel[k]
+	  		item.fetching = true
+	  		if option(self, default) then
+	  			local itemType = type(default[item.objectName])
+	  			item:Show()
+	  			item.enabled = true
+
+	  			if itemType == "boolean" then
+	  				item:SetChecked(current[item.objectName] or default[item.objectName])
+	  			elseif itemType == "number" then
+						item:updateValues(current[item.objectName] or 0)
+					elseif item.objectName then
+						item:SetValue(current[item.objectName] or default[item.objectName])
+	  			end
+	  		else
+	  			item:Hide()
+	  			item.enabled = false
+	  		end
+	  		item.fetching = false
+	  	end
+	  end
 
 
 		if not CustomizationPanel then
@@ -401,22 +440,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  end)
 
 		  -- Create List Items
-		  CustomizationPanel.List = CreateQuickScrollList(CustomizationPanel, "NeatPlatesCustomizationList", list, function(self)
-		  	local theme = NeatPlates:GetTheme()
-		  	local style = CustomizationPanel.StyleDropdown:GetValue()
-		  	local current = theme[style][self.value] or theme["WidgetConfig"][self.value] or {}
-
-		  	-- Button OnClick
-		  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
-
-		  	for k,option in pairs(options) do
-		  		if option(self, current) then
-		  			CustomizationPanel[k]:Show()
-		  		else
-		  			CustomizationPanel[k]:Hide()
-		  		end
-		  	end
-		  end)
+		  CustomizationPanel.List = CreateQuickScrollList(CustomizationPanel, "NeatPlatesCustomizationList", list, updatePanelValues)
 		  CustomizationPanel.List:SetWidth(170)
 		  CustomizationPanel.List:SetPoint("TOPLEFT", 15, -29)
 
@@ -446,19 +470,30 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  -- Create Options
 		  CustomizationPanel.StyleDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_StyleDropdown", CustomizationPanel, StyleOptions, "Default", L["Style Mode"], true)
 			CustomizationPanel.StyleDropdown:SetPoint("TOPRIGHT", CustomizationPanel, "TOPRIGHT", -45, -54)
+			CustomizationPanel.EnableCheckbox = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnableCheckbox", CustomizationPanel, L["Show Element"])
+			CustomizationPanel.EnableCheckbox:SetPoint("TOPLEFT", CustomizationPanel.StyleDropdown, "BOTTOMLEFT", 16, 4)
+			CustomizationPanel.EnableCheckbox.objectName = "show"
+			CustomizationPanel.EnableCheckbox:SetScript("OnClick", CustomizationPanel.OnValueChanged)
+
 			CustomizationPanel.AnchorOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AnchorOptions", CustomizationPanel, AnchorOptions, "CENTER", L["Frame Anchor"], true)
 			CustomizationPanel.AnchorOptions:SetPoint("TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 20, -20)
+			CustomizationPanel.AnchorOptions.objectName = "anchor"
 			CustomizationPanel.AlignOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AlignOptions", CustomizationPanel, AlignOptions, "LEFT", L["Text Align"], true)
 			CustomizationPanel.AlignOptions:SetPoint("TOPLEFT", CustomizationPanel.AnchorOptions, "BOTTOMLEFT", 0, -20)
+			CustomizationPanel.AlignOptions.objectName = "align"
 
 			CustomizationPanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetX", CustomizationPanel, L["Offset X"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetX:SetPoint("TOPRIGHT", CustomizationPanel.StyleDropdown, "BOTTOMRIGHT", 20, -84)
+			CustomizationPanel.OffsetX.objectName = "x"
 			CustomizationPanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetY", CustomizationPanel, L["Offset Y"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetY:SetPoint("TOPLEFT", CustomizationPanel.OffsetX, "TOPLEFT", 0, -45)
+			CustomizationPanel.OffsetY.objectName = "y"
 			CustomizationPanel.OffsetWidth = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetWidth", CustomizationPanel, L["Offset Width"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetWidth:SetPoint("RIGHT", CustomizationPanel.OffsetX, "LEFT", -30, 0)
+			CustomizationPanel.OffsetWidth.objectName = "width"
 			CustomizationPanel.OffsetHeight = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetHeight", CustomizationPanel, L["Offset Height"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetHeight:SetPoint("TOPLEFT", CustomizationPanel.OffsetWidth, "TOPLEFT", 0, -45)
+			CustomizationPanel.OffsetHeight.objectName = "height"
 
 			-- Create Buttons
 			CustomizationPanel.CancelButton = CreateFrame("Button", "NeatPlatesCustomizationCancelButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
@@ -473,6 +508,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.OkayButton:SetWidth(80)
 			CustomizationPanel.OkayButton:SetText(OKAY)
 
+			CustomizationPanel.OkayButton:SetScript("OnClick", function(self) CustomizationPanel.oldValues = nil; CustomizationPanel:Hide() end)
+
 			CustomizationPanel.AdvancedButton = CreateFrame("Button", "NeatPlatesCustomizationAdvancedButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
 			CustomizationPanel.AdvancedButton:SetPoint("RIGHT", CustomizationPanel.CancelButton, "LEFT", -6, 0)
 			CustomizationPanel.AdvancedButton:SetWidth(80)
@@ -481,16 +518,43 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			-- Scripts
 			CustomizationPanel:SetScript("OnHide", function(self)
-				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()})
+				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()}) -- Clear Selected item
+
+				-- Restore old values if user didn't hit Okay button
+				if CustomizationPanel.oldValues then
+					NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.oldValues)
+					CustomizationPanel.oldValues = nil
+				end
+
+				-- Style Update
+				NeatPlatesHubHelpers.CallForStyleUpdate()
 			end)
 
 			CustomizationPanel:SetScript("OnShow", function(self)
+				self.oldValues = CopyTable(NeatPlatesHubFunctions.GetCustomizationOption() or {})
 				-- Hide Settings sliders etc.
 				for k,_ in pairs(options) do
 		  		self[k]:Hide()
+		  		self[k].enabled = false
 		  	end
 			end)
 
+			CustomizationPanel.OnValueChanged = function(self)
+				if self.fetching then return end
+				local activeOption = CustomizationPanel.activeOption
+				local category = CustomizationPanel.activeCategory
+		  	if activeOption then
+					for k,v in pairs(CustomizationPanel) do
+						if type(v) == "table" and v.enabled and v.objectName then
+							local valueFunc = v.GetChecked or v.GetValue
+							NeatPlatesHubFunctions.SetCustomizationOption(category, activeOption, v.objectName, valueFunc(v))
+						end
+					end
+				end
+
+				-- Style Update
+				NeatPlatesHubHelpers.CallForStyleUpdate()
+			end
 		end
 
 		CustomizationPanel.Title:SetText(L["Theme Customization"])
@@ -499,16 +563,12 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return CustomizationPanel
 	end
 
-	local function CreateQuickCustomization(parent, ...)
-		local frame = CreateFrame("Button", "NeatPlatesCustomizationButton", parent, "NeatPlatesPanelButtonTemplate")
+	local function CreateQuickCustomization(objectName, parent, ...)
+		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
 	
-		frame:SetWidth(22)
-		frame:SetHeight(22)
 		frame:SetPoint(...)
-		if not options or (options and not options.label) then
-			frame:SetText(L["Theme Customization"])
-			frame:SetWidth(frame:GetTextWidth()+16)
-		end
+		frame:SetText(L["Theme Customization"])
+		frame:SetWidth(frame:GetTextWidth()+32)
 
 		frame:SetScript("OnClick", function(self)
 			local panel = CreateQuickCustomizationPanel(self, parent)
@@ -727,7 +787,6 @@ local SetPanelValues = NeatPlatesHubHelpers.SetPanelValues
 local ListToTable = NeatPlatesHubHelpers.ListToTable
 --local ConvertStringToTable = NeatPlatesHubHelpers.ConvertStringToTable
 --local ConvertAuraListTable = NeatPlatesHubHelpers.ConvertAuraListTable
-local CopyTable = NeatPlatesUtility.copyTable
 
 --[[
 local function GetGlobalSettings()

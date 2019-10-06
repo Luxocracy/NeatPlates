@@ -612,8 +612,7 @@ local function BuildHubPanel(panel)
 	BlizzOptionsButton:SetWidth(300)
 	BlizzOptionsButton:SetText(L["Blizzard Nameplate Motion & Visibility..."])
 	BlizzOptionsButton:SetScript("OnClick", function() InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"]) end)
-
-	local ThemeCustomization = CreateQuickCustomization(AlignmentColumn, "TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 4, -4)
+	local ThemeCustomization = CreateQuickCustomization(objectName.."CustomizationButton", AlignmentColumn, "TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -4)
 
 	------------------------------
 	-- Set Sizes and Mechanics

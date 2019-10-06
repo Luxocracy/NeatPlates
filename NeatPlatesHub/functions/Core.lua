@@ -219,6 +219,21 @@ local function UseVariables(profileName)
 	end
 end
 
+local function GetCustomizationOption(category, option)
+	if not category then return LocalVars.Customization end
+	return LocalVars.Customization[category][option]
+end
+
+local function SetCustomizationOption(category, option, key, value)
+	if type(category) == "table" then LocalVars.Customization = category; return end
+	LocalVars.Customization[category] = LocalVars.Customization[category] or {}
+	if type(option) == "table" then LocalVars.Customization[category] = option; return end
+	LocalVars.Customization[category][option] = LocalVars.Customization[category][option] or {}
+	if type(key) == "table" then LocalVars.Customization[category][option] = key; return end
+	LocalVars.Customization[category][option][key] = LocalVars.Customization[category][option][key] or {}
+
+	LocalVars.Customization[category][option][key] = value
+end
 ---------------
 -- Apply customization
 ---------------
@@ -289,11 +304,11 @@ end
 local function ApplyThemeCustomization(theme)
 	local categories = {"Default", "NameOnly", "WidgetConfig"}
 
-	LocalVars.Customization = {
-		Default = {},
-		NameOnly = {},
-		WidgetConfig = {}
-	}
+	--LocalVars.Customization = {
+	--	Default = {},
+	--	NameOnly = {},
+	--	WidgetConfig = {}
+	--}
 
 	for i,category in pairs(categories) do
 		local style, defaults = theme[category], theme[category.."Backup"]
@@ -516,6 +531,7 @@ local function ApplyHubFunctions(theme)
 	theme.OnInitialize = OnInitialize		-- Need to provide widget positions
 	theme.OnActivateTheme = OnActivateTheme -- called by NeatPlates Core, Theme Loader
 	theme.ApplyProfileSettings = ApplyProfileSettings
+	theme.ApplyThemeCustomization = ApplyThemeCustomization
 	theme.OnChangeProfile = OnChangeProfile
 
 	-- Make Backup Copies of the default settings of the theme styles
@@ -545,6 +561,8 @@ NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions
 NeatPlatesHubFunctions.ApplyRequiredCVars = ApplyRequiredCVars
+NeatPlatesHubFunctions.GetCustomizationOption = GetCustomizationOption
+NeatPlatesHubFunctions.SetCustomizationOption = SetCustomizationOption
 
 
 

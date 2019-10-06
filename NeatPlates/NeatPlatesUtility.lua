@@ -667,7 +667,6 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 
 	EditBox:SetScript("OnEnterPressed", function(self, val)
 		if slider.isActual then val = self:GetNumber() else val = self:GetNumber()/100 end
-		print(val)
 		slider:updateValues(val)
 		slider:SetValue(val)
 		self:ClearFocus()
@@ -711,6 +710,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		if infinite then
 			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum+value, maximum+value, step)
 		end
+		if parent.OnValueChanged then parent.OnValueChanged(slider) end
+		if slider.OnValueChanged then slider.OnValueChanged(slider) end
 	end
 
 	--slider.tooltipText = "Slider"
@@ -909,10 +910,10 @@ local function CreateDropdownFrame(helpertable, reference, parent, menu, default
 	------------------------------------------------
 
 	local function OnClickItem(self)
-
 		drawer:SetValue(menu[self.buttonIndex].value or self.buttonIndex)
 		--print(self.Value, menu[self.buttonIndex].value, drawer:GetValue())
 
+		if parent.OnValueChanged then parent.OnValueChanged(drawer) end
 		if drawer.OnValueChanged then drawer.OnValueChanged(drawer) end
 		PlaySound(856);
 		HideDropdownMenu()
