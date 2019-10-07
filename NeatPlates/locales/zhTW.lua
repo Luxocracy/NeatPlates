@@ -75,7 +75,6 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCC顏色為16進位碼(#) 後面加
 - 單位名稱
 - 增益/減益名稱/法術ID
 - 血量門檻
-
 (例如: #A300FF 古翰幼體)
 |cffff9320優先順序為上到下]=]
 L["CVars could not applied due to combat"] = "戰鬥中無法套用 CVar 遊戲參數"
@@ -195,7 +194,6 @@ L["Import Settings from TidyPlatesContinued."] = "從舊版 Tidy 血條 (TidyPla
 L["Import TPC Settings"] = "匯入舊版設定"
 L["IMPORT_PROMPT_TEXT"] = [=[你似乎同時載入 Neat 血條和舊版 Tidy 血條 (TidyPlatesContinued)。
 是否要將此角色的舊版 Tidy 血條設定匯入到 Neat 血條中?
-
 (一旦匯入完成後便會停用舊版 Tidy 血條並且重新載入介面。
 你將會需要重新幫專精選擇設定檔，抱歉造成不便...)]=]
 L["Include All Auras"] = "包含所有光環"
@@ -333,10 +331,14 @@ L["Tank"] = "坦克"
 L["Tapped Unit"] = "無效單位"
 L["Target Highlighting"] = "當前目標顯著標示"
 L["Target Of"] = "目標屬於誰"
+L["Target Of (Class Colored)"] = "目標屬於誰 (職業顏色)"
 L["Target Only"] = "只有選取目標"
 L["Target Unit"] = "選取目標單位"
 L["Text Color"] = "文字顏色"
 L["The amount of Emphasized auras that can be displayed at once"] = "同時能夠顯示出來的強調光環最多數量"
+L[ [=[The amount of empty aura slots between Buffs & Debuffs.
+Max value means they never share a row]=] ] = [=[增益 & 減益之間的空光環個數。
+最大數值表示兩者永遠不會在同一個橫列。]=]
 L[ [=[The amount of empty aura slots between Buffs & Debuffs.
 Max value means they never share a row]=] ] = [=[增益 & 減益之間的空光環個數。
 最大數值表示兩者永遠不會在同一個橫列。]=]
@@ -379,3 +381,4 @@ L["White"] = "白色"
 L["Wide"] = "較寬"
 L["You need to specify a 'Profile Name'."] = "請輸入 '設定檔名稱'。"
 L["Your 'Out of Range' distance"] = "你的 '超出範圍' 距離"
+
