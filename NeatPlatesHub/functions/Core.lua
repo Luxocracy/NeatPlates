@@ -259,14 +259,19 @@ local function ApplyCustomBarSize(style, defaults)
 
 	if defaults then
 		-- Alter Widths
+		-- Main Frame
+		local frameMod = math.max((LocalVars.FrameBarWidth or 1), (LocalVars.CastBarWidth or 1))
+
+		if defaults.frame.width then style.frame.width = defaults.frame.width * frameMod end
+		if defaults.frame.x then style.frame.x = defaults.frame.x * frameMod end
+
 		-- Healthbar
-		local Healthbar = {"threatborder", "healthborder", "healthbar", "frame", "customtext", "level", "name"}
+		local Healthbar = {"threatborder", "healthborder", "healthbar", "customtext", "level", "name"}
 		for k,v in pairs(Healthbar) do
 			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.FrameBarWidth or 1) end
 			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.FrameBarWidth or 1) end
 		end
 
-		
 		-- Castbar
 		local Castbar = {"castborder", "castnostop", "castbar", "spellicon", "spelltext", "durationtext"}
 		for k,v in pairs(Castbar) do
@@ -283,6 +288,22 @@ local function ApplyCustomBarSize(style, defaults)
 		style.target.width = style.target.width * (LocalVars.FrameBarWidth or 1)
 		style.focus.width = style.focus.width * (LocalVars.FrameBarWidth or 1)
 		style.mouseover.width = style.mouseover.width * (LocalVars.FrameBarWidth or 1)
+
+		-- Spelltext offset when durationtext is enabled
+		if style.spelltext and style.spelltext.durationtext then
+			local ref
+			if LocalVars.CastbarDurationMode ~= "None" then
+				ref = style.spelltext.durationtext	-- Override values
+			else
+				ref = defaults.spelltext -- Original values
+			end
+			for k,v in pairs(ref) do
+				if k == "width" or k == "x" then
+					v = v * (LocalVars.CastBarWidth or 1)
+				end
+				style.spelltext[k] = v
+			end
+		end
 	end
 end
 
@@ -342,19 +363,6 @@ local function ApplyStyleCustomization(style, defaults)
 	style.target.color = LocalVars.ColorTarget
 	style.focus.color = LocalVars.ColorFocus
 	style.mouseover.color = LocalVars.ColorMouseover
-
-	-- Spelltext offset when durationtext is enabled
-	if style.spelltext and style.spelltext.durationtext then
-		local ref
-		if LocalVars.CastbarDurationMode ~= "None" then
-			ref = style.spelltext.durationtext	-- Override values
-		else
-			ref = defaults.spelltext -- Original values
-		end
-		for k,v in pairs(ref) do
-			style.spelltext[k] = v
-		end
-	end
 
  	ApplyCustomBarSize(style, defaults)
 	ApplyFontCustomization(style, defaults)
