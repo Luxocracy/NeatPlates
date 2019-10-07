@@ -337,6 +337,8 @@ L["Text Color"] = "文字颜色"
 L["The amount of Emphasized auras that can be displayed at once"] = "同时显示高亮法术效果的数量"
 L[ [=[The amount of empty aura slots between Buffs & Debuffs.
 Max value means they never share a row]=] ] = "增益与负面效果之间的间隔。最大值表示它们不会显示在同一行"
+L[ [=[The amount of empty aura slots between Buffs & Debuffs.
+Max value means they never share a row]=] ] = "增益与负面效果之间的间隔。最大值表示它们不会显示在同一行"
 L["The profile '%1' already exists, try a different name."] = "配置文件 '%1' 已经存在，请尝试其他名称。"
 L["The profile '%1' is now the Default profile."] = "'%1'现在是默认配置文件。"
 L["The profile '%1' was successfully deleted."] = "配置文件 '%1' 已成功删除。"
@@ -376,3 +378,4 @@ L["White"] = "白色"
 L["Wide"] = "宽松"
 L["You need to specify a 'Profile Name'."] = "你需要先定义一个“配置文件名”。"
 L["Your 'Out of Range' distance"] = "你的“超出施法范围”距离"
+
