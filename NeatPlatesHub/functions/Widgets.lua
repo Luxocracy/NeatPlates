@@ -262,16 +262,16 @@ local function TrackDispelType(dispelType)
 end
 
 local function DebuffFilter(aura)
-	-- Purgeable Buff
-	if LocalVars.WidgetBuffPurgeable and aura.effect == "HELPFUL" and aura.type == "Magic" and aura.reaction == 1 then
-		local color = LocalVars.ColorBuffPurgeable
-		return true, 10, color.r, color.g, color.b, color.a
-	end
-	-- Sootheable Enrage Buff
-	if LocalVars.WidgetBuffEnrage and aura.effect == "HELPFUL" and aura.type == "" and aura.reaction == 1 then
-		local color = LocalVars.ColorBuffEnrage
-		return true, 10, color.r, color.g, color.b, color.a
-	end
+	---- Purgeable Buff
+	--if LocalVars.WidgetBuffPurgeable and aura.effect == "HELPFUL" and aura.type == "Magic" and aura.reaction == 1 then
+	--	local color = LocalVars.ColorBuffPurgeable
+	--	return true, 10, color.r, color.g, color.b, color.a
+	--end
+	---- Sootheable Enrage Buff
+	--if LocalVars.WidgetBuffEnrage and aura.effect == "HELPFUL" and aura.type == "" and aura.reaction == 1 then
+	--	local color = LocalVars.ColorBuffEnrage
+	--	return true, 10, color.r, color.g, color.b, color.a
+	--end
 	-- Dispellable Debuff
 	if (LocalVars.WidgetAuraTrackDispelFriendly and aura.reaction == AURA_TARGET_FRIENDLY) then
 		if (aura.effect == "HARMFUL" and TrackDispelType(aura.type)) then
@@ -451,13 +451,13 @@ local function OnVariableChange(vars)
 		NeatPlatesWidgets.SetClassWidgetOptions(LocalVars)
 	end
 
-	if LocalVars.WidgetPandemic then
-		NeatPlatesWidgets.SetPandemic(LocalVars.WidgetPandemic, LocalVars.ColorPandemic)
-	end
+	--if LocalVars.WidgetPandemic then
+	--	NeatPlatesWidgets.SetPandemic(LocalVars.WidgetPandemic, LocalVars.ColorPandemic)
+	--end
 
-	if LocalVars.WidgetPandemic or LocalVars.WidgetBuffPurgeable or LocalVars.WidgetBuffEnrage then
-		NeatPlatesWidgets.SetBorderTypes(LocalVars.BorderPandemic, LocalVars.BorderBuffPurgeable, LocalVars.BorderBuffEnrage)
-	end
+	--if LocalVars.WidgetPandemic or LocalVars.WidgetBuffPurgeable or LocalVars.WidgetBuffEnrage then
+	--	NeatPlatesWidgets.SetBorderTypes(LocalVars.BorderPandemic, LocalVars.BorderBuffPurgeable, LocalVars.BorderBuffEnrage)
+	--end
 
 	if LocalVars.WidgetRangeIndicator then
 		NeatPlatesWidgets.SetRangeWidgetOptions(LocalVars)

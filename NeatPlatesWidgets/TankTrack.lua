@@ -22,8 +22,7 @@ local TankWatcher
 local function IsEnemyTanked(unit)
 	local unitid = unit.unitid
 	local targetOf = unitid.."target"
-	-- GetPartyAssignment("MAINTANK", raidid)
-	local targetIsTank = UnitIsUnit(targetOf, "pet")
+	local targetIsTank = UnitIsUnit(targetOf, "pet") or GetPartyAssignment("MAINTANK", targetOf)
 
 	return targetIsTank
 end

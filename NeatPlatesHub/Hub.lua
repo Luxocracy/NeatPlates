@@ -197,31 +197,31 @@ local function BuildHubPanel(panel)
 	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", L["Include My Buffs"], AlignmentColumn, panel.WidgetMyDebuff, 16)
 	panel.WidgetMyBuff.tooltipText = L["Display Buffs that have been applied by you"]
 
-	panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", L["Enable Pandemic Highlighting"], AlignmentColumn, panel.WidgetMyBuff, 16)
-	panel.WidgetPandemic.tooltipText = L["Highlight auras when they have less than 30% of their original duration remaining"]
-	panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", nil, AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
-	panel.ColorPandemic.tooltipText = L["Color of the border highlight"]
-	panel.BorderPandemic = CreateQuickDropdown(objectName.."BorderPandemic", "", BorderTypes, 1, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 90)
-	panel.BorderPandemic.tooltipText = L["Type of highlighting to use"]
+	--panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", L["Enable Pandemic Highlighting"], AlignmentColumn, panel.WidgetMyBuff, 16)
+	--panel.WidgetPandemic.tooltipText = L["Highlight auras when they have less than 30% of their original duration remaining"]
+	--panel.ColorPandemic = CreateQuickColorbox(objectName.."ColorPandemic", "", nil, AlignmentColumn, panel.WidgetMyBuff , OffsetColumnB + 64)
+	--panel.ColorPandemic.tooltipText = L["Color of the border highlight"]
+	--panel.BorderPandemic = CreateQuickDropdown(objectName.."BorderPandemic", "", BorderTypes, 1, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 90)
+	--panel.BorderPandemic.tooltipText = L["Type of highlighting to use"]
 
-	panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", L["Include Purgeable Buffs"], AlignmentColumn, panel.WidgetPandemic, 16)
-	panel.WidgetBuffPurgeable.tooltipText = L["Display beneficial auras that can be removed by Dispel/Purge"]
-	panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", nil, AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
-	panel.ColorBuffPurgeable.tooltipText = L["Color of the border highlight"]
-	panel.BorderBuffPurgeable = CreateQuickDropdown(objectName.."BorderBuffPurgeable", "", BorderTypes, 1, AlignmentColumn, panel.WidgetPandemic, OffsetColumnB + 90)
-	panel.BorderBuffPurgeable.tooltipText = L["Type of highlighting to use"]
+	--panel.WidgetBuffPurgeable = CreateQuickCheckbutton(objectName.."WidgetBuffPurgeable", L["Include Purgeable Buffs"], AlignmentColumn, panel.WidgetPandemic, 16)
+	--panel.WidgetBuffPurgeable.tooltipText = L["Display beneficial auras that can be removed by Dispel/Purge"]
+	--panel.ColorBuffPurgeable = CreateQuickColorbox(objectName.."ColorBuffPurgeable", "", nil, AlignmentColumn, panel.WidgetPandemic , OffsetColumnB + 64)
+	--panel.ColorBuffPurgeable.tooltipText = L["Color of the border highlight"]
+	--panel.BorderBuffPurgeable = CreateQuickDropdown(objectName.."BorderBuffPurgeable", "", BorderTypes, 1, AlignmentColumn, panel.WidgetPandemic, OffsetColumnB + 90)
+	--panel.BorderBuffPurgeable.tooltipText = L["Type of highlighting to use"]
 
-	panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", L["Include Enrage Buffs"], AlignmentColumn, panel.WidgetBuffPurgeable, 16)
-	panel.WidgetBuffEnrage.tooltipText = L["Display Enrage effects that can be removed by Soothe"]
-	panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", nil, AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
-	panel.ColorBuffEnrage.tooltipText = L["Color of the border highlight"]
-	panel.BorderBuffEnrage = CreateQuickDropdown(objectName.."BorderBuffEnrage", "", BorderTypes, 1, AlignmentColumn, panel.WidgetBuffPurgeable, OffsetColumnB + 90)
-	panel.BorderBuffEnrage.tooltipText = L["Type of highlighting to use"]
+	--panel.WidgetBuffEnrage = CreateQuickCheckbutton(objectName.."WidgetBuffEnrage", L["Include Enrage Buffs"], AlignmentColumn, panel.WidgetBuffPurgeable, 16)
+	--panel.WidgetBuffEnrage.tooltipText = L["Display Enrage effects that can be removed by Soothe"]
+	--panel.ColorBuffEnrage = CreateQuickColorbox(objectName.."ColorBuffEnrage", "", nil, AlignmentColumn, panel.WidgetBuffPurgeable , OffsetColumnB + 64)
+	--panel.ColorBuffEnrage.tooltipText = L["Color of the border highlight"]
+	--panel.BorderBuffEnrage = CreateQuickDropdown(objectName.."BorderBuffEnrage", "", BorderTypes, 1, AlignmentColumn, panel.WidgetBuffPurgeable, OffsetColumnB + 90)
+	--panel.BorderBuffEnrage.tooltipText = L["Type of highlighting to use"]
 
-	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
+	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetMyBuff, 16, 2)
 	panel.SpacerSlots.tooltipText = L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"]
 
-	panel.AuraScale = CreateQuickSlider(objectName.."AuraScale", L["Aura Scale"]..':', nil, 160, AlignmentColumn, panel.WidgetBuffEnrage, OffsetColumnB + 64, 2)
+	panel.AuraScale = CreateQuickSlider(objectName.."AuraScale", L["Aura Scale"]..':', nil, 160, AlignmentColumn, panel.WidgetMyBuff, OffsetColumnB + 64, 2)
 	panel.AuraScale.tooltipText = L["Might require a '/reload' to display correctly"]
 	panel.WidgetAuraScaleOptions = CreateQuickScale(objectName.."WidgetAuraScaleOptions", "WidgetAuraScaleOptions", L["Aura Widget"], nil, {noScale = true, label = L["Aura Offsets"]}, AlignmentColumn, "TOP", panel.AuraScale, "BOTTOM", 0, -16)
 
