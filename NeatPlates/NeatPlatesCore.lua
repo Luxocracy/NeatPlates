@@ -629,6 +629,7 @@ do
 	function UpdateUnitCondition(plate, unitid)
 		UpdateReferences(plate)
 
+		unit.unitid = unit.unitid or unitid -- Just make sure it exists
 		unit.level = UnitEffectiveLevel(unitid)
 
 		local c = GetCreatureDifficultyColor(unit.level)

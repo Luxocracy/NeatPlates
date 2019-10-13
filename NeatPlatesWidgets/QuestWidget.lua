@@ -10,18 +10,18 @@ local function UpdateQuestWidget(self, unit)
 		local questList = GetUnitQuestInfo(unit)
 		local showIcon = false
 
-		for i=1, #questList do
-			local questName, questObjective = unpack(questList[i])
-			local questProgress, questTotal
+		for questName, questObjectives in pairs(questList) do
+			for k,questObjective in pairs(questObjectives) do
+				local questProgress, questTotal
+				if questObjective then
+					questProgress, questTotal = string.match(questObjective, "([0-9]+)\/([0-9]+)")
+					questProgress = tonumber(questProgress)
+					questTotal = tonumber(questTotal)
+				end
 
-			if questObjective then
-				questProgress, questTotal = string.match(questObjective, "([0-9]+)\/([0-9]+)")
-				questProgress = tonumber(questProgress)
-				questTotal = tonumber(questTotal)
-			end
-
-			if (not isDungeon and ((questName and not (questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal))) then
-				showIcon = true
+				if (not isDungeon and ((questName and not (questProgress and questTotal)) or (questProgress and questTotal and questProgress < questTotal))) then
+					showIcon = true
+				end
 			end
 		end	
 		

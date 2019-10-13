@@ -22,7 +22,10 @@ NeatPlatesUtility.IsFriend = function(...) end
 --NeatPlatesUtility.IsGuildmate = function(...) end
 --NeatPlatesUtility.IsPartyMember = function(...) end
 NeatPlatesUtility.IsGuildmate = UnitIsInMyGuild
-NeatPlatesUtility.IsPartyMember = function(unitid) if not unitid then return false end; return UnitInParty(unitid) or UnitInRaid(unitid) end
+NeatPlatesUtility.IsPartyMember = function(unitid)
+	if not unitid then return false end
+	return UnitInParty(unitid) or UnitInRaid(unitid)
+end
 
 local function RaidMemberCount()
 	if UnitInRaid("player") then
@@ -279,17 +282,19 @@ local function GetUnitQuestInfo(unit)
     	if line > 1 then 
 	    	local tooltipText, r, g, b = GetTooltipLineText( line )
 	      local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
-	      -- If the Quest Name exists, the following tooltip lines list quest progress and unit
-	      if questName and questColor then
-	      	questUnit = tooltipText
-	      elseif questName and (not questUnit or questUnit == UnitName("player")) and objectiveCount > 0 then
-	        questProgress = tooltipText
-	        table.insert(questList, {questName, questProgress})
-	        objectiveCount = objectiveCount - 1 -- Decrease objective Count
-	      elseif questColor then
-	        questName = tooltipText
+
+	      if questColor then
+	      	questName = tooltipText
+	      	questList[questName] = questList[questName] or {}
+	      elseif questName and objectiveCount > 0 then
+	      	table.insert(questList[questName], tooltipText)
+	      	objectiveCount = objectiveCount - 1 -- Decrease objective Count
 	      end
-	    end
+      end
+	  end
+
+	  if questList[UnitName("player")] then
+	  	questList = {player = questList[UnitName("player")]} -- Wrap it so the quest widget can parse it properly
 	  end
 
     return questList
