@@ -217,7 +217,7 @@ local function UpdateAuraHighlighting(frame, aura)
 			frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
 			frame.BorderHighlight:Show()
 			frame.Border:Hide()
-		end
+		else frame.BorderHighlight:Hide(); frame.Border:Show() end
 end
 
 local function UpdateIcon(frame, aura)
