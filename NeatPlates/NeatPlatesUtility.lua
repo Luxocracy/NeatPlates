@@ -667,7 +667,6 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 
 	EditBox:SetScript("OnEnterPressed", function(self, val)
 		if slider.isActual then val = self:GetNumber() else val = self:GetNumber()/100 end
-		print(val)
 		slider:updateValues(val)
 		slider:SetValue(val)
 		self:ClearFocus()
