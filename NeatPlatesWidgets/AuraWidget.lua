@@ -131,6 +131,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
+	["NAME_PLATE_UNIT_REMOVED"] = function(unitid) if unitid then AuraCache[unitid] = nil end end, -- Clear the AuraCache for the unitid
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -798,7 +799,6 @@ end
 local function SetEmphasizedSlots(amount)
 	MaxEmphasizedAuras = math.min(amount, DebuffColumns-1)
 end
-
 
 -----------------------------------------------------
 -- External
