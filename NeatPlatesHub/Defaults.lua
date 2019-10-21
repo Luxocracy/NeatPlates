@@ -112,6 +112,7 @@ NeatPlatesHubDefaults = {
 	OpacityFilterInactive = false,
 	OpacityFilterMini = false,
 	OpacityFilterUntitledFriendlyNPC = false,
+	OpacityFilterLowLevelUnits = false,
 
 	OpacityFilterList = "Fanged Pit Viper\nLiberated Karabor Prisoner",
 	OpacityFilterLookup = {},

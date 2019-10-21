@@ -128,6 +128,7 @@ L["Friendly Status Text"] = true
 	-- StatusText Dropdown
 	L["None"] = true
 	L["Percent Health"] = true
+	L["Percent Health (Colored)"] = true
 	L["Exact Health"] = true
 	L["Approximate Health"] = true
 		L["SHORT_ONE_HUNDRED_MILLION"] = "E"
@@ -287,6 +288,7 @@ L["Filter Non-Elite"] = true
 L["Filter Enemy NPC"] = true
 L["Filter Friendly NPC"] = true
 L["Filter Non-Titled Friendly NPC"] = true
+L["Filter Low Level Units"] = true
 
 L["Filter Players"] = true
 L["Filter Party/Raid Members"] = true

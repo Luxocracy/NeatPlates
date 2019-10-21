@@ -635,6 +635,8 @@ do
 		local c = GetCreatureDifficultyColor(unit.level)
 		unit.levelcolorRed, unit.levelcolorGreen, unit.levelcolorBlue = c.r, c.g, c.b
 
+		unit.isTrivial = (c.r == 0.5 and c.g == 0.5 and c.b == 0.5)
+
 		unit.red, unit.green, unit.blue = UnitSelectionColor(unitid)
 		unit.reaction = GetReactionByColor(unit.red, unit.green, unit.blue) or "HOSTILE"
 

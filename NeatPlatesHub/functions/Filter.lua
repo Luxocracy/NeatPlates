@@ -11,6 +11,7 @@ local IsPartyMember = NeatPlatesUtility.IsPartyMember
 ------------------------------------------------------------------------------
 local function UnitFilter(unit)
 	if LocalVars.OpacityFilterLookup[unit.name] then return true
+	elseif LocalVars.OpacityFilterLowLevelUnits and unit.isTrivial then return true
 	elseif LocalVars.OpacityFilterNeutralUnits and unit.reaction == "NEUTRAL" then return true
 	elseif LocalVars.OpacityFilterUntitledFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" and not (GetUnitSubtitle(unit) or GetUnitQuestInfo(unit))  then return true
 	elseif LocalVars.OpacityFilterFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" then return true

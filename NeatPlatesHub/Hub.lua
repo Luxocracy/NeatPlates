@@ -360,6 +360,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityFilterEnemyNPC, F = CreateQuickCheckbutton(objectName.."OpacityFilterEnemyNPC", L["Filter Enemy NPC"], AlignmentColumn, F, 8)
 	panel.OpacityFilterFriendlyNPC, F = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyNPC", L["Filter Friendly NPC"], AlignmentColumn, F, 8)
 	panel.OpacityFilterUntitledFriendlyNPC, F = CreateQuickCheckbutton(objectName.."OpacityFilterUntitledFriendlyNPC", L["Filter Non-Titled Friendly NPC"], AlignmentColumn, F, 8)
+	panel.OpacityFilterLowLevelUnits, F = CreateQuickCheckbutton(objectName.."OpacityFilterLowLevelUnits", L["Filter Low Level Units"], AlignmentColumn, F, 8)
 
 	panel.OpacityFilterPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterPlayers", L["Filter Players"], AlignmentColumn, panel.FilterScaleLock, OffsetColumnB+24, 4)
 	panel.OpacityFilterPartyMembers = CreateQuickCheckbutton(objectName.."OpacityOpacityFilterPartyMembers", L["Filter Party/Raid Members"], AlignmentColumn, panel.OpacityFilterPlayers, OffsetColumnB+24)
