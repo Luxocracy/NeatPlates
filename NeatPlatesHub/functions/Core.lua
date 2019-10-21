@@ -63,7 +63,7 @@ local function IsOffTanked(unit)
 			targetIsGuardian = guardians[targetGUID]
 		end
 		
-		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian
+		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or IsEnemyTanked(unit)
 
 		--if LocalVars.EnableOffTankHighlight and IsEnemyTanked(unit) then
 		if LocalVars.EnableOffTankHighlight and targetIsTank then
