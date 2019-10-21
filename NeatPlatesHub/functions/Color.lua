@@ -106,8 +106,7 @@ end
 --]]
 
 local function ColorFunctionDamage(unit)
-
-	if IsOffTanked(unit) then return LocalVars.ColorAttackingOtherTank end
+	--if IsOffTanked(unit) then return LocalVars.ColorAttackingOtherTank end
 
 	if unit.threatValue > 1 then return LocalVars.ColorThreatWarning				-- When player is unit's target		-- Warning
 	elseif unit.threatValue == 1 then return LocalVars.ColorThreatTransition											-- Transition
@@ -157,7 +156,7 @@ local function ColorFunctionByThreat(unit)
 
 		if threatException then return threatException end
 
-		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return ReactionColors[unit.reaction][unit.type] end
+		if unit.reaction == "NEUTRAL" and unit.threatValue < 2 and not IsOffTanked(unit) then return ReactionColors[unit.reaction][unit.type] end
 
 		if isTank then
 			return ColorFunctionTankSwapColors(unit)
