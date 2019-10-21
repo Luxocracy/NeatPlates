@@ -105,12 +105,22 @@ end
 local function HealthFunctionNone() return "" end
 
 -- Percent
+local function TextHealthPercent(unit)
+	return ceil(100*(unit.health/unit.healthmax)).."%"
+end
+
 local function TextHealthPercentColored(unit)
 	local color = ColorFunctionByHealth(unit)
 	return ceil(100*(unit.health/unit.healthmax)).."%", color.r, color.g, color.b, .7
 end
 
 local function HealthFunctionPercent(unit)
+	if unit.health < unit.healthmax then
+		return TextHealthPercent(unit)
+	else return "" end
+end
+
+local function HealthFunctionPercentColored(unit)
 	if unit.health < unit.healthmax then
 		return TextHealthPercentColored(unit)
 	else return "" end
@@ -259,6 +269,7 @@ NeatPlatesHubDefaults.EnemyStatusTextMode = "HealthFunctionNone"
 
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionNone, L["None"], "HealthFunctionNone")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionPercent, L["Percent Health"], "HealthFunctionPercent")
+AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionPercentColored, L["Percent Health (Colored)"], "HealthFunctionPercentColored")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionExact, L["Exact Health"], "HealthFunctionExact")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionApprox, L["Approximate Health"], "HealthFunctionApprox")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionDeficit, L["Health Deficit"], "HealthFunctionDeficit")
@@ -414,7 +425,8 @@ NeatPlatesHubMenus.EnemyNameSubtextModes = {}
 NeatPlatesHubDefaults.HeadlineEnemySubtext = "RoleGuildLevel"
 NeatPlatesHubDefaults.HeadlineFriendlySubtext = "RoleGuildLevel"
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, DummyFunction, L["None"], "None")
-AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextHealthPercentColored, L["Percent Health"], "PercentHealth")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextHealthPercentColored, L["Percent Health (Colored)"], "PercentHealthColored")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextHealthPercent, L["Percent Health"], "PercentHealth")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextRoleGuildLevel, L["NPC Role, Guild, or Level"], "RoleGuildLevel")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextRoleGuildQuest, L["NPC Role, Guild, or Quest"], "RoleGuildQuest")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextRoleGuild, L["NPC Role, Guild"], "RoleGuild")
