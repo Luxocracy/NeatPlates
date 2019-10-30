@@ -547,7 +547,8 @@ L["Display Scale Options"] = true
 
 
 -- Classic Specific
-
+L["Couldn't update the targets role."] = true
+L["Typing '/nptank', will toggle the role assignment of your target manually"] = true
 L["Clear Spell Database"] = true
 L["Cleared Spell Database of entries."] = true
 L["Color Cast Bars by School"] = true

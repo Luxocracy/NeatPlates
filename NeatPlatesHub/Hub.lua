@@ -448,6 +448,7 @@ local function BuildHubPanel(panel)
 
     -- Column 2
 	panel.EnableOffTankHighlight = CreateQuickCheckbutton(objectName.."EnableOffTankHighlight", L["Highlight Mobs on Off-Tanks"], AlignmentColumn, panel.ThreatWarningMode, 16+OffsetColumnB)
+	panel.EnableOffTankHighlight.tooltipText = L["Typing '/nptank', will toggle the role assignment of your target manually"]
 
 	panel.ColorShowPartyAggro = CreateQuickCheckbutton(objectName.."ColorShowPartyAggro", L["Highlight Group Members holding Aggro"], AlignmentColumn, panel.EnableOffTankHighlight, 16+OffsetColumnB)
 	panel.ColorPartyAggroBar = CreateQuickCheckbutton(objectName.."ColorPartyAggroBar", L["Health Bar Color"], AlignmentColumn, panel.ColorShowPartyAggro, 32+OffsetColumnB)

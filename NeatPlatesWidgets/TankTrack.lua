@@ -1,3 +1,4 @@
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 ------------------------------
 -- Tank Aura/Role Tracking
@@ -8,7 +9,6 @@ local GetGroupInfo = NeatPlatesUtility.GetGroupInfo
 -- Interface Functions...
 ---------------------------
 local RaidTankList = {}
-local inRaid = false
 local playerTankRole = false
 local currentSpec = 0
 local playerClass = select(2, UnitClass("player"))
@@ -18,11 +18,13 @@ local playerGUID = UnitGUID("player")
 local cachedAura = false
 local cachedRole = false
 local TankWatcher
+local white, orange, blue, green, red = "|cffffffff", "|cFFFF6906", "|cFF3782D1", "|cFF60E025", "|cFFFF1100"
 
 local function IsEnemyTanked(unit)
 	local unitid = unit.unitid
 	local targetOf = unitid.."target"
-	local targetIsTank = UnitIsUnit(targetOf, "pet") or GetPartyAssignment("MAINTANK", targetOf)
+	--local targetIsTank = UnitIsUnit(targetOf, "pet") or GetPartyAssignment("MAINTANK", targetOf)
+	local targetIsTank = RaidTankList[UnitGUID(targetOf)] or UnitIsUnit(targetOf, "pet")
 
 	return targetIsTank
 end
@@ -60,10 +62,9 @@ end
 
 local function UpdateGroupRoles()
 
-	RaidTankList = wipe(RaidTankList)
-	-- If a player is in a dungeon, no need for multi-tanking
-	if UnitInRaid("player") then
-		inRaid = true
+	if not IsInGroup() then
+		RaidTankList = wipe(RaidTankList)
+	else
 
 		local groupType, groupSize = GetGroupInfo()
 		local raidIndex
@@ -79,15 +80,25 @@ local function UpdateGroupRoles()
 			end
 
 		end
-
-	-- If not in a raid, try to use guardian pet
-	-- as a tank..
-	else
-		inRaid = false
-		if HasPetUI("player") and UnitName("pet") then
-			RaidTankList[UnitGUID("pet")] = true
-		end
 	end
+end
+
+local function ToggleTank(arg)
+	if not IsInGroup() or not UnitExists("target") or UnitIsUnit("player", "target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
+		if arg == "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
+	else
+		local name = UnitName("target")
+		local guid = UnitGUID("target")
+		local isTank = not RaidTankList[guid]
+		local role
+		if isTank then role = blue..L["Tank"] else role = white..L["None"] end
+
+		RaidTankList[guid] = isTank
+
+		print(orange..L["NeatPlates"]..": "..white..name.." - "..role)
+	end
+
+	
 
 end
 
@@ -128,6 +139,9 @@ end
 
 NeatPlatesWidgets.IsEnemyTanked = IsEnemyTanked
 NeatPlatesWidgets.IsPlayerTank = IsPlayerTank
+
+SLASH_NeatPlatesTank1 = '/nptank'
+SlashCmdList['NeatPlatesTank'] = ToggleTank;
 
 
 --[[
