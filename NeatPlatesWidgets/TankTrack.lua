@@ -89,7 +89,7 @@ local function ToggleTank(arg)
 	else
 		local name = UnitName("target")
 		local guid = UnitGUID("target")
-		local isTank = not RaidTankList[guid]
+		local isTank = GetPartyAssignment("MAINTANK", "target") or not RaidTankList[guid]
 		local role
 		if isTank then role = blue..L["Tank"] else role = white..L["None"] end
 
