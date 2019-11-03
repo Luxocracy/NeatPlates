@@ -325,23 +325,23 @@ end
 local function ApplyThemeCustomization(theme)
 	local categories = {"Default", "NameOnly", "WidgetConfig"}
 
-	--LocalVars.Customization = {
-	--	Default = {},
-	--	NameOnly = {},
-	--	WidgetConfig = {}
-	--}
+	-- Restore theme to default settings
+	theme["Default"] = CopyTable(theme["DefaultBackup"])
+	theme["NameOnly"] = CopyTable(theme["NameOnlyBackup"])
+	theme["WidgetConfig"] = CopyTable(theme["WidgetConfigBackup"])
 
+	-- Apply customized style to each category
 	for i,category in pairs(categories) do
-		local style, defaults = theme[category], theme[category.."Backup"]
+		local style = theme[category]
 		local modifications = LocalVars.Customization[category]
 
-		-- Style Customization through the in-game options
+		-- Apply the customized style
 		if modifications then
 			for k,v in pairs(modifications) do
-				if defaults[k] then
+				if style[k] then
 					for k2,v2 in pairs(v) do
 						if type(style[k][k2]) == "number" then
-							style[k][k2] = defaults[k][k2] + v2
+							style[k][k2] = style[k][k2] + v2
 						else
 							style[k][k2] = v2
 						end
@@ -487,7 +487,7 @@ end
 
 
 -- From Neon.lua...
-local LocalVars = NeatPlatesHubDamageVariables
+--local LocalVars = NeatPlatesHubDamageVariables
 
 local function OnInitialize(plate, theme)
 	if theme and theme.WidgetConfig then
@@ -506,6 +506,7 @@ end
 
 local function OnChangeProfile(theme, profile)
 	if profile then
+		if NeatPlatesCustomizationPanel then NeatPlatesCustomizationPanel:Hide() end -- Hide the theme customization frame. (Has to be done before we change the 'LocalVars' variable set)
 
 		UseVariables(profile)
 

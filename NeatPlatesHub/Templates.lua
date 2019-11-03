@@ -372,12 +372,12 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		local options = {
   		StyleDropdown = function(self, option) return self.category ~= "Widgets" end,
   		EnableCheckbox = function(self, option) return self.category ~= "Widgets" end,
-  		AnchorOptions = function(self, option) return option.anchor end,
-  		AlignOptions = function(self, option) return option.align end,
-  		OffsetX = function(self, option) return option.x end,
-  		OffsetY = function(self, option) return option.y end,
-  		OffsetWidth = function(self, option) return option.width or option.w or self.category == "Widgets" end,
-  		OffsetHeight = function(self, option) return option.height or option.h or self.category == "Widgets" end,
+  		AnchorOptions = function(self, option) return option.anchor ~= nil end,
+  		AlignOptions = function(self, option) return option.align ~= nil end,
+  		OffsetX = function(self, option) return option.x ~= nil end,
+  		OffsetY = function(self, option) return option.y ~= nil end,
+  		OffsetWidth = function(self, option) return option.width ~= nil or option.w ~= nil end,
+  		OffsetHeight = function(self, option) return option.height ~= nil or option.h ~= nil end,
 		}
 
 		-- Update Panel Values
@@ -390,6 +390,29 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  	local current = NeatPlatesHubFunctions.GetCustomizationOption(category, self.value) or {}
 	  	local default = theme[category.."Backup"][self.value] or {}
 
+	  	local getObjectName = function(item)
+	  		local objectName = item.objectName
+	  		if type(objectName) == "table" then
+	  			for i=1, #objectName, 1 do
+	  				if default[objectName[i]] then
+	  					objectName = objectName[i]
+	  					break
+	  				end
+	  			end
+	  		end
+	  		return objectName
+	  	end
+
+	  	local getOptionValue = function(item, defaultValue)
+	  		local objectName = getObjectName(item)
+	  		local value = current[objectName]
+
+	  		if value == nil and defaultValue ~= nil then value = defaultValue
+	  		elseif value == nil then value = default[objectName] end
+
+	  		return value
+	  	end
+
 	  	CustomizationPanel.activeOption = self.value
 	  	CustomizationPanel.activeCategory = category
 
@@ -399,18 +422,18 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  	-- Set Customization Values & Show/Hide Elements
 	  	for k,option in pairs(options) do
 	  		local item = CustomizationPanel[k]
-	  		item.fetching = true
+	  		item.fetching = true -- Prevents 'OnValueChanged' from triggering while setting values.
 	  		if option(self, default) then
-	  			local itemType = type(default[item.objectName])
+	  			local itemType = type(default[getObjectName(item)])
 	  			item:Show()
 	  			item.enabled = true
 
 	  			if itemType == "boolean" then
-	  				item:SetChecked(current[item.objectName] or default[item.objectName])
+	  				item:SetChecked(getOptionValue(item))
 	  			elseif itemType == "number" then
-						item:updateValues(current[item.objectName] or 0)
+						item:updateValues(getOptionValue(item, 0))
 					elseif item.objectName then
-						item:SetValue(current[item.objectName] or default[item.objectName])
+						item:SetValue(getOptionValue(item))
 	  			end
 	  		else
 	  			item:Hide()
@@ -476,7 +499,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.EnableCheckbox = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnableCheckbox", CustomizationPanel, L["Show Element"])
 			CustomizationPanel.EnableCheckbox:SetPoint("TOPLEFT", CustomizationPanel.StyleDropdown, "BOTTOMLEFT", 16, 4)
 			CustomizationPanel.EnableCheckbox.objectName = "show"
-			CustomizationPanel.EnableCheckbox:SetScript("OnClick", CustomizationPanel.OnValueChanged)
+			CustomizationPanel.EnableCheckbox:SetScript("OnClick", function(self) CustomizationPanel.OnValueChanged(self) end)
 
 			CustomizationPanel.AnchorOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AnchorOptions", CustomizationPanel, AnchorOptions, "CENTER", L["Frame Anchor"], true)
 			CustomizationPanel.AnchorOptions:SetPoint("TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 20, -20)
@@ -493,10 +516,10 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.OffsetY.objectName = "y"
 			CustomizationPanel.OffsetWidth = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetWidth", CustomizationPanel, L["Offset Width"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetWidth:SetPoint("RIGHT", CustomizationPanel.OffsetX, "LEFT", -30, 0)
-			CustomizationPanel.OffsetWidth.objectName = "width"
+			CustomizationPanel.OffsetWidth.objectName = {"width", "w"}
 			CustomizationPanel.OffsetHeight = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetHeight", CustomizationPanel, L["Offset Height"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetHeight:SetPoint("TOPLEFT", CustomizationPanel.OffsetWidth, "TOPLEFT", 0, -45)
-			CustomizationPanel.OffsetHeight.objectName = "height"
+			CustomizationPanel.OffsetHeight.objectName = {"height", "h"}
 
 			-- Create Buttons
 			CustomizationPanel.CancelButton = CreateFrame("Button", "NeatPlatesCustomizationCancelButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
