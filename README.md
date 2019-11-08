@@ -12,6 +12,10 @@ This addon is based on the [Tidy Plates project](https://wow.curseforge.com/proj
 ## Bugs
 *If you come across any bugs, don't hesitate to open up an [issue](https://github.com/Luxocracy/NeatPlates/issues)*
 
+## Future Features & Stuff
+https://trello.com/b/BExNZB9y/neatplates  
+*Anything on the board is subject to change and doesn't neccessarily mean that it will become a feature.*
+
  
 #
 *If you are transitioning from 'Tidy Plates Continued' to 'NeatPlates' and wish to keep your settings. You can do this by loading both TPC and NeatPlates, at that point NeatPlates should show a prompt asking if you wish to import these settings.*
