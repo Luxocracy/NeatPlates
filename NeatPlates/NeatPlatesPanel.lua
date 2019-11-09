@@ -21,11 +21,6 @@ local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local RGBToHex = NeatPlatesUtility.RGBToHex
 
---local NO_AUTOMATION = L["No Automation"]
---local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
---local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
---local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances"]
-
 -- Localized fonts
 if (LOCALE_koKR) then
 	NeatPlatesLocalizedFont = "Fonts\\2002.TTF";
@@ -87,8 +82,8 @@ NeatPlatesOptions = {
 	ThirdSpecProfile = NeatPlatesSettings.DefaultProfile,
 	FourthSpecProfile = NeatPlatesSettings.DefaultProfile,
 
-	FriendlyAutomation = NO_AUTOMATION,
-	EnemyAutomation = NO_AUTOMATION,
+	FriendlyAutomation = {},
+	EnemyAutomation = {},
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
@@ -104,13 +99,6 @@ NeatPlatesOptions = {
 local NeatPlatesOptionsDefaults = copytable(NeatPlatesOptions)
 local NeatPlatesSettingsDefaults = copytable(NeatPlatesSettings)
 local NeatPlatesThemeNames = {}
-
-local AutomationDropdownItems = {
-					{ text = NO_AUTOMATION, value = NO_AUTOMATION } ,
-					{ text = DURING_COMBAT, value = DURING_COMBAT } ,
-					{ text = OUT_OF_COMBAT, value = OUT_OF_COMBAT } ,
-					{ text = NOT_IN_INSTANCE, value = NOT_IN_INSTANCE } ,
-					}
 
 local OutlineStyleItems = {
 	{ text = L["Default"],  },
@@ -182,28 +170,6 @@ local function ValidateProfileName(name, callback)
 		callback(false) -- Profile name doesn't exist, create it.
 	end
 end
-
---local function SetNameplateVisibility(cvar, mode, combat, inInstance)
---	if mode == DURING_COMBAT then
---		if combat then
---			SetCVar(cvar, 1)
---		else
---			SetCVar(cvar, 0)
---		end
---	elseif mode == OUT_OF_COMBAT then
---		if combat then
---			SetCVar(cvar, 0)
---		else
---			SetCVar(cvar, 1)
---		end
---	elseif mode == NOT_IN_INSTANCE then
---		if inInstance then
---			SetCVar(cvar, 0)
---		else
---			SetCVar(cvar, 1)
---		end
---	end
---end
 
 local function SetNameplateVisibility(cvar, options)
 	local inCombat = UnitAffectingCombat("player")
@@ -732,9 +698,6 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowEnemyLabel:SetJustifyH("LEFT")
 	panel.AutoShowEnemyLabel:SetText(L["Enemy Nameplates"]..':')
 
-	--panel.AutoShowEnemy = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowEnemy", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
-	--panel.AutoShowEnemy:SetPoint("TOPLEFT",panel.AutoShowEnemyLabel, "BOTTOMLEFT", -20, -2)
-
 	panel.EnemyAutomation = PanelHelpers:CreateAutomationOptions("Enemy", panel.AutoShowEnemyLabel:GetStringWidth(), panel)
 	panel.EnemyAutomation:SetPoint("TOPLEFT", panel.AutoShowEnemyLabel, "BOTTOMLEFT", 0, -12)
 
@@ -748,9 +711,6 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowFriendlyLabel:SetWidth(170)
 	panel.AutoShowFriendlyLabel:SetJustifyH("LEFT")
 	panel.AutoShowFriendlyLabel:SetText(L["Friendly Nameplates"]..':')
-
-	--panel.AutoShowFriendly = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowFriendly", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
-	--panel.AutoShowFriendly:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel,"BOTTOMLEFT", -20, -2)
 
 	panel.FriendlyAutomation = PanelHelpers:CreateAutomationOptions("Friendly", panel.AutoShowFriendlyLabel:GetStringWidth(), panel)
 	panel.FriendlyAutomation:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel, "BOTTOMLEFT", 0, -12)

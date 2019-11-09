@@ -1051,7 +1051,7 @@ end
 local function CreateAutomationOptions(self, reaction, width, parent, ...)
 	local frame = CreateFrame("Frame", "NeatPlatesPanelAutomation"..reaction, parent)
 
-	local labelArray = {"Combat", "Dungeon", "Raid", "Battleground", "Arena", "Scenario",  "World"}
+	local labelArray = {"Combat", "Dungeon", "Raid", "Battleground", "Arena", "Scenario", "World"}
 	local lastItem
 	for i,label in pairs(labelArray) do
 		local name = "Button_"..label

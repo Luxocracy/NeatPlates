@@ -338,18 +338,18 @@
         </Frames>
         <Scripts>
             <OnLoad>
-            self.UpdateState = function(self, state)
-                -- Toggle/Assign state
-                if(state) then self.state = state
-                elseif(self.state == "show") then self.state = "hide"
-                elseif(self.state == "hide") then self.state = nil
-                else self.state = "show" end
+                self.UpdateState = function(self, state)
+                    -- Toggle/Assign state
+                    if(state) then self.state = state
+                    elseif(self.state == "show") then self.state = "hide"
+                    elseif(self.state == "hide") then self.state = nil
+                    else self.state = "show" end
 
-                -- Color Text
-                if(self.state == "show") then self:SetText("|cFF60E025"..self.Label)
-                elseif(self.state == "hide") then self:SetText("|cFFFF1100"..self.Label)
-                else self:SetText(self.Label) end
-            end
+                    -- Color Text
+                    if(self.state == "show") then self:SetText("|cFF60E025"..self.Label)
+                    elseif(self.state == "hide") then self:SetText("|cFFFF1100"..self.Label)
+                    else self:SetText(self.Label) end
+                end
             </OnLoad>
             <OnClick>
                 self:UpdateState()
