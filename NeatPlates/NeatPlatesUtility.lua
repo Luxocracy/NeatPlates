@@ -1077,6 +1077,64 @@ local function CreateTipBox(self, name, text, parent, ...)
 	return frame, frame
 end
 
+local function CreateAutomationOptions(self, reaction, width, parent, ...)
+	local frame = CreateFrame("Frame", "NeatPlatesPanelAutomation"..reaction, parent)
+
+	local labelArray = {"Combat", "Dungeon", "Raid", "Battleground", "World"}
+	local lastItem
+	for i,label in pairs(labelArray) do
+		local name = "Button_"..label
+		local button = CreateFrame("Button", name, frame, "NeatPlatesTriStateButtonTemplate")
+		button.tooltipText = tooltip
+		button.Label = label
+		button:SetText(L[label])
+		button:SetWidth(width)
+
+		-- attach below previous item
+		if lastItem then
+			button:SetPoint("TOPLEFT", lastItem, "BOTTOMLEFT", 0, 0)
+		else
+			button:SetPoint("TOPLEFT", 0, 0)
+		end
+		lastItem = button
+
+		frame[name] = button
+	end
+
+	-- Border
+	frame.BorderFrame = CreateFrame("Frame", nil, frame )
+	frame.BorderFrame:SetPoint("TOPLEFT", 0, 5)
+	frame.BorderFrame:SetPoint("BOTTOMRIGHT", 3, -5)
+	frame.BorderFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+										edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+										tile = true, tileSize = 16, edgeSize = 16,
+										insets = { left = 4, right = 4, top = 4, bottom = 4 }
+										});
+	frame.BorderFrame:SetBackdropColor(0.05, 0.05, 0.05, 0)
+	frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+
+	frame:SetWidth(width)
+	frame:SetHeight(18*#labelArray+3)
+
+	-- Set & Get Values
+	frame.GetValue = function(self)
+		local values = {}
+		for i,label in pairs(labelArray) do
+			values[label] = self["Button_"..label].state
+		end
+
+		return values
+	end
+
+	frame.SetValue = function(self, values)
+		for label,value in pairs(values) do
+			self["Button_"..label]:UpdateState(value)
+		end
+	end
+
+	return frame, frame
+end
+
 PanelHelpers = {}
 
 PanelHelpers.CreatePanelFrame = CreatePanelFrame
@@ -1091,6 +1149,7 @@ PanelHelpers.CreateEditBoxButton = CreateEditBoxButton
 PanelHelpers.CreateTipBox = CreateTipBox
 PanelHelpers.ShowDropdownMenu = ShowDropdownMenu
 PanelHelpers.HideDropdownMenu = HideDropdownMenu
+PanelHelpers.CreateAutomationOptions = CreateAutomationOptions
 
 NeatPlatesUtility.PanelHelpers = PanelHelpers
 

@@ -21,10 +21,10 @@ local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local RGBToHex = NeatPlatesUtility.RGBToHex
 
-local NO_AUTOMATION = L["No Automation"]
-local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
-local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
-local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances"]
+--local NO_AUTOMATION = L["No Automation"]
+--local DURING_COMBAT = L["Show during Combat, Hide when Combat ends"]
+--local OUT_OF_COMBAT = L["Hide when Combat starts, Show when Combat ends"]
+--local NOT_IN_INSTANCE = L["Hide in instances, Show outside of instances"]
 
 -- Localized fonts
 if (LOCALE_koKR) then
@@ -43,7 +43,7 @@ end
 NeatPlatesLocalizedInputFont = NeatPlatesLocalizedInputFont or NeatPlatesLocalizedFont
 
 local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
-local yellow, blue, red, orange = "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906"
+local white, yellow, blue, red, orange, green = "|cFFFFFFFF", "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906", "|cFF60E025"
 
 local function SetCastBars(enable)
 	if enable then NeatPlates:EnableCastBars()
@@ -184,28 +184,59 @@ local function ValidateProfileName(name, callback)
 	end
 end
 
-local function SetNameplateVisibility(cvar, mode, combat)
-	if mode == DURING_COMBAT and combat ~= nil then
-		if combat then
-			SetCVar(cvar, 1)
-		else
-			SetCVar(cvar, 0)
-		end
-	elseif mode == OUT_OF_COMBAT and combat ~= nil then
-		if combat then
-			SetCVar(cvar, 0)
-		else
-			SetCVar(cvar, 1)
-		end
-	elseif mode == NOT_IN_INSTANCE then
-		local inInstance, instanceType = IsInInstance()
-		inInstance = instanceType == "party" or instanceType == "raid"
 
-		if inInstance then
-			SetCVar(cvar, 0)
-		else
-			SetCVar(cvar, 1)
+--local function SetNameplateVisibility(cvar, mode, combat)
+--	if mode == DURING_COMBAT and combat ~= nil then
+--		if combat then
+--			SetCVar(cvar, 1)
+--		else
+--			SetCVar(cvar, 0)
+--		end
+--	elseif mode == OUT_OF_COMBAT and combat ~= nil then
+--		if combat then
+--			SetCVar(cvar, 0)
+--		else
+--			SetCVar(cvar, 1)
+--		end
+--	elseif mode == NOT_IN_INSTANCE then
+--		local inInstance, instanceType = IsInInstance()
+--		inInstance = instanceType == "party" or instanceType == "raid"
+
+--		if inInstance then
+--			SetCVar(cvar, 0)
+--		else
+--			SetCVar(cvar, 1)
+--		end
+--	end
+--end
+
+local function SetNameplateVisibility(cvar, options)
+	local inCombat = UnitAffectingCombat("player")
+	local inInstance, instanceType = IsInInstance()
+	local instanceOptions = (options.Dungeon or options.Raid or options.Battleground or options.Arena or options.Scenario)
+	local instanceTypes = {party = options.Dungeon, raid = options.Raid, pvp = options.Battleground}
+	local enable
+	
+	-- Instance Automation
+	if instanceOptions and inInstance then
+		if instanceTypes[instanceType] == "show" then
+			enable = true
+		elseif instanceTypes[instanceType] == "hide" then
+			enable = false
 		end
+	end
+
+	-- World Automation
+	if options.World and not inInstance then enable = options.World == "show" end
+
+	-- Combat Automation
+	if (enable or enable == nil) and options.Combat then enable = ((inCombat and options.Combat == "show") or (not inCombat and options.Combat == "hide")) end
+
+	-- Set CVars
+	if enable == true then
+		SetCVar(cvar, 1)
+	elseif enable == false then
+		SetCVar(cvar, 0)
 	end
 end
 
@@ -318,8 +349,8 @@ end
 local function GetPanelValues(panel)
 	NeatPlatesOptions.ActiveTheme = panel.ActiveThemeDropdown:GetValue()
 
-	NeatPlatesOptions.FriendlyAutomation = panel.AutoShowFriendly:GetValue()
-	NeatPlatesOptions.EnemyAutomation = panel.AutoShowEnemy:GetValue()
+	NeatPlatesOptions.FriendlyAutomation = panel.FriendlyAutomation:GetValue()
+	NeatPlatesOptions.EnemyAutomation = panel.EnemyAutomation:GetValue()
 	NeatPlatesOptions.EmulatedTargetPlate = panel.EmulatedTargetPlate:GetChecked()
 	NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
@@ -352,8 +383,8 @@ local function SetPanelValues(panel)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
-	panel.AutoShowFriendly:SetValue(NeatPlatesOptions.FriendlyAutomation)
-	panel.AutoShowEnemy:SetValue(NeatPlatesOptions.EnemyAutomation)
+	panel.FriendlyAutomation:SetValue(NeatPlatesOptions.FriendlyAutomation)
+	panel.EnemyAutomation:SetValue(NeatPlatesOptions.EnemyAutomation)
 
 	panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
 	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
@@ -608,8 +639,11 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowEnemyLabel:SetJustifyH("LEFT")
 	panel.AutoShowEnemyLabel:SetText(L["Enemy Nameplates"]..':')
 
-	panel.AutoShowEnemy = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowEnemy", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
-	panel.AutoShowEnemy:SetPoint("TOPLEFT",panel.AutoShowEnemyLabel, "BOTTOMLEFT", -20, -2)
+	--panel.AutoShowEnemy = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowEnemy", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
+	--panel.AutoShowEnemy:SetPoint("TOPLEFT",panel.AutoShowEnemyLabel, "BOTTOMLEFT", -20, -2)
+
+	panel.EnemyAutomation = PanelHelpers:CreateAutomationOptions("Enemy", panel.AutoShowEnemyLabel:GetStringWidth(), panel)
+	panel.EnemyAutomation:SetPoint("TOPLEFT", panel.AutoShowEnemyLabel, "BOTTOMLEFT", 0, -12)
 
 
 	---------------
@@ -622,8 +656,13 @@ local function BuildInterfacePanel(panel)
 	panel.AutoShowFriendlyLabel:SetJustifyH("LEFT")
 	panel.AutoShowFriendlyLabel:SetText(L["Friendly Nameplates"]..':')
 
-	panel.AutoShowFriendly = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowFriendly", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
-	panel.AutoShowFriendly:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel,"BOTTOMLEFT", -20, -2)
+	--panel.AutoShowFriendly = PanelHelpers:CreateDropdownFrame("NeatPlatesAutoShowFriendly", panel, AutomationDropdownItems, NO_AUTOMATION, nil, true)
+	--panel.AutoShowFriendly:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel,"BOTTOMLEFT", -20, -2)
+
+	panel.FriendlyAutomation = PanelHelpers:CreateAutomationOptions("Friendly", panel.AutoShowFriendlyLabel:GetStringWidth(), panel)
+	panel.FriendlyAutomation:SetPoint("TOPLEFT", panel.AutoShowFriendlyLabel, "BOTTOMLEFT", 0, -12)
+
+	panel.AutomationTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalAuraTip", green..L["Show"]..white.." || "..red..L["Hide"]..white.." || "..L["No Automation"], panel, "BOTTOMLEFT", panel.FriendlyAutomation, "TOPRIGHT", 0, 0)
 
 	----------------------------------------------
 	-- General Aura Filters
@@ -632,7 +671,7 @@ local function BuildInterfacePanel(panel)
 	panel.GeneralAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.GeneralAuraLabel:SetFont(font, 22)
 	panel.GeneralAuraLabel:SetText(L["General Aura Filters"])
-	panel.GeneralAuraLabel:SetPoint("TOPLEFT", panel.AutoShowEnemy, "BOTTOMLEFT", 20, -20)
+	panel.GeneralAuraLabel:SetPoint("TOPLEFT", panel.EnemyAutomation, "BOTTOMLEFT", 0, -20)
 	panel.GeneralAuraLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Global Additional Auras

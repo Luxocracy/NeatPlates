@@ -307,6 +307,69 @@
             </Frames>
     </Frame>
 
+    <Button name="NeatPlatesTriStateButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="100" y="18"/>
+        </Size>
+        <Frames>
+            <Button name="$parentToggle" hidden="true">
+                <Size>
+                    <AbsDimension x="14" y="14"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-6" y="-1"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+
+                    </OnLoad>
+                    <OnClick>
+
+                    </OnClick>
+                </Scripts>
+                <NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-MinusButton-UP"/>
+                <PushedTexture name="$parentPushedTexture" file="Interface\Buttons\UI-MinusButton-DOWN"/>
+                <HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                self.UpdateState = function(self, state)
+                    -- Toggle/Assign state
+                    if(state) then self.state = state
+                    elseif(self.state == "show") then self.state = "hide"
+                    elseif(self.state == "hide") then self.state = nil
+                    else self.state = "show" end
+
+                    -- Color Text
+                    if(self.state == "show") then self:SetText("|cFF60E025"..self.Label)
+                    elseif(self.state == "hide") then self:SetText("|cFFFF1100"..self.Label)
+                    else self:SetText(self.Label) end
+                end
+            </OnLoad>
+            <OnClick>
+                self:UpdateState()
+            </OnClick>
+            <OnEnter>
+                if(self.tooltipText ~= nil) then
+                    GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+                end
+            </OnEnter>
+            <OnLeave>
+                if(self.tooltipText ~= nil) then
+                    GameTooltip:Hide();
+                end
+            </OnLeave>
+        </Scripts>
+        <ButtonText name="$parentText" justifyH="MIDDLE" wordwrap="false"/>
+        <NormalFont style="GameFontHighlight"/>
+        <HighlightFont style="GameFontHighlightOutline"/>
+    </Button>
+
 	<Script file="NeatPlatesStatusbar.lua"/>
     <Script file="NeatPlatesUtility.lua"/>
 	<Script file="NeatPlatesCore.lua"/>
