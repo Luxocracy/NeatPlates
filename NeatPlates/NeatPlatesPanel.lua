@@ -249,7 +249,7 @@ end
 local function VerifyPanelSettings()
 	-- Verify per-character settings
 	for k, v in pairs(NeatPlatesOptionsDefaults) do
-		if NeatPlatesOptions[k] == nil then
+		if NeatPlatesOptions[k] == nil or type(NeatPlatesOptions[k]) ~= type(NeatPlatesOptionsDefaults[k]) then
 			NeatPlatesOptions[k] = NeatPlatesOptionsDefaults[k]
 		end
 	end
@@ -260,7 +260,7 @@ local function VerifyPanelSettings()
 			NeatPlatesSettings[k] = NeatPlatesOptions[k]
 			NeatPlatesOptions[k] = nil
 		end
-		if NeatPlatesSettings[k] == nil then
+		if NeatPlatesSettings[k] == nil or type(NeatPlatesSettings[k]) ~= type(NeatPlatesSettingsDefaults[k]) then
 			NeatPlatesSettings[k] = NeatPlatesSettingsDefaults[k]
 		end
 	end
