@@ -186,6 +186,21 @@ StyleDefault.name = {
 	flags = "NONE",
 }
 
+StyleDefault.subtext = {
+	typeface = font,
+	size = 11,
+	width = 200,
+	height = 11,
+	x = 0,
+	y = NameTextVerticalAdjustment - 10,
+	yOffset = 0,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	flags = "NONE",
+}
+
 StyleDefault.level = {
 	typeface = font,
 	size = 9,
@@ -279,10 +294,11 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
-StyleTextOnly.customtext.size = fontsize - 2
-StyleTextOnly.customtext.flags = "NONE"
-StyleTextOnly.customtext.y = VerticalAdjustment-8
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.size = fontsize - 2
+StyleTextOnly.subtext.y = VerticalAdjustment-8
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.customtext.show = false
 StyleTextOnly.name.size = fontsize
 StyleTextOnly.name.y = VerticalAdjustment + 1
 StyleTextOnly.level.show = false

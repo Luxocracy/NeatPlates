@@ -132,6 +132,18 @@ StyleDefault.name = {
 	show = true,
 }
 
+StyleDefault.subtext = {
+	typeface = font,
+	width = 106,
+	x = 0,
+	y = -5,
+	yOffset = 6,
+	align = "CENTER",
+	anchor = "TOP",
+	vertical = "BOTTOM",
+	shadow = false,
+}
+
 StyleDefault.level = {
 	typeface = font,
 	size = 7,
@@ -261,7 +273,9 @@ StyleTextOnly.name.y = 6
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.customtext.show = false
 
 
 Theme["Default"] = StyleDefault

@@ -153,6 +153,21 @@ StyleDefault.name = {
 	flags = "NONE",
 }
 
+StyleDefault.subtext = {
+	typeface =					font,
+	size = fontsize - 1,
+	width = 180,
+	height = 12,
+	x = 0,
+	y = VerticalAdjustment + 0,
+	yOffset = 11,
+	align = "CENTER",
+	anchor = "TOP",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+}
+
 StyleDefault.level = {
 	typeface =					font,
 	size = fontsize - 1,
@@ -318,10 +333,15 @@ StyleTextOnly.extratext.y = VerticalAdjustment + 4
 StyleTextOnly.extrabar.x = 0
 StyleTextOnly.extratext.x = 0
 StyleTextOnly.eliteicon.texture = EmptyTexture
-StyleTextOnly.customtext.align = "CENTER"
-StyleTextOnly.customtext.size = fontsize - 2
-StyleTextOnly.customtext.y = VerticalAdjustment + 16
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtextheight = 10
+StyleTextOnly.subtext.align = "CENTER"
+StyleTextOnly.subtext.anchor = "CENTER"
+StyleTextOnly.subtext.vertical = "BOTTOM"
+StyleTextOnly.subtext.size = fontsize - 2
+StyleTextOnly.subtext.y = VerticalAdjustment + 16
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.customtext.show = false
 StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false

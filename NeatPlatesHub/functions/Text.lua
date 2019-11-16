@@ -449,10 +449,10 @@ AddHubFunction(FriendlyNameSubtextFunctions, NeatPlatesHubMenus.FriendlyNameSubt
 AddHubFunction(FriendlyNameSubtextFunctions, NeatPlatesHubMenus.FriendlyNameSubtextModes, TextAll, "Role, Guild, Level or Health Percent", "RoleGuildLevelHealth")
 --]]
 
-local function CustomTextBinaryDelegate(unit)
+local function SubTextDelegate(unit)
 	--if unit.style == "NameOnly" then
 
-	if StyleDelegate(unit) == "NameOnly" then
+	--if StyleDelegate(unit) == "NameOnly" then
 		local func
 		if unit.reaction == "FRIENDLY" then
 			func = EnemyNameSubtextFunctions[LocalVars.HeadlineFriendlySubtext or 0] or DummyFunction
@@ -461,8 +461,8 @@ local function CustomTextBinaryDelegate(unit)
 		end
 
 		return func(unit)
-	end
-	return HealthTextDelegate(unit)
+	--end
+	--return HealthTextDelegate(unit)
 end
 
 local function CastbarDurationRemaining(currentTime, startTime, endTime, isChannel)
@@ -515,6 +515,6 @@ HubData.RegisterCallback(OnVariableChange)
 
 
 NeatPlatesHubFunctions.SetCustomText = HealthTextDelegate
-NeatPlatesHubFunctions.SetCustomTextBinary = CustomTextBinaryDelegate
+NeatPlatesHubFunctions.SetSubText = SubTextDelegate
 NeatPlatesHubFunctions.SetCastbarDuration = CastbarDurationDelegate
 
