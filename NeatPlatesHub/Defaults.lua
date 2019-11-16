@@ -64,7 +64,6 @@ NeatPlatesHubDefaults = {
 	HeadlineFriendlyColor = 4,
 	HeadlineEnemySubtext = 3,
 
-
 	-- Opacity
 	---------------------------------------
 	OpacityTarget = 1,
@@ -138,6 +137,7 @@ NeatPlatesHubDefaults = {
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
 	TextShowServerIndicator = true,
+	TextStatusShowSubtext = false,
 	CustomTargetColor = false,
 	CustomFocusColor = false,
 	CustomMouseoverColor = false,

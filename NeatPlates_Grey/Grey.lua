@@ -151,6 +151,21 @@ StyleDefault.name = {
 	flags = "NONE",
 }
 
+StyleDefault.subtext = {
+	typeface =					font,
+	size = 9,
+	width = 100,
+	height = 10,
+	x = 0,
+	y = -4+nameplate_verticalOffset,
+	yOffset = 0,
+	align = "LEFT",
+	anchor = "LEFT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+}
+
 StyleDefault.level = {
 	typeface =					font,
 	size = 9,
@@ -317,12 +332,15 @@ StyleTextOnly.name.size = 12
 StyleTextOnly.name.y = 12
 StyleTextOnly.name.x = 0
 StyleTextOnly.name.width = 200
-StyleTextOnly.customtext.align = "CENTER"
---StyleTextOnly.customtext.flags = "OUTLINE"
-StyleTextOnly.customtext.size = 8
-StyleTextOnly.customtext.y = 3
-StyleTextOnly.customtext.x = 0
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.align = "CENTER"
+StyleTextOnly.subtext.anchor = "CENTER"
+--StyleTextOnly.subtext.flags = "OUTLINE"
+StyleTextOnly.subtext.size = 8
+StyleTextOnly.subtext.y = 3
+StyleTextOnly.subtext.x = 0
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.customtext.show = false
 StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false

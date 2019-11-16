@@ -121,6 +121,22 @@ TemplateTheme.name = {
 	show = true,
 }
 
+TemplateTheme.subtext = {
+	typeface =					font,
+	size = 8,
+	width = 100,
+	height = 10,
+	x = 0,
+	y = -19,
+	yOffset = 10,
+	align = "LEFT",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = false,
+}
+
 TemplateTheme.level = {
 	typeface =					font,
 	size = 9,

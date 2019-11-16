@@ -262,6 +262,21 @@ StyleDefault.name = {
 	shadow = true,
 	flags = "NONE",
 }
+
+StyleDefault.subtext = {
+	typeface = font,
+	size = 11,
+	width = 200,
+	height = 11,
+	x = 0,
+	y = NameTextVerticalAdjustment - 10,
+	yOffset = 0,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	flags = "NONE",
+}
 --[[
 StyleDefault.level = {
 	typeface = font,
@@ -385,10 +400,11 @@ StyleTextOnly.extrabar.y = VerticalAdjustment - 20
 StyleTextOnly.extratext.y = VerticalAdjustment - 21
 StyleTextOnly.extrabar.x = 0
 StyleTextOnly.extratext.x = 0
-StyleTextOnly.customtext.size = fontsize - 2
-StyleTextOnly.customtext.flags = "NONE"
-StyleTextOnly.customtext.y = VerticalAdjustment-8
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.size = fontsize - 2
+StyleTextOnly.subtext.y = VerticalAdjustment-8
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.customtext.show = false
 StyleTextOnly.name.size = fontsize
 StyleTextOnly.name.y = VerticalAdjustment + 1
 StyleTextOnly.level.show = false

@@ -154,6 +154,7 @@ L["Friendly Status Text"] = true
 L["Show Level"] = true
 L["Force Shadow on Status Text"] = true
 L["Show Different Server Indicator (*)"] = true
+L["Show Subtext in Bar View"] = true
 L["Show Status Text on Target & Mouseover"] = true
 L["Show Status Text on Active/Damaged Units"] = true
 L["Use Custom Target Color"] = true

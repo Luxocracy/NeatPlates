@@ -144,6 +144,16 @@ StyleDefault.name = {
 	shadow = true,
 }
 
+StyleDefault.subtext = {
+	typeface =					font,
+	width = 200,
+	height = 16,
+	y = 10,
+	yOffset = 9,
+	align = "CENTER",
+	shadow = true,
+}
+
 StyleDefault.level = {
 	typeface =					font,
 	size = 8.5,
@@ -284,14 +294,16 @@ StyleTextOnly.name.align = "CENTER"
 StyleTextOnly.name.anchor = "CENTER"
 StyleTextOnly.name.size = 12
 StyleTextOnly.name.y = 17
-StyleTextOnly.customtext.show = true
-StyleTextOnly.customtext.align = "CENTER"
-StyleTextOnly.customtext.anchor = "CENTER"
-StyleTextOnly.customtext.vertical = "BOTTOM"
-StyleTextOnly.customtext.size = 11
-StyleTextOnly.customtext.width = 500
-StyleTextOnly.customtext.x = 0
-StyleTextOnly.customtext.y = 0
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.align = "CENTER"
+StyleTextOnly.subtext.anchor = "CENTER"
+StyleTextOnly.subtext.vertical = "BOTTOM"
+StyleTextOnly.subtext.size = 11
+StyleTextOnly.subtext.height = 10
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.subtext.x = 0
+StyleTextOnly.subtext.y = 0
+StyleTextOnly.customtext.show = false
 StyleTextOnly.level.show = false
 StyleTextOnly.raidicon.x = -66
 StyleTextOnly.raidicon.y = 15

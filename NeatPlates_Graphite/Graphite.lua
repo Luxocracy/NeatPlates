@@ -167,6 +167,20 @@ StyleDefault.name = {
 	show = true,
 }
 
+StyleDefault.subtext = {
+	typeface =					font,
+	size = 10,
+	width = 175,
+	height = 14,
+	x = 0,
+	y = -3,
+	yOffset = 11,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+}
+
 StyleDefault.level = {
 	typeface =					font,
 	show = false,
@@ -296,10 +310,12 @@ StyleTextOnly.extrabar.y = -14
 StyleTextOnly.extratext.y = -8
 StyleTextOnly.extrabar.x = 0
 StyleTextOnly.extratext.x = 0
-StyleTextOnly.customtext.align = "CENTER"
-StyleTextOnly.customtext.size = 9
-StyleTextOnly.customtext.y = -2
-StyleTextOnly.customtext.width = 500
+StyleTextOnly.subtext.show = true
+StyleTextOnly.subtext.align = "CENTER"
+StyleTextOnly.subtext.size = 9
+StyleTextOnly.subtext.y = -2
+StyleTextOnly.subtext.width = 500
+StyleTextOnly.customtext.show = false
 StyleTextOnly.level.show = false
 StyleTextOnly.skullicon.show = false
 StyleTextOnly.eliteicon.show = false
