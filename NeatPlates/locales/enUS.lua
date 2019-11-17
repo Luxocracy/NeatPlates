@@ -150,6 +150,8 @@ L["Friendly Status Text"] = true
 	L["Level and Approx Health"] = true
 	L["Arena ID"] = true
 	L["Arena ID, Health, and Power"] = true
+L["Enemy Subtext"] = true
+L["Friendly Subtext"] = true
 
 L["Show Level"] = true
 L["Force Shadow on Status Text"] = true

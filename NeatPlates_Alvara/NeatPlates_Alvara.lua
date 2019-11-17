@@ -140,7 +140,7 @@ StyleDefault.subtext = {
 	align = "LEFT",
 	anchor = "LEFT",
 	vertical = "TOP",
-	shadow = false,
+	shadow = true,
 }
 StyleDefault.level = {
 	typeface = font,

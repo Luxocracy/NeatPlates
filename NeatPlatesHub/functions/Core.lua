@@ -239,21 +239,19 @@ local function ApplyFontCustomization(style, defaults)
 
 end
 
-local function ApplyScaleOptions(widget, default, scale, yOffset)
+local function ApplyScaleOptions(widget, default, scale)
 	if not widget then return widget end
 	if widget.width then widget.width = default.width * (scale.x or 1) end
 	if widget.height then widget.height = default.height * (scale.y or 1) end
 	if widget.x then widget.x = default.x + (scale.offset.x or 0) end
-	if widget.y then widget.y = default.y + (scale.offset.y or 0) + yOffset end
+	if widget.y then widget.y = default.y + (scale.offset.y or 0) end
 
 	return widget
 end
 
 local function ApplyScaleOptionCustomization(widget, defaults, style, styleDefault)
-	local yOffset = 0
-	if style.subtext.show then yOffset = styleDefault.subtext.yOffset end
-	widget.DebuffWidget = ApplyScaleOptions(widget.DebuffWidget, defaults.DebuffWidget, LocalVars.WidgetAuraScaleOptions, yOffset)
-	widget.DebuffWidgetPlus = ApplyScaleOptions(widget.DebuffWidgetPlus, defaults.DebuffWidgetPlus, LocalVars.WidgetAuraScaleOptions, yOffset)
+	widget.DebuffWidget = ApplyScaleOptions(widget.DebuffWidget, defaults.DebuffWidget, LocalVars.WidgetAuraScaleOptions)
+	widget.DebuffWidgetPlus = ApplyScaleOptions(widget.DebuffWidgetPlus, defaults.DebuffWidgetPlus, LocalVars.WidgetAuraScaleOptions)
 end
 
 local function ApplyCustomBarSize(style, defaults)
@@ -311,7 +309,6 @@ end
 local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
-	style.subtext.show = (LocalVars.TextStatusShowSubtext == true)
 
 	local indicators = {
 		["target"] = {mode = LocalVars.HighlightTargetMode, scale = LocalVars.HighlightTargetScale},
@@ -360,12 +357,7 @@ local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 		style.castborder.texture = defaults.castborder.texture
 		style.castnostop.texture = defaults.castnostop.texture
 	end
-	
-	-- Offsets if Subtext is enabled
-	--local yOffset = 0
-	--if style.subtext.show then yOffset = style.subtext.yOffset end
-	--style.name.y = defaults.name.y + yOffset
-	--style.subtext.y = defaults.subtext.y + yOffset
+
 
 	style.target.color = LocalVars.ColorTarget
 	style.focus.color = LocalVars.ColorFocus
