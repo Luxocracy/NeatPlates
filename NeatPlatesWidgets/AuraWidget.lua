@@ -432,7 +432,7 @@ local function UpdateIconGrid(frame, unitid)
 
 			-- Calculate Buff Offset
 			local rowOffset
-			DisplayedRows = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns)+1)
+			DisplayedRows = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns) + math.min(DebuffSlotCount, 1))
 			
 			 --print(DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount))
 			if DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
@@ -699,6 +699,24 @@ local function UpdateWidgetConfig(frame)
 	UpdateEmphasizedIconConfig(frame.emphasized)
 end
 
+local function UpdateWidgetOffset(frame, x, y)
+	local config = frame.lastConfig
+	frame:ClearAllPoints()
+	frame:SetPoint(config.anchor or "TOP", config.relFrame, config.anchorRel or config.anchor or "TOP", config.x or 0, (config.y or 0) + (y or 0))
+end
+
+local function SetCustomPoint(frame, anchor, relFrame, anchorRel, x, y)
+	frame.lastConfig = {
+		anchor = anchor,
+		relFrame = relFrame,
+		anchorRel = anchorRel,
+		x = x,
+		y = y
+	}
+
+	UpdateWidgetOffset(frame)
+end
+
 -- Create the Main Widget Body and Icon Array
 local function CreateAuraWidget(parent, style)
 
@@ -726,6 +744,8 @@ local function CreateAuraWidget(parent, style)
 	frame.Update = UpdateWidgetContext
 	frame.UpdateConfig = UpdateWidgetConfig
 	frame.UpdateTarget = UpdateWidgetTarget
+	frame.SetCustomPoint = SetCustomPoint
+	frame.UpdateOffset = UpdateWidgetOffset
 
 	-- Emphasized Functions
 	frame.emphasized.SetAura = function(frame, auras)

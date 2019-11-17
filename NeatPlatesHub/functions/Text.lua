@@ -424,6 +424,8 @@ local EnemyNameSubtextFunctions = {}
 NeatPlatesHubMenus.EnemyNameSubtextModes = {}
 NeatPlatesHubDefaults.HeadlineEnemySubtext = "RoleGuildLevel"
 NeatPlatesHubDefaults.HeadlineFriendlySubtext = "RoleGuildLevel"
+NeatPlatesHubDefaults.EnemySubtext = "None"
+NeatPlatesHubDefaults.FriendlySubtext = "None"
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, DummyFunction, L["None"], "None")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextHealthPercentColored, L["Percent Health (Colored)"], "PercentHealthColored")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextHealthPercent, L["Percent Health"], "PercentHealth")
@@ -451,18 +453,21 @@ AddHubFunction(FriendlyNameSubtextFunctions, NeatPlatesHubMenus.FriendlyNameSubt
 
 local function SubTextDelegate(unit)
 	--if unit.style == "NameOnly" then
-
-	--if StyleDelegate(unit) == "NameOnly" then
-		local func
+	local func
+	if StyleDelegate(unit) == "NameOnly" then
 		if unit.reaction == "FRIENDLY" then
 			func = EnemyNameSubtextFunctions[LocalVars.HeadlineFriendlySubtext or 0] or DummyFunction
 		else
 			func = EnemyNameSubtextFunctions[LocalVars.HeadlineEnemySubtext or 0] or DummyFunction
 		end
-
-		return func(unit)
-	--end
-	--return HealthTextDelegate(unit)
+	else
+		if unit.reaction == "FRIENDLY" then
+			func = EnemyNameSubtextFunctions[LocalVars.FriendlySubtext or 0] or DummyFunction
+		else
+			func = EnemyNameSubtextFunctions[LocalVars.EnemySubtext or 0] or DummyFunction
+		end
+	end
+	return func(unit)
 end
 
 local function CastbarDurationRemaining(currentTime, startTime, endTime, isChannel)

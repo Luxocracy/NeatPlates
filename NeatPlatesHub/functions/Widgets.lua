@@ -332,9 +332,13 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 			extended.widgets[widgetName] = widget
 		end
 
-		widget:ClearAllPoints()
-		widget:SetPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
-
+		if widget.SetCustomPoint then
+			widget:SetCustomPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
+		else
+			widget:ClearAllPoints()
+			widget:SetPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
+		end
+		
 	elseif widget and widget.Hide then
 		widget:Hide()
 	end

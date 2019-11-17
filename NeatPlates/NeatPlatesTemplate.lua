@@ -134,7 +134,7 @@ TemplateTheme.subtext = {
 	vertical = "BOTTOM",
 	shadow = true,
 	flags = "NONE",
-	show = false,
+	show = true,
 }
 
 TemplateTheme.level = {

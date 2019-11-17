@@ -1612,10 +1612,8 @@ do
 	-- UpdateStyle:
 	function UpdateStyle()
 		local index, unitSubtext, unitPlateStyle
-		if style.subtext.show then
-			unitSubtext = activetheme.SetSubText(unit)
-			unitPlateStyle = NeatPlatesHubFunctions.SetStyleNamed(unit)
-		end
+		local useYOffset = (style.subtext.show and activetheme.SetSubText(unit) and NeatPlatesHubFunctions.SetStyleNamed(unit) == "Default")
+		if useYOffset then extended.widgets["AuraWidgetHub"]:UpdateOffset(0, style.subtext.yOffset) end 	-- Update AuraWidget position if 'subtext' is displayed
 
 		-- Frame
 		SetAnchorGroupObject(extended, style.frame, carrier)
@@ -1627,7 +1625,7 @@ do
 			local object, objectstyle = visual[objectname], style[objectname]
 			if objectstyle and objectstyle.show then
 				local offset
-				if style.subtext.show and unitSubtext and unitPlateStyle == "Default" and (objectname == "name" or objectname == "subtext") then offset = style.subtext.yOffset end -- Subtext offsets
+				if useYOffset and (objectname == "name" or objectname == "subtext") then offset = style.subtext.yOffset end -- Subtext offset
 
 				SetAnchorGroupObject(object, objectstyle, extended, offset)
 				visual[objectname]:Show()
