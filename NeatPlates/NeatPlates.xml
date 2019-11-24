@@ -339,6 +339,8 @@
         <Scripts>
             <OnLoad>
                 self.UpdateState = function(self, state)
+                    local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+
                     -- Toggle/Assign state
                     if(state) then self.state = state
                     elseif(self.state == "show") then self.state = "hide"
@@ -346,9 +348,9 @@
                     else self.state = "show" end
 
                     -- Color Text
-                    if(self.state == "show") then self:SetText("|cFF60E025"..self.Label)
-                    elseif(self.state == "hide") then self:SetText("|cFFFF1100"..self.Label)
-                    else self:SetText(self.Label) end
+                    if(self.state == "show") then self:SetText("|cFF60E025"..L[self.Label])
+                    elseif(self.state == "hide") then self:SetText("|cFFFF1100"..L[self.Label])
+                    else self:SetText(L[self.Label]) end
                 end
             </OnLoad>
             <OnClick>
