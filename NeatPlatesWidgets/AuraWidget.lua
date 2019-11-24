@@ -435,14 +435,19 @@ end
 
 function UpdateWidget(frame)
 		local unitid = frame.unitid
-
-		UpdateIconGrid(frame, unitid)
+		if(HideInHeadlineMode and frame.style == "NameOnly") then
+			frame:Hide()
+		else
+			frame:Show()
+			UpdateIconGrid(frame, unitid)
+		end
 end
 
 -- Context Update (mouseover, target change)
 local function UpdateWidgetContext(frame, unit)
 	local unitid = unit.unitid
 	frame.unitid = unitid
+	frame.style = unit.style
 
 	WidgetList[unitid] = frame
 
@@ -794,6 +799,7 @@ local function SetAuraOptions(LocalVars)
 	AuraScale = LocalVars.AuraScale
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
 	ScaleOptions = LocalVars.WidgetAuraScaleOptions
+	HideInHeadlineMode = LocalVars.HideAuraInHeadline
 end
 
 local function SetPandemic(enabled, color)

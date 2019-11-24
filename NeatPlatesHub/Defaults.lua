@@ -268,9 +268,9 @@ NeatPlatesHubDefaults = {
 	WidgetDebuff = true,
 	WidgetDebuffStyle = 1,
 	--WidgetAuraMode = 1,
-	WidgetAllAuras = false,
-	WidgetMyDebuff = true,
-	WidgetMyBuff = false,
+	--WidgetAllAuras = false,
+	--WidgetMyDebuff = true,
+	--WidgetMyBuff = false,
 	WidgetPandemic = false,
 	ColorPandemic = {r = 0.9, g = 0.15, b = 0.15, a = 1}, -- Red
 	BorderPandemic = 1,
@@ -300,6 +300,7 @@ NeatPlatesHubDefaults = {
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
 	HideAuraDuration = false,
+	HideAuraInHeadline = false,
 
 	-- Frame
 	---------------------------------------

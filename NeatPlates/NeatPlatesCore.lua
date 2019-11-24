@@ -349,6 +349,8 @@ do
 			UpdateStyle()
 			extended.stylename = stylename
 			unit.style = stylename
+
+			if(extended.widgets['AuraWidgetHub'] and unit.unitid) then extended.widgets['AuraWidgetHub']:UpdateContext(unit) end
 		end
 
 	end

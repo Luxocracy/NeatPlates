@@ -35,6 +35,7 @@ local RangeModes = NeatPlatesHubMenus.RangeModes
 local RangeStyles = NeatPlatesHubMenus.RangeStyles
 local RangeUnits = NeatPlatesHubMenus.RangeUnits
 local AuraWidgetModes = NeatPlatesHubMenus.AuraWidgetModes
+local PrimaryAuraFilters = NeatPlatesHubMenus.PrimaryAuraFilters
 local DebuffStyles = NeatPlatesHubMenus.DebuffStyles
 local AuraSortModes = NeatPlatesHubMenus.AuraSortModes
 local AuraAlignmentModes = NeatPlatesHubMenus.AuraAlignmentModes
@@ -192,12 +193,14 @@ local function BuildHubPanel(panel)
 	panel.WidgetDebuff = CreateQuickCheckbutton(objectName.."WidgetDebuff", L["Enable Aura Widget"], AlignmentColumn, panel.DebuffsLabel)
 
 	--panel.WidgetAuraMode =  CreateQuickDropdown(objectName.."WidgetAuraMode", "Filter Mode:", AuraWidgetModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)		-- used to be WidgetDebuffMode
-	panel.WidgetAllAuras = CreateQuickCheckbutton(objectName.."WidgetAllAuras", L["Include All Auras"], AlignmentColumn, panel.WidgetDebuff, 16)
-	panel.WidgetAllAuras.tooltipText = L["Display all auras that have been applied regardless of source or duration."]
-	panel.WidgetMyDebuff = CreateQuickCheckbutton(objectName.."WidgetMyDebuff", L["Include My Debuffs"], AlignmentColumn, panel.WidgetAllAuras, 16)
-	panel.WidgetMyDebuff.tooltipText = L["Display Debuffs that have been applied by you"]
-	panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", L["Include My Buffs"], AlignmentColumn, panel.WidgetMyDebuff, 16)
-	panel.WidgetMyBuff.tooltipText = L["Display Buffs that have been applied by you"]
+	panel.WidgetDebuffFilter =  CreateQuickDropdown(objectName.."WidgetDebuffFilter", L["Debuff Filter"]..':', PrimaryAuraFilters, 2, AlignmentColumn, panel.WidgetDebuff, 16)
+	panel.WidgetBuffFilter =  CreateQuickDropdown(objectName.."WidgetBuffFilter", L["Buff Filter"]..':', PrimaryAuraFilters, 1, AlignmentColumn, panel.WidgetDebuff, OffsetColumnB)
+	--panel.WidgetAllAuras = CreateQuickCheckbutton(objectName.."WidgetAllAuras", L["Include All Auras"], AlignmentColumn, panel.WidgetDebuff, 16)
+	--panel.WidgetAllAuras.tooltipText = L["Display all auras that have been applied regardless of source or duration."]
+	--panel.WidgetMyDebuff = CreateQuickCheckbutton(objectName.."WidgetMyDebuff", L["Include My Debuffs"], AlignmentColumn, panel.WidgetAllAuras, 16)
+	--panel.WidgetMyDebuff.tooltipText = L["Display Debuffs that have been applied by you"]
+	--panel.WidgetMyBuff = CreateQuickCheckbutton(objectName.."WidgetMyBuff", L["Include My Buffs"], AlignmentColumn, panel.WidgetMyDebuff, 16)
+	--panel.WidgetMyBuff.tooltipText = L["Display Buffs that have been applied by you"]
 
 	panel.WidgetPandemic = CreateQuickCheckbutton(objectName.."WidgetPandemic", L["Enable Pandemic Highlighting"], AlignmentColumn, panel.WidgetMyBuff, 16)
 	panel.WidgetPandemic.tooltipText = L["Highlight auras when they have less than 30% of their original duration remaining"]
@@ -250,12 +253,10 @@ local function BuildHubPanel(panel)
 	panel.HideCooldownSpiral.tooltipText = L["Hides the Cooldown Spiral on Auras"]
 	panel.HideAuraDuration = CreateQuickCheckbutton(objectName.."HideAuraDuration", L["Hide Aura Duration"], AlignmentColumn, panel.HideCooldownSpiral, 16, 0)
 	panel.HideAuraDuration.tooltipText = L["Hides the duration text on Auras. (Use this if you want something like OmniCC to handle the aura durations."]
+	panel.HideAuraInHeadline = CreateQuickCheckbutton(objectName.."HideAuraInHeadline", L["Hide Aura Widget in Headline Mode"], AlignmentColumn, panel.HideAuraDuration, 16, 0)
+	panel.HideAuraInHeadline.tooltipText = L["Hides the aura widget when in 'Headline/Text-Only' mode"]
 
-	--panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style"]..':', DebuffStyles, 1, AlignmentColumn, panel.HideAuraDuration, 16)
-	--panel.WidgetAuraSort =  CreateQuickDropdown(objectName.."WidgetAuraSort", L["Sorting Mode"]..':', AuraSortModes, 1, AlignmentColumn, panel.HideAuraDuration, OffsetColumnB)
-	--panel.WidgetAuraAlignment =  CreateQuickDropdown(objectName.."WidgetAuraAlignment", L["Aura Alignment"]..':', AuraAlignmentModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)
-
-	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", L["Include Dispellable Debuffs on Friendly Units"], AlignmentColumn, panel.HideAuraDuration, 16, 4)
+	panel.WidgetAuraTrackDispelFriendly = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDispelFriendly", L["Include Dispellable Debuffs on Friendly Units"], AlignmentColumn, panel.HideAuraInHeadline, 16, 4)
 	panel.WidgetAuraTrackCurse = CreateQuickCheckbutton(objectName.."WidgetAuraTrackCurse", L["Curse"], AlignmentColumn, panel.WidgetAuraTrackDispelFriendly, 16+16, -2)
 	panel.WidgetAuraTrackDisease = CreateQuickCheckbutton(objectName.."WidgetAuraTrackDisease", L["Disease"], AlignmentColumn, panel.WidgetAuraTrackCurse, 16+16, -2)
 	panel.WidgetAuraTrackMagic = CreateQuickCheckbutton(objectName.."WidgetAuraTrackMagic", L["Magic"], AlignmentColumn, panel.WidgetAuraTrackDisease, 16+16, -2)
