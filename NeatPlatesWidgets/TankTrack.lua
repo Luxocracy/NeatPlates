@@ -1,4 +1,7 @@
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+NeatPlatesWidgetSettings = {
+	RaidTankList = {}
+}
 
 ------------------------------
 -- Tank Aura/Role Tracking
@@ -8,7 +11,7 @@ local GetGroupInfo = NeatPlatesUtility.GetGroupInfo
 
 -- Interface Functions...
 ---------------------------
-local RaidTankList = {}
+local RaidTankList = NeatPlatesWidgetSettings.RaidTankList
 local playerTankRole = false
 local currentSpec = 0
 local playerClass = select(2, UnitClass("player"))
@@ -63,7 +66,7 @@ end
 local function UpdateGroupRoles()
 
 	if not IsInGroup() then
-		RaidTankList = wipe(RaidTankList)
+		RaidTankList = wipe(NeatPlatesWidgetSettings.RaidTankList)
 	else
 
 		local groupType, groupSize = GetGroupInfo()
