@@ -191,9 +191,14 @@ L["Aura Widget"] = true
 
 L["Enable Aura Widget"] = true
 	-- Aura Widget Options
-	L["Include All Auras"] = true
-	L["Include My Debuffs"] = true
-	L["Include My Buffs"] = true
+	--L["Include All Auras"] = true
+	--L["Include My Debuffs"] = true
+	--L["Include My Buffs"] = true
+	L["Debuff Filter"] = true
+	L["Buff Filter"] = true
+		L["Show None"] = true
+		L["Show Mine"] = true
+		L["Show All"] = true
 	L["Enable Pandemic Highlighting"] = true
 	L["Include Purgeable Buffs"] = true
 	L["Include Enrage Buffs"] = true
@@ -210,6 +215,7 @@ L["Emphasized Auras"] = true
 L["Emphasize Hides Normal Aura"] = true
 L["Hide Cooldown Spiral"] = true
 L["Hide Aura Duration"] = true
+L["Hide Aura Widget in Headline Mode"] = true
 L["Icon Style"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
@@ -553,6 +559,7 @@ L["Your 'Out of Range' distance"] = true
 L["Requires 'All NPCs' to be unchecked"] = true
 L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
 L["Display Scale Options"] = true
+L["Hides the aura widget when in 'Headline/Text-Only' mode"] = true
 
 
 

@@ -278,9 +278,9 @@ NeatPlatesHubDefaults = {
 	WidgetDebuff = true,
 	WidgetDebuffStyle = 1,
 	--WidgetAuraMode = 1,
-	WidgetAllAuras = false,
-	WidgetMyDebuff = true,
-	WidgetMyBuff = false,
+	--WidgetAllAuras = false,
+	--WidgetMyDebuff = true,
+	--WidgetMyBuff = false,
 	SpacerSlots = 1,
 	AuraScale = 1,
 	WidgetAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
@@ -301,6 +301,7 @@ NeatPlatesHubDefaults = {
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
 	HideAuraDuration = false,
+	HideAuraInHeadline = false,
 
 	-- Frame
 	---------------------------------------

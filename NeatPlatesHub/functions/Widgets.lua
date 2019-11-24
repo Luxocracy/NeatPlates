@@ -53,6 +53,14 @@ NeatPlatesHubMenus.DebuffStyles = {
 				{ text = L["Compact (May require UI reload to take effect)"],  } ,
 			}
 
+NeatPlatesHubDefaults.WidgetDebuffFilter = 2 -- Show Mine by default
+NeatPlatesHubDefaults.WidgetBuffFilter = 1 -- Show None by default
+NeatPlatesHubMenus.PrimaryAuraFilters = {
+				{ text = L["Show None"],  } ,
+				{ text = L["Show Mine"],  } ,
+				{ text = L["Show All"],  } ,
+			}
+
 NeatPlatesHubDefaults.WidgetComboPointsStyle = 2
 NeatPlatesHubMenus.ComboPointsStyles = {
 				{ text = L["Blizzlike"],  } ,
@@ -200,14 +208,14 @@ local function SmartFilterMode(aura)
 	local ShowThisAura = false
 	local AuraPriority = 20
 
-	-- Show All Auras
-	if LocalVars.WidgetAllAuras then ShowThisAura = true end
+	-- Show All Buffs and Debuffs
+	if (LocalVars.WidgetBuffFilter == 3 and aura.effect == "HELPFUL") or (LocalVars.WidgetDebuffFilter == 3 and aura.effect == "HARMFUL") then
+		ShowThisAura = true
+	end
 
 	-- My own Buffs and Debuffs
 	if (aura.caster == "player" or aura.caster == "pet") and aura.baseduration and aura.baseduration < 150 then
-		if LocalVars.WidgetMyBuff and aura.effect == "HELPFUL" then
-			ShowThisAura = true
-		elseif LocalVars.WidgetMyDebuff and aura.effect == "HARMFUL" then
+		if (LocalVars.WidgetBuffFilter == 2 and aura.effect == "HELPFUL") or (LocalVars.WidgetDebuffFilter == 2 and aura.effect == "HARMFUL") then
 			ShowThisAura = true
 		end
 	end
