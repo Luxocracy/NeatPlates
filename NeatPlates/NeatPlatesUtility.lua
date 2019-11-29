@@ -1086,7 +1086,7 @@ local function CreateAutomationOptions(self, reaction, width, parent, ...)
 		local name = "Button_"..label
 		local button = CreateFrame("Button", name, frame, "NeatPlatesTriStateButtonTemplate")
 		button.tooltipText = tooltip
-		button.Label = label
+		button.Label = L[label]
 		button:SetText(L[label])
 		button:SetWidth(width)
 

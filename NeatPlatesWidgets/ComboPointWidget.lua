@@ -66,7 +66,7 @@ local function SelectPattern(maxPower)
 	local selectedPattern
 	
 	if (t[PlayerClass] == nil) then
-		local _temp = { ["w"] = 64, ["h"] = 16 }
+		local _temp = { ["w"] = 64, ["h"] = 16, ["o"] = 0}
 		return _temp
 	end
 	
@@ -82,7 +82,7 @@ local function SelectPattern(maxPower)
 	end
 
 	if selectedPattern == nil then
-		local _temp = { ["w"] = 64, ["h"] = 16 }
+		local _temp = { ["w"] = 64, ["h"] = 16, ["o"] = 0}
 		return _temp
 	end
 
@@ -96,8 +96,8 @@ local function UpdateWidgetFrame(frame)
 	if points and points > 0 then
 		local pattern = SelectPattern(maxPoints)
 
-		if pattern == nil then
-			print("[NeatPlates][ERROR] invalid pattern for " .. PlayerClass .. " - " .. playerSpec) -- should not happen
+		if pattern == nil or not pattern["o"] then
+			print("[NeatPlates][ERROR] invalid pattern for " .. PlayerClass .. " - " .. playerSpec .. ", this should never happen, perhaps a '/reload' would be in order.") -- should not happen
 			frame:_Hide()
 			return
 		end
