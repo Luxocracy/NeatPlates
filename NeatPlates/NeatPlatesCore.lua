@@ -487,6 +487,7 @@ do
 
 		if style and (extended.stylename ~= stylename) then
 			UpdateStyle()
+			UpdateIndicator_Subtext()
 			extended.stylename = stylename
 			unit.style = stylename
 
@@ -857,6 +858,12 @@ do
 			visual.name:SetTextColor(activetheme.SetNameColor(unit))
 		else visual.name:SetTextColor(1,1,1,1) end
 
+		-- Subtext
+		UpdateIndicator_Subtext()
+	end
+
+	-- UpdateIndicator_Subtext:
+	function UpdateIndicator_Subtext()
 		-- Subtext
 		if style.subtext.show then
 			if activetheme.SetSubText then
