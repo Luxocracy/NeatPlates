@@ -145,7 +145,7 @@ local function BuildHubPanel(panel)
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Level"], AlignmentColumn, F, 0, 2)
 	panel.TextStatusForceShadow, F = CreateQuickCheckbutton(objectName.."TextStatusForceShadow", L["Force Shadow on Status Text"], AlignmentColumn, F, 0, 0)
 	--panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 0)
-	panel.TextShowPVPName, F = CreateQuickCheckbutton(objectName.."TextShowPVPName", L["Show PvP Name of Unit"], AlignmentColumn, F, 0)
+	panel.TextShowUnitTitle, F = CreateQuickCheckbutton(objectName.."TextShowUnitTitle", L["Show Unit Title"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 0)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 0)
 
