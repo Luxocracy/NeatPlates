@@ -384,6 +384,11 @@ local function TextNPCRole(unit)
 	end
 end
 
+local function TextPVPRank(unit)
+	if unit.pvpname and unit.name then
+		return string.gsub(unit.pvpname, '%s*'..unit.name, '')
+	end
+end
 
 local function TextQuest(unit)
 	if unit.type == "NPC" then
@@ -434,6 +439,7 @@ AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextMod
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextRoleGuild, L["NPC Role, Guild"], "RoleGuild")
 --AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextRoleClass, "Role or Class", "RoleClass")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextNPCRole, L["NPC Role"], "Role")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextPVPRank, L["PvP Rank"], "PVPRank")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextLevelColored, L["Level"], "Level")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextQuest, L["Quest"], "Quest")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextAll, L["Everything"], "RoleGuildLevelHealth")
