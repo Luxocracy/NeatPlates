@@ -138,6 +138,7 @@ NeatPlatesHubDefaults = {
 	TextHealthTextMode = 1,
 	TextShowOnlyOnTargets = false,
 	TextShowServerIndicator = true,
+	TextShowUnitTitle = false,
 	CustomTargetColor = false,
 	CustomFocusColor = false,
 	CustomMouseoverColor = false,
