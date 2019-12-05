@@ -3,4 +3,3 @@ if not L then return end
 
 
 L = L or {}
-L["CLASSIC_DURATION_SEC_PATTERN"] = "([0-9]+%.?[0-9]?)%ss"
