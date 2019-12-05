@@ -725,13 +725,11 @@ do
 	-- UpdateIndicator_Subtext:
 	function UpdateIndicator_Subtext()
 		-- Subtext
-		if style.subtext.show then
-			if activetheme.SetSubText then
+		if style.subtext.show and activetheme.SetSubText then
 				local text, r, g, b, a = activetheme.SetSubText(unit)
 				visual.subtext:SetText( text or "")
 				visual.subtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
-			else visual.subtext:SetText("") end
-		end
+		else visual.subtext:SetText("") end
 	end
 
 

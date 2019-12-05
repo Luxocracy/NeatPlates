@@ -158,8 +158,6 @@ L["IMPORT_PROMPT_TEXT"] = [=[NeatPlates와 TidyPlatesContinued를 모두 실행�
 (가져 오기가 완료되면 TPC가 비활성화되고 UI 다시로드가 수행됩니다.) 또한 어떤 전문화를 위해 어떤 프로필을 사용할 지 다시 선택해야 합니다.)... ]=]
 L["Include Dispellable Debuffs on Friendly Units"] = "해제 가능한 아군의 디버프 추적"
 L["Include Enrage Buffs"] = "강화 버프 포함"
-L["Include My Buffs"] = "자신의 버프를 포함"
-L["Include My Debuffs"] = "자신의 디버프를 포함"
 L["Include Purgeable Buffs"] = "헤제 가능한 버프 포함"
 L["Interrupted"] = "차단"
 L["Left"] = "왼쪽"
