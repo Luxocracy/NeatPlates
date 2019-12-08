@@ -10,30 +10,30 @@ local WidgetLib = NeatPlatesWidgets
 local CreateThreatLineWidget = WidgetLib.CreateThreatLineWidget
 local CreateAuraWidget = WidgetLib.CreateAuraWidget
 local CreateClassWidget = WidgetLib.CreateClassWidget
-local CreateRangeWidget = WidgetLib.CreateRangeWidget
+--local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
 local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
 --local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
 --local CreateQuestWidget = WidgetLib.CreateQuestWidget
 local CreateThreatPercentageWidget = WidgetLib.CreateThreatPercentageWidget
 
-NeatPlatesHubDefaults.WidgetRangeMode = 1
-NeatPlatesHubMenus.RangeModes = {
-				{ text = L["Simple"]} ,
-				{ text = L["Advanced"]} ,
-			}
+--NeatPlatesHubDefaults.WidgetRangeMode = 1
+--NeatPlatesHubMenus.RangeModes = {
+--				{ text = L["Simple"]} ,
+--				{ text = L["Advanced"]} ,
+--			}
 
-NeatPlatesHubDefaults.WidgetRangeStyle = 1
-NeatPlatesHubMenus.RangeStyles = {
-				{ text = L["Line"]} ,
-				{ text = L["Icon"]} ,
-			}
+--NeatPlatesHubDefaults.WidgetRangeStyle = 1
+--NeatPlatesHubMenus.RangeStyles = {
+--				{ text = L["Line"]} ,
+--				{ text = L["Icon"]} ,
+--			}
 
-NeatPlatesHubDefaults.WidgetRangeUnits = 2
-NeatPlatesHubMenus.RangeUnits = {
-				{ text = L["Target Only"]} ,
-				{ text = L["All Units"]} ,
-			}
+--NeatPlatesHubDefaults.WidgetRangeUnits = 2
+--NeatPlatesHubMenus.RangeUnits = {
+--				{ text = L["Target Only"]} ,
+--				{ text = L["All Units"]} ,
+--			}
 
 NeatPlatesHubDefaults.WidgetAbsorbMode = 1
 NeatPlatesHubMenus.AbsorbModes = {
@@ -368,7 +368,7 @@ local function OnInitializeWidgets(extended, configTable)
 	--local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
 	--local EnableQuestWidget = LocalVars.WidgetQuestIcon
 	local EnableThreatPercentageWidget = LocalVars.WidgetThreatPercentage
-	local EnableRangeWidget = LocalVars.WidgetRangeIndicator
+	--local EnableRangeWidget = LocalVars.WidgetRangeIndicator
 
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
@@ -377,7 +377,7 @@ local function OnInitializeWidgets(extended, configTable)
 	--InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 	--InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
 	InitWidget( "ThreatPercentageWidgetHub", extended, configTable.ThreatPercentageWidget, CreateThreatPercentageWidget, EnableThreatPercentageWidget)
-	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
+	--InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -408,8 +408,8 @@ local function OnContextUpdateDelegate(extended, unit)
 	if LocalVars.WidgetThreatPercentage and widgets.ThreatPercentageWidgetHub then
 		widgets.ThreatPercentageWidgetHub:UpdateContext(unit) end
 
-	if LocalVars.WidgetRangeIndicator and widgets.RangeWidgetHub then
-		widgets.RangeWidgetHub:UpdateContext(unit) end
+	--if LocalVars.WidgetRangeIndicator and widgets.RangeWidgetHub then
+	--	widgets.RangeWidgetHub:UpdateContext(unit) end
 
 	--if LocalVars.WidgetQuestIcon and widgets.QuestWidgetHub then
 	--	widgets.QuestWidgetHub:UpdateContext(unit, extended) end
@@ -471,9 +471,9 @@ local function OnVariableChange(vars)
 	--	NeatPlatesWidgets.SetBorderTypes(LocalVars.BorderPandemic, LocalVars.BorderBuffPurgeable, LocalVars.BorderBuffEnrage)
 	--end
 
-	if LocalVars.WidgetRangeIndicator then
-		NeatPlatesWidgets.SetRangeWidgetOptions(LocalVars)
-	end
+	--if LocalVars.WidgetRangeIndicator then
+	--	NeatPlatesWidgets.SetRangeWidgetOptions(LocalVars)
+	--end
 end
 HubData.RegisterCallback(OnVariableChange)
 

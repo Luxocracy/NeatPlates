@@ -21,7 +21,6 @@
 	<Script file="AbsorbWidget.lua"/>
 	<Script file="QuestWidget.lua"/>
 	<Script file="ThreatPercentageWidget.lua"/>
-	<Script file="RangeWidget.lua"/>
 
 
 
