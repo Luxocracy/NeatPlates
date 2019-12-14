@@ -144,33 +144,33 @@ NeatPlatesHubDefaults.ScaleFunctionMode = "ByThreat"			-- Sets the default funct
 local function ScaleDelegate(...)
 
 	local unit = ...
-	local scale
-	local filterScale
+	local scale, filterScale;
 
 	--if LocalVars.UnitSpotlightScaleEnable and LocalVars.UnitSpotlightLookup[unit.name] then
 	--	return LocalVars.UnitSpotlightScale
 	--end
 	if not unit or not unit.unitid then return LocalVars.ScaleStandard end
 
+	-- Get scale from scale function
+	local func = ScaleFunctionsUniversal[LocalVars.ScaleFunctionMode] or DummyFunction
+	if func then scale = func(...) end
+
 	-- Filter
-	if (LocalVars.FilterScaleLock or (not (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus)))) and UnitFilter(unit) then
+	if (LocalVars.FilterScaleLock or (not (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus) ) ) ) and UnitFilter(unit) then
 		filterScale = LocalVars.ScaleFiltered
-	else
-		local func = ScaleFunctionsUniversal[LocalVars.ScaleFunctionMode] or DummyFunction
-		if func then scale = func(...) end
 	end
 
 	if (LocalVars.ScaleTargetSpotlight and (unit.isTarget or (LocalVars.FocusAsTarget and unit.isFocus))) then scale = LocalVars.ScaleSpotlight
 	elseif (LocalVars.ScaleMouseoverSpotlight and unit.isMouseover) then scale = LocalVars.ScaleSpotlight
-	elseif LocalVars.ScaleIgnoreNonEliteUnits and (not unit.isElite) then
-	elseif LocalVars.ScaleIgnoreNeutralUnits and unit.reaction == "NEUTRAL" then
-	elseif LocalVars.ScaleIgnoreInactive and not ( (unit.health < unit.healthmax) or (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player") or unit.threatValue > 0) or (unit.isCasting == true) ) then
+	elseif LocalVars.ScaleIgnoreNonEliteUnits and (not unit.isElite) then scale = nil
+	elseif LocalVars.ScaleIgnoreNeutralUnits and unit.reaction == "NEUTRAL" then scale = nil
+	elseif LocalVars.ScaleIgnoreInactive and not ( (unit.health < unit.healthmax) or (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player") or unit.threatValue > 0) or (unit.isCasting == true) ) then scale = nil
 	elseif LocalVars.ScaleCastingSpotlight and unit.reaction == "HOSTILE" and unit.isCasting then scale = LocalVars.ScaleSpotlight
 	--elseif LocalVars.ScaleMiniMobs and unit.isMini then
 	--	scale = MiniMobScale
 	end
 
-	if(filterScale and LocalVars.FilterScaleLock and UnitFilter(unit)) then
+	if(filterScale and (LocalVars.FilterScaleLock or scale == nil)) then
 		return filterScale
 	else
 		return scale or LocalVars.ScaleStandard
