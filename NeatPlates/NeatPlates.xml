@@ -339,16 +339,20 @@
         <Scripts>
             <OnLoad>
                 self.UpdateState = function(self, state)
-                    -- Toggle/Assign state
-                    if(state) then self.state = state
-                    elseif(self.state == "show") then self.state = "hide"
-                    elseif(self.state == "hide") then self.state = nil
-                    else self.state = "show" end
+                    local states = self:GetParent().states;
 
-                    -- Color Text
-                    if(self.state == "show") then self:SetText("|cFF60E025"..self.Label)
-                    elseif(self.state == "hide") then self:SetText("|cFFFF1100"..self.Label)
-                    else self:SetText(self.Label) end
+                    local nextState, newState;
+                    for label, color in pairs(states) do
+                        if nextState or self.state == nil then
+                            newState = label;
+                            break;
+                        elseif self.state == label then
+                            nextState = true;
+                        end
+                    end
+                    self.state = state or newState;
+
+                    self:SetText((states[self.state] or "")..self.Label)
                 end
             </OnLoad>
             <OnClick>

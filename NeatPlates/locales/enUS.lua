@@ -309,7 +309,8 @@ L["Filter Friendly NPC"] = true
 L["Filter Low Level Units"] = true
 L["Filter Inactive"] = true
 
-L["Filter Players"] = true
+L["Filter Friendly Players"] = true
+L["Filter Enemy Players"] = true
 L["Filter Party/Raid Members"] = true
 L["Filter Non-Party/Raid Members"] = true
 L["Filter Enemy Pets"] = true
