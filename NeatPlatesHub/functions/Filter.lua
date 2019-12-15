@@ -18,7 +18,8 @@ local function UnitFilter(unit)
 	elseif LocalVars.OpacityFilterFriendlyPet and unit.type == "NPC" and unit.reaction == "FRIENDLY" and unit.isPet then return true
 	elseif LocalVars.OpacityFilterEnemyNPC and unit.type == "NPC" and unit.reaction == "HOSTILE" and not unit.isPet then return true
 	elseif LocalVars.OpacityFilterEnemyPet and unit.type == "NPC" and unit.reaction == "HOSTILE" and unit.isPet then return true
-	elseif LocalVars.OpacityFilterPlayers and unit.type == "PLAYER" then return true
+	elseif LocalVars.OpacityFilterFriendlyPlayers and unit.type == "PLAYER" and unit.reaction == "FRIENDLY" then return true
+	elseif LocalVars.OpacityFilterEnemyPlayers and unit.type == "PLAYER" and unit.reaction == "HOSTILE" then return true
 	elseif LocalVars.OpacityFilterPartyMembers and unit.type == "PLAYER" and IsPartyMember(unit.unitid) then return true
 	elseif LocalVars.OpacityFilterNonPartyMembers and unit.type == "PLAYER" and not IsPartyMember(unit.unitid) then return true
 	elseif LocalVars.OpacityFilterMini and unit.isMini then return true

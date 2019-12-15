@@ -1048,14 +1048,14 @@ local function CreateTipBox(self, name, text, parent, ...)
 	return frame, frame
 end
 
-local function CreateAutomationOptions(self, reaction, width, parent, ...)
-	local frame = CreateFrame("Frame", "NeatPlatesPanelAutomation"..reaction, parent)
+local function CreateMultiStateOptions(self, name, labelArray, stateArray, width, parent, ...)
+	local frame = CreateFrame("Frame", "NeatPlatesPanelMultiState"..name, parent)
 
-	local labelArray = {"Combat", "Dungeon", "Raid", "Battleground", "Arena", "Scenario", "World"}
+	frame.states = stateArray;
+	--local labelArray = {"Combat", "Dungeon", "Raid", "Battleground", "Arena", "Scenario", "World"}
 	local lastItem
 	for i,label in pairs(labelArray) do
-		local name = "Button_"..label
-		local button = CreateFrame("Button", name, frame, "NeatPlatesTriStateButtonTemplate")
+		local button = CreateFrame("Button", "Button_"..label, frame, "NeatPlatesTriStateButtonTemplate")
 		button.tooltipText = tooltip
 		button.Label = L[label]
 		button:SetText(L[label])
@@ -1069,7 +1069,7 @@ local function CreateAutomationOptions(self, reaction, width, parent, ...)
 		end
 		lastItem = button
 
-		frame[name] = button
+		frame["Button_"..label] = button
 	end
 
 	-- Border
@@ -1120,7 +1120,7 @@ PanelHelpers.CreateEditBoxButton = CreateEditBoxButton
 PanelHelpers.CreateTipBox = CreateTipBox
 PanelHelpers.ShowDropdownMenu = ShowDropdownMenu
 PanelHelpers.HideDropdownMenu = HideDropdownMenu
-PanelHelpers.CreateAutomationOptions = CreateAutomationOptions
+PanelHelpers.CreateMultiStateOptions = CreateMultiStateOptions
 
 NeatPlatesUtility.PanelHelpers = PanelHelpers
 
