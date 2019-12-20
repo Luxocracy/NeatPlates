@@ -96,7 +96,7 @@ local function UpdateWidgetFrame(frame)
 	if points and points > 0 then
 		local pattern = SelectPattern(maxPoints)
 
-		if pattern == nil or not pattern["o"] then
+		if pattern == nil then
 			print("[NeatPlates][ERROR] invalid pattern for " .. PlayerClass .. " - " .. playerSpec .. ", this should never happen, perhaps a '/reload' would be in order.") -- should not happen
 			frame:_Hide()
 			return
