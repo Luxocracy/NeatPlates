@@ -8,7 +8,7 @@ local AIR_TOTEM, EARTH_TOTEM, FIRE_TOTEM, WATER_TOTEM = 1, 2, 3, 4
 
 local function SetTotemInfo(spellid, totemType)
 	local name, _, icon = GetSpellInfo(spellid)
-	if name and icon and totemType then
+	if name and icon then --and totemType
 		TotemIcons[name] = icon
 		TotemTypes[name] = totemType
 	end
