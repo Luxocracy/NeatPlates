@@ -710,6 +710,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		if infinite then
 			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum+value, maximum+value, step)
 		end
+		if parent.OnValueChanged then parent.OnValueChanged(slider) end
+		if slider.OnValueChanged then slider.OnValueChanged(slider) end
 	end
 
 	--slider.tooltipText = "Slider"
@@ -908,10 +910,10 @@ local function CreateDropdownFrame(helpertable, reference, parent, menu, default
 	------------------------------------------------
 
 	local function OnClickItem(self)
-
 		drawer:SetValue(menu[self.buttonIndex].value or self.buttonIndex)
 		--print(self.Value, menu[self.buttonIndex].value, drawer:GetValue())
 
+		if parent.OnValueChanged then parent.OnValueChanged(drawer) end
 		if drawer.OnValueChanged then drawer.OnValueChanged(drawer) end
 		PlaySound(856);
 		HideDropdownMenu()
@@ -1018,7 +1020,7 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 	EditBox:SetWidth(width)
 	EditBox:SetMultiLine(true)
 
-	EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
+	EditBox:SetFrameLevel(frame:GetFrameLevel()+1)
 	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 
 	EditBox:SetText("")

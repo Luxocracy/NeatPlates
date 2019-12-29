@@ -317,4 +317,9 @@ NeatPlatesHubDefaults = {
 	FrameBarWidth = 1,
 	CastBarWidth = 1,
 	--AdvancedHealthTextList = [[return unit.health]],
+	Customization = {
+		Default = {},
+		TextOnly = {},
+		WidgetConfig = {}
+	},
 }

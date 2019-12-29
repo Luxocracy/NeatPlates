@@ -219,6 +219,25 @@ local function UseVariables(profileName)
 	end
 end
 
+local function GetCustomizationOption(category, option)
+	if not category then return LocalVars.Customization end
+	return LocalVars.Customization[category][option]
+end
+
+local function SetCustomizationOption(category, option, key, value)
+	if type(category) == "table" then LocalVars.Customization = CopyTable(category); return end
+	LocalVars.Customization[category] = LocalVars.Customization[category] or {}
+	if type(option) == "table" then LocalVars.Customization[category] = CopyTable(option); return end
+	LocalVars.Customization[category][option] = LocalVars.Customization[category][option] or {}
+	if type(key) == "table" then
+		-- Loop over keys. (Because width/height is sometimes defined fully as 'width' or just the first character 'w')
+		for _,k in pairs(key) do
+			LocalVars.Customization[category][option][k] = value
+		end
+	 else
+	 	LocalVars.Customization[category][option][key] = value
+	 end
+end
 ---------------
 -- Apply customization
 ---------------
@@ -305,6 +324,36 @@ local function ApplyCustomBarSize(style, defaults)
 					v = v * (LocalVars.CastBarWidth or 1)
 				end
 				style.spelltext[k] = v
+			end
+		end
+	end
+end
+
+local function ApplyThemeCustomization(theme)
+	local categories = {"Default", "NameOnly", "WidgetConfig"}
+
+	-- Restore theme to default settings
+	theme["Default"] = CopyTable(theme["DefaultBackup"])
+	theme["NameOnly"] = CopyTable(theme["NameOnlyBackup"])
+	theme["WidgetConfig"] = CopyTable(theme["WidgetConfigBackup"])
+
+	-- Apply customized style to each category
+	for i,category in pairs(categories) do
+		local style = theme[category]
+		local modifications = LocalVars.Customization[category]
+
+		-- Apply the customized style
+		if modifications then
+			for k,v in pairs(modifications) do
+				if style[k] then
+					for k2,v2 in pairs(v) do
+						if type(style[k][k2]) == "number" then
+							style[k][k2] = style[k][k2] + v2
+						else
+							style[k][k2] = v2
+						end
+					end
+				end
 			end
 		end
 	end
@@ -445,7 +494,7 @@ end
 
 
 -- From Neon.lua...
-local LocalVars = NeatPlatesHubDamageVariables
+--local LocalVars = NeatPlatesHubDamageVariables
 
 local function OnInitialize(plate, theme)
 	if theme and theme.WidgetConfig then
@@ -464,6 +513,7 @@ end
 
 local function OnChangeProfile(theme, profile)
 	if profile then
+		if NeatPlatesCustomizationPanel then NeatPlatesCustomizationPanel:Hide() end -- Hide the theme customization frame. (Has to be done before we change the 'LocalVars' variable set)
 
 		UseVariables(profile)
 
@@ -472,6 +522,7 @@ local function OnChangeProfile(theme, profile)
 		if theme then
 			if theme.ApplyProfileSettings then
 				ApplyProfileSettings(theme, "From OnChangeProfile")
+				ApplyThemeCustomization(theme)
 				NeatPlates:ForceUpdate()
 			end
 		end
@@ -497,6 +548,7 @@ local function ApplyHubFunctions(theme)
 	theme.OnInitialize = OnInitialize		-- Need to provide widget positions
 	theme.OnActivateTheme = OnActivateTheme -- called by NeatPlates Core, Theme Loader
 	theme.ApplyProfileSettings = ApplyProfileSettings
+	theme.ApplyThemeCustomization = ApplyThemeCustomization
 	theme.OnChangeProfile = OnChangeProfile
 
 	-- Make Backup Copies of the default settings of the theme styles
@@ -526,6 +578,8 @@ NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions
 NeatPlatesHubFunctions.ApplyRequiredCVars = ApplyRequiredCVars
+NeatPlatesHubFunctions.GetCustomizationOption = GetCustomizationOption
+NeatPlatesHubFunctions.SetCustomizationOption = SetCustomizationOption
 
 
 
