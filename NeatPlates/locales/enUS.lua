@@ -212,6 +212,7 @@ L["Space Between buffs & debuffs"] = true
 L["Aura Scale"] = true
 L["Aura Offsets"] = true
 L["Amount of Emphasized Auras"] = true
+L["Precise Aura Duration Threshold"] = true
 L["Additional Auras"] = true
 L["Emphasized Auras"] = true
 L["Emphasize Hides Normal Aura"] = true
@@ -565,6 +566,7 @@ L["Requires 'All NPCs' to be unchecked"] = true
 L["Helps ensure that everything is working as intended by enforcing certain CVars"] = true
 L["Display Scale Options"] = true
 L["Hides the aura widget when in 'Headline/Text-Only' mode"] = true
+L["When aura durations should start to display tenths of a second"] = true
 
 
 

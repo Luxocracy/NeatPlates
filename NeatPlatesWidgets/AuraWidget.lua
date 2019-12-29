@@ -36,6 +36,7 @@ local AuraWidth = 16.5
 local AuraScale = 1
 local AuraAlignment = "BOTTOMLEFT"
 local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+local PreciseAuraThreshold = 0
 
 local function DummyFunction() end
 
@@ -122,7 +123,10 @@ local function EventUnitAura(unitid)
 
 end
 
-
+-- Clear the AuraCache for the unitid
+local function ClearAuraCache(unitid)
+	if unitid then AuraCache[unitid] = nil end
+end
 
 -----------------------------------------------------
 -- Function Reference Lists
@@ -131,7 +135,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
-	["NAME_PLATE_UNIT_REMOVED"] = function(unitid) if unitid then AuraCache[unitid] = nil end end, -- Clear the AuraCache for the unitid
+	["NAME_PLATE_UNIT_REMOVED"] = ClearAuraCache, 
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -158,7 +162,11 @@ local function UpdateWidgetTime(frame, expiration)
 		if timeleft > 60 then
 			frame.TimeLeft:SetText(floor(timeleft/60).."m")
 		else
-			frame.TimeLeft:SetText(floor(timeleft))
+			if timeleft < PreciseAuraThreshold then
+				frame.TimeLeft:SetText((("%%.%df"):format(1)):format(timeleft))
+			else
+				frame.TimeLeft:SetText(floor(timeleft))
+			end
 			--frame.TimeLeft:SetText(floor(timeleft*10)/10)
 		end
 	end
@@ -800,6 +808,7 @@ local function SetAuraOptions(LocalVars)
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
 	ScaleOptions = LocalVars.WidgetAuraScaleOptions
 	HideInHeadlineMode = LocalVars.HideAuraInHeadline
+	PreciseAuraThreshold = LocalVars.PreciseAuraThreshold
 end
 
 local function SetPandemic(enabled, color)
