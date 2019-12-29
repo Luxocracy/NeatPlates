@@ -235,17 +235,6 @@ local function ApplyAutomationSettings()
 	NeatPlates:ForceUpdate()
 end
 
---local function Role2Profile(spec)
---	local s = GetSpecializationInfo(spec)
---	if s ~= nil then	
---		local role = GetSpecializationRole(spec)
---		if role == "DAMAGER" then return "Damage" end
---		if role == "TANK" then return "Tank" end
---		if role == "HEALER" then return "Healer" end
---	end
---	return "Damage"
---end
-
 local function VerifyPanelSettings()
 	-- Verify per-character settings
 	for k, v in pairs(NeatPlatesOptionsDefaults) do

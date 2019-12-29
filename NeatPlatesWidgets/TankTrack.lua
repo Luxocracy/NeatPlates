@@ -19,8 +19,21 @@ local TankWatcher
 local function IsEnemyTanked(unit)
 	local unitid = unit.unitid
 	local targetOf = unitid.."target"
+	local targetGUID = UnitGUID(targetOf)
+	local targetIsGuardian = false
+	local guardians = {
+		["61146"] = true, 	-- Black Ox Statue(61146)
+		["103822"] = true,	-- Treant(103822)
+		["61056"] = true, 	-- Primal Earth Elemental(61056)
+		["95072"] = true, 	-- Greater Earth Elemental(95072)
+	}
+
+	if targetGUID then
+		targetGUID = select(6, strsplit("-", UnitGUID(targetOf)))
+		targetIsGuardian = guardians[targetGUID]
+	end
 	-- GetPartyAssignment("MAINTANK", raidid)
-	local targetIsTank = UnitIsUnit(targetOf, "pet") or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
+	local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
 
 	return targetIsTank
 end
