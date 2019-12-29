@@ -6,4 +6,6 @@
 ## SavedVariables: NeatPlatesSettings
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
+embeds.xml
+locales.xml
 NeatPlates.xml

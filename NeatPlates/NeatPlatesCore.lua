@@ -8,6 +8,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
 local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
+local ParseGUID = NeatPlatesUtility.ParseGUID
 NeatPlates = {}
 
 -- Local References
@@ -182,8 +183,8 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				plate:GetChildren():Hide()
-
+				local children = plate:GetChildren()
+				if children then children:Hide() end
 			end
 
 			if plate.UnitFrame then plate.UnitFrame:Hide() end
@@ -283,6 +284,7 @@ do
 		widgetParent:SetFrameStrata("BACKGROUND")
 
 		widgetParent:SetFrameLevel(textFrame:GetFrameLevel() - 1)
+		castbar:SetFrameLevel(widgetParent:GetFrameLevel() + 1)
 
 		topFrameLevel = topFrameLevel + 20
 		extended.defaultLevel = topFrameLevel
@@ -597,7 +599,8 @@ do
 		unit.isRare = RareReference[classification]
 		unit.isMini = classification == "minus"
 		--unit.isPet = UnitIsOtherPlayersPet(unitid)
-		unit.isPet = ("Pet" == strsplit("-", UnitGUID(unitid)))
+		--unit.isPet = ("Pet" == strsplit("-", UnitGUID(unitid)))
+		unit.isPet = ParseGUID(UnitGUID(unitid)) == "Pet"
 
 		if UnitIsPlayer(unitid) then
 			_, unit.class = UnitClass(unitid)
@@ -1068,9 +1071,7 @@ do
 
 	function OnUpdateCastMidway(plate, unitid)
 		if not ShowCastBars then return end
-
 		local currentTime = GetTime() * 1000
-
 		
 		if UnitCastingInfo(unitid) then
 			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
@@ -1220,7 +1221,6 @@ do
 	function CoreEvents:UNIT_SPELLCAST_START(...)
 		local unitid = ...
 		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
 		local plate = GetNamePlateForUnit(unitid)
 
 		if plate then
@@ -1266,6 +1266,7 @@ do
 		spellID = spellID or ""
 		local plate = nil
 		local ownerGUID
+		--local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
 
 		-- Spell Interrupts
 		if ShowIntCast then
@@ -1278,6 +1279,7 @@ do
 				if plate then
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
 					local unitType = strsplit("-", sourceGUID)
+
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
 							ownerGUID, sourceName = GetPetOwner(sourceName)
@@ -1302,23 +1304,6 @@ do
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
 			end
 		end
-
-		-- Aura Base Duration Modifier
-		-- Might not be necessary to do it this way, commented for now
-		--if true then
-		--	local current = {CombatLogGetCurrentEventInfo()}
-		--	local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
-		--	plate = PlatesByGUID[destGUID] or {}
-		--	plate.auraBaseMod = plate.auraBaseMod or {}
-
-		--	if event == "SPELL_AURA_APPLIED" then
-		--		plate.auraBaseMod[spellID] = 1
-		--	elseif event == "SPELL_AURA_REFRESH" then
-		--		plate.auraBaseMod[spellID] = 1.3
-		--	end
-		--	--if event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", sourceName) then print(GetSpellDescription(spellID));for i=1, #current,1 do print(i, current[i]) end elseif event == "SPELL_AURA_REFRESH" and UnitIsUnit("player", sourceName) then print("Spell was resfhred") end
-		--end
-		
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
