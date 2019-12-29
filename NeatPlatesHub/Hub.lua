@@ -22,7 +22,6 @@ local CreateQuickDropdown = NeatPlatesHubRapidPanel.CreateQuickDropdown
 local CreateQuickHeadingLabel = NeatPlatesHubRapidPanel.CreateQuickHeadingLabel
 local CreateQuickItemLabel = NeatPlatesHubRapidPanel.CreateQuickItemLabel
 local CreateQuickScale = NeatPlatesHubRapidPanel.CreateQuickScale
-local CreateQuickCustomization = NeatPlatesHubRapidPanel.CreateQuickCustomization
 local OnMouseWheelScrollFrame = NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame
 local CreateHubInterfacePanel = NeatPlatesHubRapidPanel.CreateInterfacePanel
 
@@ -612,7 +611,7 @@ local function BuildHubPanel(panel)
 	BlizzOptionsButton:SetWidth(300)
 	BlizzOptionsButton:SetText(L["Blizzard Nameplate Motion & Visibility..."])
 	BlizzOptionsButton:SetScript("OnClick", function() InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"]) end)
-	local ThemeCustomization = CreateQuickCustomization(objectName.."CustomizationButton", AlignmentColumn, "TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -4)
+
 
 	------------------------------
 	-- Set Sizes and Mechanics
@@ -838,8 +837,8 @@ end
 local HubHandler = CreateFrame("Frame")
 HubHandler:SetScript("OnEvent", function(...)
 	local _,_,addon = ...
-	local version, build, date, tocversion = GetBuildInfo()
 	local player = UnitName("player");
+	local version, build, date, tocversion = GetBuildInfo()
 	local TPCEnabled = GetAddOnEnableState(player, "TidyPlatesContinued") ~= 0
 	local TPCHubEnabled = GetAddOnEnableState(player, "TidyPlatesContinuedHub") ~= 0
 

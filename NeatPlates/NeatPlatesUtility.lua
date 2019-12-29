@@ -172,12 +172,6 @@ local function fade(intervals, duration, delay, onUpdate, onDone, timer, stop)
 end
 
 
--- Split guid
-local function ParseGUID(guid)
-	if guid then return strsplit("-", guid) end
-	return
-end
-
 NeatPlatesUtility.abbrevNumber = valueToString
 NeatPlatesUtility.copyTable = copytable
 NeatPlatesUtility.mergeTable = mergetable
@@ -186,7 +180,6 @@ NeatPlatesUtility.HexToRGB = HexToRGB
 NeatPlatesUtility.RGBToHex = RGBToHex
 NeatPlatesUtility.round = round
 NeatPlatesUtility.fade = fade
-NeatPlatesUtility.ParseGUID = ParseGUID
 
 ------------------------------------------
 -- GameTooltipScanner
@@ -201,7 +194,6 @@ TooltipScanner:SetOwner( WorldFrame, "ANCHOR_NONE" );
 local UnitSubtitles = {}
 local function GetUnitSubtitle(unit)
 	local unitid = unit.unitid
-	local colorblindMode = GetCVar("colorblindMode") == "1" -- Color blind mode seems to shift this down one row.
 
 	-- Bypass caching while in an instance
 	--if inInstance or (not UnitExists(unitid)) then return end
@@ -227,12 +219,7 @@ local function GetUnitSubtitle(unit)
 
 
 		-- Tooltip Format Priority:  Faction, Description, Level
-		local toolTipText
-		if colorblindMode then 
-			toolTipText = TooltipTextLeft3:GetText() or "UNKNOWN"
-		else
-			toolTipText = TooltipTextLeft2:GetText() or "UNKNOWN"
-		end
+		local toolTipText = TooltipTextLeft2:GetText() or "UNKNOWN"
 
 		if string.match(toolTipText, UNIT_LEVEL_TEMPLATE) then
 			subTitle = ""
@@ -694,8 +681,6 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		if infinite then
 			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum+value, maximum+value, step)
 		end
-		if parent.OnValueChanged then parent.OnValueChanged(slider) end
-		if slider.OnValueChanged then slider.OnValueChanged(slider) end
 	end
 
 	--slider.tooltipText = "Slider"
@@ -894,10 +879,10 @@ local function CreateDropdownFrame(helpertable, reference, parent, menu, default
 	------------------------------------------------
 
 	local function OnClickItem(self)
+
 		drawer:SetValue(menu[self.buttonIndex].value or self.buttonIndex)
 		--print(self.Value, menu[self.buttonIndex].value, drawer:GetValue())
 
-		if parent.OnValueChanged then parent.OnValueChanged(drawer) end
 		if drawer.OnValueChanged then drawer.OnValueChanged(drawer) end
 		PlaySound(856);
 		HideDropdownMenu()
