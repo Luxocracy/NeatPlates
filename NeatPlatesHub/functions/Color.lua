@@ -105,32 +105,31 @@ end
 3 - Unit is mobUnit's primary target, and no other unit has 100% or higher raw threat (default UI shows red indicator)
 --]]
 
-local function ColorFunctionDamage(unit)
-	--if IsOffTanked(unit) then return LocalVars.ColorAttackingOtherTank end
+
+local function ColorFunctionDamage(unit, glow)
+	--if IsOffTanked(unit) and not glow then return LocalVars.ColorAttackingOtherTank end
 
 	if unit.threatValue > 1 then return LocalVars.ColorThreatWarning				-- When player is unit's target		-- Warning
 	elseif unit.threatValue == 1 then return LocalVars.ColorThreatTransition											-- Transition
 	else return LocalVars.ColorThreatSafe end																	-- Safe
 end
 
-local function ColorFunctionRawTank(unit)
-
-
+local function ColorFunctionRawTank(unit, glow)
 	if unit.threatValue > 2 then
 		return LocalVars.ColorThreatWarning							-- When player is solid target, ie. Safe
 	else
-		if IsOffTanked(unit) then return LocalVars.ColorAttackingOtherTank		-- When unit is tanked by another
+		if IsOffTanked(unit) and not glow then return LocalVars.ColorAttackingOtherTank		-- When unit is tanked by another
 
 		elseif unit.threatValue == 2 then return LocalVars.ColorThreatTransition				-- Transition
 		else return LocalVars.ColorThreatSafe end										-- Warning
 	end
 end
 
-local function ColorFunctionTankSwapColors(unit)
+local function ColorFunctionTankSwapColors(unit, glow)
 	if unit.threatValue > 2 then
 		return LocalVars.ColorThreatSafe				-- When player is solid target		-- ColorThreatSafe = Safe Color... which means that a Tank would want it to be Safe
 	else
-		if IsOffTanked(unit) then return LocalVars.ColorAttackingOtherTank			-- When unit is tanked by another
+		if IsOffTanked(unit) and not glow then return LocalVars.ColorAttackingOtherTank			-- When unit is tanked by another
 		elseif unit.threatValue == 2 then return LocalVars.ColorThreatTransition					-- Transition
 		else return LocalVars.ColorThreatWarning end												-- Warning
 	end
@@ -375,7 +374,7 @@ local function WarningBorderFunctionByThreat(unit)
 				if (not unit.isInCombat and not UnitIsUnit(unit.unitid.."target", "player")) or IsOffTanked(unit) then return
 				elseif unit.threatValue == 2 then return LocalVars.ColorThreatTransition
 				elseif unit.threatValue < 2 then return LocalVars.ColorThreatWarning	end
-		elseif unit.threatValue > 0 then return ColorFunctionDamage(unit) end
+		elseif unit.threatValue > 0 then return ColorFunctionDamage(unit, true) end
 	else
 		-- Add healer tracking
 		return WarningBorderFunctionByEnemyHealer(unit)

@@ -374,12 +374,72 @@
         <HighlightFont style="GameFontHighlightOutline"/>
     </Button>
 
-    <Script file="libs\LibStub-1.0\LibStub.lua"/>
-    <Include file="libs\CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
-    <Script file="libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
-    <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
-    <Include file="libs\AceLocale-3.0\AceLocale-3.0.xml"/>
-    <Include file="locales.xml"/>
+    <Button name="NeatPlatesOptionsListButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="175" y="18"/>
+        </Size>
+        <Frames>
+            <Button name="$parentToggle" hidden="true">
+                <Size>
+                    <AbsDimension x="14" y="14"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-6" y="-1"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+
+                    </OnLoad>
+                    <OnClick>
+
+                    </OnClick>
+                </Scripts>
+                <NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-MinusButton-UP"/>
+                <PushedTexture name="$parentPushedTexture" file="Interface\Buttons\UI-MinusButton-DOWN"/>
+                <HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+
+            </OnLoad>
+            <OnClick>
+
+            </OnClick>
+            <OnEnter>
+                if(self.tooltipText ~= nil) then
+                    GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+                end
+            </OnEnter>
+            <OnLeave>
+                if(self.tooltipText ~= nil) then
+                    GameTooltip:Hide();
+                end
+            </OnLeave>
+        </Scripts>
+        <ButtonText name="$parentText" justifyH="LEFT" wordwrap="false"/>
+        <NormalFont style="GameFontNormal"/>
+        <HighlightFont style="GameFontHighlight"/>
+        <HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD">
+            <Anchors>
+                <Anchor point="TOPLEFT">
+                    <Offset>
+                        <AbsDimension x="0" y="1"/>
+                    </Offset>
+                </Anchor>
+                <Anchor point="BOTTOMRIGHT">
+                    <Offset>
+                        <AbsDimension x="0" y="1"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </HighlightTexture>
+    </Button>
+
 	<Script file="NeatPlatesStatusbar.lua"/>
     <Script file="NeatPlatesUtility.lua"/>
 	<Script file="NeatPlatesCore.lua"/>

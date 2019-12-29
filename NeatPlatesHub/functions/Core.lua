@@ -48,25 +48,7 @@ local function IsOffTanked(unit)
 
 	local unitid = unit.unitid
 	if unitid then
-		local targetOf = unitid.."target"	
-		local targetGUID = UnitGUID(targetOf)
-		local targetIsGuardian = false
-		local guardians = {
-			["61146"] = true, 	-- Black Ox Statue(61146)
-			["103822"] = true,	-- Treant(103822)
-			["61056"] = true, 	-- Primal Earth Elemental(61056)
-			["95072"] = true, 	-- Greater Earth Elemental(95072)
-		}
-
-		if targetGUID then
-			targetGUID = select(6, strsplit("-", UnitGUID(targetOf)))
-			targetIsGuardian = guardians[targetGUID]
-		end
-		
-		local targetIsTank = UnitIsUnit(targetOf, "pet") or targetIsGuardian or ("TANK" ==  UnitGroupRolesAssigned(targetOf))
-
-		--if LocalVars.EnableOffTankHighlight and IsEnemyTanked(unit) then
-		if LocalVars.EnableOffTankHighlight and targetIsTank then
+		if LocalVars.EnableOffTankHighlight and IsEnemyTanked(unit) then
 			return true
 		end
 	end
@@ -215,6 +197,21 @@ local function UseVariables(profileName)
 	end
 end
 
+local function GetCustomizationOption(category, option)
+	if not category then return LocalVars.Customization end
+	return LocalVars.Customization[category][option]
+end
+
+local function SetCustomizationOption(category, option, key, value)
+	if type(category) == "table" then LocalVars.Customization = category; return end
+	LocalVars.Customization[category] = LocalVars.Customization[category] or {}
+	if type(option) == "table" then LocalVars.Customization[category] = option; return end
+	LocalVars.Customization[category][option] = LocalVars.Customization[category][option] or {}
+	if type(key) == "table" then LocalVars.Customization[category][option] = key; return end
+	LocalVars.Customization[category][option][key] = LocalVars.Customization[category][option][key] or {}
+
+	LocalVars.Customization[category][option][key] = value
+end
 ---------------
 -- Apply customization
 ---------------
@@ -301,6 +298,36 @@ local function ApplyCustomBarSize(style, defaults)
 					v = v * (LocalVars.CastBarWidth or 1)
 				end
 				style.spelltext[k] = v
+			end
+		end
+	end
+end
+
+local function ApplyThemeCustomization(theme)
+	local categories = {"Default", "NameOnly", "WidgetConfig"}
+
+	-- Restore theme to default settings
+	theme["Default"] = CopyTable(theme["DefaultBackup"])
+	theme["NameOnly"] = CopyTable(theme["NameOnlyBackup"])
+	theme["WidgetConfig"] = CopyTable(theme["WidgetConfigBackup"])
+
+	-- Apply customized style to each category
+	for i,category in pairs(categories) do
+		local style = theme[category]
+		local modifications = LocalVars.Customization[category]
+
+		-- Apply the customized style
+		if modifications then
+			for k,v in pairs(modifications) do
+				if style[k] then
+					for k2,v2 in pairs(v) do
+						if type(style[k][k2]) == "number" then
+							style[k][k2] = style[k][k2] + v2
+						else
+							style[k][k2] = v2
+						end
+					end
+				end
 			end
 		end
 	end
@@ -459,6 +486,7 @@ end
 
 local function OnChangeProfile(theme, profile)
 	if profile then
+		if NeatPlatesCustomizationPanel then NeatPlatesCustomizationPanel:Hide() end -- Hide the theme customization frame. (Has to be done before we change the 'LocalVars' variable set)
 
 		UseVariables(profile)
 
@@ -467,6 +495,7 @@ local function OnChangeProfile(theme, profile)
 		if theme then
 			if theme.ApplyProfileSettings then
 				ApplyProfileSettings(theme, "From OnChangeProfile")
+				ApplyThemeCustomization(theme)
 				NeatPlates:ForceUpdate()
 			end
 		end
@@ -492,6 +521,7 @@ local function ApplyHubFunctions(theme)
 	theme.OnInitialize = OnInitialize		-- Need to provide widget positions
 	theme.OnActivateTheme = OnActivateTheme -- called by NeatPlates Core, Theme Loader
 	theme.ApplyProfileSettings = ApplyProfileSettings
+	theme.ApplyThemeCustomization = ApplyThemeCustomization
 	theme.OnChangeProfile = OnChangeProfile
 
 	-- Make Backup Copies of the default settings of the theme styles
@@ -521,6 +551,8 @@ NeatPlatesHubFunctions.UseVariables = UseVariables
 NeatPlatesHubFunctions.EnableWatchers = EnableWatchers
 NeatPlatesHubFunctions.ApplyHubFunctions = ApplyHubFunctions
 NeatPlatesHubFunctions.ApplyRequiredCVars = ApplyRequiredCVars
+NeatPlatesHubFunctions.GetCustomizationOption = GetCustomizationOption
+NeatPlatesHubFunctions.SetCustomizationOption = SetCustomizationOption
 
 
 
