@@ -124,11 +124,15 @@
 				_G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-Panel-Button-Up");
 			</OnEnable>
 			<OnEnter>
+                self.isMouseover = true
 				if(self.tooltipText ~= nil) then
-					GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+					C_Timer.After(0.25, function()
+                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                    end);
 				end
 			</OnEnter>
 			<OnLeave>
+                self.isMouseover = false
 				if(self.tooltipText ~= nil) then
 					GameTooltip:Hide();
 				end
@@ -159,11 +163,15 @@
         </Layers>
         <Scripts>
             <OnEnter>
+                self.isMouseover = true
                 if(self.tooltipText ~= nil) then
-                    GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+                    C_Timer.After(0.25, function()
+                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                    end);
                 end
             </OnEnter>
             <OnLeave>
+                self.isMouseover = false
                 if(self.tooltipText ~= nil) then
                     GameTooltip:Hide();
                 end
@@ -177,15 +185,21 @@
         </Size>
         <Scripts>
             <OnEnter>
+                self.isMouseover = true
                 if(self.tooltipText ~= nil) then
-                    --GameTooltip_SetBasicTooltip(GameTooltip, self.tooltipText, 0, 0, true);
-                    GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
-                    GameTooltip:ClearAllPoints();
-                    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
-                    GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                    C_Timer.After(0.25, function()
+                        if self.isMouseover then
+                            --GameTooltip_SetBasicTooltip(GameTooltip, self.tooltipText, 0, 0, true);
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
+                    end);
                 end
             </OnEnter>
             <OnLeave>
+                self.isMouseover = false
                 if(self.tooltipText ~= nil) then
                     GameTooltip:Hide();
                 end
@@ -359,11 +373,15 @@
                 self:UpdateState()
             </OnClick>
             <OnEnter>
+                self.isMouseover = true
                 if(self.tooltipText ~= nil) then
-                    GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+                    C_Timer.After(0.25, function()
+                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                    end);
                 end
             </OnEnter>
             <OnLeave>
+                self.isMouseover = false
                 if(self.tooltipText ~= nil) then
                     GameTooltip:Hide();
                 end
@@ -411,11 +429,15 @@
 
             </OnClick>
             <OnEnter>
+                self.isMouseover = true
                 if(self.tooltipText ~= nil) then
-                    GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+                    C_Timer.After(0.25, function()
+                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                    end);
                 end
             </OnEnter>
             <OnLeave>
+                self.isMouseover = false
                 if(self.tooltipText ~= nil) then
                     GameTooltip:Hide();
                 end
