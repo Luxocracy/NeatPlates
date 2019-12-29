@@ -169,6 +169,11 @@ NeatPlatesHubMenus.StyleOptions = {
 		tooltip = L["name_tooltip"],
 	},
 	{
+		text = L["subtext"],
+		value = "subtext",
+		tooltip = L["subtext_tooltip"],
+	},
+	{
 		text = L["extraborder"],
 		value = "extraborder",
 		tooltip = L["extraborder_tooltip"],
