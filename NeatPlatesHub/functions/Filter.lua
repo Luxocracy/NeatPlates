@@ -25,8 +25,7 @@ local function UnitFilter(unit)
 	elseif LocalVars.OpacityFilterMini and unit.isMini then return true
 	elseif LocalVars.OpacityFilterNonElite and (not unit.isElite) then return true
 	elseif LocalVars.OpacityFilterInactive then
-
-		if GetUnitQuestInfo(unit) then return false end
+		if next(GetUnitQuestInfo(unit)) ~= nil then return false end
 
 		if unit.reaction ~= "FRIENDLY" then
 			if not (unit.isMarked or unit.isInCombat or unit.threatValue > 0 or unit.health < unit.healthmax) then
