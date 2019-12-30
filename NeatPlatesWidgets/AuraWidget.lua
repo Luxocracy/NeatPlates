@@ -260,7 +260,7 @@ local function UpdateIcon(frame, aura)
 		UpdateWidgetTime(frame, aura.expiration)
 		frame:Show()
 		--if aura.expiration ~= 0 then PolledHideIn(frame, aura.expiration) end
-		PolledHideIn(frame, aura.expiration, "UpdateIcon")
+		--PolledHideIn(frame, aura.expiration, "UpdateIcon")
 	elseif frame then
 		PolledHideIn(frame, 0)
 	end
@@ -358,7 +358,7 @@ local function UpdateIconGrid(frame, unitid)
 				if emphasized then
 					aura.priority = ePriority or 10
 					--emphasizedAuras[aura.name], emphasizedAuras[tostring(aura.spellid)] = aura, aura
-					emphasizedAuras[tostring(aura.spellid)] = aura
+					emphasizedAuras[#emphasizedAuras+1] = aura
 				end
 			else
 				if auraFilter == "HARMFUL" then
@@ -472,6 +472,11 @@ local function UpdateIconGrid(frame, unitid)
 			AuraIconFrames[1]:SetPoint(AuraAlignment, offsetX, 0)
 		end
 
+		-- Make sure we aren't setting 0 as this can detach the frames...
+		DisplayedRows = math.max(1, DisplayedRows)
+		EmphasizedAuraCount = math.max(1, EmphasizedAuraCount)
+
+		-- Set Height/Width of Aura Frames
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
 		frame.emphasized:SetWidth(EmphasizedAuraCount * AuraWidth)
 end
@@ -732,7 +737,6 @@ end
 
 -- Create the Main Widget Body and Icon Array
 local function CreateAuraWidget(parent, style)
-
 	-- Create Base frame
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:SetWidth(128); frame:SetHeight(32); frame:Show()
@@ -762,32 +766,26 @@ local function CreateAuraWidget(parent, style)
 
 	-- Emphasized Functions
 	frame.emphasized.SetAura = function(frame, auras)
-		local shown = {}
+		local shown = 0
 		local ids = {}
+		local auraLimit = MaxEmphasizedAuras
 		sort(auras, AuraSortFunction)
 
-		for k, v in pairs(auras) do
-			if #shown < 3 then
-				table.insert(shown, auras[k])
-				ids[k] = true
-				UpdateIcon(frame.AuraIconFrames[#shown], auras[k])
-			end
-		end
 
+		for index = 1, #auras do
+			if index > auraLimit then break end
+			shown = shown+1
+			ids[auras[index].spellid] = true
+			UpdateIcon(frame.AuraIconFrames[index], auras[index])
+		end
+		
 		-- Cleanup empty aura slots
-		for i=#shown+1, MaxEmphasizedAuras do
+		for i=shown+1, #frame.AuraIconFrames do
 			UpdateIcon(frame.AuraIconFrames[i])
 		end
 
 
-		return ids, #shown
-
-	--	for k, v in pairs(auras) do
-	--		if not name or v.priority < auras[name].priority then name = k end
-	--	end
-
-	--	UpdateIcon(frame.AuraIconFrames[1], auras[name])
-	--	return auras[name]
+		return ids, shown
 	end
 
 	return frame
