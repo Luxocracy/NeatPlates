@@ -26,7 +26,7 @@ do
 
 	function NeatPlatesWidgets:HideIn(frame, expiration)
 		-- Register Frame
-		Framelist[ frame] = expiration
+		Framelist[frame] = expiration
 		-- Init Watchframe
 		if not WatcherframeActive then
 			Watcherframe:SetScript("OnUpdate", CheckFramelist)
