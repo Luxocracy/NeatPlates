@@ -359,7 +359,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	end
 
 	local CustomizationPanel
-	local function CreateQuickCustomizationPanel(frame, parent)
+	local function CreateQuickCustomizationPanel(frame, parent, profile)
 		-- Things to add:
 		-- Sort the order of options to make more sense.
 			 -- See if it's possible to combine some options (Might not be doable since were not changing the values with a multiplier but rather adding to them)
@@ -414,7 +414,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			if self.category == "main" then
 				category = CustomizationPanel.StyleDropdown:GetValue()
 	  	end
-	  	local current = NeatPlatesHubFunctions.GetCustomizationOption(category, self.value) or {}
+	  	local current = NeatPlatesHubFunctions.GetCustomizationOption(CustomizationPanel.profile, category, self.value) or {}
 	  	local default = theme[category.."Backup"][self.value] or {}
 
 	  	local getObjectName = function(item)
@@ -469,7 +469,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					elseif self.value == "import" then
 						if item.SetValue then item:SetValue("") end
 					elseif self.value == "export" then
-						item:SetValue(AceSerializer:Serialize(NeatPlatesHubFunctions.GetCustomizationOption()))
+						item:SetValue(AceSerializer:Serialize(NeatPlatesHubFunctions.GetCustomizationOption(CustomizationPanel.profile)))
 					end
 	  		else
 	  			item:Hide()
@@ -600,7 +600,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			-- Reset Prompt Buttons
 			CustomizationPanel.ResetPrompt.button1.Callback = function()
-				NeatPlatesHubFunctions.SetCustomizationOption({
+				NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, {
 					Default = {},
 					NameOnly = {},
 					WidgetConfig = {}
@@ -622,7 +622,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				local activeOption = CustomizationPanel.activeOption
 				local category = CustomizationPanel.activeCategory
 				if activeOption then
-					NeatPlatesHubFunctions.SetCustomizationOption(category, activeOption)
+					NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, category, activeOption)
 					updatePanelValues()
 					NeatPlatesHubHelpers.CallForStyleUpdate()
 				end
@@ -637,7 +637,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					return
 				end
 
-				NeatPlatesHubFunctions.SetCustomizationOption(deserialized)
+				NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, deserialized)
 				updatePanelValues({})
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
@@ -651,7 +651,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 				-- Restore old values if user didn't hit Okay button
 				if CustomizationPanel.oldValues then
-					NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.oldValues)
+					NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, CustomizationPanel.oldValues)
 					CustomizationPanel.oldValues = nil
 				end
 
@@ -662,7 +662,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			-- On panel show
 			CustomizationPanel:SetScript("OnShow", function(self)
 				CustomizationPanel:ClearSelections() -- Clear Selected to set highlight color properly the first time
-				self.oldValues = CopyTable(NeatPlatesHubFunctions.GetCustomizationOption() or {})
+				self.oldValues = CopyTable(NeatPlatesHubFunctions.GetCustomizationOption(CustomizationPanel.profile) or {})
 				-- Hide Settings sliders etc.
 				for k,_ in pairs(options) do
 		  		self[k]:Hide()
@@ -679,7 +679,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					for k,v in pairs(CustomizationPanel) do
 						if type(v) == "table" and v.enabled and v.objectName then
 							local valueFunc = v.GetChecked or v.GetValue
-							NeatPlatesHubFunctions.SetCustomizationOption(category, activeOption, v.objectName, valueFunc(v))
+							NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, category, activeOption, v.objectName, valueFunc(v))
 						end
 					end
 				end
@@ -690,7 +690,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		end
 
 		CustomizationPanel.Title:SetText(L["Theme Customization"])
-
+		CustomizationPanel:Hide()	-- Needs to be before setting the new profile
+		CustomizationPanel.profile = profile
 
 		return CustomizationPanel
 	end
@@ -703,7 +704,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		frame:SetWidth(frame:GetTextWidth()+32)
 
 		frame:SetScript("OnClick", function(self)
-			local panel = CreateQuickCustomizationPanel(self, parent)
+			local panel = CreateQuickCustomizationPanel(self, parent, objectName:gsub("CustomizationButton", ""))
 			panel:Show()
 		end)
 
