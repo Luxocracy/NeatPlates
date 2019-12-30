@@ -260,7 +260,7 @@ local function UpdateIcon(frame, aura)
 		UpdateWidgetTime(frame, aura.expiration)
 		frame:Show()
 		--if aura.expiration ~= 0 then PolledHideIn(frame, aura.expiration) end
-		--PolledHideIn(frame, aura.expiration, "UpdateIcon")
+		PolledHideIn(frame, aura.expiration, "UpdateIcon")
 	elseif frame then
 		PolledHideIn(frame, 0)
 	end
