@@ -331,6 +331,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					button.tooltipText = item.tooltip
 					button.category = list.value
 					button.highlight = button:GetHighlightTexture()
+
 					button:SetText(item.text)
 					button:SetScript("OnClick", function(self)
 						OptionsList_ClearSelection(child, {child:GetChildren()})
@@ -360,12 +361,10 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local CustomizationPanel
 	local function CreateQuickCustomizationPanel(frame, parent)
 		-- Things to add:
-		-- 	Reset Button
 		-- Sort the order of options to make more sense.
 			 -- See if it's possible to combine some options (Might not be doable since were not changing the values with a multiplier but rather adding to them)
-		--  Import/Export Theme Modifications
 		-- 	Advanced Button(edit code directly)
-		
+
 		local list = {
 			{ label = L["Main"], value = "main", list = NeatPlatesHubMenus.StyleOptions },
 			{ label = L["Widgets"], value = "widgets", list = NeatPlatesHubMenus.WidgetOptions },
@@ -388,6 +387,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			} }
 		}
 
+		local listCallback = {}
+
+		-- Buttons states
 		local options = {
   		StyleDropdown = function(self, option) return self.category == "main" end,
   		EnableCheckbox = function(self, option) return self.category == "main" end,
@@ -398,9 +400,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
   		OffsetWidth = function(self, option) return option.width ~= nil or option.w ~= nil end,
   		OffsetHeight = function(self, option) return option.height ~= nil or option.h ~= nil end,
   		ImportExport = function(self, option) return self.value == "import" or self.value == "export" end,
-  		ResetPrompt = function(self, option) return self.value == "reset" end,
   		ImportButton = function(self, option) return self.value == "import" end,
-  		--AdvancedButton = function(self, option) return self.category ~= "config" end,
+  		ResetPrompt = function(self, option) return self.value == "reset" end,
+  		ResetButton = function(self, option) return self.category and self.category ~= "config" end,
 		}
 
 		-- Update Panel Values
@@ -468,13 +470,16 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 						if item.SetValue then item:SetValue("") end
 					elseif self.value == "export" then
 						item:SetValue(AceSerializer:Serialize(NeatPlatesHubFunctions.GetCustomizationOption()))
-	  			end
+					end
 	  		else
 	  			item:Hide()
 	  			item.enabled = false
 	  		end
 	  		item.fetching = false
 	  	end
+
+	  	-- Custom Callback
+	  	if listCallback[self.value] and type(listCallback[self.value]) == "function" then listCallback[self.value]() end
 	  end
 
 
@@ -556,26 +561,11 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.OffsetHeight:SetPoint("TOPLEFT", CustomizationPanel.OffsetWidth, "TOPLEFT", 0, -45)
 			CustomizationPanel.OffsetHeight.objectName = {"height", "h"}
 
-			CustomizationPanel.ImportExport = PanelHelpers:CreateEditBox("NeatPlatesCustomizationPanel_ImportExport", 340, 180, CustomizationPanel, "TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 30, -20)
+			CustomizationPanel.ImportExport = PanelHelpers:CreateEditBox("NeatPlatesCustomizationPanel_ImportExport", 340, 190, CustomizationPanel, "TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 30, -10)
 
-			CustomizationPanel.ResetPrompt = CreateFrame("Button", "NeatPlatesCustomizationResetPrompt", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
-			CustomizationPanel.ResetPrompt:SetPoint("CENTER", 85, 0)
-			CustomizationPanel.ResetPrompt:SetText(L["Reset All Theme Customizations"])
-			CustomizationPanel.ResetPrompt:SetWidth(NeatPlatesCustomizationResetPromptText:GetStringWidth()+15)
-
-			CustomizationPanel.ResetPrompt:SetScript("OnClick", function(self)
-				NeatPlatesHubFunctions.SetCustomizationOption({
-					Default = {},
-					NameOnly = {},
-					WidgetConfig = {}
-				})
-				CustomizationPanel.oldValues = nil
-				updatePanelValues({})
-				CustomizationPanel:ClearSelections() -- Clear Selected item
-
-				NeatPlatesHubHelpers.CallForStyleUpdate()
-				print(orange.."NeatPlates: "..blue..L["All Theme Customizations have been reset."])
-			end)
+			CustomizationPanel.ResetPrompt = CreateFrame("Frame", 'NeatPlatesCustomizationPanel_ResetPromp', CustomizationPanel, "NeatPlatesPromptTemplate")
+			CustomizationPanel.ResetPrompt:SetPoint("LEFT", CustomizationPanel.List, "RIGHT", 60, 20)
+			CustomizationPanel.ResetPrompt.text:SetText(L["Are you sure you want to reset all Theme Customizations?"])
 
 			-- Create Buttons
 			CustomizationPanel.CancelButton = CreateFrame("Button", "NeatPlatesCustomizationCancelButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
@@ -592,16 +582,53 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			CustomizationPanel.OkayButton:SetScript("OnClick", function(self) CustomizationPanel.oldValues = nil; CustomizationPanel:Hide() end)
 
-			--CustomizationPanel.AdvancedButton = CreateFrame("Button", "NeatPlatesCustomizationAdvancedButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
-			--CustomizationPanel.AdvancedButton:SetPoint("BOTTOMLEFT", CustomizationPanel.List, "BOTTOMRIGHT", 36, 1)
-			--CustomizationPanel.AdvancedButton:SetWidth(80)
-			--CustomizationPanel.AdvancedButton:SetText(L["Advanced"])
+			CustomizationPanel.ResetButton = CreateFrame("Button", "NeatPlatesCustomizationResetButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
+			CustomizationPanel.ResetButton:SetPoint("BOTTOMLEFT", CustomizationPanel.List, "BOTTOMRIGHT", 36, 1)
+			CustomizationPanel.ResetButton:SetWidth(80)
+			CustomizationPanel.ResetButton:SetText(L["Reset"])
 
 			CustomizationPanel.ImportButton = CreateFrame("Button", "NeatPlatesCustomizationImportButton", CustomizationPanel, "NeatPlatesPanelButtonTemplate")
 			CustomizationPanel.ImportButton:SetPoint("BOTTOMLEFT", CustomizationPanel.List, "BOTTOMRIGHT", 36, 1)
 			CustomizationPanel.ImportButton:SetWidth(80)
 			CustomizationPanel.ImportButton:SetText(L["Import"])
 
+			-- Scripts
+			-- Clear selected option
+			CustomizationPanel.ClearSelections = function(self)
+				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()}) -- Clear Selected item
+			end
+
+			-- Reset Prompt Buttons
+			CustomizationPanel.ResetPrompt.button1.Callback = function()
+				NeatPlatesHubFunctions.SetCustomizationOption({
+					Default = {},
+					NameOnly = {},
+					WidgetConfig = {}
+				})
+				--CustomizationPanel.oldValues = nil
+				updatePanelValues({})
+				CustomizationPanel:ClearSelections() -- Clear Selected item
+
+				NeatPlatesHubHelpers.CallForStyleUpdate()
+				print(orange.."NeatPlates: "..blue..L["All Theme Customizations have been reset."])
+			end
+			CustomizationPanel.ResetPrompt.button2.Callback = function()
+				updatePanelValues({})
+				CustomizationPanel:ClearSelections() -- Clear Selected item
+			end
+
+			-- On reset button clicked
+			CustomizationPanel.ResetButton:SetScript("OnClick", function(self)
+				local activeOption = CustomizationPanel.activeOption
+				local category = CustomizationPanel.activeCategory
+				if activeOption then
+					NeatPlatesHubFunctions.SetCustomizationOption(category, activeOption)
+					updatePanelValues()
+					NeatPlatesHubHelpers.CallForStyleUpdate()
+				end
+			end)
+
+			-- On Import button clicked
 			CustomizationPanel.ImportButton:SetScript("OnClick", function(self)
 				local _success, deserialized = AceSerializer:Deserialize(CustomizationPanel.ImportExport:GetValue())
 				if(not _success) then
@@ -618,13 +645,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				print(orange.."NeatPlates: "..blue..L["Imported Theme Customizations."])
 			end)
 
-
-			-- Scripts
-			-- Clear selected option
-			CustomizationPanel.ClearSelections = function(self)
-				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()}) -- Clear Selected item
-			end
-
+			-- On panel hide
 			CustomizationPanel:SetScript("OnHide", function(self)
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
@@ -638,6 +659,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				NeatPlatesHubHelpers.CallForStyleUpdate()
 			end)
 
+			-- On panel show
 			CustomizationPanel:SetScript("OnShow", function(self)
 				CustomizationPanel:ClearSelections() -- Clear Selected to set highlight color properly the first time
 				self.oldValues = CopyTable(NeatPlatesHubFunctions.GetCustomizationOption() or {})
@@ -647,6 +669,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  		self[k].enabled = false
 		  	end
 			end)
+
+			-- On category value changed
 			CustomizationPanel.OnValueChanged = function(self)
 				if self.fetching then return end
 				local activeOption = CustomizationPanel.activeOption

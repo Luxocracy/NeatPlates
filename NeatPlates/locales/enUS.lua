@@ -559,8 +559,9 @@ L["Configuration"] = true
 L["Import"] = true
 L["Export"] = true
 L["Reset All"] = true
+L["Reset"] = true
 
-L["Reset All Theme Customizations"] = true
+L["Are you sure you want to reset all Theme Customizations?"] = true
 L["All Theme Customizations have been reset."] = true
 L["Imported Theme Customizations."] = true
 

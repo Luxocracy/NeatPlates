@@ -462,6 +462,68 @@
         </HighlightTexture>
     </Button>
 
+    <Frame name="NeatPlatesPromptTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="320" y="72"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentText" parentKey="text" inherits="GameFontHighlight">
+                    <Size>
+                        <AbsDimension x="290" y="0"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-16"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="SubText" inherits="GameFontNormalSmall">
+                    <Size x="290" y="0"/>
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.text" relativePoint="BOTTOM" x="0" y="-6"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentButton1" inherits="StaticPopupButtonTemplate" parentKey="button1" id="1">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" x="-40" y="6"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:SetText(YES)
+                    </OnLoad>
+                    <OnClick>
+                        if self.Callback and type(self.Callback) == "function" then self.Callback() end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentButton2" inherits="StaticPopupButtonTemplate" parentKey="button2" id="2">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" x="40" y="6"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:SetText(NO)
+                    </OnLoad>
+                    <OnClick>
+                        if self.Callback and type(self.Callback) == "function" then self.Callback() end
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+
 	<Script file="NeatPlatesStatusbar.lua"/>
     <Script file="NeatPlatesUtility.lua"/>
 	<Script file="NeatPlatesCore.lua"/>
