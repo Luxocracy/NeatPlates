@@ -319,7 +319,7 @@ NeatPlatesHubDefaults = {
 	--AdvancedHealthTextList = [[return unit.health]],
 	Customization = {
 		Default = {},
-		TextOnly = {},
+		NameOnly = {},
 		WidgetConfig = {}
 	},
 }
