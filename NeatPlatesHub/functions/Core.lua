@@ -229,6 +229,7 @@ local function SetCustomizationOption(category, option, key, value)
 	LocalVars.Customization[category] = LocalVars.Customization[category] or {}
 	if type(option) == "table" then LocalVars.Customization[category] = CopyTable(option); return end
 	LocalVars.Customization[category][option] = LocalVars.Customization[category][option] or {}
+	if not key then LocalVars.Customization[category][option] = {}; return end
 	if type(key) == "table" then
 		-- Loop over keys. (Because width/height is sometimes defined fully as 'width' or just the first character 'w')
 		for _,k in pairs(key) do
