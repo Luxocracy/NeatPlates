@@ -405,6 +405,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		-- Update Panel Values
 		local function updatePanelValues(self)
+			if not self and not CustomizationPanel.activeFrame then return end
+			if not self then self = CustomizationPanel.activeFrame end
 	  	local theme = NeatPlates:GetTheme()
 	  	local category = "WidgetConfig"
 			if self.category == "main" then
@@ -436,17 +438,22 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  		return value
 	  	end
 
-	  	CustomizationPanel.activeOption = self.value
-	  	CustomizationPanel.activeCategory = category
+	  	-- If not empty
+	  	if next(self) then
+		  	CustomizationPanel.activeFrame = self
+		  	CustomizationPanel.activeOption = self.value
+		  	CustomizationPanel.activeCategory = category
 
-	  	-- Button OnClick
-	  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
-
+		  	-- Button OnClick
+		  	CustomizationPanel.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
+		  else
+		  	CustomizationPanel.Title:SetText(L["Theme Customization"]) -- Set Title Text
+		  end
 	  	-- Set Customization Values & Show/Hide Elements
 	  	for k,option in pairs(options) do
 	  		local item = CustomizationPanel[k]
 	  		item.fetching = true -- Prevents 'OnValueChanged' from triggering while setting values.
-	  		if option(self, default) then
+	  		if self and option(self, default) then
 	  			local itemType = type(default[getObjectName(item)])
 	  			item:Show()
 	  			item.enabled = true
@@ -523,6 +530,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  -- Create Options
 		  CustomizationPanel.StyleDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_StyleDropdown", CustomizationPanel, StyleOptions, "Default", L["Style Mode"], true)
 			CustomizationPanel.StyleDropdown:SetPoint("TOPRIGHT", CustomizationPanel, "TOPRIGHT", -45, -54)
+			CustomizationPanel.StyleDropdown.OnValueChanged = function() updatePanelValues() end
 			CustomizationPanel.EnableCheckbox = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnableCheckbox", CustomizationPanel, L["Show Element"])
 			CustomizationPanel.EnableCheckbox:SetPoint("TOPLEFT", CustomizationPanel.StyleDropdown, "BOTTOMLEFT", 16, 4)
 			CustomizationPanel.EnableCheckbox.objectName = "show"
@@ -558,11 +566,11 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.ResetPrompt:SetScript("OnClick", function(self)
 				NeatPlatesHubFunctions.SetCustomizationOption({
 					Default = {},
-					TextOnly = {},
+					NameOnly = {},
 					WidgetConfig = {}
 				})
 				CustomizationPanel.oldValues = nil
-				updatePanelValues(self)
+				updatePanelValues({})
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
 				NeatPlatesHubHelpers.CallForStyleUpdate()
@@ -603,7 +611,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				end
 
 				NeatPlatesHubFunctions.SetCustomizationOption(deserialized)
-				updatePanelValues(self)
+				updatePanelValues({})
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
 				NeatPlatesHubHelpers.CallForStyleUpdate()
