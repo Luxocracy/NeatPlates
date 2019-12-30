@@ -219,24 +219,26 @@ local function UseVariables(profileName)
 	end
 end
 
-local function GetCustomizationOption(category, option)
-	if not category then return LocalVars.Customization end
-	return LocalVars.Customization[category][option]
+local function GetCustomizationOption(profile, category, option)
+	local ProfileVars = NeatPlatesHubSettings[profile]
+	if not category then return ProfileVars.Customization end
+	return ProfileVars.Customization[category][option]
 end
 
-local function SetCustomizationOption(category, option, key, value)
-	if type(category) == "table" then LocalVars.Customization = CopyTable(category); return end
-	LocalVars.Customization[category] = LocalVars.Customization[category] or {}
-	if type(option) == "table" then LocalVars.Customization[category] = CopyTable(option); return end
-	LocalVars.Customization[category][option] = LocalVars.Customization[category][option] or {}
-	if not key then LocalVars.Customization[category][option] = {}; return end
+local function SetCustomizationOption(profile, category, option, key, value)
+	local ProfileVars = NeatPlatesHubSettings[profile]
+	if type(category) == "table" then ProfileVars.Customization = CopyTable(category); return end
+	ProfileVars.Customization[category] = ProfileVars.Customization[category] or {}
+	if type(option) == "table" then ProfileVars.Customization[category] = CopyTable(option); return end
+	ProfileVars.Customization[category][option] = ProfileVars.Customization[category][option] or {}
+	if not key then ProfileVars.Customization[category][option] = {}; return end
 	if type(key) == "table" then
 		-- Loop over keys. (Because width/height is sometimes defined fully as 'width' or just the first character 'w')
 		for _,k in pairs(key) do
-			LocalVars.Customization[category][option][k] = value
+			ProfileVars.Customization[category][option][k] = value
 		end
 	 else
-	 	LocalVars.Customization[category][option][key] = value
+	 	ProfileVars.Customization[category][option][key] = value
 	 end
 end
 ---------------
