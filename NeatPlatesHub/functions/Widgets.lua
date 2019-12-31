@@ -147,16 +147,25 @@ NeatPlatesHubMenus.StyleOptions = {
 		text = L["focus"],
 		value = "focus",
 		tooltip = L["focus_tooltip"],
+		options = {
+			enable = false
+		},
 	},
 	{
 		text = L["target"],
 		value = "target",
 		tooltip = L["target_tooltip"],
+		options = {
+			enable = false
+		},
 	},
 	{
 		text = L["mouseover"],
 		value = "mouseover",
 		tooltip = L["mouseover_tooltip"],
+		options = {
+			enable = false
+		},
 	},
 	{
 		text = L["level"],
