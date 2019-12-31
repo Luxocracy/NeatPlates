@@ -318,6 +318,40 @@ local function ApplyThemeCustomization(theme)
 	theme["NameOnly"] = CopyTable(theme["NameOnlyBackup"])
 	theme["WidgetConfig"] = CopyTable(theme["WidgetConfigBackup"])
 
+	-- Highlighting customizations
+	local indicators = {
+		["target"] = {mode = LocalVars.HighlightTargetMode, scale = LocalVars.HighlightTargetScale},
+		["focus"] = {mode = LocalVars.HighlightFocusMode, scale = LocalVars.HighlightFocusScale},
+		["mouseover"] = {mode = LocalVars.HighlightMouseoverMode, scale = LocalVars.HighlightMouseoverScale}
+	}
+
+	local style = theme["Default"]
+	for k,object in pairs(indicators) do
+		style[k] = style[k] or {}
+		local mode = object.mode
+		--local scale = object.scale
+
+		if mode then
+			-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
+			if mode == 3 then
+				style[k] = CopyTable(style.targetindicator)
+			elseif mode == 4 then
+				style[k] = CopyTable(style.targetindicator_arrowtop)
+			elseif mode == 5 then
+				style[k] = CopyTable(style.targetindicator_arrowsides)
+			elseif mode == 6 then
+				style[k] = CopyTable(style.targetindicator_arrowright)
+			elseif mode == 7 then
+				style[k] = CopyTable(style.targetindicator_arrowleft)
+			end
+
+			--style[k].height = style[k].height * scale.x
+			--style[k].width = style[k].width * scale.y
+			--style[k].x = style[k].x * scale.x + scale.offset.x
+			--style[k].y = style[k].y * scale.y + scale.offset.y
+		end
+	end
+
 	-- Apply customized style to each category
 	for i,category in pairs(categories) do
 		local style = theme[category]
@@ -343,39 +377,6 @@ end
 local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
-
-	local indicators = {
-		["target"] = {mode = LocalVars.HighlightTargetMode, scale = LocalVars.HighlightTargetScale},
-		["focus"] = {mode = LocalVars.HighlightFocusMode, scale = LocalVars.HighlightFocusScale},
-		["mouseover"] = {mode = LocalVars.HighlightMouseoverMode, scale = LocalVars.HighlightMouseoverScale}
-	}
-
-	for k,object in pairs(indicators) do
-		style[k] = style[k] or {}
-		local mode = object.mode
-		local scale = object.scale
-		
-		if mode and scale then
-			-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
-			if mode == 3 then
-				style[k] = CopyTable(style.targetindicator)
-			elseif mode == 4 then
-				style[k] = CopyTable(style.targetindicator_arrowtop)
-			elseif mode == 5 then
-				style[k] = CopyTable(style.targetindicator_arrowsides)
-			elseif mode == 6 then
-				style[k] = CopyTable(style.targetindicator_arrowright)
-			elseif mode == 7 then
-				style[k] = CopyTable(style.targetindicator_arrowleft)
-			end
-
-			style[k].height = style[k].height * scale.x
-			style[k].width = style[k].width * scale.y
-			style[k].x = style[k].x * scale.x + scale.offset.x
-			style[k].y = style[k].y * scale.y + scale.offset.y
-		end
-	end
-
 	style.target.show = (LocalVars.HighlightTargetMode > 2)
 	style.focus.show = (LocalVars.HighlightFocusMode > 2)
 	style.mouseover.show = (LocalVars.HighlightMouseoverMode > 2)
@@ -440,6 +441,7 @@ local function ApplyProfileSettings(theme, source, ...)
 	NameReactionColors.NEUTRAL.NPC = LocalVars.TextColorNeutral
 
 	EnableWatchers()
+	ApplyThemeCustomization(theme)
 	ApplyStyleCustomization(theme["Default"], theme["DefaultBackup"])
 	ApplyFontCustomization(theme["NameOnly"], theme["NameOnlyBackup"])
 	ApplyScaleOptionCustomization(theme["WidgetConfig"], theme["WidgetConfigBackup"], theme["Default"], theme["DefaultBackup"])
@@ -502,7 +504,6 @@ local function OnChangeProfile(theme, profile)
 		if theme then
 			if theme.ApplyProfileSettings then
 				ApplyProfileSettings(theme, "From OnChangeProfile")
-				ApplyThemeCustomization(theme)
 				NeatPlates:ForceUpdate()
 			end
 		end

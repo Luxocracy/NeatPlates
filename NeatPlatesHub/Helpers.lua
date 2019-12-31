@@ -13,7 +13,6 @@ local function CallForStyleUpdate()
 	--print("CallForStyleUpdate, Theme,", theme)
 
 	if theme.ApplyProfileSettings then theme:ApplyProfileSettings("From CallForStyleUpdate") end
-	if theme.ApplyThemeCustomization then theme:ApplyThemeCustomization() end
 	NeatPlates:ForceUpdate()
 end
 
