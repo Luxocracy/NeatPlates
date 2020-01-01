@@ -775,7 +775,7 @@ local function CreateAuraWidget(parent, style)
 		for index = 1, #auras do
 			if index > auraLimit then break end
 			shown = shown+1
-			ids[auras[index].spellid] = true
+			ids[tostring(auras[index].spellid)] = true
 			UpdateIcon(frame.AuraIconFrames[index], auras[index])
 		end
 		
