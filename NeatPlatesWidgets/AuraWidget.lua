@@ -472,9 +472,8 @@ local function UpdateIconGrid(frame, unitid)
 			AuraIconFrames[1]:SetPoint(AuraAlignment, offsetX, 0)
 		end
 
-		-- Make sure we aren't setting 0 as this can detach the frames...
-		DisplayedRows = math.max(1, DisplayedRows)
-		EmphasizedAuraCount = math.max(1, EmphasizedAuraCount)
+		DisplayedRows = math.max(0, DisplayedRows)
+		EmphasizedAuraCount = math.max(1, EmphasizedAuraCount) -- Make sure we aren't setting 0 as this can detach the frame...
 
 		-- Set Height/Width of Aura Frames
 		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
