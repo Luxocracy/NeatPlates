@@ -7,7 +7,7 @@ local _
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 -- Classic Threat Stuff
-local ThreatLib = LibStub:GetLibrary("ThreatClassic-1.0")
+local ThreatLib = LibStub:GetLibrary("LibThreatClassic2")
 
 NeatPlatesUtility.UnitThreatSituation = function (unit, mob)
     return ThreatLib:UnitThreatSituation (unit, mob)

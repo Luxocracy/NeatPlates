@@ -11,5 +11,5 @@
 
   <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
   <Include file="libs\LibClassicDurations\LibClassicDurations.xml"/>
-  <Include file="libs\ThreatClassic-1.0\lib.xml"/>
+  <Include file="libs\LibThreatClassic2\lib.xml"/>
 </Ui>
