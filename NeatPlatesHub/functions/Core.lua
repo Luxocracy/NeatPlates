@@ -281,7 +281,7 @@ local function ApplyScaleOptionCustomization(widget, defaults, style, styleDefau
 end
 
 local function ApplyCustomBarSize(style, defaults)
-
+	defaults = style; -- Temporary test fix to this section overwriting 'Theme Customization'
 	if defaults then
 		-- Alter Widths
 		-- Main Frame

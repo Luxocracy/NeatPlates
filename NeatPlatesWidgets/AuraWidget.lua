@@ -486,8 +486,8 @@ function UpdateWidget(frame)
 			frame:Hide()
 		else
 			frame:Show()
-			UpdateIconGrid(frame, unitid)
 		end
+		UpdateIconGrid(frame, unitid)
 end
 
 -- Context Update (mouseover, target change)

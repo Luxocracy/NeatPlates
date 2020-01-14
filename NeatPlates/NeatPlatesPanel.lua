@@ -308,6 +308,27 @@ local function ApplyPanelSettings()
 	NeatPlates:ForceUpdate()
 end
 
+local function GetCVarValues(panel)
+	-- Recursive until we get the values to make sure they exist
+	local Values = {
+		NameplateTargetClamp = (function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)(),
+		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
+		--NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		NameplateOverlapH = GetCVar("nameplateOverlapH"),
+		NameplateOverlapV = GetCVar("nameplateOverlapV"),
+	}
+
+	local setVars = function()
+		for k,v in pairs(Values) do
+			if v and v ~= "DONE" and panel[k].SetChecked then panel[k]:SetChecked(v); Values[k] = "DONE" end
+			if v and v ~= "DONE" and panel[k].SetValue then panel[k]:SetValue(v); Values[k] = "DONE" end
+		end
+	end
+
+	setVars();
+	C_Timer.NewTicker(0.5, setVars, 10)
+end
+
 local function GetPanelValues(panel)
 	NeatPlatesOptions.ActiveTheme = panel.ActiveThemeDropdown:GetValue()
 
@@ -352,11 +373,7 @@ local function SetPanelValues(panel)
 	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
 	
 	-- CVars
-	panel.NameplateTargetClamp:SetChecked((function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)())
-	panel.NameplateStacking:SetChecked((function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)())
-	--panel.NameplateMaxDistance:SetValue(string.gsub(GetCVar("nameplateMaxDistance"), "e1", "0"))
-	panel.NameplateOverlapH:SetValue(GetCVar("nameplateOverlapH"))
-	panel.NameplateOverlapV:SetValue(GetCVar("nameplateOverlapV"))
+	GetCVarValues(panel)
 end
 
 
