@@ -60,7 +60,7 @@ do
 			if expiration < curTime then
 				if frame.Expire then frame:Expire() end
 
-				-- frame:Hide()
+				frame:Hide()
 				Framelist[frame] = nil
 				--NeatPlates:RequestDelegateUpdate()		-- Request an Update on Delegate functions, so we can catch when auras fall off
 			-- If still active...
