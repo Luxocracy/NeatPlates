@@ -657,6 +657,7 @@ local function UpdateIconConfig(frame)
 	if iconTable then
 		-- Create Icons
 		for index = 1, AuraLimit do
+			--if not iconTable[index] then print("Creating aura icon"); auraIconsCreated = (auraIconsCreated or 0) + 1; print(auraIconsCreated);end
 			local icon = iconTable[index] or CreateAuraIcon(frame)
 			iconTable[index] = icon
 			icon:SetScale(AuraScale)
