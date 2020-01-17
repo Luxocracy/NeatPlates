@@ -60,7 +60,8 @@ do
 			if expiration < curTime then
 				if frame.Expire then frame:Expire() end
 
-				frame:Hide()
+				--frame:Hide()
+				if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 				Framelist[frame] = nil
 				--NeatPlates:RequestDelegateUpdate()		-- Request an Update on Delegate functions, so we can catch when auras fall off
 			-- If still active...
@@ -75,12 +76,12 @@ do
 	end
 
 	function PolledHideIn(frame, expiration, source)
-
 		if expiration == 0 then
 			if source ~= "UpdateIcon" then frame:Hide() end
 			Framelist[frame] = nil
 		else
 			--print("Hiding in", expiration - GetTime())
+			if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 			Framelist[frame] = expiration
 			frame:Show()
 

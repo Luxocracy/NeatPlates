@@ -200,7 +200,8 @@ local function UpdateAuraHighlighting(frame, aura)
 
 		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
-			frame.PandemicTimer = C_Timer.NewTimer(math.max(expiration-aura.baseduration*0.3, 0), function() UpdateAuraHighlighting(frame, aura) end)	-- Not sure how heavy doing it this way is, however, since this method still uses 'C_Timer.After' it should be fine.
+			local timeLeft = math.max(expiration-aura.baseduration*0.3, 0);
+			if timeLeft > 0 then frame.PandemicTimer = C_Timer.NewTimer(timeLeft, function() UpdateAuraHighlighting(frame, aura) end)	end
 		end
 end
 
