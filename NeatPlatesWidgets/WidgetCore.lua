@@ -75,7 +75,6 @@ do
 	end
 
 	function PolledHideIn(frame, expiration, source)
-
 		if expiration == 0 then
 			if source ~= "UpdateIcon" then frame:Hide() end
 			Framelist[frame] = nil
