@@ -33,9 +33,11 @@ elseif (LOCALE_ruRU) then
 else
 	NeatPlatesLocalizedFont = "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf";
 	NeatPlatesLocalizedInputFont = "Fonts\\FRIZQT__.TTF"
+	NeatPlatesLocalizedThreatFont = "FONTS\\arialn.ttf"
 end
 
 NeatPlatesLocalizedInputFont = NeatPlatesLocalizedInputFont or NeatPlatesLocalizedFont
+NeatPlatesLocalizedThreatFont = NeatPlatesLocalizedThreatFont or NeatPlatesLocalizedFont
 
 local font = NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf"
 local white, yellow, blue, red, orange, green = "|cFFFFFFFF", "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906", "|cFF60E025"
@@ -578,7 +580,13 @@ local function BuildInterfacePanel(panel)
 	panel.CreateProfile:SetWidth(100)
 	panel.CreateProfile:SetText(L["Add Profile"])
 
-	-- Copy Profile Button
+		-- Import Profile Button
+	panel.ImportProfile = CreateFrame("Button", "NeatPlatesOptions_ImportProfile", panel, "NeatPlatesPanelButtonTemplate")
+	panel.ImportProfile:SetPoint("LEFT", panel.CreateProfile, "RIGHT", 3, 0)
+	panel.ImportProfile:SetWidth(100)
+	panel.ImportProfile:SetText(L["Import Profile"])
+
+	-- Copy Profile Dropdown
 	panel.CopyProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.CopyProfile:SetPoint("TOPLEFT", panel.ProfileNameEditBox, "BOTTOMLEFT", -3, -8)
 	panel.CopyProfile:SetWidth(170)
@@ -588,7 +596,7 @@ local function BuildInterfacePanel(panel)
 	panel.CopyProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCopyProfileDropdown", panel, HubProfileList, nil, nil, true)
 	panel.CopyProfileDropdown:SetPoint("TOPLEFT", panel.CopyProfile, "BOTTOMLEFT", -20, -2)
 
-	-- Remove Profile Button
+	-- Remove Profile Dropdown
 	panel.RemoveProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.RemoveProfile:SetPoint("TOPLEFT", panel.CopyProfile, "TOPLEFT", 140, 0)
 	panel.RemoveProfile:SetWidth(170)
@@ -598,13 +606,23 @@ local function BuildInterfacePanel(panel)
 	panel.RemoveProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesRemoveProfileDropdown", panel, HubProfileList, nil, nil, true)
 	panel.RemoveProfileDropdown:SetPoint("TOPLEFT", panel.RemoveProfile, "BOTTOMLEFT", -20, -2)
 
+	-- Export Profile Dropdown
+	panel.ExportProfile = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.ExportProfile:SetPoint("TOPLEFT", panel.CopyProfileDropdown,"BOTTOMLEFT", 20, -8)
+	panel.ExportProfile:SetWidth(170)
+	panel.ExportProfile:SetJustifyH("LEFT")
+	panel.ExportProfile:SetText(L["Export Profile"])
+
+	panel.ExportProfileDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesExportProfileDropdown", panel, HubProfileList, nil, nil, true)
+	panel.ExportProfileDropdown:SetPoint("TOPLEFT", panel.ExportProfile, "BOTTOMLEFT", -20, -2)
+
 	----------------------------------------------
 	-- Automation
 	----------------------------------------------
 	panel.AutomationLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.AutomationLabel:SetFont(font, 22)
 	panel.AutomationLabel:SetText(L["Automation"])
-	panel.AutomationLabel:SetPoint("TOPLEFT", panel.CopyProfileDropdown, "BOTTOMLEFT", 20, -20)
+	panel.AutomationLabel:SetPoint("TOPLEFT", panel.ExportProfileDropdown, "BOTTOMLEFT", 20, -20)
 	panel.AutomationLabel:SetTextColor(255/255, 105/255, 6/255)
 
 
@@ -790,14 +808,29 @@ local function BuildInterfacePanel(panel)
 	panel.FirstSpecDropdown.OnValueChanged = OnValueChange
 
 
-	-- Profile Functions
-	panel.CreateProfile:SetScript("OnClick", function(self)
-		local name = panel.ProfileNameEditBox:GetText()
+	local createNewProfile = function(profileName)
+		local profileName = profileName or panel.ProfileNameEditBox:GetText()
 		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
 
-		ValidateProfileName(name, function()
-			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(name, color))
+		ValidateProfileName(profileName, function()
+			NeatPlatesUtility.OpenInterfacePanel(NeatPlatesHubMenus.CreateProfile(profileName, color))
 			panel.ProfileNameEditBox:SetText("")
+		end)
+	end
+
+	-- Profile Functions
+	panel.CreateProfile:SetScript("OnClick", createNewProfile)
+
+	panel.ImportProfile:SetScript("OnClick", function(self)
+		local profileName = panel.ProfileNameEditBox:GetText()
+		ValidateProfileName(profileName, function()
+			NeatPlatesHubRapidPanel.CreateQuickEditboxPopup(L["Import Profile"].." ("..profileName..")", function(self)
+				if NeatPlatesHubMenus.ImportProfile(profileName, self.EditBox:GetValue()) then
+					createNewProfile(profileName)
+					return true
+				end
+				return false
+			end)
 		end)
 	end)
 
@@ -834,6 +867,12 @@ local function BuildInterfacePanel(panel)
 		StaticPopup_Show("NeatPlates_RemoveProfile")
 	end
 
+	panel.ExportProfileDropdown.OnValueChanged = function(self)
+		local profileName = panel.ExportProfileDropdown:GetValue()
+
+		local panel = NeatPlatesHubRapidPanel.CreateQuickEditboxPopup(L["Export Profile"].." ("..profileName..")", nil, true)
+		panel.EditBox:SetValue(NeatPlatesHubMenus.ExportProfile(profileName))	
+	end
 
 	-- Blizzard Nameplate Options Button
 	BlizzOptionsButton:SetScript("OnClick", function()

@@ -72,7 +72,7 @@ local GetGroupInfo = NeatPlatesUtility.GetGroupInfo
 
 
 ---------------------------------------------------------------------
-local font = "FONTS\\arialn.ttf"
+local font = NeatPlatesLocalizedThreatFont
 local art = "Interface\\Addons\\NeatPlatesWidgets\\ThreatLine\\ThreatLineUnified"
 local artCoordinates = {
 	--None = 		{.75,1,0,1},
@@ -220,7 +220,7 @@ local function CreateWidgetFrame(extended)
 		--frame.TargetText:SetShadowOffset(1, -1)
 		--frame.TargetText:SetShadowColor(0,0,0,1)
 		frame.TargetText:SetWidth(50)
-		frame.TargetText:SetHeight(20)
+		frame.TargetText:SetHeight(15)
 		--[[ Text on top
 		frame.TargetText:SetJustifyH("CENTER")
 		frame.TargetText:SetPoint("CENTER",frame.Line,"LEFT", -3, 7)	-- was y=11

@@ -872,6 +872,62 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
+	local EditboxPopup
+	local function CreateQuickEditboxPopup(label, onOkay, highlight)
+		if not EditboxPopup then
+			-- Build the actual panel
+			panel = CreateFrame("Frame", "NeatPlatesEditboxPopup", UIParent, "UIPanelDialogTemplate");
+			panel:Hide()
+		  panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
+		  panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
+		  panel:SetWidth(410)
+		  panel:SetHeight(300)
+		  panel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
+		  panel:SetFrameStrata("DIALOG")
+
+		  panel:SetMovable(true)
+		  panel:EnableMouse(true)
+		  panel:RegisterForDrag("LeftButton", "RightButton")
+		  panel:SetScript("OnMouseDown", function(self,arg1)
+		    self:StartMoving()
+		  end)
+		  panel:SetScript("OnMouseUp", function(self,arg1)
+		    self:StopMovingOrSizing()
+		  end)
+
+		  panel.EditBox = PanelHelpers:CreateEditBox("NeatPlatesEditboxPopupEditbox", 340, 190, panel, "TOPLEFT", 20, -40)
+		  panel.EditBox.EditBox:SetScript("OnEditFocusGained", function()
+				if panel.HighlightText then
+					panel.EditBox.EditBox:HighlightText()
+				end
+			end)
+
+		  -- Buttons
+		  panel.CancelButton = CreateFrame("Button", "NeatPlatesEditboxPopupCancelButton", panel, "NeatPlatesPanelButtonTemplate")
+			panel.CancelButton:SetPoint("BOTTOMRIGHT", -12, 12)
+			panel.CancelButton:SetWidth(80)
+			panel.CancelButton:SetText(CANCEL)
+
+			panel.OkayButton = CreateFrame("Button", "NeatPlatesEditboxPopupOkayButton", panel, "NeatPlatesPanelButtonTemplate")
+			panel.OkayButton:SetPoint("RIGHT", panel.CancelButton, "LEFT", -6, 0)
+			panel.OkayButton:SetWidth(80)
+			panel.OkayButton:SetText(OKAY)
+
+			EditboxPopup = panel
+		end
+
+		EditboxPopup.Title:SetText(label)
+		EditboxPopup.HighlightText = highlight
+
+		-- Button Scripts
+		EditboxPopup.CancelButton:SetScript("OnClick", function(self) EditboxPopup.EditBox:SetValue(""); EditboxPopup:Hide() end)
+		EditboxPopup.OkayButton:SetScript("OnClick", function(self) if not onOkay or onOkay(EditboxPopup) then EditboxPopup.EditBox:SetValue(""); EditboxPopup:Hide() end end)
+
+		EditboxPopup:Show()
+
+		return EditboxPopup
+	end
+
 OnMouseWheelScrollFrame = function (frame, value, name)
 	local scrollbar = _G[frame:GetName() .. "ScrollBar"];
 	local currentPosition = scrollbar:GetValue()
@@ -896,6 +952,7 @@ NeatPlatesHubRapidPanel.CreateQuickItemLabel = CreateQuickItemLabel
 NeatPlatesHubRapidPanel.CreateQuickScale = CreateQuickScale
 NeatPlatesHubRapidPanel.CreateQuickCustomization = CreateQuickCustomization
 NeatPlatesHubRapidPanel.CreateOffsetAndScalePanel = CreateOffsetAndScalePanel
+NeatPlatesHubRapidPanel.CreateQuickEditboxPopup = CreateQuickEditboxPopup
 NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame = OnMouseWheelScrollFrame
 
 --[[

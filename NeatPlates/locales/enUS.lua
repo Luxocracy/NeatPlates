@@ -16,8 +16,10 @@ L["Active Profile"] = true
 L["Profile Management"] = true
 L["Profile Name"] = true
 L["Add Profile"] = true
+L["Import Profile"] = true
 L["Copy Profile"] = true
 L["Remove Profile"] = true
+L["Export Profile"] = true
 
 L["Automation"] = true
 L["Enemy Nameplates"] = true

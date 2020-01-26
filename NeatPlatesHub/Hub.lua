@@ -11,6 +11,7 @@ Color Guide:
 --]]
 
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+local AceSerializer = LibStub("AceSerializer-3.0")
 
 -- Rapid Panel Functions
 local CreateQuickSlider = NeatPlatesHubRapidPanel.CreateQuickSlider
@@ -63,6 +64,8 @@ local HighlightTypes = NeatPlatesHubMenus.HighlightTypes
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
+
+local white, yellow, blue, red, orange, green = "|cFFFFFFFF", "|cffffff00", "|cFF3782D1", "|cFFFF1100", "|cFFFF6906", "|cFF60E025"
 
 ------------------------------------------------------------------
 -- Generate Panel
@@ -725,6 +728,24 @@ local function LoadProfiles(profiles)
 	end
 end
 
+local function ImportProfile(profileName, defaults)
+	local _success, deserialized = AceSerializer:Deserialize(defaults)
+	if(not _success) then
+		print(orange.."NeatPlates: "..red..deserialized)
+		error(deserialized)
+		return false
+	end
+	NeatPlatesHubSettings["HubPanelProfile"..profileName] = deserialized
+	return true
+end
+
+local function ExportProfile(profileName)
+	if profileName then
+		return AceSerializer:Serialize(NeatPlatesHubSettings["HubPanelProfile"..profileName])
+	end
+	return ""
+end
+
 -- Temporary functions that imports settings from TPC
 local function ImportTPCSettings(frame)
 	local profileColor = {
@@ -932,6 +953,8 @@ end
 NeatPlatesHubMenus.RefreshPanel = RefreshPanel
 NeatPlatesHubMenus.UpdateDefaultPanel = UpdateDefaultPanel
 NeatPlatesHubMenus.CreateProfile = CreateProfile
+NeatPlatesHubMenus.ImportProfile = ImportProfile
+NeatPlatesHubMenus.ExportProfile = ExportProfile
 
 ---------------------------------------------
 -- Slash Commands
