@@ -292,7 +292,7 @@ local function GetUnitQuestInfo(unit)
     	local texture = _G[ScannerName .. "Texture" .. line]
     	if texture and questTexture[texture:GetTexture()] then objectiveCount = objectiveCount + 1 end
 
-    	if line > 1 then 
+    	if line > 1 then
 	    	local tooltipText, r, g, b = GetTooltipLineText( line )
 	      local questColor = (b == 0 and r > 0.99 and g > 0.82) -- Note: Quest Name Heading is colored Yellow. (As well as the player on that quest as of 8.2.5)
 
@@ -308,9 +308,11 @@ local function GetUnitQuestInfo(unit)
 
 	  if questList[UnitName("player")] then
 	  	questList = {player = questList[UnitName("player")]} -- Wrap it so the quest widget can parse it properly
+	  elseif not IsInGroup() then
+    	return questList
 	  end
-
-    return questList
+	  
+	  return {}
 end
 
 
