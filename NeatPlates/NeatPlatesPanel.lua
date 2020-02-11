@@ -580,7 +580,7 @@ local function BuildInterfacePanel(panel)
 	panel.CreateProfile:SetWidth(100)
 	panel.CreateProfile:SetText(L["Add Profile"])
 
-		-- Import Profile Button
+	-- Import Profile Button
 	panel.ImportProfile = CreateFrame("Button", "NeatPlatesOptions_ImportProfile", panel, "NeatPlatesPanelButtonTemplate")
 	panel.ImportProfile:SetPoint("LEFT", panel.CreateProfile, "RIGHT", 3, 0)
 	panel.ImportProfile:SetWidth(100)
@@ -809,7 +809,7 @@ local function BuildInterfacePanel(panel)
 
 
 	local createNewProfile = function(profileName)
-		local profileName = profileName or panel.ProfileNameEditBox:GetText()
+		if not profileName then return end
 		local color = RGBToColorCode(panel.ProfileColorBox:GetBackdropColor())
 
 		ValidateProfileName(profileName, function()
@@ -819,7 +819,9 @@ local function BuildInterfacePanel(panel)
 	end
 
 	-- Profile Functions
-	panel.CreateProfile:SetScript("OnClick", createNewProfile)
+	panel.CreateProfile:SetScript("OnClick", function(self)
+		createNewProfile(panel.ProfileNameEditBox:GetText())
+	end)
 
 	panel.ImportProfile:SetScript("OnClick", function(self)
 		local profileName = panel.ProfileNameEditBox:GetText()
