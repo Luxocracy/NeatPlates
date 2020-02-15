@@ -216,7 +216,7 @@ local function CustomColorDelegate(unit)
 		
 		if key then
 			--Custom Color by Unit Name
-			if not color and key == unit.name and unit.type ~= "PLAYER" then
+			if not color and key == unit.name then
 				color = HexToRGB(LocalVars.CustomColorLookup[unit.name]); break
 
 		--Custom Color by Buff/Debuff
