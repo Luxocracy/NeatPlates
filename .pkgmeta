@@ -27,4 +27,4 @@ externals:
   NeatPlates/libs/Ace3/CallbackHandler-1.0: https://repos.wowace.com/wow/ace3/trunk/CallbackHandler-1.0
   NeatPlates/libs/Ace3/LibStub: https://repos.wowace.com/wow/ace3/trunk/LibStub
   NeatPlates/libs/LibButtonGlow-1.0: https://repos.curseforge.com/wow/libbuttonglow-1-0
-  NeatPlates/libs/LibRangeCheck-2.0: https://repos.curseforge.com/wow/librangecheck-2-0/trunk
+  NeatPlates/libs/LibRangeCheck-2.0: https://repos.curseforge.com/wow/librangecheck-2-0/trunk/LibRangeCheck-2.0

@@ -307,7 +307,7 @@ local function GetUnitQuestInfo(unit)
 	  end
 
 	  if questList[UnitName("player")] then
-	  	questList = {player = questList[UnitName("player")]} -- Wrap it so the quest widget can parse it properly
+	  	return {player = questList[UnitName("player")]} -- Wrap it so the quest widget can parse it properly
 	  elseif not IsInGroup() then
     	return questList
 	  end

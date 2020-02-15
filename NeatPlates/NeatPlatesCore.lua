@@ -782,7 +782,10 @@ do
 		local widgetSetID = UnitWidgetSet(unit.unitid);
 
 		if widgetSetID then
-			local widgetID = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)[1].widgetID
+			local widgetSet = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)
+			if not widgetSet or not widgetSet[1] then return end
+
+			local widgetID = widgetSet[1].widgetID
 			local widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
 			local rank = widget.overrideBarText
 			local barCur = widget.barValue - widget.barMin
