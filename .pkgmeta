@@ -22,14 +22,20 @@ move-folders:
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
 
 externals:
+  NeatPlates/libs/Ace3/AceAddon-3.0: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
+  NeatPlates/libs/Ace3/AceBucket-3.0: https://repos.wowace.com/wow/ace3/trunk/AceBucket-3.0
+  NeatPlates/libs/Ace3/AceComm-3.0: https://repos.wowace.com/wow/ace3/trunk/AceComm-3.0
+  NeatPlates/libs/Ace3/AceEvent-3.0: https://repos.wowace.com/wow/ace3/trunk/AceEvent-3.0
+  NeatPlates/libs/Ace3/AceLocale-3.0: https://repos.wowace.com/wow/ace3/trunk/AceLocale-3.0
+  NeatPlates/libs/Ace3/AceSerializer-3.0: https://repos.wowace.com/wow/ace3/trunk/AceSerializer-3.0
+  NeatPlates/libs/Ace3/AceTimer-3.0: https://repos.wowace.com/wow/ace3/trunk/AceTimer-3.0
+  NeatPlates/libs/Ace3/CallbackHandler-1.0: https://repos.wowace.com/wow/ace3/trunk/CallbackHandler-1.0
+  NeatPlates/libs/Ace3/LibStub: https://repos.wowace.com/wow/ace3/trunk/LibStub
   NeatPlates/libs/LibClassicDurations:
     url: https://repos.curseforge.com/wow/libclassicdurations
     tag: latest
   NeatPlates/libs/LibButtonGlow-1.0:
     url: https://repos.curseforge.com/wow/libbuttonglow-1-0
-    tag: latest
-  NeatPlates/libs/Ace3:
-    url: https://repos.curseforge.com/wow/ace3/trunk
     tag: latest
   NeatPlates/libs/LibThreatClassic2:
     url: git://github.com/dfherr/LibThreatClassic2.git
