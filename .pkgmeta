@@ -20,3 +20,11 @@ move-folders:
     NeatPlates/NeatPlatesHub: NeatPlatesHub
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
     
+NeatPlates/libs/LibThreatClassic2: 
+  url: git://github.com/dfherr/LibThreatClassic2.git
+  tag: latest
+
+externals:
+  NeatPlates/libs/LibClassicDurations: https://repos.curseforge.com/wow/libclassicdurations
+  NeatPlates/libs/LibButtonGlow-1.0: https://repos.curseforge.com/wow/libbuttonglow-1-0
+  NeatPlates/libs/Ace3: https://repos.curseforge.com/wow/ace3
