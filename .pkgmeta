@@ -19,12 +19,17 @@ move-folders:
     NeatPlates/NeatPlates_Alvara: NeatPlates_Alvara
     NeatPlates/NeatPlatesHub: NeatPlatesHub
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
-    
-NeatPlates/libs/LibThreatClassic2: 
-  url: git://github.com/dfherr/LibThreatClassic2.git
-  tag: latest
 
 externals:
-  NeatPlates/libs/LibClassicDurations: https://repos.curseforge.com/wow/libclassicdurations
-  NeatPlates/libs/LibButtonGlow-1.0: https://repos.curseforge.com/wow/libbuttonglow-1-0
-  NeatPlates/libs/Ace3: https://repos.curseforge.com/wow/ace3
+  NeatPlates/libs/LibClassicDurations: 
+  	url: https://repos.curseforge.com/wow/libclassicdurations
+  	tag: latest
+  NeatPlates/libs/LibButtonGlow-1.0:
+  	url: https://repos.curseforge.com/wow/libbuttonglow-1-0
+  	tag: latest
+  NeatPlates/libs/Ace3:
+  	url: https://repos.curseforge.com/wow/ace3/trunk
+  	tag: latest
+  NeatPlates/libs/LibThreatClassic2: 
+		url: git://github.com/dfherr/LibThreatClassic2.git
+  	tag: latest
