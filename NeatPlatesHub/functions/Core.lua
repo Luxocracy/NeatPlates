@@ -472,6 +472,11 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlatesWidgets.SetSpacerSlots(math.ceil(LocalVars.SpacerSlots))
 	NeatPlatesWidgets.SetEmphasizedSlots(math.ceil(LocalVars.EmphasizedSlots))
 
+	-- Aura Update Interval
+	local interval = 1
+	if(LocalVars.PreciseAuraThreshold > 0) then interval = .1 end
+	NeatPlatesWidgets.SetUpdateInterval(interval)
+
 	-- There might be a better way to handle these settings, but this works for now.
 	NeatPlates:SetCoreVariables(LocalVars)
 

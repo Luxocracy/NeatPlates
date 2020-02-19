@@ -1,5 +1,6 @@
 NeatPlatesWidgets = {}
 
+local updateInterval = .1
 ----------------------
 -- HideIn() - Registers a callback, which hides the specified frame in X seconds
 ----------------------
@@ -41,7 +42,6 @@ end
 ----------------------
 
 do
-	local updateInterval = .1
 	local PolledHideIn
 	local Framelist = {}			-- Key = Frame, Value = Expiration Time
 	local Watcherframe = CreateFrame("Frame")
@@ -102,6 +102,9 @@ NeatPlatesWidgets.ResetWidgets = NeatPlates.ResetWidgets
 NeatPlatesWidgets.EnableTankWatch = DummyFunction
 NeatPlatesWidgets.DisableTankWatch = DummyFunction
 NeatPlatesWidgets.EnableAggroWatch = DummyFunction
+NeatPlatesWidgets.SetUpdateInterval = function(val)
+	updateInterval = val or .1
+end
 
 
 
