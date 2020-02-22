@@ -42,7 +42,8 @@ StyleDefault.healthborder = {
 
 StyleDefault.healthbar = {
 	texture =					"Interface\\TARGETINGFRAME\\UI-StatusBar",
-	backdrop = 					EMPTY_TEXTURE,
+	-- backdrop = 					"Interface/Tooltips/UI-Tooltip-Background",
+	backdrop = 					path.."backdrop",
 	height = 9.5,
 	width = 103,
 	x = -9,
@@ -51,6 +52,7 @@ StyleDefault.healthbar = {
 
 StyleDefault.eliteicon = {
 	texture = 					path.."EliteBlizzardPlatesIcon",
+	-- texture = 					"Interface\\Tooltips\\EliteNameplateIcon",
 	width = 64,
 	height = 32,
 	x = 48,
@@ -112,8 +114,11 @@ StyleDefault.threatborder = {
 }
 
 StyleDefault.castborder = {
-	texture =					path.."BlizzardPlates-CastBar",
-	noicon = 					path.."BlizzardPlates-CastBar-noicon",
+	-- texture =					path.."BlizzardPlates-CastBar",
+	-- noicon = 					path.."BlizzardPlates-CastBar-noicon",
+	texture =					"Interface\\Tooltips\\Nameplate-CastBar",
+	noicon = 					path.."Nameplate-CastBar-NoIcon",
+	backdrop = 					path.."backdrop",
 	width = 128,
 	height = 32,
 	x = 0,
@@ -122,8 +127,11 @@ StyleDefault.castborder = {
 }
 
 StyleDefault.castnostop = {
-	texture = 					path.."BlizzardPlates-CastBar-Shield",
-	noicon = 					path.."BlizzardPlates-CastBar-Shield-noicon",
+	-- texture = 					path.."BlizzardPlates-CastBar-Shield",
+	-- noicon = 					path.."BlizzardPlates-CastBar-Shield-noicon",
+	texture = 					"Interface\\Tooltips\\Nameplate-CastBar-Shield",
+	noicon = 					path.."Nameplate-CastBar-Shield-NoIcon",
+	backdrop = 					path.."backdrop",
 	width = 128,
 	height = 32,
 	x = 0,
@@ -168,7 +176,7 @@ StyleDefault.level = {
 
 StyleDefault.castbar = {
 	texture =					"Interface\\TARGETINGFRAME\\UI-StatusBar",
-	backdrop = 					EMPTY_TEXTURE,
+	backdrop = 					path.."backdrop",
 	height = 10,
 	width = 104,
 	x = 9, 
@@ -251,7 +259,7 @@ StyleDefault.raidicon = {
 
 StyleDefault.extrabar = {
 	texture =					"Interface\\TARGETINGFRAME\\UI-StatusBar",
-	backdrop = 				"Interface/Tooltips/UI-Tooltip-Background",
+	backdrop = 					path.."backdrop",
 	height = 6,
 	width = 100,
 	x = -8,
