@@ -1005,7 +1005,7 @@ do
 
 			-- Set Special-Case Regions
 			if style.customtext.show then
-				if activetheme.SetCustomText then
+				if activetheme.SetCustomText and unit.unitid then
 					local text, r, g, b, a = activetheme.SetCustomText(unit)
 					visual.customtext:SetText( text or "")
 					visual.customtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
