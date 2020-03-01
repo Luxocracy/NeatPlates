@@ -222,6 +222,7 @@ NeatPlatesHubDefaults = {
 	ColorSchoolShadow = {r = 0.5, g = 0.5, b = 1},
 	ColorSchoolArcane = {r = 1, g = 0.5, b = 1},
 	ColorCastBySchool = true,
+	SpellCastEnableEnemy = true,
 	SpellCastEnableFriendly = false,
 	IntCastEnable = true,
 	IntCastWhoEnable = true,

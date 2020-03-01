@@ -312,7 +312,8 @@ local function CastBarDelegate(unit, school)
 		color = LocalVars.ColorNormalSpellCast
 	else color = LocalVars.ColorUnIntpellCast end
 
-	if unit.reaction == "FRIENDLY" and (not LocalVars.SpellCastEnableFriendly) then
+	if (unit.reaction == "FRIENDLY" and not LocalVars.SpellCastEnableFriendly) or
+		 (unit.reaction ~= "FRIENDLY" and not LocalVars.SpellCastEnableEnemy) then
 		alpha = 0
 	else alpha = 1 end
 
