@@ -727,7 +727,6 @@ do
 		unit.rawName = unit.name  -- gsub(unit.name, " %(%*%)", "")
 
 		local classification = UnitClassification(unitid)
-
 		unit.isBoss = UnitLevel(unitid) == -1
 		unit.isDangerous = unit.isBoss
 
@@ -771,6 +770,8 @@ do
 
 	-- UpdateUnitCondition: High volatility data
 	function UpdateUnitCondition(plate, unitid)
+		if not unitid then return end
+
 		local health, healthmax
 		UpdateReferences(plate)
 
@@ -1791,7 +1792,7 @@ function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
 
 function NeatPlates.THREAT_UPDATE(...)
 	local guid = select(3, ...)
-	local plate = PlatesByGUID[guid]
+	local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
 
 	if plate then OnHealthUpdate(plate) end
 end

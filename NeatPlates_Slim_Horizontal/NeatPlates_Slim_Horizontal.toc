@@ -1,4 +1,4 @@
-## Interface: 11303
+## Interface: 11304
 ## Title: NeatPlates: Slim Horizontal
 ## Author: Dotfix
 ## Version: 2.2
