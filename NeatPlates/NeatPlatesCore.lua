@@ -641,6 +641,7 @@ do
 	-- OnHealthUpdate
 	function OnHealthUpdate(plate)
 		local unitid = PlatesVisible[plate]
+		if not unitid then return end
 
 		UpdateUnitCondition(plate, unitid)
 		ProcessUnitChanges()
@@ -770,8 +771,6 @@ do
 
 	-- UpdateUnitCondition: High volatility data
 	function UpdateUnitCondition(plate, unitid)
-		if not unitid then return end
-
 		local health, healthmax
 		UpdateReferences(plate)
 
