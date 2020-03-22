@@ -203,7 +203,7 @@ end
 -------------------------------------------------------------
 
 local function UpdateWidgetTime(frame, expiration)
-	if expiration == 0 or HideAuraDuration then
+	if expiration <= 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
 		local timeleft = expiration-GetTime()
