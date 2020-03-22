@@ -705,6 +705,8 @@ do
 	function UpdateIndicator_HealthBar()
 		visual.healthbar:SetMinMaxValues(0, unit.healthmax)
 		visual.healthbar:SetValue(unit.health)
+		-- Subtext
+		UpdateIndicator_Subtext()
 	end
 
 
