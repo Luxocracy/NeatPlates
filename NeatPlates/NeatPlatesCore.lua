@@ -201,6 +201,7 @@ local OnShowNameplate, OnHideNameplate, OnUpdateNameplate, OnResetNameplate
 local OnHealthUpdate, UpdateUnitCondition
 local UpdateUnitContext, OnRequestWidgetUpdate, OnRequestDelegateUpdate
 local UpdateUnitIdentity
+local UpdateThreat
 
 -- Main Loop
 local OnUpdate
@@ -350,6 +351,12 @@ do
 	end
 
 
+	-- Poll for threat update
+	local function PolledThreat()
+		ForEachPlate(UpdateThreat)
+	end
+
+	local threatTicker = C_Timer.NewTicker(0.5, PolledThreat)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -831,6 +838,15 @@ do
 			UpdateIndicator_CustomScaleText()
 	end
 
+	function UpdateThreat(plate)
+		local unit = plate.extended.unit
+		local threatValue = UnitThreatSituation("player", unit.unitid) or 0
+		local threatSituation = ThreatReference[unit.threatValue]
+
+		if(unit.threatValue ~= threatValue or unit.threatSituation ~= threatSituation) then
+			OnHealthUpdate(plate)
+		end
+	end
 
 end		-- End of Nameplate/Unit Events
 
@@ -1792,12 +1808,13 @@ function NeatPlates.OverrideOutline(enable) OverrideOutline = enable; end
 
 function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
 
+-- Disabled, refer to 'UpdateThreat'
 function NeatPlates.THREAT_UPDATE(...)
-	local guid = select(3, ...)
-	local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
-	if(Debug['threat'] and plate) then checkLastThreatUpdate(UnitGUID(plate.extended.unit.unitid)) end
+	--local guid = select(3, ...)
+	--local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
+	--if(Debug['threat'] and plate) then checkLastThreatUpdate(UnitGUID(plate.extended.unit.unitid)) end
 
-	if plate then OnHealthUpdate(plate) end
+	--if plate then OnHealthUpdate(plate) end
 end
 
 -- Old and needing deleting - Just here to avoid errors
