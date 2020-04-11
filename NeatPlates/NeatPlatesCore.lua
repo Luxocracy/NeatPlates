@@ -201,7 +201,6 @@ local OnShowNameplate, OnHideNameplate, OnUpdateNameplate, OnResetNameplate
 local OnHealthUpdate, UpdateUnitCondition
 local UpdateUnitContext, OnRequestWidgetUpdate, OnRequestDelegateUpdate
 local UpdateUnitIdentity
-local UpdateThreat
 
 -- Main Loop
 local OnUpdate
@@ -353,7 +352,16 @@ do
 
 	-- Poll for threat update
 	local function PolledThreat()
-		ForEachPlate(UpdateThreat)
+		SetUpdateAll()
+		--ForEachPlate(function(plate)
+		--	local unit = plate.extended.unit
+		--	local unitid = PlatesVisible[plate]
+
+		--	if unitid then
+		--		local threatValue = UnitThreatSituation("player", nil) or 0
+		--		if(unit.threatValue ~= threatValue) then OnHealthUpdate(plate) end
+		--	end
+		--end)
 	end
 
 	local threatTicker = C_Timer.NewTicker(0.5, PolledThreat)
@@ -838,16 +846,6 @@ do
 			UpdateIndicator_CustomScaleText()
 	end
 
-	function UpdateThreat(plate)
-		local unit = plate.extended.unit
-		local threatValue = UnitThreatSituation("player", unit.unitid) or 0
-		local threatSituation = ThreatReference[unit.threatValue]
-
-		if(unit.threatValue ~= threatValue or unit.threatSituation ~= threatSituation) then
-			OnHealthUpdate(plate)
-		end
-	end
-
 end		-- End of Nameplate/Unit Events
 
 
@@ -1030,9 +1028,9 @@ do
 					visual.customtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
 				else visual.customtext:SetText("") end
 			end
-
-			UpdateIndicator_UnitColor()
 		end
+
+		UpdateIndicator_UnitColor()
 	end
 
 
@@ -1812,7 +1810,7 @@ function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
 function NeatPlates.THREAT_UPDATE(...)
 	--local guid = select(3, ...)
 	--local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
-	--if(Debug['threat'] and plate) then checkLastThreatUpdate(UnitGUID(plate.extended.unit.unitid)) end
+	--if(Debug['threat'] and plate) then checkLastThreatUpdate(guid) end
 
 	--if plate then OnHealthUpdate(plate) end
 end
