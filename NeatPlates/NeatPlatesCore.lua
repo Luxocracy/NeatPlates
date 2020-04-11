@@ -352,19 +352,17 @@ do
 
 	-- Poll for threat update
 	local function PolledThreat()
-		SetUpdateAll()
-		--ForEachPlate(function(plate)
-		--	local unit = plate.extended.unit
-		--	local unitid = PlatesVisible[plate]
+		ForEachPlate(function(plate)
+			local unit = plate.extended.unit
+			local unitid = PlatesVisible[plate]
+			if not unitid then return end
 
-		--	if unitid then
-		--		local threatValue = UnitThreatSituation("player", nil) or 0
-		--		if(unit.threatValue ~= threatValue) then OnHealthUpdate(plate) end
-		--	end
-		--end)
+			local threatValue = UnitThreatSituation("player", unitid) or 0
+			if(unit.threatValue ~= threatValue) then OnHealthUpdate(plate) end
+		end)
 	end
 
-	local threatTicker = C_Timer.NewTicker(0.5, PolledThreat)
+	local threatTicker = C_Timer.NewTicker(0.1, PolledThreat)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -1806,14 +1804,21 @@ function NeatPlates.OverrideOutline(enable) OverrideOutline = enable; end
 
 function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
 
--- Disabled, refer to 'UpdateThreat'
-function NeatPlates.THREAT_UPDATE(...)
-	--local guid = select(3, ...)
-	--local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
-	--if(Debug['threat'] and plate) then checkLastThreatUpdate(guid) end
+-- Also updates at intervals as a precaution, refer to 'PolledThreat'
+--function NeatPlates.THREAT_UPDATE(...)
+--	local guid = select(3, ...)
+--	local plate = PlatesByGUID[guid] or IsEmulatedFrame(guid)
+--	if not plate then return end
 
-	--if plate then OnHealthUpdate(plate) end
-end
+--	local unit = plate.extended.unit
+--	local unitid = PlatesVisible[plate]
+--	if not unitid then return end
+
+--	if(Debug['threat'] and plate) then checkLastThreatUpdate(guid) end
+
+--	local threatValue = UnitThreatSituation("player", unitid) or 0
+--	if(unit.threatValue ~= threatValue) then OnHealthUpdate(plate) end
+--end
 
 -- Old and needing deleting - Just here to avoid errors
 function NeatPlates:EnableFadeIn() EnableFadeIn = true; end

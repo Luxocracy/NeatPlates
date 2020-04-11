@@ -24,7 +24,7 @@ NeatPlatesUtility.RequestActiveOnSolo = function(value)
 	end)
 end
 
-ThreatLib.RegisterCallback(ThreatLib, "ThreatUpdated", function(...) NeatPlates.THREAT_UPDATE(...) end)
+--ThreatLib.RegisterCallback(ThreatLib, "ThreatUpdated", function(...) NeatPlates.THREAT_UPDATE(...) end)
 
 local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
 local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
