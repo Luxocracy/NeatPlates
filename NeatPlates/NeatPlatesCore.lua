@@ -358,7 +358,7 @@ do
 			if not unitid then return end
 
 			local threatValue = UnitThreatSituation("player", unitid) or 0
-			if(unit.threatValue ~= threatValue) then OnHealthUpdate(plate) end
+			if(unit.threatValue ~= threatValue) then SetUpdateMe(plate) end
 		end)
 	end
 
@@ -1026,9 +1026,9 @@ do
 					visual.customtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
 				else visual.customtext:SetText("") end
 			end
+			UpdateIndicator_UnitColor()		-- Keep within this block as we need to check if 'unit.health' exists
 		end
 
-		UpdateIndicator_UnitColor()
 	end
 
 
