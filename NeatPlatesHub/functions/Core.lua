@@ -396,6 +396,22 @@ local function ApplyThemeCustomization(theme)
 	end
 end
 
+-- Healthbar to Powerbar ratio
+local function ApplyBarRatios(style, defaults)
+	local ratio = 0.6
+	local baseHeight = defaults.healthbar.height
+	local anchorPoint = defaults.healthbar.anchor
+	local offsetMultiplier = 1
+	if anchorPoint == "CENTER" then offsetMultiplier = 0.5 end
+	-- set height of bars
+	style.healthbar.height = baseHeight * ratio
+	style.powerbar.height = baseHeight * (1 - ratio)
+	-- offset bars
+	--style.powerbar.y =  defaults.powerbar.y - (style.healthbar.height * offsetMultiplier)
+	style.powerbar.y =  defaults.powerbar.y - ((style.healthbar.height) * offsetMultiplier)
+	style.healthbar.y =  defaults.healthbar.y + ((style.powerbar.height) * offsetMultiplier)
+end
+
 local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 	if not style then return end
 	style.level.show = (LocalVars.TextShowLevel == true)
@@ -415,6 +431,7 @@ local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 		style.castnostop.texture = defaults.castnostop.texture
 	end
 
+	--ApplyBarRatios(style, defaults)
 
 	style.target.color = LocalVars.ColorTarget
 	style.focus.color = LocalVars.ColorFocus
@@ -545,6 +562,7 @@ local function ApplyHubFunctions(theme)
 	theme.GetClickableArea = NeatPlatesHubFunctions.GetClickableArea
 	theme.SetAlpha = NeatPlatesHubFunctions.SetAlpha
 	theme.SetHealthbarColor = NeatPlatesHubFunctions.SetHealthbarColor
+	theme.SetPowerbarColor = NeatPlatesHubFunctions.SetPowerbarColor
 	theme.SetThreatColor = NeatPlatesHubFunctions.SetThreatColor
 	theme.SetCastbarColor = NeatPlatesHubFunctions.SetCastbarColor
 	theme.OnUpdate = NeatPlatesHubFunctions.OnUpdate

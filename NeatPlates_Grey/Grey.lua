@@ -192,11 +192,23 @@ StyleDefault.healthbar = {
 	orientation = "HORIZONTAL",
 }
 
+StyleDefault.powerbar = {
+	texture =					 defaultArtPath.."\\Statusbar",
+	backdrop = 				EmptyTexture,
+	--backdrop = 				defaultArtPath.."\\Statusbar",
+	height = 2.5,
+	width = 101,
+	x = 0,
+	y = 15+nameplate_verticalOffset+6.5,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
 StyleDefault.castbar = {
 	texture =					defaultArtPath.."\\Statusbar",
 	backdrop = 				EmptyTexture,
 	--backdrop = 				defaultArtPath.."\\Statusbar",
-	height = 12,
+	height = 11,
 	width = 99,
 	x = 0,
 	y = -8+castBar_verticalOffset+nameplate_verticalOffset,
@@ -319,6 +331,8 @@ StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthborder.y = nameplate_verticalOffset - 7
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 70
 StyleTextOnly.extrabar.y = nameplate_verticalOffset - 2

@@ -67,10 +67,19 @@ StyleDefault.castbar = {
 
 StyleDefault.healthbar = {
 	texture = 					path.."StatusBar",
-	width =105,
+	width = 105,
 	height = 9,
 	x = 6.5,
 	y = 3.5,
+	orientation = "HORIZONTAL",
+}
+
+StyleDefault.powerbar = {
+	texture = 					path.."StatusBar",
+	width = 90,
+	height = 4,
+	x = 11.5,
+	y = 3.5 - 7,
 	orientation = "HORIZONTAL",
 }
 
@@ -291,6 +300,8 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 66
 StyleTextOnly.extrabar.y = -10

@@ -286,6 +286,16 @@ local function HealthColorDelegate(unit)
 	else return unit.red, unit.green, unit.blue end
 end
 
+local function PowerColorDelegate(unit, powerType)
+
+	local color
+	if not powerType then powerType = UnitPowerType(unit.unitid) end
+
+	color = PowerBarColor[powerType]	-- FrameXML/UnitFrame.lua
+
+	return color.r, color.g, color.b, 1	--, color.r/4, color.g/4, color.b/4, 1
+end
+
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 -- Cast Bar Color
@@ -632,6 +642,7 @@ HubData.RegisterCallback(OnVariableChange)
 -- Add References
 ------------------------------------------------------------------------------
 NeatPlatesHubFunctions.SetHealthbarColor = HealthColorDelegate
+NeatPlatesHubFunctions.SetPowerbarColor = PowerColorDelegate
 NeatPlatesHubFunctions.SetCastbarColor = CastBarDelegate
 NeatPlatesHubFunctions.SetThreatColor = ThreatColorDelegate
 NeatPlatesHubFunctions.SetNameColor = SetNameColorDelegate

@@ -202,6 +202,11 @@ NeatPlatesHubMenus.StyleOptions = {
 		value = "healthbar",
 		tooltip = L["healthbar_tooltip"],
 	},
+	{
+		text = L["powerbar"],
+		value = "powerbar",
+		tooltip = L["powerbar_tooltip"],
+	},
 	--{
 	--	text = L["targetindicator_arrowleft"],
 	--	value = "targetindicator_arrowleft",

@@ -76,6 +76,15 @@ StyleDefault.healthbar = {
 	orientation = "HORIZONTAL",
 }
 
+StyleDefault.powerbar = {
+	texture = 					path.."StatusBar",
+	width =106,
+	height = 4,
+	x = 0,
+	y = 3.5 - 7,
+	orientation = "HORIZONTAL",
+}
+
 StyleDefault.highlight = {
 	--texture =					path.."Highlight",
 	texture = EmptyTexture,
@@ -290,6 +299,8 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 60
 StyleTextOnly.extrabar.y = -8

@@ -50,6 +50,16 @@ StyleDefault.healthbar = {
 	y = 0,
 }
 
+StyleDefault.powerbar = {
+	texture 				= path.."StatusBar",
+	backdrop = path.."HealthBorder",
+	width = barwidth*widthfactor,
+	--width = 96*widthfactor,
+	height = (barheight*heightfactor),
+	x = 0,
+	y = -(barheight*heightfactor) * 0.14,
+}
+
 StyleDefault.healthborder = {
 	texture	= path.."HealthBorder",
 	width = artwidth*widthfactor,
@@ -304,6 +314,8 @@ StyleTextOnly.healthborder.height = 64
 StyleTextOnly.healthborder.y = -18
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 60
 StyleTextOnly.extrabar.y = -14

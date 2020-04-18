@@ -155,16 +155,19 @@ L["Friendly Status Text"] = true
 L["Enemy Subtext"] = true
 L["Friendly Subtext"] = true
 
-L["Show Level"] = true
-L["Force Shadow on Status Text"] = true
-L["Show Different Server Indicator (*)"] = true
-L["Show Unit Title"] = true
-L["Show Subtext in Bar View"] = true
-L["Show Status Text on Target & Mouseover"] = true
-L["Show Status Text on Active/Damaged Units"] = true
-L["Use Custom Target Color"] = true
-L["Use Custom Focus Color"] = true
-L["Use Custom Mouseover Color"] = true
+
+L["Additional settings"] = true
+	L["Show Unit Level"] = true
+	L["Show Unit Title"] = true
+	L["Show Unit Powerbar"] = true
+	L["Show Different Server Indicator (*)"] = true
+	L["Force Shadow on Status Text"] = true
+	L["Show Subtext in Bar View"] = true -- Not in use?
+	L["Show Status Text on Target & Mouseover"] = true
+	L["Show Status Text on Active/Damaged Units"] = true
+	L["Use Custom Target Color"] = true
+	L["Use Custom Focus Color"] = true
+	L["Use Custom Mouseover Color"] = true
 
 ------------------------------
 -- Headline View
@@ -530,6 +533,7 @@ L["extraborder"] = "Extra/Bodyguard Border"
 L["castbar"] = "Castbar"
 L["spelltext"] = "Castbar Spell Text"
 L["healthbar"] = "Healthbar"
+L["powerbar"] = "Powerbar"
 --L["targetindicator_arrowleft"] = 
 --L["targetindicator_arrowright"] = 
 L["threatborder"] = "Threat Glow"
@@ -585,6 +589,7 @@ L["extraborder_tooltip"] = "Border for the 'extrabar', used for Nazjatar Bodygua
 L["castbar_tooltip"] = "The units castbar" -- Unify all this under the 'castbar' option?
 L["spelltext_tooltip"] = "The spellname that apepars on the castbar"
 L["healthbar_tooltip"] = "The actual bar that displays health" -- Unify all this under the 'healthbar' option?
+L["powerbar_tooltip"] = "The bar that displays the units power/resource"
 --L["targetindicator_arrowleft_tooltip"] = "Placeholder Tooltip"
 --L["targetindicator_arrowright_tooltip"] = "Placeholder Tooltip"
 L["threatborder_tooltip"] = "The border used with threat glow"
@@ -705,6 +710,9 @@ L["Display Scale Options"] = true
 L["Hides the aura widget when in 'Headline/Text-Only' mode"] = true
 L["When aura durations should start to display tenths of a second"] = true
 
+
+-- Warnings about unfinished stuff
+L["powerbar_unfinished_warning"] = "The powerbar still has some overlap issues with some themes,\nyou might need to adjust this yourself in the 'Theme Customization'"
 
 
 -- Classic Specific

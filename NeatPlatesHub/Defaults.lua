@@ -37,8 +37,6 @@ NeatPlatesHubDefaults = {
 	StyleEnemyBarsOnNPC = true,
 	StyleEnemyBarsClickThrough = false,
 
-	StyleForceBarsOnTargets = false,
-
 	StyleHeadlineNeutral = false,
 	StyleHeadlineMiniMobs = false,
 
@@ -54,6 +52,8 @@ NeatPlatesHubDefaults = {
 
 
 
+	StyleForceBarsOnTargets = false,
+	StyleShowPowerBar = false,
 
 	-- Headline
 	---------------------------------------

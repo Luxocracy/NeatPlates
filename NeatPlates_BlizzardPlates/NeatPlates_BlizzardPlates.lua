@@ -50,6 +50,16 @@ StyleDefault.healthbar = {
 	y = 0,
 }
 
+StyleDefault.powerbar = {
+	texture =					"Interface\\TARGETINGFRAME\\UI-StatusBar",
+	-- backdrop = 					"Interface/Tooltips/UI-Tooltip-Background",
+	backdrop = 					path.."backdrop",
+	height = 4.5,
+	width = 98,
+	x = -8.5,
+	y = -7,
+}
+
 StyleDefault.eliteicon = {
 	texture = 					path.."EliteBlizzardPlatesIcon",
 	-- texture = 					"Interface\\Tooltips\\EliteNameplateIcon",
@@ -292,6 +302,8 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 60
 StyleTextOnly.extrabar.y = vert+10
