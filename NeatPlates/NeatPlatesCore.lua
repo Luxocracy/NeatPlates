@@ -716,7 +716,7 @@ do
 	-- UpdateIndicator_HealthBar: Updates the value on the health bar
 	function UpdateIndicator_HealthBar()
 		visual.healthbar:SetMinMaxValues(0, unit.healthmax)
-		visual.healthbar:SetValue(unit.health*0.6)
+		visual.healthbar:SetValue(unit.health)
 		-- Subtext
 		UpdateIndicator_Subtext()
 	end
