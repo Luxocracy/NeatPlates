@@ -393,7 +393,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		-- Buttons states
 		local options = {
   		StyleDropdown = function(self, option) return self.category == "main" end,
-  		EnableCheckbox = function(self, option) return (self.options.enable == true or self.category == "main" and self.options.enable ~= false) end,
+  		EnableCheckbox = function(self, option) return (option.enabled == true or self.category == "main" and option.enabled ~= false) end,
   		AnchorOptions = function(self, option) return option.anchor ~= nil end,
   		AlignOptions = function(self, option) return option.align ~= nil end,
   		OffsetX = function(self, option) return option.x ~= nil end,

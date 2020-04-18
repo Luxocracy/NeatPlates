@@ -196,6 +196,18 @@ StyleDefault.healthbar = {
 	orientation = "HORIZONTAL",
 }
 
+StyleDefault.powerbar = {
+	texture =					 path.."Statusbar",
+	--backdrop = 				path.."StatusbarBackground",
+	backdrop = 				path.."RegularBackdrop",
+	height = 4,
+	width = 98.5,
+	x = 0,
+	y = VerticalAdjustment + 15 - 7,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
 StyleDefault.customtext = {
 	typeface =					font,
 	size = fontsize - 1,
@@ -327,6 +339,8 @@ StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.extrabar.width = 70
 StyleTextOnly.extrabar.y = VerticalAdjustment + 5
 StyleTextOnly.extratext.y = VerticalAdjustment + 4

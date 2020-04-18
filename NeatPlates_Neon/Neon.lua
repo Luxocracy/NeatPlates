@@ -56,6 +56,16 @@ StyleDefault.healthbar = {
 	y = VerticalAdjustment,
 }
 
+StyleDefault.powerbar = {
+	texture =					 ArtworkPath.."Neon_Bar",
+	backdrop =					 ArtworkPath.."Neon_Bar_Backdrop",
+	width = 98,
+	_width = 98,
+	height = 6,
+	x = 0,
+	y = VerticalAdjustment - 5,
+}
+
 StyleDefault.castborder = {
 	--texture =					ArtworkPath.."Cast_Normal",
 	texture =					ArtworkPath.."Neon_CastOverlay",
@@ -394,6 +404,8 @@ StyleTextOnly.healthborder.height = 64
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 70
 StyleTextOnly.extrabar.y = VerticalAdjustment - 20

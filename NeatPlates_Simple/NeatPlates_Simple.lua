@@ -36,6 +36,17 @@ StyleDefault.healthbar = {
 	show = true,
 }
 
+StyleDefault.powerbar = {
+	texture 				= path.."\\barhealth.tga",
+	height = 8,
+	width = 110,
+	x = 0,
+	y = 0 - 1,
+	anchor = "BOTTOM",
+	orientation = "HORIZONTAL",
+	show = true,
+}
+
 StyleDefault.eliteicon = {
 	texture 				= path.."\\eliteicon.tga",
 	width = 10,
@@ -260,6 +271,8 @@ local StyleTextOnly = CopyTable(StyleDefault)
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.threatborder.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 70

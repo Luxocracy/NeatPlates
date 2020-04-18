@@ -164,6 +164,18 @@ TemplateTheme.healthbar = {
 	orientation = "HORIZONTAL",
 }
 
+TemplateTheme.powerbar = {
+	texture =					 EMPTY_TEXTURE,
+	backdrop = 				EMPTY_TEXTURE,
+	height = 0,
+	--width = 101,
+	width = 0,
+	x = 0,
+	y = 10,
+	anchor = "CENTER",
+	orientation = "HORIZONTAL",
+}
+
 TemplateTheme.extrabar = {
 	texture =					EMPTY_TEXTURE,
 	backdrop = 				EMPTY_TEXTURE,

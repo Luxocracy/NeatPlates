@@ -54,6 +54,15 @@ StyleDefault.healthbar = {
 	y = VerticalAdjustment,
 }
 
+StyleDefault.powerbar = {
+	texture =					 ArtworkPath.."Slim_Bar",
+	backdrop =					 ArtworkPath.."Slim_Bar_Backdrop",
+	width = 98,
+	height = 2,
+	x = 0,
+	y = VerticalAdjustment - 4,
+}
+
 StyleDefault.castborder = {
 	texture =					 ArtworkPath.."Slim_CastOverlay",
 	noicon =					 ArtworkPath.."Slim_CastOverlay-noicon",
@@ -318,6 +327,8 @@ StyleTextOnly.healthborder.height = 64
 StyleTextOnly.healthborder.texture = EmptyTexture
 StyleTextOnly.healthbar.texture = EmptyTexture
 StyleTextOnly.healthbar.backdrop = EmptyTexture
+StyleTextOnly.powerbar.texture = EmptyTexture
+StyleTextOnly.powerbar.backdrop = EmptyTexture
 StyleTextOnly.eliteicon.texture = EmptyTexture
 StyleTextOnly.extrabar.width = 80
 StyleTextOnly.extrabar.y = VerticalAdjustment-19
