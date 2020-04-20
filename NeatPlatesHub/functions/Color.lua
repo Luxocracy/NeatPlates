@@ -287,13 +287,14 @@ local function HealthColorDelegate(unit)
 end
 
 local function PowerColorDelegate(unit, powerType)
+	if not unit.unitid then return 0,0,1,1 end -- Mana/blue
 
 	local color
 	if not powerType then powerType = UnitPowerType(unit.unitid) end
 
 	color = PowerBarColor[powerType]	-- FrameXML/UnitFrame.lua
 
-	return color.r, color.g, color.b, 1	--, color.r/4, color.g/4, color.b/4, 1
+	return color.r, color.g, color.b, 1
 end
 
 ------------------------------------------------------------------------------

@@ -990,7 +990,7 @@ do
 		if activetheme.SetPowerbarColor then
 			visual.powerbar:SetAllColors(activetheme.SetPowerbarColor(unit))
 
-		else visual.powerbar:SetStatusBarColor(unit.red, unit.green, unit.blue) end
+		else visual.powerbar:SetStatusBarColor(0,0,1,1) end
 
 		-- Name Color
 		if activetheme.SetNameColor then
