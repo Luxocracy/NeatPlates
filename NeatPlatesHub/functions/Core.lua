@@ -291,7 +291,7 @@ local function ApplyCustomBarSize(style, defaults)
 		if defaults.frame.x then style.frame.x = defaults.frame.x * frameMod end
 
 		-- Healthbar
-		local Healthbar = {"threatborder", "healthborder", "healthbar", "customtext", "level", "subtext", "name"}
+		local Healthbar = {"threatborder", "healthborder", "healthbar", "customtext", "level", "subtext", "name", "powerbar"}
 		for k,v in pairs(Healthbar) do
 			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.FrameBarWidth or 1) end
 			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.FrameBarWidth or 1) end

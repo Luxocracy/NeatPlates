@@ -1012,6 +1012,7 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 										});
 	frame.BorderFrame:SetBackdropColor(0.05, 0.05, 0.05, 0)
 	frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+	frame.BorderFrame:SetFrameLevel(frame:GetFrameLevel())
 	-- Text
 
 	EditBox:SetPoint("TOPLEFT")
@@ -1026,8 +1027,14 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 	EditBox:SetText("")
 	EditBox:SetAutoFocus(false)
 	EditBox:SetTextInsets(9, 6, 2, 2)
+
 	frame:SetScrollChild(EditBox)
 	frame.EditBox = EditBox
+
+	-- Fix editbox not focusing as expected
+	frame.BorderFrame:SetScript("OnMouseDown", function()
+		if not frame.EditBox:HasFocus() then frame.EditBox:SetFocus() end
+	end)
 
 	function frame:GetValue() return EditBox:GetText() end
 	function frame:SetValue(value) EditBox:SetText(value) end
@@ -1047,13 +1054,15 @@ local function CreateEditBoxButton(frame, onOkay)
 	frame.okayButton:SetText(OKAY)
 	frame.okayButton:Hide()
 
+	frame.okayButton:SetFrameLevel(frame.EditBox:GetFrameLevel()+1)
+
 	frame.okayButton:SetScript("OnClick", function()
 		onOkay()
-		frame.EditBox:ClearFocus()
 		frame.okayButton:Hide()
 	end)
 	frame.EditBox:SetScript("OnEditFocusLost", function()
-		if frame.EditBox.oldValue == frame:GetValue() then
+		frame.EditBox:HighlightText(0,0)
+		if frame.EditBox.oldValue == frame:GetValue() then 
 			frame.okayButton:Hide()
 		end
 	end)
