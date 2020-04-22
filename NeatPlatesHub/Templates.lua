@@ -901,6 +901,11 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					panel.EditBox.EditBox:HighlightText()
 				end
 			end)
+			
+			-- Fix editbox not focusing as expected
+			panel.EditBox.BorderFrame:SetScript("OnMouseUp", function()
+				panel.EditBox.EditBox:SetFocus()
+			end)
 
 		  -- Buttons
 		  panel.CancelButton = CreateFrame("Button", "NeatPlatesEditboxPopupCancelButton", panel, "NeatPlatesPanelButtonTemplate")
