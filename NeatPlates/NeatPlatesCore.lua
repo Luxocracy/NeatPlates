@@ -360,7 +360,7 @@ do
 			if not unitid then return end
 
 			local threatValue = UnitThreatSituation("player", unitid) or 0
-			if(unit.threatValue ~= threatValue) then SetUpdateMe(plate) end
+			if(unit.threatValue ~= threatValue or unit.isInCombat ~= UnitAffectingCombat(unitid)) then SetUpdateMe(plate) end
 		end)
 	end
 
