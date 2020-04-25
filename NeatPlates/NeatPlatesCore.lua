@@ -335,7 +335,9 @@ do
 					else OnStopCasting(plate) end
 					plate.UpdateCastbar = false
 				end
-
+			elseif extended.Active and not plate:IsVisible() then
+				extended.Active = false
+				plate.carrier:Hide()	-- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
 
 			if plate.UnitFrame then plate.UnitFrame:Hide() end
