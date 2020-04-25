@@ -166,7 +166,7 @@ do
 			SetUpdateAll()
 		end
 
-		for plate in pairs(PlatesVisible) do
+		for plate, unitid in pairs(PlatesVisible) do
 			local UpdateMe = UpdateAll or plate.UpdateMe
 			local UpdateHealth = plate.UpdateHealth
 			local carrier = plate.carrier
@@ -186,9 +186,8 @@ do
 
 				local children = plate:GetChildren()
 				if children then children:Hide() end
-			elseif extended.Active and not plate:IsVisible() then
-				extended.Active = false
-				plate.carrier:Hide()	-- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
+			elseif unitid and not plate:IsVisible() then
+				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
 
 			if plate.UnitFrame then plate.UnitFrame:Hide() end
