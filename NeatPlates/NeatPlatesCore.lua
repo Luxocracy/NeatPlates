@@ -359,8 +359,7 @@ do
 			local unitid = PlatesVisible[plate]
 			if not unitid then return end
 
-			local threatValue = UnitThreatSituation("player", unitid) or 0
-			if(unit.threatValue ~= threatValue or unit.isInCombat ~= UnitAffectingCombat(unitid)) then SetUpdateMe(plate) end
+			if(unit.threatValue ~= UnitThreatSituation("player", unitid) or unit.isInCombat ~= UnitAffectingCombat(unitid) or unit.isTargetingPlayer ~= UnitIsUnit(unitid.."target", "player")) then SetUpdateMe(plate) end
 		end)
 	end
 
@@ -823,6 +822,7 @@ do
 		unit.threatValue = UnitThreatSituation("player", unitid) or 0
 		unit.threatSituation = ThreatReference[unit.threatValue]
 		unit.isInCombat = UnitAffectingCombat(unitid)
+		unit.isTargetingPlayer = UnitIsUnit(unitid.."target", "player")
 
 		local raidIconIndex = GetRaidTargetIndex(unitid)
 
