@@ -1679,7 +1679,7 @@ do
 	function UpdateStyle()
 		local index, unitSubtext, unitPlateStyle
 		local useYOffset = (style.subtext.show and activetheme.SetSubText(unit) and NeatPlatesHubFunctions.SetStyleNamed(unit) == "Default")
-		if useYOffset then extended.widgets["AuraWidgetHub"]:UpdateOffset(0, style.subtext.yOffset) end 	-- Update AuraWidget position if 'subtext' is displayed
+		if useYOffset and extended.widgets["AuraWidgetHub"] then extended.widgets["AuraWidgetHub"]:UpdateOffset(0, style.subtext.yOffset) end 	-- Update AuraWidget position if 'subtext' is displayed
 
 		-- Frame
 		SetAnchorGroupObject(extended, style.frame, carrier)
