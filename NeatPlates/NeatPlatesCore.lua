@@ -326,8 +326,8 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				--local children = plate:GetChildren()
-				--if children then children:Hide() end
+				local children = plate:GetChildren()
+				if children then children:Hide() end
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					local unitGUID = UnitGUID(unit.unitid)
@@ -339,7 +339,7 @@ do
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
 
-			--if plate.UnitFrame then plate.UnitFrame:Hide() end
+			if plate.UnitFrame then plate.UnitFrame:Hide() end
 
 		-- This would be useful for alpha fades
 		-- But right now it's just going to get set directly
@@ -375,6 +375,7 @@ do
 
 	-- ApplyPlateExtesion
 	function OnNewNameplate(plate, unitid)
+
     -- NeatPlates Frame
     --------------------------------
     local bars, regions = {}, {}
@@ -1309,7 +1310,6 @@ do
 	----------------------------------------
 	local builtThisSession = false
 	function CoreEvents:PLAYER_ENTERING_WORLD()
-		_G['NamePlateDriverFrame']:UnregisterAllEvents() -- Unregister blizzard nameplate functions/events
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
 		--if not NeatPlatesSpellDB.default then NeatPlates.BuildDefaultSpellDB() end
 		if not builtThisSession then
@@ -1339,8 +1339,8 @@ do
 		
 		-- Ignore if plate is Personal Display
 		if plate and not UnitIsUnit("player", unitid) then
-			--local children = plate:GetChildren()
-			--if children then children:Hide() end --Avoids errors incase the plate has no children
+			local children = plate:GetChildren()
+			if children then children:Hide() end --Avoids errors incase the plate has no children
 
 			if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 
