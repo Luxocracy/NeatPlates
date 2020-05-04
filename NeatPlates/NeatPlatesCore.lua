@@ -416,11 +416,11 @@ do
 
 	-- OnShowNameplate
 	function OnShowNameplate(plate, unitid)
-		plate.UnitFrame:Hide()	-- Hide Blizzard Nameplates
 		local unitGUID = UnitGUID(unitid)
 		-- or unitid = plate.namePlateUnitToken
 		UpdateReferences(plate)
 
+		plate.UnitFrame:Hide()	-- Hide Blizzard Nameplates
 		carrier:Show()
 
 		PlatesVisible[plate] = unitid
