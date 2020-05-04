@@ -184,8 +184,8 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				local children = plate:GetChildren()
-				if children then children:Hide() end
+				--local children = plate:GetChildren()
+				--if children then children:Hide() end
 			elseif unitid and not plate:IsVisible() then
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
@@ -1201,8 +1201,8 @@ do
 		
 		-- Ignore if plate is Personal Display
 		if plate and not UnitIsUnit("player", unitid) then
-			local children = plate:GetChildren()
-			if children then children:Hide() end --Avoids errors incase the plate has no children
+			--local children = plate:GetChildren()
+			--if children then children:Hide() end --Avoids errors incase the plate has no children
 	 		OnShowNameplate(plate, unitid)
 	 	end
 	end
