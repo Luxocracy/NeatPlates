@@ -326,8 +326,8 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				local children = plate:GetChildren()
-				if children then children:Hide() end
+				--local children = plate:GetChildren()
+				--if children then children:Hide() end
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					local unitGUID = UnitGUID(unit.unitid)
@@ -1339,8 +1339,8 @@ do
 		
 		-- Ignore if plate is Personal Display
 		if plate and not UnitIsUnit("player", unitid) then
-			local children = plate:GetChildren()
-			if children then children:Hide() end --Avoids errors incase the plate has no children
+			--local children = plate:GetChildren()
+			--if children then children:Hide() end --Avoids errors incase the plate has no children
 
 			if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 
