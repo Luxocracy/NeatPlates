@@ -184,9 +184,13 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
+				local children = plate:GetChildren()
+				if children then children:Hide() end
 			elseif unitid and not plate:IsVisible() then
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
+
+			if plate.UnitFrame then plate.UnitFrame:Hide() end
 
 		-- This would be useful for alpha fades
 		-- But right now it's just going to get set directly
@@ -420,7 +424,6 @@ do
 		-- or unitid = plate.namePlateUnitToken
 		UpdateReferences(plate)
 
-		plate.UnitFrame:Hide()	-- Hide Blizzard Nameplates
 		carrier:Show()
 
 		PlatesVisible[plate] = unitid
@@ -472,7 +475,6 @@ do
 	function OnHideNameplate(plate, unitid)
 		local unitGUID = UnitGUID(unitid)
 		--plate.extended:Hide()
-		plate.UnitFrame:Hide()	-- Hide Blizzard Nameplates
 		plate.carrier:Hide()
 
 		UpdateReferences(plate)
@@ -1199,6 +1201,8 @@ do
 		
 		-- Ignore if plate is Personal Display
 		if plate and not UnitIsUnit("player", unitid) then
+			local children = plate:GetChildren()
+			if children then children:Hide() end --Avoids errors incase the plate has no children
 	 		OnShowNameplate(plate, unitid)
 	 	end
 	end
@@ -1250,12 +1254,6 @@ do
 	end
 
 	function CoreEvents:DISPLAY_SIZE_CHANGED()
-		ForEachPlate(function(plate) plate.UnitFrame:Hide() end)
-		SetUpdateAll()
-	end
-
-	function CoreEvents:UI_SCALE_CHANGED()
-		ForEachPlate(function(plate) plate.UnitFrame:Hide() end)
 		SetUpdateAll()
 	end
 
@@ -1581,10 +1579,7 @@ function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function
 
 function NeatPlates:ForceUpdate() ForEachPlate(OnResetNameplate) end
 function NeatPlates:ResetWidgets() ForEachPlate(OnResetWidgets) end
-function NeatPlates:Update(...)
-	ForEachPlate(function(plate) plate.UnitFrame:Hide() end)
-	SetUpdateAll()
-end
+function NeatPlates:Update() SetUpdateAll() end
 
 function NeatPlates:RequestUpdate(plate) if plate then SetUpdateMe(plate) else SetUpdateAll() end end
 
