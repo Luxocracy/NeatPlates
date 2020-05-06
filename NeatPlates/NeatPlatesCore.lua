@@ -1337,15 +1337,15 @@ do
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
 		
-		-- Ignore if plate is Personal Display
-		if plate and not UnitIsUnit("player", unitid) then
-			--local children = plate:GetChildren()
-			--if children then children:Hide() end --Avoids errors incase the plate has no children
-
-			if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
-
-	 		OnShowNameplate(plate, unitid)
-	 	end
+		if plate then
+			if UnitIsUnit("player", unitid) then
+				OnHideNameplate(plate, unitid)
+			else
+				--local children = plate:GetChildren()
+				--if children then children:Hide() end --Avoids errors incase the plate has no children
+				if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
+		 		OnShowNameplate(plate, unitid)
+			end
 	end
 
 	function CoreEvents:NAME_PLATE_UNIT_REMOVED(...)
