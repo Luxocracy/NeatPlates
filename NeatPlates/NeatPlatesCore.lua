@@ -1200,10 +1200,14 @@ do
 		local plate = GetNamePlateForUnit(unitid);
 		
 		-- Ignore if plate is Personal Display
-		if plate and not UnitIsUnit("player", unitid) then
-			--local children = plate:GetChildren()
-			--if children then children:Hide() end --Avoids errors incase the plate has no children
-	 		OnShowNameplate(plate, unitid)
+		if plate then
+			if UnitIsUnit("player", unitid) then
+				OnHideNameplate(plate, unitid)
+			else
+				--local children = plate:GetChildren()
+				--if children then children:Hide() end --Avoids errors incase the plate has no children
+		 		OnShowNameplate(plate, unitid)
+			end
 	 	end
 	end
 
