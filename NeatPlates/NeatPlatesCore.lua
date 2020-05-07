@@ -1346,6 +1346,7 @@ do
 				if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 		 		OnShowNameplate(plate, unitid)
 			end
+		end
 	end
 
 	function CoreEvents:NAME_PLATE_UNIT_REMOVED(...)
