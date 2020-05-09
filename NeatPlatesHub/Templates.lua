@@ -101,59 +101,61 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		end
 	end
 
-	local function CreateQuickEditbox(name, width, height, ...)
-		local columnFrame = ...
-		local frame = CreateFrame("ScrollFrame", name, columnFrame, "UIPanelScrollFrameTemplate")
-		frame.BorderFrame = CreateFrame("Frame", nil, frame )
-		local EditBox = CreateFrame("EditBox", nil, frame)
-		-- Margins	-- Bottom/Left are supposed to be negative
-		frame.Margins = {Left = 4, Right = 24, Top = 8, Bottom = 8, }
-		width, height = width or 150, height or 100
+	--local function CreateQuickEditbox(name, width, height, ...)
+	--	local columnFrame = ...
+	--	local frame = CreateFrame("ScrollFrame", name, columnFrame, "UIPanelScrollFrameTemplate")
+	--	frame.BorderFrame = CreateFrame("Frame", nil, frame )
+	--	local EditBox = CreateFrame("EditBox", nil, frame)
+	--	-- Margins	-- Bottom/Left are supposed to be negative
+	--	frame.Margins = {Left = 4, Right = 24, Top = 8, Bottom = 8, }
+	--	width, height = width or 150, height or 100
 
-		-- Frame Size
-		frame:SetWidth(width+15)
-		frame:SetHeight(height+25)
-		-- Border
-		frame.BorderFrame:SetPoint("TOPLEFT", 0, 5)
-		frame.BorderFrame:SetPoint("BOTTOMRIGHT", 3, -5)
-		frame.BorderFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-											edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-											tile = true, tileSize = 16, edgeSize = 16,
-											insets = { left = 4, right = 4, top = 4, bottom = 4 }
-											});
-		frame.BorderFrame:SetBackdropColor(0.05, 0.05, 0.05, 0)
-		frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
-		-- Text
+	--	-- Frame Size
+	--	frame:SetWidth(width+15)
+	--	frame:SetHeight(height+25)
+	--	-- Border
+	--	frame.BorderFrame:SetPoint("TOPLEFT", 0, 5)
+	--	frame.BorderFrame:SetPoint("BOTTOMRIGHT", 3, -5)
+	--	frame.BorderFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+	--										edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+	--										tile = true, tileSize = 16, edgeSize = 16,
+	--										insets = { left = 4, right = 4, top = 4, bottom = 4 }
+	--										});
+	--	frame.BorderFrame:SetBackdropColor(0.05, 0.05, 0.05, 0)
+	--	frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+	--	-- Text
 
-		EditBox:SetPoint("TOPLEFT")
-		EditBox:SetPoint("BOTTOMLEFT")
-		EditBox:SetHeight(height)
-		EditBox:SetWidth(width)
-		EditBox:SetMultiLine(true)
+	--	EditBox:SetPoint("TOPLEFT")
+	--	EditBox:SetPoint("BOTTOMLEFT")
+	--	EditBox:SetHeight(height)
+	--	EditBox:SetWidth(width)
+	--	EditBox:SetMultiLine(true)
 
-		EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
-		EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
-		--EditBox:SetText("Empty")
-		EditBox:SetText("")
-		EditBox:SetAutoFocus(false)
-		EditBox:SetTextInsets(9, 6, 2, 2)
-		frame:SetScrollChild(EditBox)
-		frame.EditBox = EditBox
-		--EditBox:SetIndentedWordWrap(true)
-		--print(name, EditBox:GetFrameLevel(), frame:GetFrameLevel(), EditBox:GetFrameStrata(), frame:GetFrameStrata())
-		-- Functions
-		--function frame:GetValue() return SplitToTable(strsplit("\n", EditBox:GetText() )) end
-		--function frame:SetValue(value) EditBox:SetText(TableToString(value)) end
-		function frame:GetValue() return EditBox:GetText() end
-		function frame:SetValue(value) EditBox:SetText(value) end
-		frame._SetWidth = frame.SetWidth
-		function frame:SetWidth(value) frame:_SetWidth(value); EditBox:SetWidth(value) end
-		-- Set Positions
-		QuickSetPoints(frame, ...)
-		-- Set Feedback Function
-		--frame.OnValueChanged = columnFrame.OnFeedback
-		return frame, frame
-	end
+	--	EditBox:SetFrameLevel(frame:GetFrameLevel()-1)
+	--	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	--	--EditBox:SetText("Empty")
+	--	EditBox:SetText("")
+	--	EditBox:SetAutoFocus(false)
+	--	EditBox:SetTextInsets(9, 6, 2, 2)
+	--	frame:SetScrollChild(EditBox)
+	--	frame.EditBox = EditBox
+	--	--EditBox:SetIndentedWordWrap(true)
+	--	--print(name, EditBox:GetFrameLevel(), frame:GetFrameLevel(), EditBox:GetFrameStrata(), frame:GetFrameStrata())
+	--	-- Functions
+	--	--function frame:GetValue() return SplitToTable(strsplit("\n", EditBox:GetText() )) end
+	--	--function frame:SetValue(value) EditBox:SetText(TableToString(value)) end
+	--	function frame:GetValue() return EditBox:GetText() end
+	--	function frame:SetValue(value) EditBox:SetText(value) end
+	--	frame._SetWidth = frame.SetWidth
+	--	function frame:SetWidth(value) frame:_SetWidth(value); EditBox:SetWidth(value) end
+	--	-- Set Positions
+	--	QuickSetPoints(frame, ...)
+	--	-- Set Feedback Function
+	--	--frame.OnValueChanged = columnFrame.OnFeedback
+	--	return frame, frame
+	--end
+
+	local CreateQuickEditbox = NeatPlatesUtility.PanelHelpers.CreateEditBox
 
 	local function CreateQuickColorbox(name, label, onOkay, ...)
 		local columnFrame = ...

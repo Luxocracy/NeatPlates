@@ -991,7 +991,20 @@ do
 	end
 end
 
-local function CreateEditBox(self, name, width, height, parent, ...)
+local function QuickSetPoints(frame, columnFrame, neighborFrame, xOffset, yOffset)
+		local TopOffset = frame.Margins.Top + (yOffset or 0)
+		local LeftOffset = frame.Margins.Left + (xOffset or 0)
+		frame:ClearAllPoints()
+		if neighborFrame then
+			if neighborFrame.Margins then TopOffset = neighborFrame.Margins.Bottom + TopOffset + (yOffset or 0) end
+			frame:SetPoint("TOP", neighborFrame, "BOTTOM", -(neighborFrame:GetWidth()/2), -TopOffset)
+		else frame:SetPoint("TOP", columnFrame, "TOP", 0, -TopOffset) end
+		frame:SetPoint("LEFT", columnFrame, "LEFT", LeftOffset, 0)
+end
+
+
+local function CreateEditBox(name, width, height, ...)
+	local parent = ...
 	local frame = CreateFrame("ScrollFrame", name, parent, "UIPanelScrollFrameTemplate")
 	frame.BorderFrame = CreateFrame("Frame", nil, frame )
 	local EditBox = CreateFrame("EditBox", nil, frame)
@@ -1041,7 +1054,8 @@ local function CreateEditBox(self, name, width, height, parent, ...)
 	frame._SetWidth = frame.SetWidth
 	function frame:SetWidth(value) frame:_SetWidth(value); EditBox:SetWidth(value) end
 	-- Set Positions
-	frame:SetPoint(...)
+	--frame:SetPoint(...)
+	QuickSetPoints(frame, ...)
 
 	return frame, frame
 end

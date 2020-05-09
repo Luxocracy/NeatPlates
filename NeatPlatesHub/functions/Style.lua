@@ -111,7 +111,6 @@ AddHubFunction(StyleModeFunctions, NeatPlatesHubMenus.StyleModes, StyleBarsOnLow
 
 local function StyleIndexDelegate(unit)
 	local func
-
 	--if unit.reaction == "FRIENDLY" then func = StyleModeFunctions[LocalVars.StyleFriendlyMode or 0] or StyleBarAlways
 	--else func = StyleModeFunctions[LocalVars.StyleEnemyMode or 0] or StyleBarAlways end
 
@@ -163,8 +162,8 @@ local function StyleNameDelegate(unit)
 		end
 	elseif unit.reaction == "NEUTRAL" then
 		-- if IsUnitActive(unit) and LocalVars.StyleEnemyBarsOnActive then return "Default" end
-		if unit.threatValue > 1 then return "Default"
-		elseif LocalVars.StyleHeadlineNeutral then return "NameOnly"
+		--if unit.threatValue > 1 then return "Default"
+		if LocalVars.StyleHeadlineNeutral then return "NameOnly"
 		elseif IsUnitActive(unit) and LocalVars.StyleEnemyBarsOnActive then return "Default"
 		elseif LocalVars.StyleEnemyBarsOnNPC then return "Default"
 		end

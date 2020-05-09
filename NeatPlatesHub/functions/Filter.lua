@@ -13,7 +13,7 @@ local function UnitFilter(unit)
 	if LocalVars.OpacityFilterLookup[unit.name] then return true
 	elseif LocalVars.OpacityFilterLowLevelUnits and unit.isTrivial then return true
 	elseif LocalVars.OpacityFilterNeutralUnits and unit.reaction == "NEUTRAL" then return true
-	elseif LocalVars.OpacityFilterUntitledFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" and not (GetUnitSubtitle(unit) or GetUnitQuestInfo(unit))  then return true
+	elseif LocalVars.OpacityFilterUntitledFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" and not (GetUnitSubtitle(unit) or next(GetUnitQuestInfo(unit)) ~= nil)  then return true
 	elseif LocalVars.OpacityFilterFriendlyNPC and unit.type == "NPC" and unit.reaction == "FRIENDLY" and not unit.isPet then return true
 	elseif LocalVars.OpacityFilterFriendlyPet and unit.type == "NPC" and unit.reaction == "FRIENDLY" and unit.isPet then return true
 	elseif LocalVars.OpacityFilterEnemyNPC and unit.type == "NPC" and unit.reaction == "HOSTILE" and not unit.isPet then return true

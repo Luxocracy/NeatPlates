@@ -672,7 +672,7 @@ local function BuildInterfacePanel(panel)
 	panel.GlobalAuraLabel:SetJustifyH("LEFT")
 	panel.GlobalAuraLabel:SetText(L["Additional Auras"]..':')
 
-	panel.GlobalAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", -2, -12)
+	panel.GlobalAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, panel.GlobalAuraLabel, 16, 0)
 	panel.GlobalAuraEditBox:SetWidth(200)
 	PanelHelpers.CreateEditBoxButton(panel.GlobalAuraEditBox, function() OnOkay(_panel) end)
 
@@ -685,7 +685,7 @@ local function BuildInterfacePanel(panel)
 	panel.GlobalEmphasizedAuraLabel:SetJustifyH("LEFT")
 	panel.GlobalEmphasizedAuraLabel:SetText(L["Emphasized Auras"]..':')
 
-	panel.GlobalEmphasizedAuraEditBox = PanelHelpers:CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, "TOPLEFT", panel.GlobalEmphasizedAuraLabel, "BOTTOMLEFT", -2, -12)
+	panel.GlobalEmphasizedAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, panel.GlobalEmphasizedAuraLabel, 264, 0)
 	panel.GlobalEmphasizedAuraEditBox:SetWidth(200)
 	PanelHelpers.CreateEditBoxButton(panel.GlobalEmphasizedAuraEditBox, function() OnOkay(_panel) end)
 
