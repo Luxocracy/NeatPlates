@@ -11,7 +11,10 @@ local casty = 0
 local VerticalAdjustment = 12
 
 local NonLatinLocales = { ["koKR"] = true, ["zhCN"] = true, ["zhTW"] = true, }
-if NonLatinLocales[GetLocale()] == true then font = STANDARD_TEXT_FONT end
+if NonLatinLocales[GetLocale()] == true then
+	font = STANDARD_TEXT_FONT
+	fontroboto = STANDARD_TEXT_FONT
+end
 
 
 local Theme = {}

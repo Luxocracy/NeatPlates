@@ -398,6 +398,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
   		EnableCheckbox = function(self, option) return (option.enabled == true or self.category == "main" and option.enabled ~= false) end,
   		AnchorOptions = function(self, option) return option.anchor ~= nil end,
   		AlignOptions = function(self, option) return option.align ~= nil end,
+  		FontSize = function(self, option) return option.size ~= nil end,
   		OffsetX = function(self, option) return option.x ~= nil end,
   		OffsetY = function(self, option) return option.y ~= nil end,
   		OffsetWidth = function(self, option) return option.width ~= nil or option.w ~= nil end,
@@ -436,6 +437,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  	local getOptionValue = function(item, defaultValue)
 	  		local objectName = getObjectName(item)
 	  		local value = current[objectName]
+	  		if type(value) == "table" and value.value then value = value.value end
 
 	  		if value == nil and defaultValue ~= nil then value = defaultValue
 	  		elseif value == nil then value = default[objectName] end
@@ -466,7 +468,12 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  			if itemType == "boolean" then
 	  				item:SetChecked(getOptionValue(item))
 	  			elseif itemType == "number" then
-						item:updateValues(getOptionValue(item, 0))
+	  				-- For Offsets default value to zero instead of actaul value
+	  				if item.objectType == "offset" then
+							item:updateValues(getOptionValue(item, 0))
+	  				else
+							item:updateValues(getOptionValue(item))
+	  				end
 					elseif item.objectName then
 						item:SetValue(getOptionValue(item))
 					elseif self.value == "import" then
@@ -551,20 +558,27 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			CustomizationPanel.AlignOptions:SetPoint("TOPLEFT", CustomizationPanel.AnchorOptions, "BOTTOMLEFT", 0, -20)
 			CustomizationPanel.AlignOptions.objectName = "align"
 
+			CustomizationPanel.FontSize = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_FontSize", CustomizationPanel, L["Font Size"], 0, 1, 50, 1, "ACTUAL", 160, false)
+			CustomizationPanel.FontSize:SetPoint("TOPRIGHT", CustomizationPanel.StyleDropdown, "BOTTOMRIGHT", 20, -42)
+			CustomizationPanel.FontSize.objectName = "size"
 			CustomizationPanel.OffsetX = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetX", CustomizationPanel, L["Offset X"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetX:SetPoint("TOPRIGHT", CustomizationPanel.StyleDropdown, "BOTTOMRIGHT", 20, -84)
 			CustomizationPanel.OffsetX.objectName = "x"
+			CustomizationPanel.OffsetX.objectType = 'offset'
 			CustomizationPanel.OffsetY = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetY", CustomizationPanel, L["Offset Y"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetY:SetPoint("TOPLEFT", CustomizationPanel.OffsetX, "TOPLEFT", 0, -45)
 			CustomizationPanel.OffsetY.objectName = "y"
+			CustomizationPanel.OffsetY.objectType = 'offset'
 			CustomizationPanel.OffsetWidth = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetWidth", CustomizationPanel, L["Offset Width"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetWidth:SetPoint("RIGHT", CustomizationPanel.OffsetX, "LEFT", -30, 0)
 			CustomizationPanel.OffsetWidth.objectName = {"width", "w"}
+			CustomizationPanel.OffsetWidth.objectType = 'offset'
 			CustomizationPanel.OffsetHeight = PanelHelpers:CreateSliderFrame("NeatPlatesCustomizationPanel_OffsetHeight", CustomizationPanel, L["Offset Height"], 0, -50, 50, 1, "ACTUAL", 160, true)
 			CustomizationPanel.OffsetHeight:SetPoint("TOPLEFT", CustomizationPanel.OffsetWidth, "TOPLEFT", 0, -45)
 			CustomizationPanel.OffsetHeight.objectName = {"height", "h"}
+			CustomizationPanel.OffsetHeight.objectType = 'offset'
 
-			CustomizationPanel.ImportExport = PanelHelpers:CreateEditBox("NeatPlatesCustomizationPanel_ImportExport", 340, 190, CustomizationPanel, "TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 30, -10)
+			CustomizationPanel.ImportExport = PanelHelpers.CreateEditBox("NeatPlatesCustomizationPanel_ImportExport", 340, 190, CustomizationPanel, "TOPLEFT", CustomizationPanel.List, "TOPRIGHT", 30, -10)
 
 			CustomizationPanel.ResetPrompt = CreateFrame("Frame", 'NeatPlatesCustomizationPanel_ResetPromp', CustomizationPanel, "NeatPlatesPromptTemplate")
 			CustomizationPanel.ResetPrompt:SetPoint("LEFT", CustomizationPanel.List, "RIGHT", 60, 20)
@@ -682,7 +696,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					for k,v in pairs(CustomizationPanel) do
 						if type(v) == "table" and v.enabled and v.objectName then
 							local valueFunc = v.GetChecked or v.GetValue
-							NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, category, activeOption, v.objectName, valueFunc(v))
+							if not v.objectType then v.objectType = 'actual' end
+
+							NeatPlatesHubFunctions.SetCustomizationOption(CustomizationPanel.profile, category, activeOption, v.objectName, {type = v.objectType, value = valueFunc(v)})
 						end
 					end
 				end
@@ -897,7 +913,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		    self:StopMovingOrSizing()
 		  end)
 
-		  panel.EditBox = PanelHelpers:CreateEditBox("NeatPlatesEditboxPopupEditbox", 340, 190, panel, "TOPLEFT", 20, -40)
+		  panel.EditBox = PanelHelpers.CreateEditBox("NeatPlatesEditboxPopupEditbox", 340, 190, panel, "TOPLEFT", 20, -40)
 		  panel.EditBox.EditBox:SetScript("OnEditFocusGained", function()
 				if panel.HighlightText then
 					panel.EditBox.EditBox:HighlightText()

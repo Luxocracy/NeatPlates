@@ -695,6 +695,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		local value = val or self.ceil(self:GetValue(self))
 		if infinite then
 			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum+value, maximum+value, step)
+		else
+			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum, maximum, step)
 		end
 		if parent.OnValueChanged then parent.OnValueChanged(slider) end
 		if slider.OnValueChanged then slider.OnValueChanged(slider) end
@@ -989,8 +991,7 @@ local function QuickSetPoints(frame, columnFrame, neighborFrame, xOffset, yOffse
 end
 
 
-local function CreateEditBox(name, width, height, ...)
-	local parent = ...
+local function CreateEditBox(name, width, height, parent, anchorFrame, ...)
 	local frame = CreateFrame("ScrollFrame", name, parent, "UIPanelScrollFrameTemplate")
 	frame.BorderFrame = CreateFrame("Frame", nil, frame )
 	local EditBox = CreateFrame("EditBox", nil, frame)
@@ -1040,8 +1041,11 @@ local function CreateEditBox(name, width, height, ...)
 	frame._SetWidth = frame.SetWidth
 	function frame:SetWidth(value) frame:_SetWidth(value); EditBox:SetWidth(value) end
 	-- Set Positions
-	--frame:SetPoint(...)
-	QuickSetPoints(frame, ...)
+	if type(anchorFrame) == "table" then
+		QuickSetPoints(frame, parent, anchorFrame, ...)
+	else
+		frame:SetPoint(anchorFrame, ...)
+	end
 
 	return frame, frame
 end
