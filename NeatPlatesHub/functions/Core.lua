@@ -384,10 +384,26 @@ local function ApplyThemeCustomization(theme)
 			for k,v in pairs(modifications) do
 				if style[k] then
 					for k2,v2 in pairs(v) do
-						if type(style[k][k2]) == "number" then
-							style[k][k2] = style[k][k2] + v2
+						local objectType = nil
+						local value = v2
+						if type(v2) == "table" and v2.value then
+							objectType = v2.type
+							value = v2.value
+						end
+
+						if objectType then
+							if type(style[k][k2]) == "number" and objectType == "offset" then
+								style[k][k2] = style[k][k2] + value
+							else
+								style[k][k2] = value
+							end
 						else
-							style[k][k2] = v2
+							-- Backwards compatability
+							if type(style[k][k2]) == "number" then
+								style[k][k2] = style[k][k2] + value
+							else
+								style[k][k2] = value
+							end
 						end
 					end
 				end

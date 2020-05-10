@@ -514,6 +514,7 @@ L["Blizzard Nameplate Motion & Visibility..."] = true
 L["Theme Customization"] = true
 L["Offset Width"] = true
 L["Offset Height"] = true
+L["Font Size"] = true
 
 L["customtext"] = "Status Text"
 --L["targetindicator"] = "Target Indicator"
