@@ -1204,8 +1204,8 @@ do
 			if UnitIsUnit("player", unitid) then
 				OnHideNameplate(plate, unitid)
 			else
-				--local children = plate:GetChildren()
-				--if children then children:Hide() end --Avoids errors incase the plate has no children
+				local children = plate:GetChildren()
+				if children then children:Hide() end --Avoids errors incase the plate has no children
 		 		OnShowNameplate(plate, unitid)
 			end
 	 	end
