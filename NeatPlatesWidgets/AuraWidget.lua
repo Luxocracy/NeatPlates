@@ -12,7 +12,7 @@ local LibClassicDurations = LibStub("LibClassicDurations", true)
 local LCDUnitAura = function() end
 if LibClassicDurations then
     LibClassicDurations:Register("NeatPlates")
-    LCDUnitAura = LibClassicDurations.UnitAuraWrapper
+    LCDUnitAura = LibClassicDurations.UnitAuraWithBuffs
 end
 
 
