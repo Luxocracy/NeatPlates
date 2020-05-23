@@ -502,8 +502,15 @@ local function TextQuest(unit)
 	if unit.type == "NPC" then
 
 		-- Prototype for displaying quest information on Nameplates
-		local questName, questObjective = GetUnitQuestInfo(unit)
-		return questObjective
+		-- Return first incomplete questObjective found
+		local questList = GetUnitQuestInfo(unit)
+		for questName, questObjectives in pairs(questList) do
+			for questObjective, questCompleted in pairs(questObjectives) do
+				if not questCompleted then
+					return questObjective
+				end
+			end
+		end
 	end
 end
 

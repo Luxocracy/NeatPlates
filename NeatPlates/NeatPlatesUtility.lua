@@ -278,7 +278,7 @@ local function GetUnitQuestInfo(unit)
     local unitid = unit.unitid
     local questName, questUnit, questProgress
     local questList = {}
-    local questTexture = {[628564] = true, [3083385] = true}
+    local questTexture = {[628564] = true, [3083385] = false}	-- 628564(Completed), 3083385(Incomplete/In progress)
     local objectiveCount = 0
 
     if not unitid then return end
@@ -287,10 +287,15 @@ local function GetUnitQuestInfo(unit)
     TooltipScanner:SetUnit(unitid)
 
   	-- Get lines with quest information on them
+    local questCompleted = {}
     for line = 1, TooltipScanner:NumLines() do
     	 -- Get amount of quest objectives through counting textures
     	local texture = _G[ScannerName .. "Texture" .. line]
-    	if texture and questTexture[texture:GetTexture()] then objectiveCount = objectiveCount + 1 end
+    	
+    	if texture and  questTexture[texture:GetTexture()] ~= nil then
+    		objectiveCount = objectiveCount + 1
+    		questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
+    	end
 
     	if line > 1 then
 	    	local tooltipText, r, g, b = GetTooltipLineText( line )
@@ -300,7 +305,15 @@ local function GetUnitQuestInfo(unit)
 	      	questName = tooltipText
 	      	questList[questName] = questList[questName] or {}
 	      elseif questName and objectiveCount > 0 then
-	      	table.insert(questList[questName], tooltipText)
+					questList[questName][tooltipText] = questCompleted[#questCompleted+1 - objectiveCount]	-- Quest objective completed?
+
+					-- Old method for checking quest completion as backup
+					if questList[questName][tooltipText] == nil then
+						local questProgress, questTotal = string.match(tooltipText, "([0-9]+)\/([0-9]+)")
+						questProgress = tonumber(questProgress)
+						questTotal = tonumber(questTotal)
+					 	questList[questName][tooltipText] = not (not (questProgress and questTotal) or (questProgress and questTotal and questProgress < questTotal))
+					 end
 	      	objectiveCount = objectiveCount - 1 -- Decrease objective Count
 	      end
       end
