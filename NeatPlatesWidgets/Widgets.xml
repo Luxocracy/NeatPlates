@@ -22,6 +22,7 @@
 	<Script file="QuestWidget.lua"/>
 	<Script file="ThreatPercentageWidget.lua"/>
 	<Script file="RangeWidget.lua"/>
+	<Script file="ArenaWidget.lua"/>
 
 
 

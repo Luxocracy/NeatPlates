@@ -267,6 +267,7 @@ NeatPlatesHubDefaults = {
 	WidgetAbsorbMode = 1,
 	WidgetQuestIcon = false,
 	WidgetThreatPercentage = false,
+	WidgetArenaIcon = false,
 
 	-- Aura Widget
 	---------------------------------------

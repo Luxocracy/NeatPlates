@@ -9,6 +9,7 @@ local WidgetLib = NeatPlatesWidgets
 
 local CreateThreatLineWidget = WidgetLib.CreateThreatLineWidget
 local CreateAuraWidget = WidgetLib.CreateAuraWidget
+local CreateArenaWidget = WidgetLib.CreateArenaWidget
 local CreateClassWidget = WidgetLib.CreateClassWidget
 local CreateRangeWidget = WidgetLib.CreateRangeWidget
 local CreateComboPointWidget = WidgetLib.CreateComboPointWidget
@@ -325,6 +326,11 @@ NeatPlatesHubMenus.WidgetOptions = {
 		value = "ClassIcon",
 		tooltip = L["ClassIcon_tooltip"],
 	},
+	{
+		text = L["ArenaIcon"],
+		value = "ArenaWidget",
+		tooltip = L["ArenaIcon_tooltip"],
+	},
 }
 
 
@@ -591,6 +597,7 @@ local function OnInitializeWidgets(extended, configTable)
 	local EnableComboWidget = LocalVars.WidgetComboPoints
 	local EnableThreatWidget = LocalVars.WidgetThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetDebuff
+	local EnableArenaWidget = LocalVars.WidgetArenaIcon
 	local EnableAbsorbWidget = LocalVars.WidgetAbsorbIndicator
 	local EnableQuestWidget = LocalVars.WidgetQuestIcon
 	local EnableThreatPercentageWidget = LocalVars.WidgetThreatPercentage
@@ -604,6 +611,7 @@ local function OnInitializeWidgets(extended, configTable)
 	InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
 	InitWidget( "ThreatPercentageWidgetHub", extended, configTable.ThreatPercentageWidget, CreateThreatPercentageWidget, EnableThreatPercentageWidget)
 	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
+	InitWidget( "ArenaWidgetHub", extended, configTable.ArenaWidget, CreateArenaWidget, EnableArenaWidget)
 
 	if EnableComboWidget and configTable.DebuffWidgetPlus then
 		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
@@ -636,6 +644,9 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if LocalVars.WidgetRangeIndicator and widgets.RangeWidgetHub then
 		widgets.RangeWidgetHub:UpdateContext(unit) end
+
+	if LocalVars.WidgetArenaIcon and widgets.ArenaWidgetHub then
+		widgets.ArenaWidgetHub:UpdateContext(unit) end
 
 	if LocalVars.WidgetQuestIcon and widgets.QuestWidgetHub then
 		widgets.QuestWidgetHub:UpdateContext(unit, extended) end

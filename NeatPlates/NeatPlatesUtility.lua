@@ -328,8 +328,23 @@ local function GetUnitQuestInfo(unit)
 	  return {}
 end
 
+local arenaUnitIDs = {"arena1", "arena2", "arena3", "arena4", "arena5"}
+
+local function GetArenaIndex(unitname)
+	-- Kinda hackish.  would be faster to cache the arena names using event handler.  later!
+	if IsActiveBattlefieldArena() then
+		local unitid, name
+		for i = 1, #arenaUnitIDs do
+			unitid = arenaUnitIDs[i]
+			name = UnitName(unitid)
+			if name and (name == unitname) then return i end
+		end
+	end
+end
+
 
 NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfo
+NeatPlatesUtility.GetArenaIndex = GetArenaIndex
 
 ------------------------
 -- Threat Function

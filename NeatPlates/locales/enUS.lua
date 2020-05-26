@@ -471,6 +471,7 @@ L["Other Widgets"] = true
 
 L["Show Target Highlight"] = true
 L["Show Elite Icon"] = true
+L["Show Arena ID"] = true
 L["Show Enemy Class Art"] = true
 L["Show Friendly Class Art"] = true
 L["Class Icon"] = true
@@ -560,6 +561,7 @@ L["TotemIcon"] = "Totem Icon"
 L["QuestWidget"] = "Quest Widget"
 L["RangeWidget"] = "Range Indicator"
 L["ClassIcon"] = "Class Icon"
+L["ArenaIcon"] = "Arena Icon"
 
 L["Main"] = true
 L["Widgets"] = true
@@ -617,6 +619,7 @@ L["TotemIcon_tooltip"] = "The totem icon"
 L["QuestWidget_tooltip"] = "Quest icon for normal healthbar mode"
 L["RangeWidget_tooltip"] = "The range indicator widget"
 L["ClassIcon_tooltip"] = "The class icon"
+L["ArenaIcon_tooltip"] = "The arena id icon"
 
 L["Import_tooltip"] = "Import configuration"
 L["Export_tooltip"] = "Export configuration"

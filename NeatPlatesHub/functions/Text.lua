@@ -24,6 +24,7 @@ local CachedUnitDescription = NeatPlatesUtility.CachedUnitDescription
 
 local GetUnitSubtitle = NeatPlatesUtility.GetUnitSubtitle
 local GetUnitQuestInfo = NeatPlatesUtility.GetUnitQuestInfo
+local GetArenaIndex = NeatPlatesUtility.GetArenaIndex
 local round = NeatPlatesUtility.round
 
 
@@ -46,21 +47,6 @@ local function GetLevelDescription(unit)
 	description = "Level "..unit.level
 	if unit.isElite then description = description.." (Elite)" end
 	return description
-end
-
-
-local arenaUnitIDs = {"arena1", "arena2", "arena3", "arena4", "arena5"}
-
-local function GetArenaIndex(unitname)
-	-- Kinda hackish.  would be faster to cache the arena names using event handler.  later!
-	if IsActiveBattlefieldArena() then
-		local unitid, name
-		for i = 1, #arenaUnitIDs do
-			unitid = arenaUnitIDs[i]
-			name = UnitName(unitid)
-			if name and (name == unitname) then return i end
-		end
-	end
 end
 
 
@@ -237,6 +223,7 @@ local function HealthFunctionArenaIDOnly(unit)
 
 	--]]
 end
+local TextArenaIDOnly = HealthFunctionArenaIDOnly
 
 -- Arena Vitals (ID, Mana, Health
 local function HealthFunctionArenaID(unit)
@@ -557,6 +544,7 @@ AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextMod
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextUnitTitle, L["Unit Title"], "UnitTitle")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextLevelColored, L["Level"], "Level")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextQuest, L["Quest"], "Quest")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextArenaIDOnly, L["Arena ID"], "TextArenaIDOnly")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextAll, L["Everything"], "RoleGuildLevelHealth")
 
 --[[
@@ -643,4 +631,5 @@ HubData.RegisterCallback(OnVariableChange)
 NeatPlatesHubFunctions.SetCustomText = HealthTextDelegate
 NeatPlatesHubFunctions.SetSubText = SubTextDelegate
 NeatPlatesHubFunctions.SetCastbarDuration = CastbarDurationDelegate
+NeatPlatesHubFunctions.GetArenaIndex = GetArenaIndex
 
