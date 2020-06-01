@@ -70,6 +70,17 @@ StyleDefault.eliteicon = {
 	anchor = "RIGHT",
 }
 
+StyleDefault.targetindicator = {
+	texture = 					"Interface\\Tooltips\\Nameplate-Glow",
+	width = 130,
+	height = 50,
+	x = 0,
+	y = 12,
+	anchor = "CENTER",
+	show = true,
+	blend = "ADD",
+}
+
 StyleDefault.targetindicator_arrowtop = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
 	width = 64,
@@ -330,7 +341,6 @@ StyleTextOnly.raidicon.y = 15
 StyleTextOnly.raidicon.height = 14
 StyleTextOnly.raidicon.width = 14
 StyleTextOnly.raidicon.anchor = "TOP"
-StyleTextOnly.highlight.texture = EmptyTexture
 
 
 Theme["Default"] = StyleDefault

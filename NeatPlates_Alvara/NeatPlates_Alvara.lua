@@ -51,6 +51,15 @@ StyleDefault.eliteicon = {
 	anchor = "CENTER",
 	show = true,
 }
+StyleDefault.targetindicator = {
+	texture		 =				path.."\\Highlight",
+	width = 130,
+	height = 15,
+	x = 0,
+	y = 0,
+	anchor = "CENTER",
+	show = true,
+}
 StyleDefault.targetindicator_arrowtop = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Top",
 	width = 64,
