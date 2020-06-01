@@ -386,7 +386,7 @@ local function ApplyThemeCustomization(theme)
 					for k2,v2 in pairs(v) do
 						local objectType = nil
 						local value = v2
-						if type(v2) == "table" and v2.value then
+						if type(v2) == "table" and v2.value ~= nil then
 							objectType = v2.type
 							value = v2.value
 						end

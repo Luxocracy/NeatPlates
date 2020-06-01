@@ -19,12 +19,14 @@ TemplateTheme.hitbox = {
 	height = 45,
 	x = 0,
 	y = 0,
+	enabled = true,
 }
 
 TemplateTheme.highlight = {
 	texture =					EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
+	enabled = true,
 }
 
 TemplateTheme.healthborder = {
@@ -40,6 +42,7 @@ TemplateTheme.healthborder = {
 	right = 1,
 	top = 0,
 	bottom = 1,
+	enabled = true,
 }
 
 TemplateTheme.extraborder = {
@@ -50,6 +53,7 @@ TemplateTheme.extraborder = {
 	y = -11,
 	anchor = "CENTER",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.eliteicon = {
@@ -65,6 +69,7 @@ TemplateTheme.eliteicon = {
 	right = 1,
 	top = 0,
 	bottom = 1,
+	enabled = true,
 }
 
 TemplateTheme.threatborder = {
@@ -81,6 +86,7 @@ TemplateTheme.threatborder = {
 	right = 1,
 	top = 0,
 	bottom = 1,
+	enabled = true,
 }
 
 
@@ -93,6 +99,7 @@ TemplateTheme.castborder = {
 	y = -11,
 	anchor = "CENTER",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.castnostop = {
@@ -104,6 +111,7 @@ TemplateTheme.castnostop = {
 	y = -11,
 	anchor = "CENTER",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.name = {
@@ -119,6 +127,7 @@ TemplateTheme.name = {
 	shadow = true,
 	flags = "NONE",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.subtext = {
@@ -135,6 +144,7 @@ TemplateTheme.subtext = {
 	shadow = true,
 	flags = "NONE",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.level = {
@@ -150,6 +160,7 @@ TemplateTheme.level = {
 	shadow = true,
 	flags = "NONE",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.healthbar = {
@@ -162,6 +173,7 @@ TemplateTheme.healthbar = {
 	y = 10,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	enabled = true,
 }
 
 TemplateTheme.powerbar = {
@@ -174,6 +186,7 @@ TemplateTheme.powerbar = {
 	y = 10,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	enabled = true,
 }
 
 TemplateTheme.extrabar = {
@@ -185,6 +198,7 @@ TemplateTheme.extrabar = {
 	y = -19,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	enabled = true,
 }
 
 TemplateTheme.castbar = {
@@ -196,6 +210,7 @@ TemplateTheme.castbar = {
 	y = -19,
 	anchor = "CENTER",
 	orientation = "HORIZONTAL",
+	enabled = true,
 }
 
 TemplateTheme.extratext = {
@@ -211,6 +226,7 @@ TemplateTheme.extratext = {
 	shadow = true,
 	flags = "NONE",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.spelltext = {
@@ -227,6 +243,7 @@ TemplateTheme.spelltext = {
 	flags = "NONE",
 	show = false,
 	durationtext = false,
+	enabled = true,
 }
 
 TemplateTheme.durationtext = {
@@ -242,6 +259,7 @@ TemplateTheme.durationtext = {
 	shadow = true,
 	flags = "NONE",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.customtext = {
@@ -257,6 +275,7 @@ TemplateTheme.customtext = {
 	shadow = true,
 	flags = "NONE",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.spellicon = {
@@ -266,6 +285,7 @@ TemplateTheme.spellicon = {
 	y = -19,
 	anchor = "CENTER",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.raidicon = {
@@ -276,6 +296,7 @@ TemplateTheme.raidicon = {
 	y = 7,
 	anchor = "TOP",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.skullicon = {
@@ -286,6 +307,7 @@ TemplateTheme.skullicon = {
 	y = 3,
 	anchor = "CENTER",
 	show = true,
+	enabled = true,
 }
 
 TemplateTheme.frame = {
@@ -294,6 +316,7 @@ TemplateTheme.frame = {
 	x = 0,
 	y = 0,
 	anchor = "CENTER",
+	enabled = true,
 }
 
 TemplateTheme.targetindicator = {
@@ -305,6 +328,8 @@ TemplateTheme.targetindicator = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	blend = "BLEND",
+	enabled = true,
 }
 
 TemplateTheme.targetindicator_arrowtop = {
@@ -316,6 +341,7 @@ TemplateTheme.targetindicator_arrowtop = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.targetindicator_arrowsides = {
@@ -327,6 +353,7 @@ TemplateTheme.targetindicator_arrowsides = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 TemplateTheme.targetindicator_arrowright = {
 	color = {},
@@ -337,6 +364,7 @@ TemplateTheme.targetindicator_arrowright = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.targetindicator_arrowleft = {
@@ -348,6 +376,7 @@ TemplateTheme.targetindicator_arrowleft = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.target = {
@@ -359,6 +388,7 @@ TemplateTheme.target = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.focus = {
@@ -370,6 +400,7 @@ TemplateTheme.focus = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.mouseover = {
@@ -381,16 +412,19 @@ TemplateTheme.mouseover = {
 	y = -5,
 	anchor = "CENTER",
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.rangeindicator = {
 	show = false,
+	enabled = true,
 }
 
 TemplateTheme.threatcolor = {
 	LOW = { r = .75, g = 1, b = 0, a= 1, },
 	MEDIUM = { r = 1, g = 1, b = 0, a = 1, },
 	HIGH = { r = 1, g = 0, b = 0, a = 1, },
+	enabled = true,
 }
 
 -----------------------------------------------

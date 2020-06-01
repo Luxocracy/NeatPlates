@@ -395,7 +395,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		-- Buttons states
 		local options = {
   		StyleDropdown = function(self, option) return self.category == "main" end,
-  		EnableCheckbox = function(self, option) return (option.enabled == true or self.category == "main" and option.enabled ~= false) end,
+  		EnableCheckbox = function(self, option) return (option.enabled == true or (self.category == "main" and option.enabled ~= false)) end,
   		AnchorOptions = function(self, option) return option.anchor ~= nil end,
   		AlignOptions = function(self, option) return option.align ~= nil end,
   		FontSize = function(self, option) return option.size ~= nil end,
@@ -437,7 +437,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  	local getOptionValue = function(item, defaultValue)
 	  		local objectName = getObjectName(item)
 	  		local value = current[objectName]
-	  		if type(value) == "table" and value.value then value = value.value end
+	  		if type(value) == "table" and value.value ~= nil then value = value.value end
 
 	  		if value == nil and defaultValue ~= nil then value = defaultValue
 	  		elseif value == nil then value = default[objectName] end
@@ -546,9 +546,9 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		  CustomizationPanel.StyleDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_StyleDropdown", CustomizationPanel, StyleOptions, "Default", L["Style Mode"], true)
 			CustomizationPanel.StyleDropdown:SetPoint("TOPRIGHT", CustomizationPanel, "TOPRIGHT", -45, -54)
 			CustomizationPanel.StyleDropdown.OnValueChanged = function() updatePanelValues() end
-			CustomizationPanel.EnableCheckbox = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnableCheckbox", CustomizationPanel, L["Show Element"])
+			CustomizationPanel.EnableCheckbox = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnableCheckbox", CustomizationPanel, L["Element Enabled"])
 			CustomizationPanel.EnableCheckbox:SetPoint("TOPLEFT", CustomizationPanel.StyleDropdown, "BOTTOMLEFT", 16, 4)
-			CustomizationPanel.EnableCheckbox.objectName = "show"
+			CustomizationPanel.EnableCheckbox.objectName = "enabled"
 			CustomizationPanel.EnableCheckbox:SetScript("OnClick", function(self) CustomizationPanel.OnValueChanged(self) end)
 
 			CustomizationPanel.AnchorOptions = PanelHelpers:CreateDropdownFrame("NeatPlatesCustomizationPanel_AnchorOptions", CustomizationPanel, AnchorOptions, "CENTER", L["Frame Anchor"], true)

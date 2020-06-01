@@ -910,7 +910,7 @@ do
 	-- UpdateIndicator_Subtext:
 	function UpdateIndicator_Subtext()
 		-- Subtext
-		if style.subtext.show and activetheme.SetSubText then
+		if style.subtext.show and style.subtext.enabled and activetheme.SetSubText then
 				local text, r, g, b, a = activetheme.SetSubText(unit)
 				visual.subtext:SetText( text or "")
 				visual.subtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
@@ -920,7 +920,7 @@ do
 
 	-- UpdateIndicator_Level:
 	function UpdateIndicator_Level()
-		if unit.isBoss and style.skullicon.show then visual.level:Hide(); visual.skullicon:Show() else visual.skullicon:Hide() end
+		if unit.isBoss and style.skullicon.show and style.skullicon.enabled then visual.level:Hide(); visual.skullicon:Show() else visual.skullicon:Hide() end
 
 		if unit.level < 0 then visual.level:SetText("")
 		else visual.level:SetText(unit.level) end
@@ -930,7 +930,7 @@ do
 
 	-- UpdateIndicator_ThreatGlow: Updates the aggro glow
 	function UpdateIndicator_ThreatGlow()
-		if not style.threatborder.show then return end
+		if not style.threatborder.show and style.threatborder.enabled then return end
 		threatborder = visual.threatborder
 		if activetheme.SetThreatColor then
 
@@ -949,11 +949,11 @@ do
 	function UpdateIndicator_Highlight()
 		local current = nil
 		
-		if not current and unit.isTarget and style.target.show then current = 'target'; visual.target:Show() else visual.target:Hide() end
-		if not current and unit.isFocus and style.focus.show then current = 'focus'; visual.focus:Show() else visual.focus:Hide() end
-		if not current and unit.isMouseover and style.mouseover.show then current = 'mouseover'; visual.mouseover:Show() else visual.mouseover:Hide() end
+		if not current and unit.isTarget and style.target.show and style.target.enabled then current = 'target'; visual.target:Show() else visual.target:Hide() end
+		if not current and unit.isFocus and style.focus.show and style.focus.enabled then current = 'focus'; visual.focus:Show() else visual.focus:Hide() end
+		if not current and unit.isMouseover and style.mouseover.show and style.mouseover.enabled then current = 'mouseover'; visual.mouseover:Show() else visual.mouseover:Hide() end
 
-		if unit.isMouseover and not unit.isTarget then visual.highlight:Show() else visual.highlight:Hide() end
+		if unit.isMouseover and not unit.isTarget and style.highlight.enabled then visual.highlight:Show() else visual.highlight:Hide() end
 
 		if current then visual[current]:SetVertexColor(style[current].color.r, style[current].color.g, style[current].color.b, style[current].color.a) end
 	end
@@ -961,7 +961,7 @@ do
 
 	-- UpdateIndicator_RaidIcon
 	function UpdateIndicator_RaidIcon()
-		if unit.isMarked and style.raidicon.show then
+		if unit.isMarked and style.raidicon.show and style.raidicon.enabled then
 			local iconCoord = RaidIconCoordinate[unit.raidIcon]
 			if iconCoord then
 				visual.raidicon:Show()
@@ -974,7 +974,7 @@ do
 	-- UpdateIndicator_EliteIcon: Updates the border overlay art and threat glow to Elite or Non-Elite art
 	function UpdateIndicator_EliteIcon()
 		threatborder = visual.threatborder
-		if (unit.isElite or unit.isRare) and not unit.isBoss and style.eliteicon.show then visual.eliteicon:Show() else visual.eliteicon:Hide() end
+		if (unit.isElite or unit.isRare) and not unit.isBoss and style.eliteicon.show and style.eliteicon.enabled then visual.eliteicon:Show() else visual.eliteicon:Hide() end
 		visual.eliteicon:SetDesaturated(unit.isRare) -- Desaturate if rare elite
 	end
 
@@ -1051,7 +1051,7 @@ do
 			end
 
 			-- Set Special-Case Regions
-			if style.customtext.show then
+			if style.customtext.show and style.customtext.enabled then
 				if activetheme.SetCustomText and unit.unitid then
 					local text, r, g, b, a = activetheme.SetCustomText(unit)
 					visual.customtext:SetText( text or "")
@@ -1675,11 +1675,13 @@ do
 	local texturegroup = { "castborder", "castnostop", "healthborder", "threatborder", "eliteicon",
 						"skullicon", "highlight", "target", "focus", "mouseover", "spellicon", }
 
+	local highlightgroup = { "target", "focus", "mouseover" }
+
 
 	-- UpdateStyle:
 	function UpdateStyle()
 		local index, unitSubtext, unitPlateStyle
-		local useYOffset = (style.subtext.show and activetheme.SetSubText(unit) and NeatPlatesHubFunctions.SetStyleNamed(unit) == "Default")
+		local useYOffset = (style.subtext.show and style.subtext.enabled and activetheme.SetSubText(unit) and NeatPlatesHubFunctions.SetStyleNamed(unit) == "Default")
 		if useYOffset and extended.widgets["AuraWidgetHub"] then extended.widgets["AuraWidgetHub"]:UpdateOffset(0, style.subtext.yOffset) end 	-- Update AuraWidget position if 'subtext' is displayed
 
 		-- Frame
@@ -1690,7 +1692,7 @@ do
 
 			local objectname = anchorgroup[index]
 			local object, objectstyle = visual[objectname], style[objectname]
-			if objectstyle and objectstyle.show then
+			if objectstyle and objectstyle.show and objectstyle.enabled then
 				local offset
 				if useYOffset and (objectname == "name" or objectname == "subtext") then offset = style.subtext.yOffset end -- Subtext offset
 
@@ -1721,6 +1723,16 @@ do
 			local objectname = fontgroup[index]
 			local object, objectstyle = visual[objectname], style[objectname]
 			SetFontGroupObject(object, objectstyle)
+		end
+		-- Update blend modes for highlighting elements
+		for index = 1, #highlightgroup do
+			local objectname = highlightgroup[index]
+			local objectstyle = style[objectname]
+			if objectstyle and objectstyle.blend then
+				visual[objectname]:SetBlendMode(objectstyle.blend)
+			else
+				visual[objectname]:SetBlendMode("BLEND")	-- Default mode
+			end
 		end
 		-- Hide Stuff
 		if not unit.isElite and not unit.isRare then visual.eliteicon:Hide() end

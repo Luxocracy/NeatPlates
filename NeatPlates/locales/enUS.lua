@@ -360,6 +360,7 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by
 - Unit Name
 - Buff/Debuff Name/SpellID
 - Health Threshold
+
 (ex. #A300FF Spawn of G'huun)
 |cffff9320Prioritised top to bottom]=]
 
@@ -470,6 +471,7 @@ L["Other Widgets"] = true
 
 L["Show Target Highlight"] = true
 L["Show Elite Icon"] = true
+L["Show Arena ID"] = true
 L["Show Enemy Class Art"] = true
 L["Show Friendly Class Art"] = true
 L["Class Icon"] = true
@@ -559,6 +561,7 @@ L["TotemIcon"] = "Totem Icon"
 L["QuestWidget"] = "Quest Widget"
 L["RangeWidget"] = "Range Indicator"
 L["ClassIcon"] = "Class Icon"
+L["ArenaIcon"] = "Arena Icon"
 
 L["Main"] = true
 L["Widgets"] = true
@@ -616,6 +619,7 @@ L["TotemIcon_tooltip"] = "The totem icon"
 L["QuestWidget_tooltip"] = "Quest icon for normal healthbar mode"
 L["RangeWidget_tooltip"] = "The range indicator widget"
 L["ClassIcon_tooltip"] = "The class icon"
+L["ArenaIcon_tooltip"] = "The arena id icon"
 
 L["Import_tooltip"] = "Import configuration"
 L["Export_tooltip"] = "Export configuration"
@@ -625,7 +629,7 @@ L["ResetAll_tooltip"] = "Reset all theme customizations"
 L["Style Mode"] = true
 L["Frame Anchor"] = true
 L["Text Align"] = true
-L["Show Element"] = true
+L["Element Enabled"] = true
 
 -- Dropdown Options
 L["Default/Healthbar"] = true
@@ -648,6 +652,7 @@ L["BOTTOMRIGHT"] = true
 --L["You seem to be running both NeatPlates and TidyPlatesContinued.\nDo you wish to import your TPC settings from this character to NeatPlates?\n\n(Once Importing is done TPC will be disabled and a UI Reload will be performed.\nYou will also have to re-select which profile to use for which spec, sorry...)"] = true
 L["IMPORT_PROMPT_TEXT"] = [=[You seem to be running both NeatPlates and TidyPlatesContinued.
 Do you wish to import your TPC settings from this character to NeatPlates?
+
 (Once Importing is done TPC will be disabled and a UI Reload will be performed.
 You will also have to re-select which profile to use for which spec, sorry...)]=]
 
@@ -661,6 +666,7 @@ L["Import TPC Settings"] = true
 -- Version Warning Prompt
 ------------------------------
 L["VERSION_WARNING_PROMPT_TEXT"] = [=[You seem to be running the wrong version of this addon for your client, things will most likely not work correctly.
+
 Please ensure that you are on the correct version before continuing to use this addon.]=]
 
 
