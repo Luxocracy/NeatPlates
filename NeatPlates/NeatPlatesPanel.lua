@@ -1080,5 +1080,14 @@ SLASH_NeatPlates1 = '/NeatPlates'
 SLASH_NeatPlates2 = '/np'
 SlashCmdList['NeatPlates'] = slash_NeatPlates;
 
+SLASH_NeatPlatesDebug1 = '/npdebug'
+SlashCmdList['NeatPlatesDebug'] = function(arg)
+	arg = string.lower(arg)
+
+	if arg == "quest" then
+		NeatPlatesWidgets.DebugQuests()
+	end
+end;
+
 
 

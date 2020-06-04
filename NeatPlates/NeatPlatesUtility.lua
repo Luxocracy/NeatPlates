@@ -292,7 +292,7 @@ local function GetUnitQuestInfo(unit)
     	 -- Get amount of quest objectives through counting textures
     	local texture = _G[ScannerName .. "Texture" .. line]
     	
-    	if texture and  questTexture[texture:GetTexture()] ~= nil then
+    	if texture and questTexture[texture:GetTexture()] ~= nil then
     		objectiveCount = objectiveCount + 1
     		questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
     	end
@@ -308,12 +308,12 @@ local function GetUnitQuestInfo(unit)
 					questList[questName][tooltipText] = questCompleted[#questCompleted+1 - objectiveCount]	-- Quest objective completed?
 
 					-- Old method for checking quest completion as backup
-					if questList[questName][tooltipText] == nil then
-						local questProgress, questTotal = string.match(tooltipText, "([0-9]+)\/([0-9]+)")
-						questProgress = tonumber(questProgress)
-						questTotal = tonumber(questTotal)
-					 	questList[questName][tooltipText] = not (not (questProgress and questTotal) or (questProgress and questTotal and questProgress < questTotal))
-					 end
+					--if questList[questName][tooltipText] == nil then
+					--	local questProgress, questTotal = string.match(tooltipText, "([0-9]+)\/([0-9]+)")
+					--	questProgress = tonumber(questProgress)
+					--	questTotal = tonumber(questTotal)
+					-- 	questList[questName][tooltipText] = not (not (questProgress and questTotal) or (questProgress and questTotal and questProgress < questTotal))
+					-- end
 	      	objectiveCount = objectiveCount - 1 -- Decrease objective Count
 	      end
       end

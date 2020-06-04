@@ -664,7 +664,7 @@ do
 
 		local powerType = UnitPowerType(unitid) or 0
 		unit.power = UnitPower(unitid, powerType) or 0
-		unit.powermax = UnitPowerMax(unitid, powerType) or 1
+		unit.powermax = UnitPowerMax(unitid, powerType) or 0
 
 		unit.threatValue = UnitThreatSituation("player", unitid) or 0
 		unit.threatSituation = ThreatReference[unit.threatValue]
@@ -727,6 +727,13 @@ do
 	function UpdateIndicator_PowerBar()
 		visual.powerbar:SetMinMaxValues(0, unit.powermax)
 		visual.powerbar:SetValue(unit.power)
+
+		-- Hide bar if max power is none as the unit doesn't use power
+		if unit.powermax == 0 then
+			visual.powerbar:Hide()
+		else
+			visual.powerbar:Show()
+		end
 
 		-- Fixes issue with small sliver being displayed even at 0
 		if unit.power == 0 then
@@ -1610,10 +1617,3 @@ function NeatPlates:EnableFadeIn() EnableFadeIn = true; end
 function NeatPlates:DisableFadeIn() EnableFadeIn = nil; end
 NeatPlates.RequestWidgetUpdate = NeatPlates.RequestUpdate
 NeatPlates.RequestDelegateUpdate = NeatPlates.RequestUpdate
-
-
-
-
-
-
-
