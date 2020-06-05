@@ -729,9 +729,9 @@ do
 		visual.powerbar:SetValue(unit.power)
 
 		-- Hide bar if max power is none as the unit doesn't use power
-		if unit.powermax == 0 then
+		if unit.powermax == 0 or not ShowPowerBar then
 			visual.powerbar:Hide()
-		else
+		elseif ShowPowerBar then
 			visual.powerbar:Show()
 		end
 
@@ -1511,7 +1511,7 @@ do
 			visual.raidicon:SetTexture(style.raidicon.texture)
 		end
 		if style and style.healthbar.texture == EMPTY_TEXTURE then visual.noHealthbar = true end
-		if style and not ShowPowerBar then visual.powerbar:Hide() else visual.powerbar:Show() end
+		--if style and not ShowPowerBar then visual.powerbar:Hide() else visual.powerbar:Show() end
 		-- Font Group
 		for index = 1, #fontgroup do
 			local objectname = fontgroup[index]
