@@ -108,24 +108,30 @@ local function UpdateTotemIconWidget(self, unit)
 	end
 end
 
-local function CreateTotemIconWidget(parent)
-	local frame = CreateFrame("Frame", nil, parent)
-	frame:SetWidth(19); frame:SetHeight(18)
+local function UpdateWidgetConfig(frame)
+	local width = frame:GetParent()._width or 19;
+	local height = frame:GetParent()._height or 18;
+	frame:SetWidth(width); frame:SetHeight(height)
 
 	frame.Overlay = frame:CreateTexture(nil, "OVERLAY")
-	frame.Overlay:SetPoint("CENTER",frame, 1, -1)
-	frame.Overlay:SetWidth(24); frame.Overlay:SetHeight(24)
+	frame.Overlay:SetAllPoints(frame)
 	frame.Overlay:SetTexture(classWidgetPath.."BORDER")
-	--frame.Overlay:SetAllPoints(frame)
 
 	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	frame.Icon:SetPoint("CENTER",frame)
 	frame.Icon:SetTexCoord(.07, 1-.07, .07, 1-.07)  -- obj:SetTexCoord(left,right,top,bottom)
 	--frame.Icon:SetWidth(46); frame.Icon:SetHeight(47)
 	frame.Icon:SetAllPoints(frame)
+end
+
+local function CreateTotemIconWidget(parent)
+	local frame = CreateFrame("Frame", nil, parent)
+
+	UpdateWidgetConfig(frame)
 
 	frame:Hide()
 	frame.Update = UpdateTotemIconWidget
+	frame.UpdateConfig = UpdateWidgetConfig
 	return frame
 end
 

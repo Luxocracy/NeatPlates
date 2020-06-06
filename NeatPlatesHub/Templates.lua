@@ -664,6 +664,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			-- On panel hide
 			CustomizationPanel:SetScript("OnHide", function(self)
+				NeatPlates._TestMode = false 
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
 				-- Restore old values if user didn't hit Okay button
@@ -678,6 +679,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			-- On panel show
 			CustomizationPanel:SetScript("OnShow", function(self)
+				NeatPlates._TestMode = true
 				CustomizationPanel:ClearSelections() -- Clear Selected to set highlight color properly the first time
 				self.oldValues = CopyTable(NeatPlatesHubFunctions.GetCustomizationOption(CustomizationPanel.profile) or {})
 				-- Hide Settings sliders etc.

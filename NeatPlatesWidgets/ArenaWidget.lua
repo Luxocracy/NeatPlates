@@ -9,9 +9,9 @@ local function UpdateArenaWidget(self, unit)
 	local arenastring = ""
 	local arenaindex = GetArenaIndex(unit.rawName)
 
-	--arenaindex = 2	-- Tester
-	if unit.type == "PLAYER" then
+	if NeatPlates._TestMode then arenaindex = 2 end -- Test Mode
 
+	if unit.type == "PLAYER" or NeatPlates._TestMode then
 		if arenaindex and arenaindex > 0 then
 			arenastring = "|cffffcc00["..(tostring(arenaindex)).."]  |r"
 		end

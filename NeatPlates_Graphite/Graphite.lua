@@ -339,8 +339,8 @@ Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon = { anchor = "RIGHT" , x = 16,y = 0 }		-- Above Name
-WidgetConfig.TotemIcon = { anchor = "RIGHT" , x = 16,y = 0 }
+WidgetConfig.ClassIcon = { anchor = "RIGHT", w = 24, h = 24 , x = 16,y = 0 }		-- Above Name
+WidgetConfig.TotemIcon = { anchor = "RIGHT", w = 19, h = 18 , x = 16,y = 0 }
 WidgetConfig.ThreatLineWidget = { anchor =  "TOP", x = 0 ,y = 0 }	-- y = 20
 --WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 33 ,y = 12 } -- "CENTER", plate, 30, 18
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 0 ,y = 16 } -- "CENTER", plate, 30, 18
