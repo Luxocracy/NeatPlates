@@ -27,9 +27,6 @@ StyleDefault.highlight = {
 	texture = 					"Interface\\Tooltips\\Nameplate-Glow",
 }
 
-StyleDefault.targetindicator = {
-}
-
 
 StyleDefault.healthborder = {
 	texture		 =				path.."BlizzardPlates-Border",
@@ -341,6 +338,7 @@ StyleTextOnly.raidicon.y = 15
 StyleTextOnly.raidicon.height = 14
 StyleTextOnly.raidicon.width = 14
 StyleTextOnly.raidicon.anchor = "TOP"
+StyleTextOnly.highlight.texture = EmptyTexture
 
 
 Theme["Default"] = StyleDefault
@@ -348,12 +346,12 @@ Theme["NameOnly"] = StyleTextOnly
 
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon =			{ anchor = "RIGHT", x = 36, y = -1 }
-WidgetConfig.TotemIcon =			{ anchor = "RIGHT", x = 25, y = -1 }
+WidgetConfig.ClassIcon =			{ anchor = "RIGHT", w = 24, h = 24, x = 36, y = -1 }
+WidgetConfig.TotemIcon =			{ anchor = "RIGHT", w = 19, h = 18, x = 25, y = -1 }
 WidgetConfig.ThreatLineWidget =		{ anchor="CENTER", x = 0 , y = 7 }
 WidgetConfig.ThreatWheelWidget =	{ anchor =  "CENTER", x = 36 ,y = 12 }
 WidgetConfig.ComboWidget =			{ anchor = "CENTER", x = -6, y = -10 }
-WidgetConfig.RangeWidget =			{ anchor="BOTTOM", x = 0, y = 0 }
+--WidgetConfig.RangeWidget =			{ anchor="BOTTOM", x = 0, y = 0 }
 WidgetConfig.DebuffWidget =			{ anchor = "BOTTOM", anchorRel = "TOP", x = 0, y = 4 }
 WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = -9 , y = 1.5, w = 102, h = 9.5 }
 -- WidgetConfig.DebuffWidgetPlus = { anchor="TOP", x = 12 , y = 26 }

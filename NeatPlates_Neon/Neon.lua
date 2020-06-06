@@ -470,8 +470,8 @@ Theme["NameOnly-NoDescription"] = TextNoDescription
 
 -- Widget
 local WidgetConfig = {}
-WidgetConfig.ClassIcon = { anchor = "TOPRIGHT" , x = 15 ,y = VerticalAdjustment -1 }
-WidgetConfig.TotemIcon = { anchor = "TOP" , x = 0 ,y = VerticalAdjustment + 2 }
+WidgetConfig.ClassIcon = { anchor = "TOPRIGHT", w = 24, h = 24 , x = 15 ,y = VerticalAdjustment -1 }
+WidgetConfig.TotemIcon = { anchor = "TOP", w = 19, h = 18 , x = 0 ,y = VerticalAdjustment + 2 }
 WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = 0 ,y = VerticalAdjustment + 4 }
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 36 ,y = VerticalAdjustment + 12 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment + 9.5 }

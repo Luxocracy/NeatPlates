@@ -358,8 +358,8 @@ Theme["Default"] = StyleDefault
 Theme["NameOnly"] = StyleTextOnly
 
 local WidgetConfig = {}
-WidgetConfig.ClassIcon = { anchor = "RIGHT", x = 19, y = 2 }
-WidgetConfig.TotemIcon = { anchor = "RIGHT", x = 19, y = 2 }
+WidgetConfig.ClassIcon = { anchor = "RIGHT", w = 24, h = 24, x = 19, y = 2 }
+WidgetConfig.TotemIcon = { anchor = "RIGHT", w = 19, h = 18, x = 19, y = 2 }
 WidgetConfig.ThreatWheelWidget = { anchor = "LEFT", x = -58, y = 3 }
 WidgetConfig.ThreatLineWidget = {  x = -6 ,y = -10 }
 WidgetConfig.ComboWidget = { x = 2 ,y = -27 }

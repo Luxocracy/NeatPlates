@@ -4,7 +4,7 @@
 local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
 local classWidgetCustomPath = "Interface\\NeatPlatesTextures\\ClassWidget\\"
 local classIcon = {}
-local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+--local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 function VerifyTextures()
 		local classes = {"WARRIOR","PALADIN","HUNTER","ROGUE","PRIEST","DEATHKNIGHT","SHAMAN","MAGE","WARLOCK","MONK","DRUID","DEMONHUNTER"}
@@ -37,11 +37,6 @@ local function UpdateClassWidget(self, unit, showFriendly)
 			class = unit.class
 		elseif unit.type == "PLAYER" then class = unit.class end
 
-		self.Icon:SetWidth(24*ScaleOptions.x)
-		self.Icon:SetHeight(24*ScaleOptions.y)
-		self.Icon:ClearAllPoints()
-		self.Icon:SetPoint("CENTER", self, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
-
 		if class then
 			self.Icon:SetTexture(classIcon[class])
 			self:Show()
@@ -50,27 +45,38 @@ local function UpdateClassWidget(self, unit, showFriendly)
 
 end
 
-local function CreateClassWidget(parent)
-
-	local frame = CreateFrame("Frame", nil, parent)
-	frame:SetWidth(24); frame:SetHeight(24)
+local function UpdateWidgetConfig(frame)
+	local width = frame:GetParent()._width or 24;
+	local height = frame:GetParent()._height or 24;
+	frame:SetWidth(width); frame:SetHeight(height)
 
 	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	frame.Icon:SetAllPoints(frame)
+
+	--frame.Icon:SetPoint("CENTER", frame, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
+end
+
+local function CreateClassWidget(parent)
+
+	local frame = CreateFrame("Frame", nil, parent)
+	
+	UpdateWidgetConfig(frame)
+
 	frame:Hide()
 	frame.Update = UpdateClassWidget
+	frame.UpdateConfig = UpdateWidgetConfig
 	return frame
 end
 
-local function SetClassWidgetOptions(LocalVars)
-	ScaleOptions = LocalVars.ClassIconScaleOptions
+--local function SetClassWidgetOptions(LocalVars)
+--	ScaleOptions = LocalVars.ClassIconScaleOptions
 
-	NeatPlates:ForceUpdate()
-end
+--	NeatPlates:ForceUpdate()
+--end
 
 local ClassWidgetWatcher = CreateFrame("Frame")
 ClassWidgetWatcher:SetScript("OnEvent", VerifyTextures)
 ClassWidgetWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 NeatPlatesWidgets.CreateClassWidget = CreateClassWidget
-NeatPlatesWidgets.SetClassWidgetOptions = SetClassWidgetOptions
+--NeatPlatesWidgets.SetClassWidgetOptions = SetClassWidgetOptions

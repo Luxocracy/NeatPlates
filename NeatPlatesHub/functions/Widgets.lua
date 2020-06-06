@@ -685,9 +685,9 @@ local function OnVariableChange(vars)
 		NeatPlatesWidgets.SetComboPointsWidgetOptions(LocalVars)
 	end
 
-	if (LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon) then
-		NeatPlatesWidgets.SetClassWidgetOptions(LocalVars)
-	end
+	--if (LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon) then
+	--	NeatPlatesWidgets.SetClassWidgetOptions(LocalVars)
+	--end
 
 	--if LocalVars.WidgetPandemic then
 	--	NeatPlatesWidgets.SetPandemic(LocalVars.WidgetPandemic, LocalVars.ColorPandemic)

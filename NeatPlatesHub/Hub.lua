@@ -589,7 +589,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, F)
 	panel.WidgetComboPointsStyle, F =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", L["Personal Resource Style"]..':', ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
 	panel.WidgetComboPointsScaleOptions = CreateQuickScale(objectName.."WidgetComboPointsScaleOptions", "WidgetComboPointsScaleOptions", L["Personal Resource Style"], nil, nil, AlignmentColumn, "LEFT", panel.WidgetComboPointsStyle, "RIGHT", 28, 2)
-	panel.ClassIconScaleOptions, F = CreateQuickScale(objectName.."ClassIconScaleOptions", "ClassIconScaleOptions", L["Class Icon"], nil, {label = L["Class Icon Scale Options"]}, AlignmentColumn, "TOPLEFT", panel.WidgetComboPointsStyle, "BOTTOMLEFT", 4, -4)
+	--panel.ClassIconScaleOptions, F = CreateQuickScale(objectName.."ClassIconScaleOptions", "ClassIconScaleOptions", L["Class Icon"], nil, {label = L["Class Icon Scale Options"]}, AlignmentColumn, "TOPLEFT", panel.WidgetComboPointsStyle, "BOTTOMLEFT", 4, -4)
 
 	--panel.WidgetEnableExternal = CreateQuickCheckbutton(objectName.."WidgetEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetComboPoints)
 
