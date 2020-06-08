@@ -49,10 +49,8 @@ local function UpdateWidgetConfig(frame)
 	local width = frame:GetParent()._width or 24;
 	local height = frame:GetParent()._height or 24;
 	frame:SetWidth(width); frame:SetHeight(height)
-
-	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
+	
 	frame.Icon:SetAllPoints(frame)
-
 	--frame.Icon:SetPoint("CENTER", frame, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
 end
 
@@ -60,6 +58,7 @@ local function CreateClassWidget(parent)
 
 	local frame = CreateFrame("Frame", nil, parent)
 	
+	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	UpdateWidgetConfig(frame)
 
 	frame:Hide()
