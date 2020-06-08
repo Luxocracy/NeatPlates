@@ -27,3 +27,4 @@ TODO.txt
 *.sublime-project
 *.sublime-workspace
 libs/
+*.code-workspace

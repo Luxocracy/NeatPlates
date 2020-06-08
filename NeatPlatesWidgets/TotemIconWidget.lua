@@ -113,19 +113,18 @@ local function UpdateWidgetConfig(frame)
 	local height = frame:GetParent()._height or 18;
 	frame:SetWidth(width); frame:SetHeight(height)
 
-	frame.Overlay = frame:CreateTexture(nil, "OVERLAY")
 	frame.Overlay:SetAllPoints(frame)
-	frame.Overlay:SetTexture(classWidgetPath.."BORDER")
-
-	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	frame.Icon:SetPoint("CENTER",frame)
-	frame.Icon:SetTexCoord(.07, 1-.07, .07, 1-.07)  -- obj:SetTexCoord(left,right,top,bottom)
-	--frame.Icon:SetWidth(46); frame.Icon:SetHeight(47)
 	frame.Icon:SetAllPoints(frame)
 end
 
 local function CreateTotemIconWidget(parent)
 	local frame = CreateFrame("Frame", nil, parent)
+
+	frame.Overlay = frame:CreateTexture(nil, "OVERLAY")
+	frame.Overlay:SetTexture(classWidgetPath.."BORDER")
+	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
+	frame.Icon:SetTexCoord(.07, 1-.07, .07, 1-.07)  -- obj:SetTexCoord(left,right,top,bottom)
 
 	UpdateWidgetConfig(frame)
 
