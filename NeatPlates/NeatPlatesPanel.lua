@@ -90,6 +90,7 @@ NeatPlatesOptions = {
 	ForceBlizzardFont = false,
 	HealthFrequent = true,
 	BlizzardScaling = false,
+	BlizzardNameVisibility = false,
 	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
 
@@ -339,6 +340,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
+	NeatPlatesOptions.BlizzardNameVisibility = panel.BlizzardNameVisibility:GetChecked()
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
@@ -367,6 +369,7 @@ local function SetPanelValues(panel)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.HealthFrequent:SetChecked(NeatPlatesOptions.HealthFrequent)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
+	panel.BlizzardNameVisibility:SetChecked(NeatPlatesOptions.BlizzardNameVisibility)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
@@ -808,9 +811,14 @@ local function BuildInterfacePanel(panel)
 	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.HealthFrequent, "TOPLEFT", 0, -25)
 	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
 
+	-- Blizzard Scaling
+	panel.BlizzardNameVisibility = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardNameVisibility", panel, L["Use Blizzard Name Visibility"])
+	panel.BlizzardNameVisibility:SetPoint("TOPLEFT", panel.BlizzardScaling, "TOPLEFT", 0, -25)
+	panel.BlizzardNameVisibility.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
+
 	-- Override Outline Style
 	panel.OverrideOutlineLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.OverrideOutlineLabel:SetPoint("TOPLEFT", panel.BlizzardScaling,"BOTTOMLEFT", 0, -8)
+	panel.OverrideOutlineLabel:SetPoint("TOPLEFT", panel.BlizzardNameVisibility,"BOTTOMLEFT", 0, -8)
 	panel.OverrideOutlineLabel:SetWidth(170)
 	panel.OverrideOutlineLabel:SetJustifyH("LEFT")
 	panel.OverrideOutlineLabel:SetText(L["Outline Override"]..':')
