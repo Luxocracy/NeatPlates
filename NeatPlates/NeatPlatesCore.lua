@@ -600,6 +600,8 @@ do
 		unit.pvpname = UnitPVPName(unitid)
 		unit.rawName = unit.name  -- gsub(unit.name, " %(%*%)", "")
 
+		unit.showName = not NeatPlatesOptions.BlizzardNameVisibility or UnitShouldDisplayName(unit.unitid)
+
 		local classification = UnitClassification(unitid)
 
 		unit.isBoss = UnitLevel(unitid) == -1
@@ -750,10 +752,10 @@ do
 		if ShowUnitTitle then  unitname = unit.pvpname or unit.name end
 		if ShowServerIndicator and unit.realm then unitname = unitname.." (*)" end
 
-		if not NeatPlatesOptions.BlizzardNameVisibility or UnitShouldDisplayName(unit.unitid) then
+		if unit.showName then
 			visual.name:SetText(unitname) -- Set name
-		else
-			visual.name:SetText("")
+		else 
+			visual.name:SetText("") -- Clear name
 		end
 
 		-- Name Color
@@ -887,7 +889,7 @@ do
 	-- UpdateIndicator_Standard: Updates Non-Delegate Indicators
 	function UpdateIndicator_Standard()
 		if IsPlateShown(nameplate) then
-			if unitcache.name ~= unit.name then UpdateIndicator_Name() end
+			if unitcache.name ~= unit.name or unitcache.showName ~= unit.showName then UpdateIndicator_Name() end
 			if unitcache.level ~= unit.level or unitcache.isBoss ~= unit.isBoss then UpdateIndicator_Level() end
 			UpdateIndicator_RaidIcon()
 			if unitcache.isElite ~= unit.isElite or unitcache.isRare ~= unit.isRare then UpdateIndicator_EliteIcon() end
