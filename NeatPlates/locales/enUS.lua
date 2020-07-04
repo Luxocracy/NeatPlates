@@ -45,6 +45,7 @@ L["Disable Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
 L["Use Blizzard Scaling"] = true
+L["Use Blizzard Name Visibility"] = true
 L["Outline Override"] = true
 	L["Thin Outline"] = true
 	L["Thick Outline"] = true
