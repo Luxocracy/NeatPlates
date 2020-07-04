@@ -750,11 +750,7 @@ do
 		if ShowUnitTitle then  unitname = unit.pvpname or unit.name end
 		if ShowServerIndicator and unit.realm then unitname = unitname.." (*)" end
 
-		if UnitShouldDisplayName(unit.unitid) then
-			visual.name:SetText(unitname) -- Set name
-		else
-			visual.name:SetText("")
-		end
+		visual.name:SetText(unitname) -- Set name
 
 		-- Name Color
 		if activetheme.SetNameColor then
