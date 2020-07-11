@@ -26,8 +26,6 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
-local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	            -- Plate Lists
@@ -355,20 +353,6 @@ do
 		-- Reset Mass-Update Flag
 		UpdateAll = false
 	end
-
-
-	-- Poll for threat update
-	local function PolledThreat()
-		ForEachPlate(function(plate)
-			local unit = plate.extended.unit
-			local unitid = PlatesVisible[plate]
-			if not unitid then return end
-
-			if(unit.threatValue ~= UnitThreatSituation("player", unitid) or unit.isInCombat ~= UnitAffectingCombat(unitid) or unit.isTargetingPlayer ~= UnitIsUnit(unitid.."target", "player")) then SetUpdateMe(plate) end
-		end)
-	end
-
-	local threatTicker = C_Timer.NewTicker(0.1, PolledThreat)
 end
 
 ---------------------------------------------------------------------------------------------------------------------

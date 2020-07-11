@@ -86,7 +86,7 @@ local function ThreatExceptions(unit, isTank, noSafeColor)
 
 	-- Classic temporary fix, if enemy unit is in combat & the player is either in a party or has a pet.
 	local playerIsTarget = unit.fixate or UnitIsUnit(unit.unitid.."target", "player")
-	local showClassicThreat = (unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and playerIsTarget and (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")))
+	local showClassicThreat = (unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and playerIsTarget and (UnitInParty("player") or UnitExists("pet")))
 
 	-- Special case dealing with mobs from Reaping affix and units that fixate
 	if showClassicThreat or souls[unitGUID] or unit.fixate then
@@ -512,9 +512,6 @@ local function ApplyProfileSettings(theme, source, ...)
 
 	-- There might be a better way to handle these settings, but this works for now.
 	NeatPlates:SetCoreVariables(LocalVars)
-
-	-- Toggle Threat lib activation for solo play
-	NeatPlatesUtility.RequestActiveOnSolo(LocalVars.ThreatSoloEnable)
 
 	-- Manage ClickThrough option of nameplate bars.
 	if ValidateCombatRestrictedSettings() then

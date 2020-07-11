@@ -6,29 +6,6 @@ NeatPlatesUtility = {}
 local _
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
--- Classic Threat Stuff
-local ThreatLib = LibStub:GetLibrary("LibThreatClassic2")
-
-NeatPlatesUtility.UnitThreatSituation = function (unit, mob)
-    return ThreatLib:UnitThreatSituation (unit, mob)
-end
-
-NeatPlatesUtility.UnitDetailedThreatSituation = function (unit, mob)
-    return ThreatLib:UnitDetailedThreatSituation (unit, mob)
-end
-
-NeatPlatesUtility.RequestActiveOnSolo = function(value)
-	C_Timer.After(1, function()
-		if ThreatLib.alwaysRunOnSolo == value then return
-		else ThreatLib.alwaysRunOnSolo = value end
-	end)
-end
-
---ThreatLib.RegisterCallback(ThreatLib, "ThreatUpdated", function(...) NeatPlates.THREAT_UPDATE(...) end)
-
-local UnitThreatSituation = NeatPlatesUtility.UnitThreatSituation
-local UnitDetailedThreatSituation = NeatPlatesUtility.UnitDetailedThreatSituation
-
 local copytable         -- Allows self-reference
 copytable = function(original)
 	local duplicate = {}
