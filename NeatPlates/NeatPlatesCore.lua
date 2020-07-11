@@ -52,6 +52,7 @@ local OverrideFonts = false
 local OverrideOutline = 1
 local SpellCastCache = {}
 local CTICache = {}
+local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -314,7 +315,11 @@ do
 			local carrier = plate.carrier
 			local extended = plate.extended
 
+			-- CVar integrations
 			if NeatPlatesOptions.BlizzardScaling then carrier:SetScale(plate:GetScale()) end	-- Scale the carrier to allow for certain CVars that control scale to function properly.
+			if plate.extended.unit.alphaMult ~= plate:GetAlpha() then
+				UpdateMe = true
+			end
 
 			-- Check for an Update Request
 			if UpdateMe or UpdateHealth then
@@ -823,6 +828,7 @@ do
 		unit.threatSituation = ThreatReference[unit.threatValue]
 		unit.isInCombat = UnitAffectingCombat(unitid)
 		unit.isTargetingPlayer = UnitIsUnit(unitid.."target", "player")
+		unit.alphaMult = nameplate:GetAlpha()
 
 		local raidIconIndex = GetRaidTargetIndex(unitid)
 
@@ -1027,8 +1033,13 @@ do
 			extended.requestedAlpha = unit.alpha or 1
 		end
 
+		-- Verify that alphaMult is set (because for some reason it might not be?)
+		if unit.alphaMult and unit.alphaMult <= NameplateOccludedAlphaMult then
+			extended.requestedAlpha = extended.requestedAlpha * unit.alphaMult
+		end
+
+		extended:SetAlpha(extended.requestedAlpha)
 		if extended.requestedAlpha > 0 then
-			extended:SetAlpha(extended.requestedAlpha)
 			if nameplate:IsShown() then extended:Show() end
 		else
 			extended:Hide()        -- FRAME HIDE TEST
@@ -1576,6 +1587,12 @@ do
 			-- Remove empty entries as they only take up space
 			--if not next(NeatPlatesSpellDB[unitType][spellName]) then NeatPlatesSpellDB[unitType][spellName] = nil
 			--elseif creatureID and not next(NeatPlatesSpellDB[unitType][spellName][creatureID]) then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
+		end
+	end
+
+	function CoreEvents:CVAR_UPDATE(name, value)
+		if name == "nameplateOccludedAlphaMult" then
+			NameplateOccludedAlphaMult = value
 		end
 	end
 

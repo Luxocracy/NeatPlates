@@ -316,6 +316,7 @@ local function GetCVarValues(panel)
 		NameplateTargetClamp = (function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)(),
 		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
 		--NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
 		NameplateOverlapH = GetCVar("nameplateOverlapH"),
 		NameplateOverlapV = GetCVar("nameplateOverlapV"),
 	}
@@ -757,17 +758,22 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
 	panel.NameplateStacking:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateMotion", true) end)
 
-	--panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 20, 10, 100, 10, "ACTUAL", 250)
-	--panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
-	----panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
-	--panel.NameplateMaxDistance.Callback = function(self) local val = self:GetValue(); SetCVar("nameplateMaxDistance", tostring((val-val%10)/10).."e1") end
+	-- Disabled until blizzard fixes their shit, if ever...
+	-- panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
+	-- panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	-- panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
+
+	panel.NameplateOccludedAlphaMult = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOccludedAlphaMult", panel, L["Nameplate Occluded Alpha Multiplier"], 0.4, 0, 1, 0.01, "ACTUAL", 250)
+	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	panel.NameplateOccludedAlphaMult.Callback = function(self) SetCVarValue(self, "nameplateOccludedAlphaMult") end
+	panel.NameplateOccludedAlphaMult.tooltipText = L["The opacity multiplier for units occluded by line of sight"]
 
 	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 0, -50)
 	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
 
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 210, -50)
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 210, -50)
 	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
 
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
