@@ -315,7 +315,8 @@ local function GetCVarValues(panel)
 	local Values = {
 		NameplateTargetClamp = (function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)(),
 		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
-		NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		-- NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
 		NameplateOverlapH = GetCVar("nameplateOverlapH"),
 		NameplateOverlapV = GetCVar("nameplateOverlapV"),
 	}
