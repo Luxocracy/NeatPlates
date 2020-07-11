@@ -44,6 +44,7 @@ local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
 local OverrideOutline = 1
+local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -172,7 +173,11 @@ do
 			local carrier = plate.carrier
 			local extended = plate.extended
 
+			-- CVar integrations
 			if NeatPlatesOptions.BlizzardScaling then carrier:SetScale(plate:GetScale()) end	-- Scale the carrier to allow for certain CVars that control scale to function properly.
+			if plate.extended.unit.alphaMult ~= plate:GetAlpha() then
+				UpdateMe = true
+			end
 
 			-- Check for an Update Request
 			if UpdateMe or UpdateHealth then
@@ -671,6 +676,7 @@ do
 		unit.threatValue = UnitThreatSituation("player", unitid) or 0
 		unit.threatSituation = ThreatReference[unit.threatValue]
 		unit.isInCombat = UnitAffectingCombat(unitid)
+		unit.alphaMult = nameplate:GetAlpha()
 
 		local raidIconIndex = GetRaidTargetIndex(unitid)
 
@@ -906,8 +912,12 @@ do
 			extended.requestedAlpha = unit.alpha or 1
 		end
 
+		if unit.alphaMult <= NameplateOccludedAlphaMult then
+			extended.requestedAlpha = extended.requestedAlpha * unit.alphaMult
+		end
+
+		extended:SetAlpha(extended.requestedAlpha)
 		if extended.requestedAlpha > 0 then
-			extended:SetAlpha(extended.requestedAlpha)
 			if nameplate:IsShown() then extended:Show() end
 		else
 			extended:Hide()        -- FRAME HIDE TEST
@@ -1366,6 +1376,12 @@ do
 			elseif plate then
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
 			end
+		end
+	end
+
+	function CoreEvents:CVAR_UPDATE(name, value)
+		if name == "nameplateOccludedAlphaMult" then
+			NameplateOccludedAlphaMult = value
 		end
 	end
 
