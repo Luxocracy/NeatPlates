@@ -317,6 +317,10 @@ local function GetCVarValues(panel)
 		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
 		--NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
 		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
+		NameplateMinAlpha = GetCVar("nameplateMinAlpha"),
+		NameplateMaxAlpha = GetCVar("nameplateMaxAlpha"),
+		NameplateMinAlphaDistance = GetCVar("nameplateMinAlphaDistance"),
+		NameplateMaxAlphaDistance = GetCVar("nameplateMaxAlphaDistance"),
 		NameplateOverlapH = GetCVar("nameplateOverlapH"),
 		NameplateOverlapV = GetCVar("nameplateOverlapV"),
 	}
@@ -763,26 +767,50 @@ local function BuildInterfacePanel(panel)
 	-- panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
 	-- panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
 
-	panel.NameplateOccludedAlphaMult = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOccludedAlphaMult", panel, L["Nameplate Occluded Alpha Multiplier"], 0.4, 0, 1, 0.01, "ACTUAL", 250)
+	panel.NameplateOccludedAlphaMult = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOccludedAlphaMult", panel, L["Occluded Alpha Multiplier"], 0.4, 0, 1, 0.01, "ACTUAL", 170)
 	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
 	panel.NameplateOccludedAlphaMult.Callback = function(self) SetCVarValue(self, "nameplateOccludedAlphaMult") end
 	panel.NameplateOccludedAlphaMult.tooltipText = L["The opacity multiplier for units occluded by line of sight"]
+	
+	panel.NameplateMinAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlpha", panel, L["Minimum Alpha"], 0.6, 0, 1, 0.01, "ACTUAL", 170)
+	panel.NameplateMinAlpha:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 0, -50)
+	panel.NameplateMinAlpha.Callback = function(self) SetCVarValue(self, "nameplateMinAlpha") end
+	panel.NameplateMinAlpha.tooltipText = L["The minimum opacity of nameplates for 'Nameplate Minimum Alpha Distance'"]
+	
+	panel.NameplateMaxAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxAlpha", panel, L["Maximum Alpha"], 1, 0, 1, 0.01, "ACTUAL", 170)
+	panel.NameplateMaxAlpha:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 200, -50)
+	panel.NameplateMaxAlpha.Callback = function(self) SetCVarValue(self, "nameplateMaxAlpha") end
+	panel.NameplateMaxAlpha.tooltipText = L["The maximum opacity of nameplates for 'Nameplate Maximum Alpha Distance'"]
+	
+	panel.NameplateMinAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlphaDistance", panel, L["Minimum Alpha Distance"], 10, 0, 100, 1, "ACTUAL", 170)
+	panel.NameplateMinAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 0, -50)
+	panel.NameplateMinAlphaDistance.Callback = function(self) SetCVarValue(self, "nameplateMinAlphaDistance") end
+	panel.NameplateMinAlphaDistance.tooltipText = L["The distance from the camera that nameplates will reach their minimum alpha"]
+	
+	panel.NameplateMaxAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxAlphaDistance", panel, L["Maximum Alpha Distance"], 40, 0, 100, 1, "ACTUAL", 170)
+	panel.NameplateMaxAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 200, -50)
+	panel.NameplateMaxAlphaDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxAlphaDistance") end
+	panel.NameplateMaxAlphaDistance.tooltipText = L["The distance from the camera that nameplates will reach their maxmimum alpha"]
 
-	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Nameplate Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 0, -50)
+	panel.NameplateOverlapH = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapH", panel, L["Horizontal Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMinAlphaDistance, "TOPLEFT", 0, -50)
 	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
-
-	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Nameplate Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
-	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 210, -50)
+	panel.NameplateOverlapH.tooltipText = L["The horizontal distance between nameplates when overlapping (Requires 'Stacking Nameplates')"]
+	
+	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
+	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMinAlphaDistance, "TOPLEFT", 200, -50)
 	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
-
+	panel.NameplateOverlapV.tooltipText = L["The vertical distance between nameplates when overlapping (Requires 'Stacking Nameplates')"]
+	
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -50)
 	panel.NameplateClickableWidth.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
-
+	panel.NameplateClickableWidth.tooltipText = L["The size of the interactable area of the nameplates"]
+	
 	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, L["Clickable Height of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -50)
 	panel.NameplateClickableHeight.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
+	panel.NameplateClickableHeight.tooltipText = L["The size of the interactable area of the nameplates"]
 
 	panel.NameplateClickableSizeTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalHitBoxTip", L["HITBOX_TIP"], panel, "BOTTOMRIGHT", panel.NameplateClickableHeight, "TOPRIGHT", 35, -20)
 
