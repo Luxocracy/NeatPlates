@@ -220,7 +220,22 @@ StyleDefault.spelltext = {
 	width = 175,
 	height = 14,
 	x = 0,
-	y = -16+castoffset,		-- For UNDER the bar
+	y = -14+castoffset,		-- For UNDER the bar
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	--flags = "",
+	shadow = false,
+	show = true,
+}
+
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = 10,
+	width = 175,
+	height = 14,
+	x = 0,
+	y = -24+castoffset,		-- For UNDER the bar
 	align = "CENTER",
 	anchor = "CENTER",
 	vertical = "CENTER",

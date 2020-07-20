@@ -124,6 +124,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.spelltarget = {
+	typeface = font,
+	size = fontsize,
+	width = 150,
+	height = 11,
+	x = CastBarHorizontalAdjustment - 10,
+	--NameTextVerticalAdjustment +
+	y = CastBarVerticalAdjustment - 26,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	show = true,
+}
+
 StyleDefault.durationtext = {
 	typeface = font,
 	size = fontsize-1,

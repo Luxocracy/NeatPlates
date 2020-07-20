@@ -194,6 +194,20 @@ StyleDefault.spelltext = {
 	flags = "NONE",
 	show = true,
 }
+StyleDefault.spelltarget = {
+	typeface = font,
+	size = 8,
+	height = 12,
+	width = 180,
+	x = 0,
+	y = -13,
+	align = "CENTER",
+	anchor = "TOP",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
 StyleDefault.durationtext = {
 	typeface = font,
 	size = 7,

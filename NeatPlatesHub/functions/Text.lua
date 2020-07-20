@@ -153,7 +153,7 @@ local function HealthFunctionTotal(unit)
 end
 -- TargetOf
 local function HealthFunctionTargetOf(unit)
-	if unit.reaction ~= "FRIENDLY" and unit.isInCombat then
+	if unit.isInCombat then
 		return UnitName(unit.unitid.."target")
 	end
 	--[[
@@ -164,7 +164,7 @@ local function HealthFunctionTargetOf(unit)
 end
 -- TargetOf(Class Color)
 local function HealthFunctionTargetOfClass(unit)
-	if unit.reaction ~= "FRIENDLY" and unit.isInCombat then
+	if unit.isInCombat then
 		local targetof = unit.unitid.."target"
 		local name = UnitName(targetof) or ""
 

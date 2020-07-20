@@ -217,6 +217,7 @@ NeatPlatesHubDefaults = {
 	IntCastEnable = true,
 	IntCastWhoEnable = true,
 	SpellIconEnable = true,
+	SpellTargetEnable = false,
 
 	-- Status Text
 	---------------------------------------
@@ -307,6 +308,7 @@ NeatPlatesHubDefaults = {
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
 	HideAuraDuration = false,
+	HideAuraStacks = false,
 	HideAuraInHeadline = false,
 
 	-- Frame

@@ -279,6 +279,7 @@ do
 		visual.castnostop = castbar:CreateTexture(nil, "ARTWORK")
 		visual.spellicon = castbar:CreateTexture(nil, "OVERLAY")
 		visual.spelltext = castbar:CreateFontString(nil, "OVERLAY")
+		visual.spelltarget = castbar:CreateFontString(nil, "OVERLAY")
 		visual.durationtext = castbar:CreateFontString(nil, "OVERLAY")
 		castbar.durationtext = visual.durationtext -- Extra reference for updating castbars duration text
 		-- Set Base Properties
@@ -317,6 +318,7 @@ do
 		visual.level:SetFontObject("NeatPlatesFontSmall")
 		visual.extratext:SetFontObject("NeatPlatesFontSmall")
 		visual.spelltext:SetFontObject("NeatPlatesFontNormal")
+		visual.spelltarget:SetFontObject("NeatPlatesFontNormal")
 		visual.durationtext:SetFontObject("NeatPlatesFontNormal")
 		visual.customtext:SetFontObject("NeatPlatesFontSmall")
 
@@ -1012,7 +1014,17 @@ do
 		-- Clear registered events incase they weren't
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		
+		-- Set spell target
+		local targetof = unit.unitid.."target"
+		local targetname =  UnitName(unitid.."target") or ""
+		if UnitIsPlayer(targetof) then
+			local targetclass = select(2, UnitClass(targetof))
+			targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+		end
+		visual.spelltarget:SetText(targetname)
 
+		-- Set spell text & duration
 		visual.spelltext:SetText(text)
 		visual.durationtext:SetText("")
 		visual.spellicon:SetTexture(texture)
@@ -1060,6 +1072,7 @@ do
 
 			visual.spelltext:SetText(spellString)
 			visual.durationtext:SetText("")
+			visual.spelltarget:SetText("")
 		end
 
 		-- Main function
@@ -1480,10 +1493,10 @@ do
 
 
 	-- Style Groups
-	local fontgroup = {"name", "subtext", "level", "extratext", "spelltext", "durationtext", "customtext"}
+	local fontgroup = {"name", "subtext", "level", "extratext", "spelltext", "spelltarget", "durationtext", "customtext"}
 
 	local anchorgroup = {"healthborder", "threatborder", "castborder", "castnostop",
-						"name", "subtext", "extraborder", "extratext", "spelltext", "durationtext", "customtext", "level",
+						"name", "subtext", "extraborder", "extratext", "spelltext", "spelltarget", "durationtext", "customtext", "level",
 						"spellicon", "raidicon", "skullicon", "eliteicon", "target", "focus", "mouseover"}
 
 	local bargroup = {"castbar", "healthbar", "powerbar", "extrabar"}

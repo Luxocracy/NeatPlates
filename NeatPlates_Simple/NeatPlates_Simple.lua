@@ -180,6 +180,19 @@ StyleDefault.castbar = {
 	show = true,
 }
 
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = 7,
+	x = 0,
+	y = -13,
+	width = 108,
+	align = "LEFT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.spellicon = {
 	width = 10,
 	height = 10,

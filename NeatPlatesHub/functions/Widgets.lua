@@ -199,6 +199,11 @@ NeatPlatesHubMenus.StyleOptions = {
 		tooltip = L["spelltext_tooltip"],
 	},
 	{
+		text = L["spelltarget"],
+		value = "spelltarget",
+		tooltip = L["spelltarget_tooltip"],
+	},
+	{
 		text = L["healthbar"],
 		value = "healthbar",
 		tooltip = L["healthbar_tooltip"],

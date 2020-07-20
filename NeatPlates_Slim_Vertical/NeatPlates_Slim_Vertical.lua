@@ -232,7 +232,21 @@ StyleDefault.spelltext = {
 	width = 150,
 	height = 11,
 	x = CastBarOffset,
-	y = VerticalAdjustment,
+	y = VerticalAdjustment + 6,
+	align = "CENTER",
+	anchor = "CENTER",
+	vertical = "CENTER",
+	shadow = true,
+	show = true,
+}
+
+StyleDefault.spelltarget = {
+	typeface = font,
+	size = fontsize - 2,
+	width = 150,
+	height = 11,
+	x = CastBarOffset,
+	y = VerticalAdjustment - 2,
 	align = "CENTER",
 	anchor = "CENTER",
 	vertical = "CENTER",

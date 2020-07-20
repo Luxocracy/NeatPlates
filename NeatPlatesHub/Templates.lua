@@ -395,7 +395,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		-- Buttons states
 		local options = {
   		StyleDropdown = function(self, option) return self.category == "main" end,
-  		EnableCheckbox = function(self, option) return (option.enabled == true or (self.category == "main" and option.enabled ~= false)) end,
+  		EnableCheckbox = function(self, option) return (option.enabled ~= nil or (self.category == "main" and option.enabled ~= false)) end,
   		AnchorOptions = function(self, option) return option.anchor ~= nil end,
   		AlignOptions = function(self, option) return option.align ~= nil end,
   		FontSize = function(self, option) return option.size ~= nil end,
@@ -440,7 +440,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  		if type(value) == "table" and value.value ~= nil then value = value.value end
 
 	  		if value == nil and defaultValue ~= nil then value = defaultValue
-	  		elseif value == nil then value = default[objectName] end
+				elseif value == nil then value = default[objectName] end
 
 	  		return value
 	  	end
@@ -464,10 +464,10 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  			local itemType = type(default[getObjectName(item)])
 	  			item:Show()
 	  			item.enabled = true
-
+					
 	  			if itemType == "boolean" then
 	  				item:SetChecked(getOptionValue(item))
-	  			elseif itemType == "number" then
+					elseif itemType == "number" then
 	  				-- For Offsets default value to zero instead of actaul value
 	  				if item.objectType == "offset" then
 							item:updateValues(getOptionValue(item, 0))
