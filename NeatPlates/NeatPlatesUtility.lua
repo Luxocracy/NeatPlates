@@ -685,8 +685,8 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 		local value = val or self.ceil(self:GetValue(self))
 		if infinite then
 			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum+value, maximum+value, step)
-		else
-			-- NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum, maximum, step) -- Only breaks stuff?
+		elseif slider.isActual then
+			NeatPlatesHubRapidPanel.SetSliderMechanics(self, value, minimum, maximum, step) -- Only breaks stuff?
 		end
 		if parent.OnValueChanged then parent.OnValueChanged(slider) end
 		if slider.OnValueChanged then slider.OnValueChanged(slider) end

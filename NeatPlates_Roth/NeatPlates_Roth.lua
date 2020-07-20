@@ -223,6 +223,19 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = 9,
+	x = -6,
+	y = -30,
+	width = 70,
+	align = "LEFT",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = 9,

@@ -238,6 +238,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = fontsize,
+	height = 12,
+	width = 180,
+	x = 0,
+	y = -21 + castbarVertical,
+	align = "CENTER",
+	anchor = "TOP",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = fontsize-1,

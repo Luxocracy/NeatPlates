@@ -246,6 +246,21 @@ StyleDefault.spelltext = {
 	show = true,
 }
 
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = 8,
+	width = 100,
+	height = 10,
+	x = 1,
+	y = castBar_verticalOffset-17+nameplate_verticalOffset,
+	align = "LEFT",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+}
+
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = 8,

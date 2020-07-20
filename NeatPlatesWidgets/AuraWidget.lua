@@ -77,6 +77,7 @@ local ButtonGlowEnabled = {
 
 local HideCooldownSpiral = false
 local HideAuraDuration = false
+local HideAuraStacks = false
 
 -- Get a clean version of the function...  Avoid OmniCC interference
 local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
@@ -235,7 +236,7 @@ local function UpdateIcon(frame, aura)
 		frame.Icon:SetTexture(aura.texture)
 
 		-- Stacks
-		if aura.stacks and aura.stacks > 1 then frame.Stacks:SetText(aura.stacks)
+		if not HideAuraStacks and aura.stacks and aura.stacks > 1 then frame.Stacks:SetText(aura.stacks)
 		else frame.Stacks:SetText("") end
 
 		-- Hightlighting
@@ -837,6 +838,7 @@ local function SetAuraOptions(LocalVars)
 
 	HideCooldownSpiral = LocalVars.HideCooldownSpiral
 	HideAuraDuration = LocalVars.HideAuraDuration
+	HideAuraStacks = LocalVars.HideAuraStacks
 	AuraScale = LocalVars.AuraScale
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
 	ScaleOptions = LocalVars.WidgetAuraScaleOptions

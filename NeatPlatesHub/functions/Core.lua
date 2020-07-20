@@ -253,12 +253,14 @@ local function ApplyFontCustomization(style, defaults)
 		style.subtext.typeface = STANDARD_TEXT_FONT
 		style.level.typeface = STANDARD_TEXT_FONT
 		style.spelltext.typeface = STANDARD_TEXT_FONT
+		style.spelltarget.typeface = STANDARD_TEXT_FONT
 		style.customtext.typeface = STANDARD_TEXT_FONT
 	else
 		style.name.typeface = defaults.name.typeface
 		style.subtext.typeface = defaults.subtext.typeface
 		style.level.typeface = defaults.level.typeface
 		style.spelltext.typeface = defaults.spelltext.typeface
+		style.spelltarget.typeface = defaults.spelltarget.typeface
 		style.customtext.typeface = defaults.customtext.typeface
 	end
 
@@ -298,7 +300,7 @@ local function ApplyCustomBarSize(style, defaults)
 		end
 
 		-- Castbar
-		local Castbar = {"castborder", "castnostop", "castbar", "spellicon", "spelltext", "durationtext"}
+		local Castbar = {"castborder", "castnostop", "castbar", "spellicon", "spelltext", "spelltarget", "durationtext"}
 		for k,v in pairs(Castbar) do
 			if defaults[v].width then style[v].width = defaults[v].width * (LocalVars.CastBarWidth or 1) end
 			if defaults[v].x then style[v].x = defaults[v].x * (LocalVars.CastBarWidth or 1) end
@@ -435,7 +437,8 @@ local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 	style.focus.show = (LocalVars.HighlightFocusMode > 2)
 	style.mouseover.show = (LocalVars.HighlightMouseoverMode > 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
-	style.spellicon.show = (defaults.spellicon.show and LocalVars.SpellIconEnable)
+	style.spellicon.show = (style.spellicon.enabled and LocalVars.SpellIconEnable)
+	style.spelltarget.show = (style.spelltarget.enabled and LocalVars.SpellTargetEnable)
 	style.customtext.shadow = LocalVars.TextStatusForceShadow or defaults.customtext.shadow
 	--style.rangeindicator.show = (LocalVars.WidgetRangeIndicator == true)
 

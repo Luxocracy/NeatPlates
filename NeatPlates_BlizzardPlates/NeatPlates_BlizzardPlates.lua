@@ -227,6 +227,23 @@ StyleDefault.spelltext = {
 	},
 }
 
+StyleDefault.spelltarget = {
+	typeface =					font,
+	size = 7,
+	x = 5,
+	y = vert-9,
+	width = 140,
+	align = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = true,
+	durationtext = {
+		x = 30,
+		align = "LEFT",
+	},
+}
+
 StyleDefault.durationtext = {
 	typeface =					font,
 	size = 7,

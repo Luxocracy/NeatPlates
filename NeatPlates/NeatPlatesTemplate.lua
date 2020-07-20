@@ -246,6 +246,23 @@ TemplateTheme.spelltext = {
 	enabled = true,
 }
 
+TemplateTheme.spelltarget = {
+	typeface =					font,
+	size = 9,
+	width = 93,
+	height = 10,
+	x = 0,
+	y = 11,
+	align = "RIGHT",
+	anchor = "CENTER",
+	vertical = "BOTTOM",
+	shadow = true,
+	flags = "NONE",
+	show = false,
+	durationtext = false,
+	enabled = true,
+}
+
 TemplateTheme.durationtext = {
 	typeface =					font,
 	size = 9,
