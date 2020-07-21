@@ -40,6 +40,7 @@ local ShowIntWhoCast = true
 local ShowServerIndicator = true
 local ShowUnitTitle = true
 local ShowPowerBar = false
+local ShowSpellTarget = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -1016,13 +1017,17 @@ do
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		
 		-- Set spell target
-		local targetof = unit.unitid.."target"
-		local targetname =  UnitName(unitid.."target") or ""
-		if UnitIsPlayer(targetof) then
-			local targetclass = select(2, UnitClass(targetof))
-			targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+		if ShowSpellTarget then
+			local targetof = unit.unitid.."target"
+			local targetname =  UnitName(unitid.."target") or ""
+			if UnitIsUnit(targetof, "player") then
+				targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
+			elseif UnitIsPlayer(targetof) then
+				local targetclass = select(2, UnitClass(targetof))
+				targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+			end
+			visual.spelltarget:SetText(targetname)
 		end
-		visual.spelltarget:SetText(targetname)
 
 		-- Set spell text & duration
 		visual.spelltext:SetText(text)
@@ -1134,6 +1139,8 @@ do
 
 		castBar:Hide()
 		castBar:SetScript("OnUpdate", nil)
+
+		visual.spelltarget:SetText("")
 
 		unit.isCasting = false
 		unit.interrupted = false
@@ -1631,6 +1638,7 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowServerIndicator = LocalVars.TextShowServerIndicator
 	ShowUnitTitle = LocalVars.TextShowUnitTitle
 	ShowPowerBar = LocalVars.StyleShowPowerBar
+	ShowSpellTarget = LocalVars.SpellTargetEnable
 end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end
