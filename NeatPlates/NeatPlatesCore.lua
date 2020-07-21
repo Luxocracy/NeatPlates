@@ -44,6 +44,7 @@ local ColorCastBars = true
 local ShowServerIndicator = false
 local ShowUnitTitle = true
 local ShowPowerBar = false
+local ShowSpellTarget = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -1123,21 +1124,27 @@ do
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		
 		-- Set spell target (Target doesn't usually update until a little bit after the combat event, so we need to recheck)
-		local maxTries = 5
-		local function setSpellTarget()
-			local targetof = unit.unitid.."target"
-			local targetname =  UnitName(unit.unitid.."target") or ""
-			if UnitIsPlayer(targetof) then
-				local targetclass = select(2, UnitClass(targetof))
-				targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+		if ShowSpellTarget then
+			local maxTries = 10
+			local function setSpellTarget()
+				local targetof = unit.unitid.."target"
+				local targetname =  UnitName(unit.unitid.."target") or ""
+				if UnitIsUnit(targetof, "player") then
+					targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
+				elseif UnitIsPlayer(targetof) then
+					local targetclass = select(2, UnitClass(targetof))
+					targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+				end
+				visual.spelltarget:SetText(targetname)
+
+				-- Retry if target is empty
+				if targetname == "" and maxTries > 0 then
+					maxTries = maxTries - 1
+					C_Timer.After(0.1, setSpellTarget)
+				end
 			end
-			visual.spelltarget:SetText(targetname)
-			if targetname == "" and maxTries > 0 then
-				C_Timer.After(0.1, setSpellTarget)
-				maxTries = maxTries - 1
-			end
+			C_Timer.After(0.002, setSpellTarget) -- Next Frame
 		end
-		C_Timer.After(0.002, setSpellTarget) -- Next Frame
 
 		-- Set spell text & duration
 		visual.spelltext:SetText(spell.name)
@@ -1874,6 +1881,7 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowServerIndicator = LocalVars.TextShowServerIndicator
 	ShowUnitTitle = LocalVars.TextShowUnitTitle
 	ShowPowerBar = LocalVars.StyleShowPowerBar
+	ShowSpellTarget = LocalVars.SpellTargetEnable
 end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end

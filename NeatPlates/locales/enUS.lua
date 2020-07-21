@@ -690,6 +690,7 @@ Please ensure that you are on the correct version before continuing to use this 
 ------------------------------
 -- Various stuff & Tooltips
 ------------------------------
+L["You"] = true
 L["Tip"] = true
 
 L["Default"] = true
