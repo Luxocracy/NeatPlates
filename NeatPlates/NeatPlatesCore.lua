@@ -1124,11 +1124,11 @@ do
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		
 		-- Set spell target (Target doesn't usually update until a little bit after the combat event, so we need to recheck)
-		if ShowSpellTarget then
+		if ShowSpellTarget and unit.unitid then
 			local maxTries = 10
+			local targetof = unit.unitid.."target"
 			local function setSpellTarget()
-				local targetof = unit.unitid.."target"
-				local targetname =  UnitName(unit.unitid.."target") or ""
+				local targetname =  UnitName(targetof) or ""
 				if UnitIsUnit(targetof, "player") then
 					targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
 				elseif UnitIsPlayer(targetof) then
