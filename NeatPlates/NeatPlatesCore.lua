@@ -1017,9 +1017,9 @@ do
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		
 		-- Set spell target
-		if ShowSpellTarget then
+		if ShowSpellTarget and unit.unitid then
 			local targetof = unit.unitid.."target"
-			local targetname =  UnitName(unitid.."target") or ""
+			local targetname =  UnitName(targetof) or ""
 			if UnitIsUnit(targetof, "player") then
 				targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
 			elseif UnitIsPlayer(targetof) then
