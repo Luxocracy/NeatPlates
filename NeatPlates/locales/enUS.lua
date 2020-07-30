@@ -391,6 +391,7 @@ L["Threat Mode"] = true
 	L["DPS/Healer"] = true
 
 L["Enable Warning Glow"] = true
+L["Enable Threat while Solo"] = true
 L["Use Safe Color while Solo"] = true
 
 L["Threat Colors"] = true

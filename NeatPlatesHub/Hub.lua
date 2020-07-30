@@ -456,7 +456,8 @@ local function BuildHubPanel(panel)
 	panel.ThreatLabel = CreateQuickHeadingLabel(nil, L["Threat & Highlighting"], AlignmentColumn, F, 0, 5)
 	panel.ThreatWarningMode =  CreateQuickDropdown(objectName.."ThreatWarningMode", L["Threat Mode"]..':', ThreatWarningModes, 1, AlignmentColumn, panel.ThreatLabel, 0, 2)
 	panel.ThreatGlowEnable = CreateQuickCheckbutton(objectName.."ThreatGlowEnable", L["Enable Warning Glow"], AlignmentColumn, panel.ThreatWarningMode,0)
-	panel.SafeColorSolo = CreateQuickCheckbutton(objectName.."SafeColorSolo", L["Use Safe Color while Solo"], AlignmentColumn, panel.ThreatGlowEnable,0)
+	panel.ThreatSoloEnable = CreateQuickCheckbutton(objectName.."ThreatSoloEnable", L["Enable Threat while Solo"], AlignmentColumn, panel.ThreatGlowEnable,0)
+	panel.SafeColorSolo = CreateQuickCheckbutton(objectName.."SafeColorSolo", L["Use Safe Color while Solo"], AlignmentColumn, panel.ThreatSoloEnable,0)
 
 	--panel.ColorThreatColorLabels = CreateQuickItemLabel(nil, L["Threat Colors"]..':', AlignmentColumn, panel.ThreatGlowEnable, 0, 2)
 

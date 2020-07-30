@@ -45,6 +45,7 @@ local ShowServerIndicator = false
 local ShowUnitTitle = true
 local ShowPowerBar = false
 local ShowSpellTarget = false
+local ThreatSoloEnable = true
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -811,8 +812,11 @@ do
 		unit.power = UnitPower(unitid, powerType) or 0
 		unit.powermax = UnitPowerMax(unitid, powerType) or 0
 
-		unit.threatValue = UnitThreatSituation("player", unitid) or 0
-		unit.threatSituation = ThreatReference[unit.threatValue]
+		unit.threatValue = 0
+		if ThreatSoloEnable or (UnitInParty("player") or UnitExists("pet")) then
+			unit.threatValue = UnitThreatSituation("player", unitid) or 0
+			unit.threatSituation = ThreatReference[unit.threatValue]
+		end
 		unit.isInCombat = UnitAffectingCombat(unitid)
 		unit.isTargetingPlayer = UnitIsUnit(unitid.."target", "player")
 		unit.alphaMult = nameplate:GetAlpha()
@@ -1882,6 +1886,7 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowUnitTitle = LocalVars.TextShowUnitTitle
 	ShowPowerBar = LocalVars.StyleShowPowerBar
 	ShowSpellTarget = LocalVars.SpellTargetEnable
+	ThreatSoloEnable = LocalVars.ThreatSoloEnable
 end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end
