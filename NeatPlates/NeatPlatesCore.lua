@@ -178,7 +178,7 @@ do
 			-- CVar integrations
 			if NeatPlatesOptions.BlizzardScaling then carrier:SetScale(plate:GetScale()) end	-- Scale the carrier to allow for certain CVars that control scale to function properly.
 			if plate.extended.unit.alphaMult ~= plate:GetAlpha() then
-				UpdateMe = true
+				UpdateHealth = true
 			end
 
 			-- Check for an Update Request
@@ -678,7 +678,7 @@ do
 		unit.powermax = UnitPowerMax(unitid, powerType) or 0
 
 		unit.threatValue = 0
-		if ThreatSoloEnable or (UnitInParty("player") or UnitExists("pet")) then
+		if ThreatSoloEnable or UnitInParty("player") or UnitExists("pet") then
 			unit.threatValue = UnitThreatSituation("player", unitid) or 0
 			unit.threatSituation = ThreatReference[unit.threatValue]
 		end
@@ -1019,19 +1019,8 @@ do
 		-- Clear registered events incase they weren't
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-		
-		-- Set spell target
-		if ShowSpellTarget and unit.unitid then
-			local targetof = unit.unitid.."target"
-			local targetname =  UnitName(targetof) or ""
-			if UnitIsUnit(targetof, "player") then
-				targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
-			elseif UnitIsPlayer(targetof) then
-				local targetclass = select(2, UnitClass(targetof))
-				targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
-			end
-			visual.spelltarget:SetText(targetname)
-		end
+
+		OnUpdateCastTarget(plate, unitid)
 
 		-- Set spell text & duration
 		visual.spelltext:SetText(text)
@@ -1157,11 +1146,25 @@ do
 	function OnUpdateCastMidway(plate, unitid)
 		if not ShowCastBars then return end
 		local currentTime = GetTime() * 1000
-		
+
 		if UnitCastingInfo(unitid) then
 			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
 		elseif UnitChannelInfo(unitid) then
 			OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
+		end
+	end
+
+	function OnUpdateCastTarget(plate, unitid)
+		if ShowSpellTarget and plate and unitid then
+			local targetof = unitid.."target"
+			local targetname =  UnitName(targetof) or ""
+			if UnitIsUnit(targetof, "player") then
+				targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
+			elseif UnitIsPlayer(targetof) then
+				local targetclass = select(2, UnitClass(targetof))
+				targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+			end
+			plate.extended.visual.spelltarget:SetText(targetname)
 		end
 	end
 
@@ -1268,6 +1271,15 @@ do
 	function CoreEvents:PLAYER_TARGET_CHANGED()
 		HasTarget = UnitExists("target") == true;
 		SetUpdateAll()
+	end
+	
+	function CoreEvents:UNIT_TARGET(...)
+		local unitid = ...
+		local plate = GetNamePlateForUnit(unitid);
+		
+		if plate and plate.extended.unit.isCasting then
+			OnUpdateCastTarget(plate, unitid)
+		end
 	end
 
 	function CoreEvents:UNIT_HEALTH(...)
