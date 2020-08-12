@@ -109,7 +109,7 @@ end
 
 
 function CreateNeatPlatesStatusbar(parent)
-	local frame = CreateFrame("Frame", nil, parent)
+	local frame = CreateFrame("Frame", nil, parent, NeatPlatesBackdrop)
 	--frame.Dim = 1
 	frame:SetHeight(1)
 	frame:SetWidth(1)

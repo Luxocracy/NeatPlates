@@ -495,7 +495,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		if not CustomizationPanel then
 			-- Build the actual panel
-			CustomizationPanel = CreateFrame("Frame", "NeatPlatesCustomizationPanel", UIParent, "UIPanelDialogTemplate");
+			CustomizationPanel = CreateFrame("Frame", "NeatPlatesCustomizationPanel", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
 			CustomizationPanel:Hide()
 		  CustomizationPanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 		  CustomizationPanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
@@ -749,7 +749,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		if not ScalePanel then
 			-- Build the actual panel
-			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate");
+			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
 
 			--local panel = CreateFrame( "Frame", "OffsetAndScale_InterfaceOptionsPanel", UIParent);
 		
@@ -896,7 +896,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local function CreateQuickEditboxPopup(label, onOkay, highlight)
 		if not EditboxPopup then
 			-- Build the actual panel
-			panel = CreateFrame("Frame", "NeatPlatesEditboxPopup", UIParent, "UIPanelDialogTemplate");
+			panel = CreateFrame("Frame", "NeatPlatesEditboxPopup", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
 			panel:Hide()
 		  panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 		  panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
@@ -1094,7 +1094,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
 	-- Panel
 	------------------------------
-	local panel = CreateFrame( "Frame", objectName.."_InterfaceOptionsPanel", UIParent);
+	local panel = CreateFrame( "Frame", objectName.."_InterfaceOptionsPanel", UIParent, NeatPlatesBackdrop);
 	panel.objectName = objectName
 	panel:SetBackdrop({	bgFile = "Interface/Tooltips/UI-Tooltip-Background", --bgFile = "Interface/FrameGeneral/UI-Background-Marble",
 						edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -1119,7 +1119,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
         -- Warnings
         ------------------------------
-	panel.WarningFrame = CreateFrame("Frame", objectName.."WarningFrame", panel )
+	panel.WarningFrame = CreateFrame("Frame", objectName.."WarningFrame", panel, NeatPlatesBackdrop)
 	panel.WarningFrame:SetPoint("LEFT", 16, 0 )
 	panel.WarningFrame:SetPoint("TOP", panel.MainLabel, "BOTTOM", 0, -8 )
         panel.WarningFrame:SetPoint("RIGHT", -16 , 16 )
@@ -1160,7 +1160,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 
 	-- Scroll Frame Border
 	------------------------------
-	panel.ScrollFrameBorder = CreateFrame("Frame", objectName.."ScrollFrameBorder", panel.ScrollFrame )
+	panel.ScrollFrameBorder = CreateFrame("Frame", objectName.."ScrollFrameBorder", panel.ScrollFrame, NeatPlatesBackdrop)
 	panel.ScrollFrameBorder:SetPoint("TOPLEFT", -4, 5)
 	panel.ScrollFrameBorder:SetPoint("BOTTOMRIGHT", 3, -5)
 	panel.ScrollFrameBorder:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",

@@ -1,4 +1,4 @@
-## Interface: 80300
+## Interface: 90000
 ## Title: NeatPlates: Roth
 ## Notes: Vanilla-Style Plates.
 ## Author: Reinhart

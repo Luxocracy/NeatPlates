@@ -769,7 +769,7 @@ local function ImportTPCSettings(frame)
 end
 
 local function ImportSettingsPrompt()
-	local frame = CreateFrame("Frame", "ImportSettingsPrompt", UIParent)
+	local frame = CreateFrame("Frame", "ImportSettingsPrompt", UIParent, NeatPlatesBackdrop)
 
 	frame:SetBackdrop({	bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 },})
 	frame:SetBackdropColor(.1, .1, .1, .6)
@@ -821,7 +821,7 @@ local function ImportSettingsPrompt()
 end
 
 local function VersionWarning()
-	local frame = CreateFrame("Frame", "VersionWarningPrompt", UIParent)
+	local frame = CreateFrame("Frame", "VersionWarningPrompt", UIParent, NeatPlatesBackdrop)
 	local version = GetAddOnMetadata("NeatPlates", "version")
 	local versionString = "|cFF666666"..version
 
