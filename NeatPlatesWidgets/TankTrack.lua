@@ -88,7 +88,7 @@ end
 
 local function ToggleTank(arg)
 	if not IsInGroup() or not UnitExists("target") or UnitIsUnit("player", "target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
-		if arg == "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
+		if arg ~= "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
 	else
 		local name = UnitName("target")
 		local guid = UnitGUID("target")

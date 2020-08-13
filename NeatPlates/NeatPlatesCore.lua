@@ -335,9 +335,11 @@ do
 				--if children then children:Hide() end
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
-					local unitGUID = UnitGUID(unit.unitid)
-					if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
-					else OnStopCasting(plate) end
+					if unit and unit.unitid then
+						local unitGUID = UnitGUID(unit.unitid)
+						if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
+						else OnStopCasting(plate) end
+					end
 					plate.UpdateCastbar = false
 				end
 			elseif unitid and not plate:IsVisible() then
