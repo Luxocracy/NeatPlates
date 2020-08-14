@@ -149,7 +149,7 @@ local function ColorFunctionByThreat(unit)
 
 	if classColor then
 		return classColor
-	elseif LocalVars.SafeColorSolo and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player")) then
+	elseif not UnitInParty("player") and not UnitExists("pet") and LocalVars.SafeColorSolo and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player")) then
 		return LocalVars.ColorThreatSafe
 	elseif (LocalVars.ThreatSoloEnable or UnitInParty("player") or UnitExists("pet")) and InCombatLockdown() and unit.reaction ~= "FRIENDLY" and unit.type == "NPC" and (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player")) then
 		local isTank = (LocalVars.ThreatWarningMode == "Tank") or (LocalVars.ThreatWarningMode == "Auto" and IsTankingAuraActive())
