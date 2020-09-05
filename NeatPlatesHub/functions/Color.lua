@@ -221,7 +221,7 @@ local function CustomColorDelegate(unit)
 				color = HexToRGB(LocalVars.CustomColorLookup[unit.name].hex); break
 
 		-- Stop if prefix is set to only check units
-			elseif string.lower(LocalVars.CustomColorLookup[key].prefix) ~= "unit" then
+			elseif string.lower(LocalVars.CustomColorLookup[key].prefix) == "unit" then
 				break
 		--Custom Color by Buff/Debuff
 			elseif not color and aura and aura[key] then
