@@ -346,7 +346,7 @@ local function UpdateIconGrid(frame, unitid)
 				local emphasized, ePriority = EmphasizedAuraFilterFunction(aura)
 				--print(aura.name, show, priority)
 				--show = true
-				AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = true, true -- Used by Custom Color Conditions
+				AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = aura, aura -- Used by Custom Color Conditions
 				-- Store Order/Priority
 				if show then
 					aura.priority = priority or 10

@@ -711,9 +711,8 @@ local function CreateProfile(label, color)
 		Panels[label] = CreateHubInterfacePanel("HubPanelProfile"..label, "|c"..color..label.." "..L["Profile"]..suffix, "NeatPlates" )	-- Create the basic settings panel
 		NeatPlatesPanel:AddProfile(label)	-- Add profile to profile list
 		BuildHubPanel(Panels[label])	-- Fill the settings panel with options
-	else
-		Panels[label].RefreshSettings(NeatPlatesHubSettings["HubPanelProfile"..label])	-- Update existing profile
 	end
+	Panels[label].RefreshSettings(NeatPlatesHubSettings["HubPanelProfile"..label])	-- Update existing profile
 
 	InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
 

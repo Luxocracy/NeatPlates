@@ -116,12 +116,14 @@ local function ConvertColorListTable(source, target)
 	--local temp = ListToTable(strsplit("\n", source))
 	local temp = {strsplit("\n", source)}
 	target = wipe(target)
-
+	-- table.foreach(temp, print)
 	for index = 1, #temp do
 		if temp[index] then
-			local hex, str = select(3, string.find(temp[index], "(#%x+)[%s%p]*(.*)"))
+			local prefix, hex, str = select(3, string.find(temp[index], "(.-)[%s%p]*(#%x+)[%s%p]*(.*)"))
 			--local str = temp[index]
-			if hex and str then target[str] = hex end
+			if hex and str then
+				target[str] = {["prefix"] = prefix, ["hex"] = hex}
+			end
 		end
 	end
 end
