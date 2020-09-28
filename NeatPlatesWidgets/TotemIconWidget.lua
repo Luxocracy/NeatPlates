@@ -16,6 +16,11 @@ end
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
+if (tonumber((select(2, GetBuildInfo()))) >= 33978) then
+-- Shadowlands update
+	-- Covenant totems
+	SetTotemInfo(324386,UNSPECIFIED_TOTEM) -- Vesper Totem
+end
 
 if (tonumber((select(2, GetBuildInfo()))) >= 22642) then
 -- Legion Update
