@@ -13,7 +13,7 @@ local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
-local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil )
+local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil, NeatPlatesBackdrop)
 InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
 
 local CallIn = NeatPlatesUtility.CallIn
@@ -88,7 +88,6 @@ NeatPlatesOptions = {
 	EnemyAutomation = {},
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
-	HealthFrequent = true,
 	BlizzardScaling = false,
 	BlizzardNameVisibility = false,
 	OverrideOutline = 1,
@@ -228,7 +227,6 @@ local ThemeDropdownMenuItems = {}
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
 	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
-	NeatPlates:SetHealthUpdateMethod(NeatPlatesOptions.HealthFrequent)
 
 	if NeatPlatesOptions._EnableMiniButton then
 		NeatPlatesUtility:CreateMinimapButton()
@@ -343,7 +341,6 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.EnemyAutomation = panel.EnemyAutomation:GetValue()
 	NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
-	NeatPlatesOptions.HealthFrequent = panel.HealthFrequent:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
 	NeatPlatesOptions.BlizzardNameVisibility = panel.BlizzardNameVisibility:GetChecked()
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
@@ -372,7 +369,6 @@ local function SetPanelValues(panel)
 
 	panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
-	panel.HealthFrequent:SetChecked(NeatPlatesOptions.HealthFrequent)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
 	panel.BlizzardNameVisibility:SetChecked(NeatPlatesOptions.BlizzardNameVisibility)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
@@ -552,7 +548,7 @@ local function BuildInterfacePanel(panel)
 
 	-- Scroll Frame Border
 	------------------------------
-	panel.ScrollFrameBorder = CreateFrame("Frame", "NeatPlatesScrollFrameBorder", panel.ScrollFrame )
+	panel.ScrollFrameBorder = CreateFrame("Frame", "NeatPlatesScrollFrameBorder", panel.ScrollFrame, NeatPlatesBackdrop)
 	panel.ScrollFrameBorder:SetPoint("TOPLEFT", -4, 5)
 	panel.ScrollFrameBorder:SetPoint("BOTTOMRIGHT", 3, -5)
 	panel.ScrollFrameBorder:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
@@ -805,15 +801,9 @@ local function BuildInterfacePanel(panel)
 	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) NeatPlates.OverrideFonts( self:GetChecked()) end)
 
-	-- Frequent Health Updates
-	panel.HealthFrequent = PanelHelpers:CreateCheckButton("NeatPlatesOptions_HealthFrequent", panel, L["Use Frequent Health Updates"])
-	panel.HealthFrequent:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
-	panel.HealthFrequent:SetScript("OnClick", function(self) NeatPlates:SetHealthUpdateMethod(self:GetChecked()) end)
-	panel.HealthFrequent.tooltipText = L["Might resolve some issues with health not updating properly"]
-
 	-- Blizzard Scaling
 	panel.BlizzardScaling = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardScaling", panel, L["Use Blizzard Scaling"])
-	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.HealthFrequent, "TOPLEFT", 0, -25)
+	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
 	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
 
 	-- Blizzard Scaling

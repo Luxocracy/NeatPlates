@@ -172,7 +172,6 @@ local function UpdateWidgetContext(frame, unit)
 		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unitid)
 		frame:RegisterUnitEvent("UNIT_HEALTH", unitid)
 		frame:RegisterUnitEvent("UNIT_AURA", unitid)
-		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unitid)
 		frame:SetScript("OnEvent", UpdateWidget);
 		UpdateAbsorbs(frame, unitid)
 	else
@@ -192,7 +191,7 @@ end
 local WatcherFrame = CreateFrame("Frame", nil, WorldFrame )
 local isEnabled = false
 WatcherFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-WatcherFrame:RegisterEvent("UNIT_HEALTH_FREQUENT")
+WatcherFrame:RegisterEvent("UNIT_HEALTH")
 
 local function WatcherFrameHandler(frame, event, unitid)
 	local guid = UnitGUID("target")

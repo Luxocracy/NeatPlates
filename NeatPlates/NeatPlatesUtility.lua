@@ -501,8 +501,8 @@ end
 -- Panel Helpers (Used to create interface panels)
 ------------------------------------------------------------------
 
-local function CreatePanelFrame(self, reference, listname, title)
-	local panelframe = CreateFrame( "Frame", reference, UIParent);
+local function CreatePanelFrame(self, reference, listname, title, backdrop)
+	local panelframe = CreateFrame( "Frame", reference, UIParent, backdrop);
 	panelframe.name = listname
 	panelframe.Label = panelframe:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
 	panelframe.Label:SetPoint("TOPLEFT", panelframe, "TOPLEFT", 16, -16)
@@ -744,7 +744,7 @@ DropDownMenuFrame:SetSize(100, 100)
 DropDownMenuFrame:SetFrameStrata("TOOLTIP");
 DropDownMenuFrame:Hide()
 
-local Border = CreateFrame("Frame", nil, DropDownMenuFrame)
+local Border = CreateFrame("Frame", nil, DropDownMenuFrame, NeatPlatesBackdrop)
 Border:SetBackdrop(
 		{	bgFile = "Interface/DialogFrame/UI-DialogBox-Background-Dark",
             edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -985,7 +985,7 @@ do
 	end
 
 	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
-		local colorbox = CreateFrame("Button", reference, parent)
+		local colorbox = CreateFrame("Button", reference, parent, NeatPlatesBackdrop)
 		colorbox:SetWidth(24)
 		colorbox:SetHeight(24)
 		colorbox:SetBackdrop({bgFile = "Interface\\ChatFrame\\ChatFrameColorSwatch",
@@ -1020,7 +1020,7 @@ end
 
 local function CreateEditBox(name, width, height, parent, anchorFrame, ...)
 	local frame = CreateFrame("ScrollFrame", name, parent, "UIPanelScrollFrameTemplate")
-	frame.BorderFrame = CreateFrame("Frame", nil, frame )
+	frame.BorderFrame = CreateFrame("Frame", nil, frame, NeatPlatesBackdrop)
 	local EditBox = CreateFrame("EditBox", nil, frame)
 	-- Margins	-- Bottom/Left are supposed to be negative
 	frame.Margins = {Left = 4, Right = 24, Top = 8, Bottom = 8, }
@@ -1144,7 +1144,7 @@ local function CreateMultiStateOptions(self, name, labelArray, stateArray, width
 	end
 
 	-- Border
-	frame.BorderFrame = CreateFrame("Frame", nil, frame )
+	frame.BorderFrame = CreateFrame("Frame", nil, frame, NeatPlatesBackdrop)
 	frame.BorderFrame:SetPoint("TOPLEFT", 0, 5)
 	frame.BorderFrame:SetPoint("BOTTOMRIGHT", 3, -5)
 	frame.BorderFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",

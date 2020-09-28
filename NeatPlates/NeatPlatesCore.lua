@@ -6,7 +6,6 @@
 local addonName, NeatPlatesInternal = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
-local FrequentHealthUpdate = true
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 local ParseGUID = NeatPlatesUtility.ParseGUID
 NeatPlates = {}
@@ -1283,15 +1282,6 @@ do
 	end
 
 	function CoreEvents:UNIT_HEALTH(...)
-		if FrequentHealthUpdate then return end
-		local unitid = ...
-		local plate = PlatesByUnit[unitid]
-
-		if plate then OnHealthUpdate(plate) end
-	end
-
-	function CoreEvents:UNIT_HEALTH_FREQUENT(...)
-		if not FrequentHealthUpdate then return end
 		local unitid = ...
 		local plate = PlatesByUnit[unitid]
 
@@ -1647,7 +1637,6 @@ end
 function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
 
-function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 function NeatPlates:SetCoreVariables(LocalVars)
 	ShowIntCast = LocalVars.IntCastEnable
 	ShowIntWhoCast = LocalVars.IntCastWhoEnable
