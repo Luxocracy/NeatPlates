@@ -1172,9 +1172,14 @@ do
 
 		castBar:SetAlpha(a or 1)
 
-		if unit.spellIsShielded then
-			   visual.castnostop:Show(); visual.castborder:Hide()
-		else visual.castnostop:Hide(); visual.castborder:Show() end
+
+		if style.castnostop.enabled and unit.spellIsShielded then
+			visual.castnostop:Show(); visual.castborder:Hide()
+		elseif style.castborder.enabled then
+			visual.castnostop:Hide(); visual.castborder:Show()
+		else
+			visual.castnostop:Hide(); visual.castborder:Hide()
+		end
 
 		UpdateIndicator_CustomScaleText()
 		UpdateIndicator_CustomAlpha()
