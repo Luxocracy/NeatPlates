@@ -743,9 +743,10 @@ do
 		visual.powerbar:SetValue(unit.power)
 
 		-- Hide bar if max power is none as the unit doesn't use power
-		if unit.powermax == 0 or not ShowPowerBar then
+		local showPowerBar = (ShowFriendlyPowerBar and unit.reaction == "FRIENDLY") or (ShowEnemyPowerBar and unit.reaction ~= "FRIENDLY")
+		if unit.powermax == 0 or not showPowerBar then
 			visual.powerbar:Hide()
-		elseif ShowPowerBar then
+		elseif showPowerBar then
 			visual.powerbar:Show()
 		end
 
@@ -1642,7 +1643,8 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowIntWhoCast = LocalVars.IntCastWhoEnable
 	ShowServerIndicator = LocalVars.TextShowServerIndicator
 	ShowUnitTitle = LocalVars.TextShowUnitTitle
-	ShowPowerBar = LocalVars.StyleShowPowerBar
+	ShowFriendlyPowerBar = LocalVars.StyleShowFriendlyPowerBar
+	ShowEnemyPowerBar = LocalVars.StyleShowEnemyPowerBar
 	ShowSpellTarget = LocalVars.SpellTargetEnable
 	ThreatSoloEnable = LocalVars.ThreatSoloEnable
 end
