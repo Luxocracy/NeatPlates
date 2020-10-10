@@ -117,7 +117,6 @@ local function BuildHubPanel(panel)
 	F =  ColumnEnd
 	--panel.HealthBarStyleLabel, F = CreateQuickItemLabel(nil, L["Health Bar View"]..':', AlignmentColumn, F, 0, 2)
 	--panel.StyleForceBarsOnTargets, F = CreateQuickCheckbutton(objectName.."StyleForceBarsOnTargets", L["Force Bars on Targets"], AlignmentColumn, F, 16, 2)
-	--panel.StyleShowPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowPowerBar", L["Display Powerbar"], AlignmentColumn, F, 16, 0)
 
 	panel.StyleHeadlineLabel, F = CreateQuickItemLabel(nil, L["Headline View (Text-Only)"]..':', AlignmentColumn, F, 0, 2)
 	panel.StyleHeadlineNeutral, F = CreateQuickCheckbutton(objectName.."StyleHeadlineNeutral", L["Force Headline on Neutral Units"], AlignmentColumn, F, 16, 2)
@@ -151,9 +150,10 @@ local function BuildHubPanel(panel)
 	panel.StyleForceBarsOnTargets, F = CreateQuickCheckbutton(objectName.."StyleForceBarsOnTargets", L["Force Bars on Targets"], AlignmentColumn, F, 16, 2)
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Unit Level"], AlignmentColumn, F, 16)
 	panel.TextShowUnitTitle, F = CreateQuickCheckbutton(objectName.."TextShowUnitTitle", L["Show Unit Title"], AlignmentColumn, F, 16)
-	panel.StyleShowPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowPowerBar", L["Show Unit Powerbar"], AlignmentColumn, F, 16)
-	panel.StyleShowPowerBar.tooltipText = L["powerbar_unfinished_warning"]
-	--panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 16)
+	panel.StyleShowFriendlyPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowFriendlyPowerBar", L["Show Friendly Unit Powerbar"], AlignmentColumn, F, 16)
+	panel.StyleShowFriendlyPowerBar.tooltipText = L["powerbar_unfinished_warning"]
+	panel.StyleShowEnemyPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowEnemyPowerBar", L["Show Enemy Unit Powerbar"], AlignmentColumn, F, 16)
+	panel.StyleShowEnemyPowerBar.tooltipText = L["powerbar_unfinished_warning"]
 	panel.TextStatusForceShadow, F = CreateQuickCheckbutton(objectName.."TextStatusForceShadow", L["Force Shadow on Status Text"], AlignmentColumn, F, 16)
   panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 16)
   panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 16)

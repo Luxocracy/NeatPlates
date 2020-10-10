@@ -53,7 +53,8 @@ NeatPlatesHubDefaults = {
 
 
 	StyleForceBarsOnTargets = false,
-	StyleShowPowerBar = false,
+	StyleShowFriendlyPowerBar = false,
+	StyleShowEnemyPowerBar = false,
 
 	-- Headline
 	---------------------------------------
