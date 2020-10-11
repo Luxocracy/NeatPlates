@@ -46,6 +46,7 @@ L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Use Frequent Health Updates"] = true
 L["Use Blizzard Scaling"] = true
 L["Use Blizzard Name Visibility"] = true
+L["Use Blizzard Bar Widgets"] = true
 L["Outline Override"] = true
 	L["Thin Outline"] = true
 	L["Thick Outline"] = true
@@ -713,6 +714,7 @@ L["Offset Y"] = true
 -- Main Panel
 L["Might resolve some issues with health not updating properly"] = true
 L["Allows some CVars to work(Might require a /reload)"] = true
+L["Use default blizzard bar widgets where applicable rather than the simpler widget bar built into NeatPlates (Might require a /reload)"] = true
 L["CVars could not applied due to combat"] = true
 L["This feature is highly experimental, use on your own risk"] = true
 

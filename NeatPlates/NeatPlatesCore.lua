@@ -196,7 +196,10 @@ do
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
 
-			if plate.UnitFrame then plate.UnitFrame:Hide() end
+			if plate.showBlizzardPlate then
+				plate.UnitFrame:Show()
+				plate.extended:Hide()
+			elseif plate.UnitFrame then plate.UnitFrame:Hide() end
 
 		-- This would be useful for alpha fades
 		-- But right now it's just going to get set directly
@@ -839,13 +842,53 @@ do
 		if widgetSetID then
 			local widgetSet = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)
 			if not widgetSet or not widgetSet[1] then return end
+			
+			local widget
+			for i = 1, #widgetSet do
+				local widgetID = widgetSet[i].widgetID
+				local widgetType = widgetSet[i].widgetType
+				if widgetType == 2 then
+					widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
+				elseif widgetType == 1 then
+					if NeatPlatesOptions.BlizzardWidgets then
+						nameplate.showBlizzardPlate = true
+					else
+						widget = C_UIWidgetManager.GetCaptureBarWidgetVisualizationInfo(widgetID)
+					end
+				elseif widgetType == 8 then
+					-- Do nothing
+				else
+					if not _G['NeatPlatesWidgetError'] then
+						_G['NeatPlatesWidgetError'] = true
+						error("NeatPlates: Unsupported widget type ("..widgetType..") please report this and what you were doing to the addon author.")
+					end
+					return -- Unsupported widget type
+				end
+					
+				if widget then break end
+			end
+			
+			if not widget then return end
 
-			local widgetID = widgetSet[1].widgetID
-			local widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
+
+
+			local widgetBarMin = widget.barMin or widget.barMinValue
+			local widgetBarMax = widget.barMax or widget.barMaxValue
+
 			local rank = widget.overrideBarText
-			local barCur = widget.barValue - widget.barMin
-			local barMax = widget.barMax - widget.barMin
+			local barCur = widget.barValue - widgetBarMin
+			local barMax = widgetBarMax - widgetBarMin
 			local text = rank
+
+			-- Set neutral zone
+			if widget.neutralZoneSize then
+				local neutralZoneMin = widget.neutralZoneCenter - (widget.neutralZoneSize / 2)
+				local neutralZoneMax = widget.neutralZoneCenter + (widget.neutralZoneSize / 2)
+				visual.extrabar:SetNeutralZone(neutralZoneMin, neutralZoneMax, widget.neutralZoneCenter, barMax)
+				visual.extrabar.Neutral:Show()
+			else
+				visual.extrabar.Neutral:Hide()
+			end
 
 			if unit.isMouseover then text = barCur.."/"..barMax end
 
@@ -1259,6 +1302,7 @@ do
 			if UnitIsUnit("player", unitid) then
 				OnHideNameplate(plate, unitid)
 			else
+				plate.showBlizzardPlate = false
 				local children = plate:GetChildren()
 				if children then children:Hide() end --Avoids errors incase the plate has no children
 		 		OnShowNameplate(plate, unitid)
@@ -1414,6 +1458,12 @@ do
 	function CoreEvents:CVAR_UPDATE(name, value)
 		if name == "nameplateOccludedAlphaMult" then
 			NameplateOccludedAlphaMult = value
+		end
+	end
+
+	function CoreEvents:UPDATE_UI_WIDGET(widget)
+		if widget then
+			SetUpdateAll()
 		end
 	end
 

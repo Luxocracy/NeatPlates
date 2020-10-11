@@ -90,6 +90,7 @@ NeatPlatesOptions = {
 	ForceBlizzardFont = false,
 	BlizzardScaling = false,
 	BlizzardNameVisibility = false,
+	BlizzardWidgets = true,
 	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
 
@@ -343,6 +344,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
 	NeatPlatesOptions.BlizzardNameVisibility = panel.BlizzardNameVisibility:GetChecked()
+	NeatPlatesOptions.BlizzardWidgets = panel.BlizzardWidgets:GetChecked()
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
@@ -371,6 +373,7 @@ local function SetPanelValues(panel)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
 	panel.BlizzardNameVisibility:SetChecked(NeatPlatesOptions.BlizzardNameVisibility)
+	panel.BlizzardWidgets:SetChecked(NeatPlatesOptions.BlizzardWidgets)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
@@ -805,15 +808,23 @@ local function BuildInterfacePanel(panel)
 	panel.BlizzardScaling = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardScaling", panel, L["Use Blizzard Scaling"])
 	panel.BlizzardScaling:SetPoint("TOPLEFT", panel.ForceBlizzardFont, "TOPLEFT", 0, -25)
 	panel.BlizzardScaling.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
+	panel.BlizzardScaling:SetScript("OnClick", function() end) -- Empty function beacuse Shadowlands requires it now?
 
 	-- Blizzard Scaling
 	panel.BlizzardNameVisibility = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardNameVisibility", panel, L["Use Blizzard Name Visibility"])
 	panel.BlizzardNameVisibility:SetPoint("TOPLEFT", panel.BlizzardScaling, "TOPLEFT", 0, -25)
 	panel.BlizzardNameVisibility.tooltipText = L["Allows some CVars to work(Might require a /reload)"]
+	panel.BlizzardNameVisibility:SetScript("OnClick", function() end) -- Empty function beacuse Shadowlands requires it now?
+	
+	-- Blizzard Bar Widgets
+	panel.BlizzardWidgets = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardWidgets", panel, L["Use Blizzard Bar Widgets"])
+	panel.BlizzardWidgets:SetPoint("TOPLEFT", panel.BlizzardNameVisibility, "TOPLEFT", 0, -25)
+	panel.BlizzardWidgets.tooltipText = L["Use default blizzard bar widgets where applicable rather than the simpler widget bar built into NeatPlates (Might require a /reload)"]
+	panel.BlizzardWidgets:SetScript("OnClick", function() end) -- Empty function beacuse Shadowlands requires it now?
 
 	-- Override Outline Style
 	panel.OverrideOutlineLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.OverrideOutlineLabel:SetPoint("TOPLEFT", panel.BlizzardNameVisibility,"BOTTOMLEFT", 0, -8)
+	panel.OverrideOutlineLabel:SetPoint("TOPLEFT", panel.BlizzardWidgets,"BOTTOMLEFT", 0, -8)
 	panel.OverrideOutlineLabel:SetWidth(170)
 	panel.OverrideOutlineLabel:SetJustifyH("LEFT")
 	panel.OverrideOutlineLabel:SetText(L["Outline Override"]..':')
@@ -831,6 +842,7 @@ local function BuildInterfacePanel(panel)
 	panel.EnforceRequiredCVars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnforceRequiredCVars", panel, L["Enforce required CVars"])
 	panel.EnforceRequiredCVars.tooltipText = L["Helps ensure that everything is working as intended by enforcing certain CVars"]
 	panel.EnforceRequiredCVars:SetPoint("TOPLEFT", panel.CVarsLabel, "BOTTOMLEFT", 0, -8)
+	panel.EnforceRequiredCVars:SetScript("OnClick", function() end) -- Empty function beacuse Shadowlands requires it now?
 
 	panel.NameplateTargetClamp = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateTargetClamp", panel, L["Always keep Target Nameplate on Screen"])
 	panel.NameplateTargetClamp:SetPoint("TOPLEFT", panel.EnforceRequiredCVars, "TOPLEFT", 0, -25)
