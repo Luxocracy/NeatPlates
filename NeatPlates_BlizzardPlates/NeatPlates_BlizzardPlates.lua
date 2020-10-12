@@ -63,7 +63,7 @@ StyleDefault.eliteicon = {
 	width = 64,
 	height = 32,
 	x = 48,
-	y = -3, 
+	y = -3,
 	anchor = "RIGHT",
 }
 
@@ -197,7 +197,7 @@ StyleDefault.castbar = {
 	backdrop = 					path.."backdrop",
 	height = 10,
 	width = 104,
-	x = 9, 
+	x = 9,
 	y = vert,
 	show = true,
 }
@@ -371,7 +371,6 @@ WidgetConfig.ComboWidget =			{ anchor = "CENTER", x = -6, y = -10 }
 --WidgetConfig.RangeWidget =			{ anchor="BOTTOM", x = 0, y = 0 }
 WidgetConfig.DebuffWidget =			{ anchor = "BOTTOM", anchorRel = "TOP", x = 0, y = 4 }
 WidgetConfig.AbsorbWidget =			{ anchor="LEFT", x = -9 , y = 1.5, w = 102, h = 9.5 }
--- WidgetConfig.DebuffWidgetPlus = { anchor="TOP", x = 12 , y = 26 }
 WidgetConfig.QuestWidget = { anchor = "LEFT" , x = -24,y = 2 }
 WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = -18,y = 14 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 5,y = -10 }

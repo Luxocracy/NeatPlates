@@ -6,6 +6,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 -- Widget Helpers
 local WidgetLib = NeatPlatesWidgets
+local copytable = NeatPlatesUtility.copyTable
 
 local CreateThreatLineWidget = WidgetLib.CreateThreatLineWidget
 local CreateAuraWidget = WidgetLib.CreateAuraWidget
@@ -60,6 +61,14 @@ NeatPlatesHubMenus.PrimaryAuraFilters = {
 				{ text = L["Show None"],  } ,
 				{ text = L["Show Mine"],  } ,
 				{ text = L["Show All"],  } ,
+			}
+
+NeatPlatesHubDefaults.WidgetComboPoints = 4
+NeatPlatesHubMenus.ComboPointsModes = {
+				{ text = L["Enemy Units"],  } ,
+				{ text = L["Friendly Units"],  } ,
+				{ text = L["All Units"],  } ,
+				{ text = L["None"],  } ,
 			}
 
 NeatPlatesHubDefaults.WidgetComboPointsStyle = 2
@@ -561,11 +570,21 @@ end
 -- Widget Initializers
 ---------------------------------------------------------------------------------------------------------
 
+local function SetWidgetPoints(widget, rel, config)
+	if widget.SetCustomPoint then
+		widget:SetCustomPoint(config.anchor or "TOP", rel, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
+	else
+		widget:ClearAllPoints()
+		widget:SetPoint(config.anchor or "TOP", rel, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
+	end
+end
+
 local function InitWidget( widgetName, extended, config, createFunction, enabled)
 	local widget = extended.widgets[widgetName]
 
 	if enabled and createFunction and config then
 		--[[ Data from Themes passed to parent ]] --
+		extended.widgetParent.config = config
 		if config.h ~= nil then extended.widgetParent._height = config.h end
 		if config.h ~= nil then extended.widgetParent._width = config.w end
 		if config.o ~= nil then extended.widgetParent._orientation = config.o else extended.widgetParent._orientation = "HORIZONTAL" end
@@ -577,13 +596,8 @@ local function InitWidget( widgetName, extended, config, createFunction, enabled
 			extended.widgets[widgetName] = widget
 		end
 
-		if widget.SetCustomPoint then
-			widget:SetCustomPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
-		else
-			widget:ClearAllPoints()
-			widget:SetPoint(config.anchor or "TOP", extended, config.anchorRel or config.anchor or "TOP", config.x or 0, config.y or 0)
-		end
-		
+		SetWidgetPoints(widget, extended, config)
+
 	elseif widget and widget.Hide then
 		widget:Hide()
 	end
@@ -599,7 +613,7 @@ local function OnInitializeWidgets(extended, configTable)
 
 	local EnableClassWidget = (LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon)
 	local EnableTotemWidget = LocalVars.WidgetTotemIcon
-	local EnableComboWidget = LocalVars.WidgetComboPoints
+	local EnableComboWidget = LocalVars.WidgetComboPoints ~= 4
 	local EnableThreatWidget = LocalVars.WidgetThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetDebuff
 	local EnableArenaWidget = LocalVars.WidgetArenaIcon
@@ -618,25 +632,37 @@ local function OnInitializeWidgets(extended, configTable)
 	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
 	InitWidget( "ArenaWidgetHub", extended, configTable.ArenaWidget, CreateArenaWidget, EnableArenaWidget)
 
-	if EnableComboWidget and configTable.DebuffWidgetPlus then
-		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidgetPlus, CreateAuraWidget, EnableAuraWidget)
-	else
-		InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidget, CreateAuraWidget, EnableAuraWidget)
-	end
+	InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidget, CreateAuraWidget, EnableAuraWidget)
 
 end
 
 local function OnContextUpdateDelegate(extended, unit)
 	local widgets = extended.widgets
+	local EnableComboWidget =  widgets.ComboWidgetHub and (LocalVars.WidgetComboPoints == 3 or (LocalVars.WidgetComboPoints == 1 and unit.reaction ~= "FRIENDLY") or (LocalVars.WidgetComboPoints == 2 and unit.reaction == "FRIENDLY"))
 
-	if LocalVars.WidgetComboPoints and widgets.ComboWidgetHub then
-		widgets.ComboWidgetHub:UpdateContext(unit) end
+	if EnableComboWidget then
+		widgets.ComboWidgetHub:UpdateContext(unit)
+	elseif widgets.ComboWidgetHub then
+		widgets.ComboWidgetHub:Hide()
+	end
 
 	if LocalVars.WidgetThreatIndicator and widgets.ThreatWidgetHub then
 		widgets.ThreatWidgetHub:UpdateContext(unit) end		-- Tug-O-Threat
 
 	if LocalVars.WidgetDebuff and widgets.AuraWidgetHub then
-		widgets.AuraWidgetHub:UpdateContext(unit) end
+		-- Reposition if combo widget is enabled for some themes
+		local config = copytable(extended.widgetParent.config)
+		if EnableComboWidget and unit.isTarget then
+			config.anchor = config.anchor2 or config.anchor
+			config.anchorRel = config.anchorRel2 or config.anchorRel
+			config.x = config.x2 or config.x
+			config.y = config.y2 or config.y
+		end
+
+		SetWidgetPoints(widgets.AuraWidgetHub, extended, config)
+		widgets.AuraWidgetHub:UpdateContext(unit)
+	end
+
 
 	if LocalVars.WidgetDebuff and widgets.AuraWidget then
 		widgets.AuraWidget:UpdateContext(unit) end

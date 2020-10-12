@@ -351,9 +351,6 @@ WidgetConfig.ThreatLineWidget = { anchor =  "CENTER", x = -8 ,y = VerticalAdjust
 WidgetConfig.ThreatWheelWidget = { anchor =  "CENTER", x = 36 ,y = VerticalAdjustment + 12 } -- "CENTER", plate, 30, 18
 WidgetConfig.ComboWidget = { anchor = "CENTER" , x = 0 ,y = VerticalAdjustment - 35 }
 WidgetConfig.DebuffWidget = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = VerticalAdjustment + 0 }
---if (UnitClassBase("player") == "Druid") or (UnitClassBase("player") == "Rogue") then
-	--WidgetConfig.DebuffWidgetPlus = { anchor = "BOTTOM", anchorRel = "TOP", x = 0 ,y = VerticalAdjustment + 0 }
---end
 WidgetConfig.AbsorbWidget =	{ anchor="BOTTOM", x = 0 , y = VerticalAdjustment + 5.5, h = 35, w = 14, o = "VERTICAL" }
 WidgetConfig.QuestWidget = { anchor = "CENTER" , x = -8,y = VerticalAdjustment - 10 }
 WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = -2,y = VerticalAdjustment - 2 }

@@ -136,7 +136,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
-	["NAME_PLATE_UNIT_REMOVED"] = ClearAuraCache, 
+	["NAME_PLATE_UNIT_REMOVED"] = ClearAuraCache,
 }
 
 local function AuraEventHandler(frame, event, ...)
@@ -226,7 +226,7 @@ local function UpdateIcon(frame, aura)
 
 			frame.Cooldown:SetDrawSwipe(not HideCooldownSpiral)
 			frame.Cooldown:SetDrawEdge(not HideCooldownSpiral)
-			
+
 		else
 			--SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown (Clean Version)
 			frame.Cooldown:SetCooldown(0, 0)
@@ -361,7 +361,7 @@ local function UpdateIconGrid(frame, unitid)
 			}
 		end
 		--]]
-		
+
 
 		-- Display Auras
 		------------------------------------------------------------------------------------------------------
@@ -387,7 +387,7 @@ local function UpdateIconGrid(frame, unitid)
 
 				if aura.spellid and aura.expiration and not(EmphasizedUnique and EmphasizedAura[tostring(aura.spellid)]) then
 					-- Sort buffs and debuffs
-					if aura.effect == "HELPFUL" then 
+					if aura.effect == "HELPFUL" then
 						table.insert(BuffAuras, aura)
 						BuffSlotCount = BuffSlotCount + 1
 					elseif DebuffSlotCount < DebuffLimit then
@@ -408,7 +408,7 @@ local function UpdateIconGrid(frame, unitid)
 			-- Calculate Buff Offset
 			local rowOffset
 			DisplayedRows = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns) + math.min(DebuffSlotCount, 1))
-			
+
 			 --print(DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount))
 			if DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
 				rowOffset = math.max(DebuffColumns * DisplayedRows, DebuffColumns) -- Same Row with space between
@@ -685,6 +685,12 @@ local function UpdateWidgetConfig(frame)
 end
 
 local function UpdateWidgetOffset(frame, x, y)
+	x = x or frame.lastOffset.x
+	y = y or frame.lastOffset.y
+	frame.lastOffset = {
+		x = x,
+		y = y
+	}
 	local config = frame.lastConfig
 	frame:ClearAllPoints()
 	frame:SetPoint(config.anchor or "TOP", config.relFrame, config.anchorRel or config.anchor or "TOP", config.x or 0, (config.y or 0) + (y or 0))
@@ -731,6 +737,10 @@ local function CreateAuraWidget(parent, style)
 	frame.SetCustomPoint = SetCustomPoint
 	frame.UpdateOffset = UpdateWidgetOffset
 
+	-- Various stored data
+	frame.lastConfig = {}
+	frame.lastOffset = {}
+
 	-- Emphasized Functions
 	frame.emphasized.SetAura = function(frame, auras)
 		local shown = 0
@@ -745,7 +755,7 @@ local function CreateAuraWidget(parent, style)
 			ids[tostring(auras[index].spellid)] = true
 			UpdateIcon(frame.AuraIconFrames[index], auras[index])
 		end
-		
+
 		-- Cleanup empty aura slots
 		for i=shown+1, #frame.AuraIconFrames do
 			UpdateIcon(frame.AuraIconFrames[i])

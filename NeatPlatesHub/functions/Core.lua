@@ -257,7 +257,6 @@ end
 
 local function ApplyScaleOptionCustomization(widget, defaults, style, styleDefault)
 	widget.DebuffWidget = ApplyScaleOptions(widget.DebuffWidget, defaults.DebuffWidget, LocalVars.WidgetAuraScaleOptions)
-	widget.DebuffWidgetPlus = ApplyScaleOptions(widget.DebuffWidgetPlus, defaults.DebuffWidgetPlus, LocalVars.WidgetAuraScaleOptions)
 end
 
 local function ApplyCustomBarSize(style, defaults)
@@ -287,8 +286,8 @@ local function ApplyCustomBarSize(style, defaults)
 		-- Things we don't want to apply width to
 		style.eliteicon.x = defaults.eliteicon.x * (LocalVars.FrameBarWidth or 1)
 		if style.eliteicon.width > 64 then style.eliteicon.width = defaults.eliteicon.width * (LocalVars.FrameBarWidth or 1) end
-		
-	
+
+
 		-- Defined elsewhere so they need to be handled differently
 		style.target.width = style.target.width * (LocalVars.FrameBarWidth or 1)
 		style.focus.width = style.focus.width * (LocalVars.FrameBarWidth or 1)

@@ -12,21 +12,21 @@ local artfile = {
 }
 local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
-local t = { 
+local t = {
 	['DEATHKNIGHT'] = {
 		["POWER"] = Enum.PowerType.Runes,
 		[250] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.00, ["r"] = 0.125, ["o"] = 9}, -- blood
 		[251] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.125, ["r"] = 0.250, ["o"] = 9}, -- frost
 		[252] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.250, ["r"] = 0.375, ["o"] = 9}, -- unholy
 	},
-	
+
 	['DRUID'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
 	},
-	
+
 	['ROGUE'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
@@ -82,18 +82,18 @@ local function GetPlayerPower()
 	local points = 0
 	local maxPoints = 0
 	local needsEnemy = playeRole ~= "HEALER"
-	
+
 	if UnitAffectingCombat("player") and not UnitCanAttack("player", "target") and needsEnemy then
 		return 0, 0
 	end
 
 	if t[PlayerClass] == nil or t[PlayerClass]["POWER"] == nil then return 0, 0 end
-	
+
 	PlayerPowerType = t[PlayerClass]["POWER"]
 	PlayerPowerUnmodified = t[PlayerClass]["NOMOD"]
 
 	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified)
-	
+
 	if PlayerPowerType == 4 then
 		points = GetComboPoints("player", "target")
 	elseif PlayerPowerType == 5 then
@@ -103,16 +103,16 @@ local function GetPlayerPower()
 		points = UnitPower("player", PlayerPowerType, PlayerPowerUnmodified)
 	end
 	return points, maxPoints
-end 
+end
 
 local function SelectPattern(maxPower)
 	local selectedPattern
-	
+
 	if (t[PlayerClass] == nil) then
 		local _temp = { ["w"] = 64, ["h"] = 16, ["o"] = 0}
 		return _temp
 	end
-	
+
 	-- Custom case if somehow the player should not have 5 but 6 combos
 	if PlayerClass == "DRUID" or PlayerClass == "ROGUE" or PlayerClass == "MONK" then
 		selectedPattern = t[PlayerClass][tostring(maxPower)]
@@ -278,7 +278,7 @@ local function CreateSparkAnimation(parent)
 	spark.Texture:SetWidth(16)
 	spark.Texture:SetTexture(artpath.."ShardSpark.tga")
 	spark.Texture:SetBlendMode("ADD")
-	
+
 	spark:SetAlpha(0)
 
 	-- Spark Animation
