@@ -108,7 +108,7 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 	}
 
 	if not InCombatLockdown() then
-		if IsInInstance() then 
+		if IsInInstance() then
 			local zeroBasedScale = tonumber(GetCVar("NamePlateVerticalScale")) - 1.0;
 			local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
 			SetNamePlateFriendlySize(110 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))  -- Reset to blizzard nameplate default to avoid issues if we are not allowed to modify the nameplate
@@ -116,7 +116,7 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 		SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
 	end
 
-	if plate then 
+	if plate then
 		plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
 		plate.extended.visual.hitbox:SetPoint("CENTER", plate)
 		plate.extended.visual.hitbox:SetWidth(hitbox.width)
@@ -469,7 +469,7 @@ do
 		visual.castbar:Hide()
 		visual.highlight:Hide()
 		visual.hitbox:Hide()
-		
+
 
 
 		-- Widgets/Extensions
@@ -632,7 +632,7 @@ do
 			unit.class = ""
 			unit.type = "NPC"
 		end
-		
+
 	end
 
 
@@ -650,7 +650,7 @@ do
 
 		UpdateUnitCondition(plate, unitid)	-- This updates a bunch of properties
 
-		if activetheme.OnContextUpdate then 
+		if activetheme.OnContextUpdate then
 			CheckNameplateStyle()
 			activetheme.OnContextUpdate(extended, unit)
 		end
@@ -770,7 +770,7 @@ do
 
 		if unit.showName then
 			visual.name:SetText(unitname) -- Set name
-		else 
+		else
 			visual.name:SetText("") -- Clear name
 		end
 
@@ -824,7 +824,7 @@ do
 	-- UpdateIndicator_Highlight
 	function UpdateIndicator_Highlight()
 		local current = nil
-		
+
 		if not current and unit.isTarget and style.target.show and style.target.enabled then current = 'target'; visual.target:Show() else visual.target:Hide() end
 		if not current and unit.isFocus and style.focus.show and style.focus.enabled then current = 'focus'; visual.focus:Show() else visual.focus:Hide() end
 		if not current and unit.isMouseover and style.mouseover.show and style.mouseover.enabled then current = 'mouseover'; visual.mouseover:Show() else visual.mouseover:Hide() end
@@ -842,7 +842,7 @@ do
 		if widgetSetID then
 			local widgetSet = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)
 			if not widgetSet or not widgetSet[1] then return end
-			
+
 			local widget
 			for i = 1, #widgetSet do
 				local widgetID = widgetSet[i].widgetID
@@ -864,10 +864,10 @@ do
 					end
 					return -- Unsupported widget type
 				end
-					
+
 				if widget then break end
 			end
-			
+
 			if not widget then return end
 
 
@@ -1082,9 +1082,9 @@ do
 		castBar:SetAlpha(a or 1)
 
 
-		if style.castnostop.enabled and unit.spellIsShielded then
+		if style and style.castnostop.enabled and unit.spellIsShielded then
 			visual.castnostop:Show(); visual.castborder:Hide()
-		elseif style.castborder.enabled then
+		elseif style and style.castborder.enabled then
 			visual.castnostop:Hide(); visual.castborder:Show()
 		else
 			visual.castnostop:Hide(); visual.castborder:Hide()
@@ -1125,7 +1125,7 @@ do
 		if unit.interrupted and type and sourceGUID and sourceName and destGUID then
 			setSpellText()
 		else
-			if unit.interrupted or not ShowIntCast then return end --not extended:IsShown() or 
+			if unit.interrupted or not ShowIntCast then return end --not extended:IsShown() or
 
 			unit.interrupted = true
 			unit.isCasting = false
@@ -1282,7 +1282,7 @@ do
 	function CoreEvents:UNIT_NAME_UPDATE(...)
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
-		
+
 		if plate then
 			SetUpdateMe(plate)
 		end
@@ -1296,7 +1296,7 @@ do
 	function CoreEvents:NAME_PLATE_UNIT_ADDED(...)
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
-		
+
 		-- Ignore if plate is Personal Display
 		if plate then
 			if UnitIsUnit("player", unitid) then
@@ -1321,11 +1321,11 @@ do
 		HasTarget = UnitExists("target") == true;
 		SetUpdateAll()
 	end
-	
+
 	function CoreEvents:UNIT_TARGET(...)
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
-		
+
 		if plate and plate.extended.unit.isCasting then
 			OnUpdateCastTarget(plate, unitid)
 		end
@@ -1344,7 +1344,7 @@ do
 
 		if plate then OnHealthUpdate(plate) end
 	end
-	
+
 
 	function CoreEvents:PLAYER_REGEN_ENABLED()
 		InCombat = false
