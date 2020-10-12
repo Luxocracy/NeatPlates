@@ -1082,9 +1082,9 @@ do
 		castBar:SetAlpha(a or 1)
 
 
-		if style and style.castnostop.enabled and unit.spellIsShielded then
+		if style.castnostop and style.castnostop.enabled and unit.spellIsShielded then
 			visual.castnostop:Show(); visual.castborder:Hide()
-		elseif style and style.castborder.enabled then
+		elseif style.castborder and style.castborder.enabled then
 			visual.castnostop:Hide(); visual.castborder:Show()
 		else
 			visual.castnostop:Hide(); visual.castborder:Hide()
