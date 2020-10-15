@@ -711,7 +711,7 @@ end
 -- Create the Main Widget Body and Icon Array
 local function CreateAuraWidget(parent, style)
 	-- Create Base frame
-	local frame = CreateFrame("Frame", nil, parent)
+		local frame = CreateFrame("Frame", nil, parent)
 	frame:SetWidth(128); frame:SetHeight(32); frame:Show()
 	--frame.PollFunction = UpdateWidgetTime
 
