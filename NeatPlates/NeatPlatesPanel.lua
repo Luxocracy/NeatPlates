@@ -180,7 +180,7 @@ local function SetNameplateVisibility(cvar, options)
 	local instanceOptions = (options.Dungeon or options.Raid or options.Battleground or options.Arena or options.Scenario)
 	local instanceTypes = {party = options.Dungeon, raid = options.Raid, pvp = options.Battleground}
 	local enable
-	
+
 	-- Instance Automation
 	if instanceOptions and inInstance then
 		if instanceTypes[instanceType] == "show" then
@@ -315,7 +315,8 @@ local function GetCVarValues(panel)
 	local Values = {
 		NameplateTargetClamp = (function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)(),
 		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
-		--NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		NameplateFriendlyNPCs = (function() if GetCVar("nameplateShowFriendlyNPCs") == "1" then return true else return false end end)(),
+		-- NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
 		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
 		NameplateMinAlpha = GetCVar("nameplateMinAlpha"),
 		NameplateMaxAlpha = GetCVar("nameplateMaxAlpha"),
@@ -378,7 +379,7 @@ local function SetPanelValues(panel)
 
 	panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
 	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
-	
+
 	-- CVars
 	GetCVarValues(panel)
 end
@@ -762,31 +763,35 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateStacking:SetPoint("TOPLEFT", panel.NameplateTargetClamp, "TOPLEFT", 0, -25)
 	panel.NameplateStacking:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateMotion", true) end)
 
+	panel.NameplateFriendlyNPCs = PanelHelpers:CreateCheckButton("NeatPlatesOptions_NameplateFriendlyNPCs", panel, L["Show Friendly NPCs Nameplates"])
+	panel.NameplateFriendlyNPCs:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 0, -25)
+	panel.NameplateFriendlyNPCs:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateShowFriendlyNPCs", true) end)
+
 	-- Disabled until blizzard fixes their shit, if ever...
 	-- panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
 	-- panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
 	-- panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
 
 	panel.NameplateOccludedAlphaMult = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOccludedAlphaMult", panel, L["Occluded Alpha Multiplier"], 0.4, 0, 1, 0.01, "ACTUAL", 170)
-	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
+	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateFriendlyNPCs, "TOPLEFT", 10, -50)
 	panel.NameplateOccludedAlphaMult.Callback = function(self) SetCVarValue(self, "nameplateOccludedAlphaMult") end
 	panel.NameplateOccludedAlphaMult.tooltipText = L["The opacity multiplier for units occluded by line of sight"]
-	
+
 	panel.NameplateMinAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlpha", panel, L["Minimum Alpha"], 0.6, 0, 1, 0.01, "ACTUAL", 170)
 	panel.NameplateMinAlpha:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 0, -50)
 	panel.NameplateMinAlpha.Callback = function(self) SetCVarValue(self, "nameplateMinAlpha") end
 	panel.NameplateMinAlpha.tooltipText = L["The minimum opacity of nameplates for 'Nameplate Minimum Alpha Distance'"]
-	
+
 	panel.NameplateMaxAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxAlpha", panel, L["Maximum Alpha"], 1, 0, 1, 0.01, "ACTUAL", 170)
 	panel.NameplateMaxAlpha:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 200, -50)
 	panel.NameplateMaxAlpha.Callback = function(self) SetCVarValue(self, "nameplateMaxAlpha") end
 	panel.NameplateMaxAlpha.tooltipText = L["The maximum opacity of nameplates for 'Nameplate Maximum Alpha Distance'"]
-	
+
 	panel.NameplateMinAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlphaDistance", panel, L["Minimum Alpha Distance"], 10, 0, 100, 1, "ACTUAL", 170)
 	panel.NameplateMinAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 0, -50)
 	panel.NameplateMinAlphaDistance.Callback = function(self) SetCVarValue(self, "nameplateMinAlphaDistance") end
 	panel.NameplateMinAlphaDistance.tooltipText = L["The distance from the camera that nameplates will reach their minimum alpha"]
-	
+
 	panel.NameplateMaxAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxAlphaDistance", panel, L["Maximum Alpha Distance"], 40, 0, 100, 1, "ACTUAL", 170)
 	panel.NameplateMaxAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 200, -50)
 	panel.NameplateMaxAlphaDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxAlphaDistance") end
@@ -796,17 +801,17 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateOverlapH:SetPoint("TOPLEFT", panel.NameplateMinAlphaDistance, "TOPLEFT", 0, -50)
 	panel.NameplateOverlapH.Callback = function(self) SetCVarValue(self, "nameplateOverlapH") end
 	panel.NameplateOverlapH.tooltipText = L["The horizontal distance between nameplates when overlapping (Requires 'Stacking Nameplates')"]
-	
+
 	panel.NameplateOverlapV = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOverlapV", panel, L["Vertical Overlap"], 0, 0, 10, .1, "ACTUAL", 170)
 	panel.NameplateOverlapV:SetPoint("TOPLEFT", panel.NameplateMinAlphaDistance, "TOPLEFT", 200, -50)
 	panel.NameplateOverlapV.Callback = function(self) SetCVarValue(self, "nameplateOverlapV") end
 	panel.NameplateOverlapV.tooltipText = L["The vertical distance between nameplates when overlapping (Requires 'Stacking Nameplates')"]
-	
+
 	panel.NameplateClickableWidth = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableWidth", panel, L["Clickable Width of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableWidth:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 0, -50)
 	panel.NameplateClickableWidth.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
 	panel.NameplateClickableWidth.tooltipText = L["The size of the interactable area of the nameplates"]
-	
+
 	panel.NameplateClickableHeight = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateClickableHeight", panel, L["Clickable Height of Nameplates"], 1, .1, 2, .01, nil, 170)
 	panel.NameplateClickableHeight:SetPoint("TOPLEFT", panel.NameplateOverlapH, "TOPLEFT", 200, -50)
 	panel.NameplateClickableHeight.Callback = function() NeatPlates:ShowNameplateSize(true, panel.NameplateClickableWidth:GetValue(), panel.NameplateClickableHeight:GetValue()) end
@@ -884,7 +889,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.RemoveProfileDropdown.OnValueChanged = function(self)
 		local name = panel.RemoveProfileDropdown:GetValue()
-		
+
 		StaticPopupDialogs["NeatPlates_RemoveProfile"] = {
 		  text = name:gsub('.+', L["Are you sure you wish to delete the profile '%1'?"]),
 		  button1 = YES,
@@ -907,7 +912,7 @@ local function BuildInterfacePanel(panel)
 		local profileName = panel.ExportProfileDropdown:GetValue()
 
 		local panel = NeatPlatesHubRapidPanel.CreateQuickEditboxPopup(L["Export Profile"].." ("..profileName..")", nil, true)
-		panel.EditBox:SetValue(NeatPlatesHubMenus.ExportProfile(profileName))	
+		panel.EditBox:SetValue(NeatPlatesHubMenus.ExportProfile(profileName))
 	end
 
 	-- Blizzard Nameplate Options Button
@@ -1001,7 +1006,7 @@ function panelevents:PLAYER_LOGIN()
 
 		SetCVar("nameplateShowEnemies", 1)
 		NeatPlatesOptions.WelcomeShown = true
-		
+
 		--NeatPlatesOptions.FirstSpecProfile = Role2Profile(1)
 		--NeatPlatesOptions.SecondSpecProfile = Role2Profile(2)
 		--NeatPlatesOptions.ThirdSpecProfile = Role2Profile(3)

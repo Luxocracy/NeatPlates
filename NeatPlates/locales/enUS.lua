@@ -56,6 +56,7 @@ L["Outline Override"] = true
 L["Enforce required CVars"] = true
 L["Always keep Target Nameplate on Screen"] = true
 L["Stacking Nameplates"] = true
+L["Show Friendly NPCs Nameplates"] = true
 L["Max Distance"] = true
 L["Occluded Alpha Multiplier"] = true
 L["The opacity multiplier for units occluded by line of sight"] = true -- Tooltip
