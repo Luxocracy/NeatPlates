@@ -582,7 +582,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetTotemIcon = CreateQuickCheckbutton(objectName.."WidgetTotemIcon", L["Show Totem Art"], AlignmentColumn, panel.ClassPartyIcon)
 	panel.WidgetQuestIcon = CreateQuickCheckbutton(objectName.."WidgetQuestIcon", L["Show Quest Icon on Units"], AlignmentColumn, panel.WidgetTotemIcon)
 	-- panel.WidgetComboPoints = CreateQuickCheckbutton(objectName.."WidgetComboPoints", L["Show Personal Resource on Target"], AlignmentColumn, panel.WidgetQuestIcon)
-	panel.WidgetComboPoints, F =  CreateQuickDropdown(objectName.."WidgetComboPoints", L["Show Personal Resource"]..':', ComboPointsModes, 4, AlignmentColumn, panel.WidgetQuestIcon, 16)
+	panel.WidgetComboPoints, F =  CreateQuickDropdown(objectName.."WidgetComboPoints", L["Show Personal Resource"]..':', ComboPointsModes, 1, AlignmentColumn, panel.WidgetQuestIcon, 16)
 	panel.WidgetComboPointsStyle, F =  CreateQuickDropdown(objectName.."WidgetComboPointsStyle", L["Personal Resource Style"]..':', ComboPointsStyles, 2, AlignmentColumn, panel.WidgetComboPoints, 16)
 	panel.WidgetComboPointsScaleOptions = CreateQuickScale(objectName.."WidgetComboPointsScaleOptions", "WidgetComboPointsScaleOptions", L["Personal Resource Style"], nil, nil, AlignmentColumn, "LEFT", panel.WidgetComboPointsStyle, "RIGHT", 28, 2)
 	--panel.ClassIconScaleOptions, F = CreateQuickScale(objectName.."ClassIconScaleOptions", "ClassIconScaleOptions", L["Class Icon"], nil, {label = L["Class Icon Scale Options"]}, AlignmentColumn, "TOPLEFT", panel.WidgetComboPointsStyle, "BOTTOMLEFT", 4, -4)
@@ -675,6 +675,13 @@ local function BuildHubPanel(panel)
 
 	function panel.RefreshSettings(LocalVars)
 		-- print("RefreshSettings", panel:IsShown())
+		-- Convert WidgetComboPoints to new format
+		if LocalVars.WidgetComboPoints == true then
+			LocalVars.WidgetComboPoints = 1
+		elseif LocalVars.WidgetComboPoints == false then
+			LocalVars.WidgetComboPoints = 4
+		end
+
 		CallForStyleUpdate()
 		-- Convert Debuff Filter Strings
 		ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)

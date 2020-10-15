@@ -63,7 +63,7 @@ NeatPlatesHubMenus.PrimaryAuraFilters = {
 				{ text = L["Show All"],  } ,
 			}
 
-NeatPlatesHubDefaults.WidgetComboPoints = 4
+NeatPlatesHubDefaults.WidgetComboPoints = 1
 NeatPlatesHubMenus.ComboPointsModes = {
 				{ text = L["Enemy Units"],  } ,
 				{ text = L["Friendly Units"],  } ,
