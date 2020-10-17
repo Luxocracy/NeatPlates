@@ -157,6 +157,13 @@ do
 		end
 	end
 
+	function ShouldShowBlizzardPlate(plate)
+		if plate.showBlizzardPlate then
+			plate.UnitFrame:Show()
+			plate.extended:Hide()
+		elseif plate.UnitFrame then plate.UnitFrame:Hide() end
+	end
+
         -- OnUpdate; This function is run frequently, on every clock cycle
 	function OnUpdate(self, e)
 		-- Poll Loop
@@ -196,10 +203,7 @@ do
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
 
-			if plate.showBlizzardPlate then
-				plate.UnitFrame:Show()
-				plate.extended:Hide()
-			elseif plate.UnitFrame then plate.UnitFrame:Hide() end
+			ShouldShowBlizzardPlate(plate)
 
 		-- This would be useful for alpha fades
 		-- But right now it's just going to get set directly
@@ -1269,6 +1273,7 @@ do
 	local CoreEvents = {}
 
 	local function EventHandler(self, event, ...)
+		-- print(event)
 		CoreEvents[event](event, ...)
 	end
 
@@ -1304,7 +1309,10 @@ do
 			else
 				plate.showBlizzardPlate = false
 				local children = plate:GetChildren()
-				if children then children:Hide() end --Avoids errors incase the plate has no children
+				if children then
+					children:SetAlpha(0)
+					children:Hide()
+				end
 		 		OnShowNameplate(plate, unitid)
 			end
 	 	end
@@ -1484,10 +1492,22 @@ do
 	CoreEvents.PLAYER_CONTROL_LOST = WorldConditionChanged
 	CoreEvents.PLAYER_CONTROL_GAINED = WorldConditionChanged
 
+
+	-- Deubgging
+	function CoreEvents:UNIT_EXITED_VEHICLE()
+		-- Exiting vehicle shows default blizzard Unitframes
+		-- Next frame, check if they should be shown or not
+		C_Timer.After(0, function()
+			ForEachPlate(ShouldShowBlizzardPlate)
+		end)
+	end
+
 	-- Registration of Blizzard Events
 	NeatPlatesCore:SetFrameStrata("TOOLTIP") 	-- When parented to WorldFrame, causes OnUpdate handler to run close to last
 	NeatPlatesCore:SetScript("OnEvent", EventHandler)
 	for eventName in pairs(CoreEvents) do NeatPlatesCore:RegisterEvent(eventName) end
+	-- NeatPlatesCore:RegisterAllEvents() --Debugging
+
 end
 
 
