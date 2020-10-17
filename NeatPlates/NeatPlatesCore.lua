@@ -1419,6 +1419,14 @@ do
 		end
 	end
 
+	function CoreEvents:UNIT_EXITED_VEHICLE()
+		-- Exiting vehicle shows default blizzard Unitframes
+		-- Next frame, check if they should be shown or not
+		C_Timer.After(0, function()
+			ForEachPlate(ShouldShowBlizzardPlate)
+		end)
+	end
+
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
 		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
 		spellID = spellID or ""
@@ -1493,15 +1501,6 @@ do
 	CoreEvents.PLAYER_CONTROL_LOST = WorldConditionChanged
 	CoreEvents.PLAYER_CONTROL_GAINED = WorldConditionChanged
 
-
-	-- Deubgging
-	function CoreEvents:UNIT_EXITED_VEHICLE()
-		-- Exiting vehicle shows default blizzard Unitframes
-		-- Next frame, check if they should be shown or not
-		C_Timer.After(0, function()
-			ForEachPlate(ShouldShowBlizzardPlate)
-		end)
-	end
 
 	-- Registration of Blizzard Events
 	NeatPlatesCore:SetFrameStrata("TOOLTIP") 	-- When parented to WorldFrame, causes OnUpdate handler to run close to last
