@@ -160,6 +160,7 @@ do
 	function ShouldShowBlizzardPlate(plate)
 		if plate.showBlizzardPlate then
 			plate.UnitFrame:Show()
+			plate.UnitFrame:SetAlpha(1)
 			plate.extended:Hide()
 		elseif plate.UnitFrame then plate.UnitFrame:Hide() end
 	end
