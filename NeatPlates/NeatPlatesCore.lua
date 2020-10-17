@@ -1310,6 +1310,11 @@ do
 			else
 				plate.showBlizzardPlate = false
 				local children = plate:GetChildren()
+				-- Move healtbar texture offscreen as it is causing issues. (Solve this properly att some point)
+				if plate.UnitFrame and plate.UnitFrame.healthBar then
+					plate.UnitFrame.healthBar.barTexture:ClearAllPoints()
+					plate.UnitFrame.healthBar.barTexture:SetPoint("RIGHT", "UIParent", "LEFT", -200, -200)
+				end
 				if children then
 					children:SetAlpha(0)
 					children:Hide()
