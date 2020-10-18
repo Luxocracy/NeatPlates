@@ -299,11 +299,12 @@ do
 	end
 
 	function ShouldShowBlizzardPlate(plate)
-		if plate.showBlizzardPlate then
-			plate.UnitFrame:Show()
-			plate.UnitFrame:SetAlpha(1)
-			plate.extended:Hide()
-		elseif plate.UnitFrame then plate.UnitFrame:Hide() end
+		if plate.UnitFrame then
+			if plate.showBlizzardPlate then
+				plate.UnitFrame:Show()
+				plate.extended:Hide()
+			else plate.UnitFrame:Hide() end
+		end
 	end
 
         -- OnUpdate; This function is run frequently, on every clock cycle
@@ -338,9 +339,6 @@ do
 				end
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
-
-				--local children = plate:GetChildren()
-				--if children then children:Hide() end
 
 				if plate.UpdateCastbar then -- Check if spell is being cast
 					if unit and unit.unitid then
@@ -1408,14 +1406,19 @@ do
 
 		if plate then
 			if UnitIsUnit("player", unitid) then
+				plate.showBlizzardPlate = true
+				ShouldShowBlizzardPlate(plate)
 				OnHideNameplate(plate, unitid)
 			else
 				local children = plate:GetChildren()
-				if children then
-					children:SetAlpha(0)
-					children:Hide()
-				end
+				if children then children:Hide() end
 				if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
+
+				-- Unhook UnitFrame events
+				if plate.UnitFrame then
+					plate.UnitFrame:UnregisterAllEvents()
+				end
+
 		 		OnShowNameplate(plate, unitid)
 			end
 		end
