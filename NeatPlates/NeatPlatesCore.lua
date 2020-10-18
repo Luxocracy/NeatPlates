@@ -158,11 +158,12 @@ do
 	end
 
 	function ShouldShowBlizzardPlate(plate)
-		if plate.showBlizzardPlate then
-			plate.UnitFrame:Show()
-			plate.UnitFrame:SetAlpha(1)
-			plate.extended:Hide()
-		elseif plate.UnitFrame then plate.UnitFrame:Hide() end
+		if plate.UnitFrame then
+			if plate.showBlizzardPlate then
+				plate.UnitFrame:Show()
+				plate.extended:Hide()
+			else plate.UnitFrame:Hide() end
+		end
 	end
 
         -- OnUpdate; This function is run frequently, on every clock cycle
@@ -197,9 +198,6 @@ do
 				end
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
-
-				--local children = plate:GetChildren()
-				--if children then children:Hide() end
 			elseif unitid and not plate:IsVisible() then
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
@@ -1306,19 +1304,19 @@ do
 		-- Ignore if plate is Personal Display
 		if plate then
 			if UnitIsUnit("player", unitid) then
+				plate.showBlizzardPlate = true
+				ShouldShowBlizzardPlate(plate)
 				OnHideNameplate(plate, unitid)
 			else
 				plate.showBlizzardPlate = false
 				local children = plate:GetChildren()
-				-- Move healtbar texture offscreen as it is causing issues. (Solve this properly att some point)
-				if plate.UnitFrame and plate.UnitFrame.healthBar then
-					plate.UnitFrame.healthBar.barTexture:ClearAllPoints()
-					plate.UnitFrame.healthBar.barTexture:SetPoint("RIGHT", "UIParent", "LEFT", -200, -200)
+				if children then children:Hide() end
+
+				-- Unhook UnitFrame events
+				if plate.UnitFrame then
+					plate.UnitFrame:UnregisterAllEvents()
 				end
-				if children then
-					children:SetAlpha(0)
-					children:Hide()
-				end
+
 		 		OnShowNameplate(plate, unitid)
 			end
 	 	end
@@ -1422,14 +1420,6 @@ do
 		if plate then
 			OnStopCasting(plate)
 		end
-	end
-
-	function CoreEvents:UNIT_EXITED_VEHICLE()
-		-- Exiting vehicle shows default blizzard Unitframes
-		-- Next frame, check if they should be shown or not
-		C_Timer.After(0, function()
-			ForEachPlate(ShouldShowBlizzardPlate)
-		end)
 	end
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
