@@ -1410,12 +1410,15 @@ do
 				ShouldShowBlizzardPlate(plate)
 				OnHideNameplate(plate, unitid)
 			else
-				local children = plate:GetChildren()
-				if children then children:Hide() end
+				plate.showBlizzardPlate = false
+				--local children = plate:GetChildren() -- Do children even need to be hidden anymore when UnitFrame is unhooked
+				--if children then children:Hide() end
+				--if plate._frame then plate._frame:Show() end -- Show Questplates frame
 				if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 
 				-- Unhook UnitFrame events
 				if plate.UnitFrame then
+					plate.UnitFrame:Hide()
 					plate.UnitFrame:UnregisterAllEvents()
 				end
 
