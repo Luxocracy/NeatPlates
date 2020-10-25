@@ -80,7 +80,7 @@ unit.threatValue
 local function ColorFunctionByReaction(unit)
 	if unit.unitid and unit.reaction == "FRIENDLY" and unit.type == "PLAYER" then
 		if IsGuildmate(unit.unitid) then return LocalVars.ColorGuildMember
-		elseif IsFriend(unit.unitid) then return LocalVars.ColorGuildMember 
+		elseif IsFriend(unit.unitid) then return LocalVars.ColorGuildMember
 		elseif IsPartyMember(unit.unitid) then return LocalVars.ColorPartyMember end
 	end
 

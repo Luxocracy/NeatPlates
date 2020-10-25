@@ -344,9 +344,13 @@ local function UpdateIconGrid(frame, unitid)
 			if aura.name then
 				local show, priority, r, g, b, a = AuraFilterFunction(aura)
 				local emphasized, ePriority = EmphasizedAuraFilterFunction(aura)
+				local existing = AuraCache[unitid][aura.name]
 				--print(aura.name, show, priority)
 				--show = true
-				AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = aura, aura -- Used by Custom Color Conditions
+
+				-- Used by Custom Color Conditions (Always overwrite if the aura isn't the players)
+				if not existing or existing.caster ~= "player" then AuraCache[unitid][aura.name], AuraCache[unitid][tostring(aura.spellid)] = aura, aura end
+
 				-- Store Order/Priority
 				if show then
 					aura.priority = priority or 10
