@@ -151,6 +151,13 @@ local function HealthFunctionTotal(unit)
 	local health, healthmax = GetHealth(unit), GetHealthMax(unit)
 	return ShortenNumber(health).."|cffffffff ("..ceil(100*(unit.health/unit.healthmax)).."%)", color.r, color.g, color.b
 end
+-- Exact Health and Percent
+local function HealthFunctionExactTotal(unit)
+	local color = ColorFunctionByHealth(unit)
+	--local color = HubData.Colors.White
+	local health, healthmax = GetHealth(unit), GetHealthMax(unit)
+	return SepThousands(health).."|cffffffff ("..ceil(100*(unit.health/unit.healthmax)).."%)", color.r, color.g, color.b
+end
 -- TargetOf
 local function HealthFunctionTargetOf(unit)
 	if unit.isInCombat then
@@ -173,7 +180,7 @@ local function HealthFunctionTargetOfClass(unit)
 			return ConvertRGBtoColorString(RaidClassColors[targetclass])..name
 		else
 			return name
-		end	
+		end
 	end
 end
 -- Level
@@ -274,6 +281,7 @@ AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunc
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionApprox, L["Approximate Health"], "HealthFunctionApprox")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionDeficit, L["Health Deficit"], "HealthFunctionDeficit")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTotal, L["Health Total & Percent"], "HealthFunctionTotal")
+AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionExactTotal, L["Exact Health & Percent"], "HealthFunctionExactTotal")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTargetOf, L["Target Of"], "HealthFunctionTargetOf")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionTargetOfClass, L["Target Of (Class Colored)"], "HealthFunctionTargetOfClass")
 AddHubFunction(HealthTextModeFunctions, NeatPlatesHubMenus.TextModes, HealthFunctionLevel, L["Level"], "HealthFunctionLevel")

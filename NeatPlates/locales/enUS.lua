@@ -161,6 +161,7 @@ L["Friendly Status Text"] = true
 		L["SHORT_THOUSAND"] = "K"
 	L["Health Deficit"] = true
 	L["Health Total & Percent"] = true
+	L["Exact Health & Percent"] = true
 	L["Target Of"] = true
 	L["Target Of (Class Colored)"] = true
 	L["Level"] = true

@@ -380,7 +380,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityFilterFriendlyNPC, F = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyNPC", L["Filter Friendly NPC"], AlignmentColumn, F, 8)
 	panel.OpacityFilterEnemyPet, F = CreateQuickCheckbutton(objectName.."OpacityFilterEnemyPet", L["Filter Enemy Pets"], AlignmentColumn, F, 8)
 	panel.OpacityFilterFriendlyPet, F = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyPet", L["Filter Friendly Pets"], AlignmentColumn, F, 8)
-	
+
 
 	panel.OpacityFilterFriendlyPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyPlayers", L["Filter Friendly Players"], AlignmentColumn, panel.FilterScaleLock, OffsetColumnB+24, 4)
 	panel.OpacityFilterEnemyPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterEnemyPlayers", L["Filter Enemy Players"], AlignmentColumn, panel.OpacityFilterFriendlyPlayers, OffsetColumnB+24)
@@ -597,7 +597,7 @@ local function BuildHubPanel(panel)
 	--panel.WidgetEnableExternal = CreateQuickCheckbutton(objectName.."WidgetEnableExternal", "Enable External Widgets", AlignmentColumn, panel.WidgetComboPoints)
 
 	--panel.WidgetThreatIndicatorMode =  CreateQuickDropdown(objectName.."WidgetThreatIndicatorMode", "Threat Indicator:", ThreatWidgetModes, 1, AlignmentColumn, panel.WidgetThreatIndicator, OffsetColumnB+16)
-	
+
 	--panel.WidgetAbsorbIndicator = CreateQuickCheckbutton(objectName.."WidgetAbsorbIndicator", L["Show Absorb Bars"], AlignmentColumn, panel.WidgetLabel, OffsetColumnB+60)
 	--panel.WidgetAbsorbMode =  CreateQuickDropdown(objectName.."WidgetAbsorbMode", L["Mode"]..':', AbsorbModes, 1, AlignmentColumn, panel.WidgetAbsorbIndicator, OffsetColumnB+76)
 	--panel.WidgetAbsorbUnits = CreateQuickDropdown(objectName.."WidgetAbsorbUnits", L["Show on"]..':', AbsorbUnits, 1, AlignmentColumn, panel.WidgetAbsorbMode, OffsetColumnB+76)
@@ -682,15 +682,21 @@ local function BuildHubPanel(panel)
 
 	function panel.RefreshSettings(LocalVars)
 		-- print("RefreshSettings", panel:IsShown())
-		CallForStyleUpdate()
-		-- Convert Debuff Filter Strings
-		ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
-		-- Convert Emphasized Filter Strings
-		ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
-		-- Convert Unit Filter Strings
-		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
-		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
-		ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
+		-- Convert WidgetComboPoints to new format
+		if LocalVars then
+			CallForStyleUpdate()
+			-- Convert Debuff Filter Strings
+			ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
+			-- Convert Emphasized Filter Strings
+			ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
+			-- Convert Unit Filter Strings
+			ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
+			ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
+			ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
+		else
+			CallForStyleUpdate()
+		end
+
 	end
 
 	panel:Hide()
