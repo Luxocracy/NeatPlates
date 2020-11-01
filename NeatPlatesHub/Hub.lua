@@ -676,21 +676,25 @@ local function BuildHubPanel(panel)
 	function panel.RefreshSettings(LocalVars)
 		-- print("RefreshSettings", panel:IsShown())
 		-- Convert WidgetComboPoints to new format
-		if LocalVars.WidgetComboPoints == true then
-			LocalVars.WidgetComboPoints = 1
-		elseif LocalVars.WidgetComboPoints == false then
-			LocalVars.WidgetComboPoints = 4
+		if LocalVars then
+			if LocalVars.WidgetComboPoints == true then
+				LocalVars.WidgetComboPoints = 1
+			elseif LocalVars.WidgetComboPoints == false then
+				LocalVars.WidgetComboPoints = 4
+			end
+			CallForStyleUpdate()
+			-- Convert Debuff Filter Strings
+			ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
+			-- Convert Emphasized Filter Strings
+			ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
+			-- Convert Unit Filter Strings
+			ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
+			ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
+			ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
+		else
+			CallForStyleUpdate()
 		end
 
-		CallForStyleUpdate()
-		-- Convert Debuff Filter Strings
-		ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
-		-- Convert Emphasized Filter Strings
-		ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
-		-- Convert Unit Filter Strings
-		ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
-		ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
-		ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
 	end
 
 	panel:Hide()
