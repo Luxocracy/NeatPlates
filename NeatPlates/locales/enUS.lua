@@ -258,6 +258,12 @@ L["Aura Alignment"] = true
 	L["Center"] = true
 	L["Right"] = true
 
+L["Buff Separation Mode"] = true
+	-- Buff Separation Dropdown
+	L["Separate Row"] = true
+	L["Space Between"] = true
+	L["No Space"] = true
+
 L["Include Dispellable Debuffs on Friendly Units"] = true
 	-- Dispellable Options
 	L["Curse"] = true
@@ -730,7 +736,7 @@ L["Color of the border highlight"] = true
 L["Type of highlighting to use"] = true
 L["Display beneficial auras that can be removed by Dispel/Purge"] = true
 L["Display Enrage effects that can be removed by Soothe"] = true
-L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"] = true
+L["The minimum amount of empty aura slots allowed between Buffs & Debuffs"] = true
 L["The amount of Emphasized auras that can be displayed at once"] = true
 L["Hides the regular aura from the aura widget if it is currently emphasized"] = true
 L["Color is defined under the 'Reaction' category."] = true

@@ -62,6 +62,7 @@ local ComboPointsModes = NeatPlatesHubMenus.ComboPointsModes
 local ComboPointsStyles = NeatPlatesHubMenus.ComboPointsStyles
 local BorderTypes = NeatPlatesHubMenus.BorderTypes
 local HighlightTypes = NeatPlatesHubMenus.HighlightTypes
+local BuffSeparationModes = NeatPlatesHubMenus.BuffSeparationModes
 
 local cEnemy = "|cffff5544"
 local cFriendly = "|cffc8e915"
@@ -236,7 +237,7 @@ local function BuildHubPanel(panel)
 	panel.BorderBuffEnrage.tooltipText = L["Type of highlighting to use"]
 
 	panel.SpacerSlots = CreateQuickSlider(objectName.."SpacerSlots", L["Space Between buffs & debuffs"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetBuffEnrage, 16, 2)
-	panel.SpacerSlots.tooltipText = L["The amount of empty aura slots between Buffs & Debuffs.\nMax value means they never share a row"]
+	panel.SpacerSlots.tooltipText = L["The minimum amount of empty aura slots allowed between Buffs & Debuffs"]
 
 	panel.AuraScale = CreateQuickSlider(objectName.."AuraScale", L["Aura Scale"]..':', nil, 160, AlignmentColumn, panel.WidgetBuffEnrage, OffsetColumnB + 64, 2)
 	panel.AuraScale.tooltipText = L["Might require a '/reload' to display correctly"]
@@ -251,6 +252,7 @@ local function BuildHubPanel(panel)
 	panel.WidgetDebuffStyle =  CreateQuickDropdown(objectName.."WidgetDebuffStyle", L["Icon Style"]..':', DebuffStyles, 1, AlignmentColumn, panel.PreciseAuraThreshold, 16)
 	panel.WidgetAuraSort =  CreateQuickDropdown(objectName.."WidgetAuraSort", L["Sorting Mode"]..':', AuraSortModes, 1, AlignmentColumn, panel.PreciseAuraThreshold, OffsetColumnB)
 	panel.WidgetAuraAlignment =  CreateQuickDropdown(objectName.."WidgetAuraAlignment", L["Aura Alignment"]..':', AuraAlignmentModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, 16)
+	panel.BuffSeparationMode =  CreateQuickDropdown(objectName.."BuffSeparationModes", L["Buff Separation Mode"]..':', BuffSeparationModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, OffsetColumnB)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras"]..':', AlignmentColumn, panel.WidgetAuraAlignment, 16)
 	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
