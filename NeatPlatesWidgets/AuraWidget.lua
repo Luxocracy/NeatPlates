@@ -46,6 +46,7 @@ local AuraScale = 1
 local AuraAlignment = "BOTTOMLEFT"
 local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 local PreciseAuraThreshold = 0
+local BuffSeparationMode = 1
 
 local function DummyFunction() end
 
@@ -444,15 +445,16 @@ local function UpdateIconGrid(frame, unitid)
 			end
 
 			-- Calculate Buff Offset
-			local rowOffset
+			local rowOffset = DebuffSlotCount+1	-- Offset as a debuff would be
 			DisplayedRows = (math.floor((DebuffSlotCount + BuffSlotCount - 1)/DebuffColumns) + math.min(DebuffSlotCount, 1))
-			
-			 --print(DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount))
-			if DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
-				rowOffset = math.max(DebuffColumns * DisplayedRows, DebuffColumns) -- Same Row with space between
-			elseif BuffSlotCount > 0 then
-				rowOffset = DebuffColumns * (DisplayedRows + 1)	-- Seperate Row
-				DisplayedRows = DisplayedRows+1
+
+			if BuffSeparationMode < 3 then
+				if BuffSeparationMode == 2 and DebuffColumns * DisplayedRows - (DebuffSlotCount + BuffSlotCount) >= SpacerSlots then
+					rowOffset = math.max(DebuffColumns * DisplayedRows, DebuffColumns) -- Same Row with space between
+				elseif BuffSlotCount > 0 then
+					rowOffset = DebuffColumns * (DisplayedRows + 1)	-- Seperate Row
+					DisplayedRows = DisplayedRows+1
+				end
 			end
 
 			-- Loop through buffs and call function to display them
@@ -848,6 +850,7 @@ local function SetAuraOptions(LocalVars)
 	ScaleOptions = LocalVars.WidgetAuraScaleOptions
 	HideInHeadlineMode = LocalVars.HideAuraInHeadline
 	PreciseAuraThreshold = LocalVars.PreciseAuraThreshold
+	BuffSeparationMode = LocalVars.BuffSeparationMode
 end
 
 --local function SetPandemic(enabled, color)

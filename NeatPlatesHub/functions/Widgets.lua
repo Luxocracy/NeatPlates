@@ -102,6 +102,13 @@ NeatPlatesHubMenus.AuraAlignmentModes = {
 				{ text = L["Right"],  },
 			}
 
+NeatPlatesHubDefaults.BuffSeparationMode = 1
+NeatPlatesHubMenus.BuffSeparationModes = {
+				{ text = L["Separate Row"],  },
+				{ text = L["Space Between"],  },
+				{ text = L["No Space"],  },
+			}
+
 NeatPlatesHubMenus.StyleOptions = {
 	{
 		text = L["customtext"],
