@@ -720,11 +720,8 @@ local function OnVariableChange(vars)
 		NeatPlatesWidgets.SetAuraFilter(DebuffFilter)
 		NeatPlatesWidgets.SetAuraSortMode(AuraSortFunction)
 		NeatPlatesWidgets.SetAuraOptions(LocalVars)
-	else NeatPlatesWidgets:DisableAuraWatcher() end
-
-	if true then
 		NeatPlatesWidgets.SetEmphasizedAuraFilter(EmphasizedFilter, LocalVars.EmphasizedUnique)
-	end
+	else NeatPlatesWidgets:DisableAuraWatcher() end
 
 	if LocalVars.WidgetAbsorbIndicator then
 		NeatPlatesWidgets.SetAbsorbType(LocalVars.WidgetAbsorbMode, LocalVars.WidgetAbsorbUnits)

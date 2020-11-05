@@ -111,7 +111,7 @@ end
 -- Hex conversion functions
 local function HexToRGB(hex)
     hex = hex:gsub("#","")
-		
+
 		-- Incase of shorthand hex
     if string.len(hex) == 3 then
     	str = "";
@@ -136,7 +136,7 @@ local function RGBToHex(r,g,b)
 		while(value > 0)do
 			local index = math.fmod(value, 16) + 1
 			value = math.floor(value / 16)
-			hex = string.sub('0123456789ABCDEF', index, index) .. hex			
+			hex = string.sub('0123456789ABCDEF', index, index) .. hex
 		end
 
 		if(string.len(hex) == 0)then
@@ -228,7 +228,7 @@ local function GetUnitSubtitle(unit)
 
 		-- Tooltip Format Priority:  Faction, Description, Level
 		local toolTipText
-		if colorblindMode then 
+		if colorblindMode then
 			toolTipText = TooltipTextLeft3:GetText() or "UNKNOWN"
 		else
 			toolTipText = TooltipTextLeft2:GetText() or "UNKNOWN"
@@ -291,7 +291,7 @@ local function GetUnitQuestInfo(unit)
     for line = 1, TooltipScanner:NumLines() do
     	 -- Get amount of quest objectives through counting textures
     	local texture = _G[ScannerName .. "Texture" .. line]
-    	
+
     	if texture and questTexture[texture:GetTexture()] ~= nil then
     		objectiveCount = objectiveCount + 1
     		questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
@@ -324,7 +324,7 @@ local function GetUnitQuestInfo(unit)
 	  elseif not IsInGroup() then
     	return questList
 	  end
-	  
+
 	  return {}
 end
 
@@ -478,7 +478,7 @@ do
 
 	local function GetRelativeThreat(enemyUnitid)		-- 'enemyUnitid' is a target/enemy
 		if not UnitExists(enemyUnitid) then return end
-		
+
 		local playerIsTanking, playerSituation, playerThreat = UnitDetailedThreatSituation("player", enemyUnitid)
 		if not playerThreat then return end
 
@@ -1093,7 +1093,7 @@ local function CreateEditBoxButton(frame, onOkay)
 	end)
 	frame.EditBox:SetScript("OnEditFocusLost", function()
 		frame.EditBox:HighlightText(0,0)
-		if frame.EditBox.oldValue == frame:GetValue() then 
+		if frame.EditBox.oldValue == frame:GetValue() then
 			frame.okayButton:Hide()
 		end
 	end)
@@ -1105,7 +1105,7 @@ end
 
 local function CreateTipBox(self, name, text, parent, ...)
 	local frame = CreateFrame("Frame", name, parent, "NeatPlatesPanelTipTemplate")
-	
+
 	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	frame.Text:SetTextColor(255/255, 105/255, 6/255)
 	frame.Text:SetAllPoints()

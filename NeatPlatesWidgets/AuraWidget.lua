@@ -34,8 +34,10 @@ local EmphasizedUnique = false
 local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
 local AuraScale = 1
+local EmphasizedAuraScale = 1
 local AuraAlignment = "BOTTOMLEFT"
-local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+-- local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+local EmphasizedScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 local PreciseAuraThreshold = 0
 local BuffSeparationMode = 1
 
@@ -665,6 +667,7 @@ local function UpdateEmphasizedIconConfig(frame)
 
 	--local columns = 1
 	local auraLimit = MaxEmphasizedAuras
+	frame:SetScale(EmphasizedAuraScale)
 
 	if iconTable then
 		-- Create Icons
@@ -700,6 +703,9 @@ local function UpdateWidgetOffset(frame, x, y)
 	local config = frame.lastConfig
 	frame:ClearAllPoints()
 	frame:SetPoint(config.anchor or "TOP", config.relFrame, config.anchorRel or config.anchor or "TOP", config.x or 0, (config.y or 0) + (y or 0))
+
+	frame.emphasized:ClearAllPoints()
+	frame.emphasized:SetPoint("BOTTOM", frame, "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
 end
 
 local function SetCustomPoint(frame, anchor, relFrame, anchorRel, x, y)
@@ -717,13 +723,17 @@ end
 -- Create the Main Widget Body and Icon Array
 local function CreateAuraWidget(parent, style)
 	-- Create Base frame
-		local frame = CreateFrame("Frame", nil, parent)
+	local frame = CreateFrame("Frame", nil, parent)
 	frame:SetWidth(128); frame:SetHeight(32); frame:Show()
 	--frame.PollFunction = UpdateWidgetTime
 
 	-- Create Emphasized Frame
 	frame.emphasized = CreateFrame("Frame", nil, frame)
-	frame.emphasized:SetWidth(32); frame.emphasized:SetHeight(32); frame.emphasized:SetPoint("BOTTOM", frame, "TOP", 0, 2); frame.emphasized:SetScale(2); frame.emphasized:Show()
+	frame.emphasized:SetWidth(32)
+	frame.emphasized:SetHeight(32)
+	frame.emphasized:SetPoint("BOTTOM", frame, "TOP", 0, 2)
+	frame.emphasized:SetScale(EmphasizedAuraScale)
+	frame.emphasized:Show()
 
 	-- Create Icon Grid
 	frame.AuraIconFrames = {}
@@ -822,8 +832,10 @@ local function SetAuraOptions(LocalVars)
 	HideAuraDuration = LocalVars.HideAuraDuration
 	HideAuraStacks = LocalVars.HideAuraStacks
 	AuraScale = LocalVars.AuraScale
+	EmphasizedAuraScale = LocalVars.EmphasizedAuraScale
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
-	ScaleOptions = LocalVars.WidgetAuraScaleOptions
+	-- ScaleOptions = LocalVars.WidgetAuraScaleOptions
+	EmphasizedScaleOptions = LocalVars.WidgetEmphasizedAuraScaleOptions
 	HideInHeadlineMode = LocalVars.HideAuraInHeadline
 	PreciseAuraThreshold = LocalVars.PreciseAuraThreshold
 	BuffSeparationMode = LocalVars.BuffSeparationMode
