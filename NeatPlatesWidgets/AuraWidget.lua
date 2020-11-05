@@ -668,6 +668,8 @@ local function UpdateEmphasizedIconConfig(frame)
 	--local columns = 1
 	local auraLimit = MaxEmphasizedAuras
 	frame:SetScale(EmphasizedAuraScale)
+	frame:ClearAllPoints()
+	frame:SetPoint("BOTTOM", frame:GetParent(), "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
 
 	if iconTable then
 		-- Create Icons
@@ -703,9 +705,6 @@ local function UpdateWidgetOffset(frame, x, y)
 	local config = frame.lastConfig
 	frame:ClearAllPoints()
 	frame:SetPoint(config.anchor or "TOP", config.relFrame, config.anchorRel or config.anchor or "TOP", config.x or 0, (config.y or 0) + (y or 0))
-
-	frame.emphasized:ClearAllPoints()
-	frame.emphasized:SetPoint("BOTTOM", frame, "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
 end
 
 local function SetCustomPoint(frame, anchor, relFrame, anchorRel, x, y)
