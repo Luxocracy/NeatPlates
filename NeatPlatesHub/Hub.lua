@@ -241,6 +241,10 @@ local function BuildHubPanel(panel)
 	panel.AuraScale.tooltipText = L["Might require a '/reload' to display correctly"]
 	panel.WidgetAuraScaleOptions = CreateQuickScale(objectName.."WidgetAuraScaleOptions", "WidgetAuraScaleOptions", L["Aura Widget"], nil, {noScale = true, label = L["Aura Offsets"]}, AlignmentColumn, "TOP", panel.AuraScale, "BOTTOM", 0, -16)
 
+	panel.EmphasizedAuraScale = CreateQuickSlider(objectName.."EmphasizedAuraScale", L["Emphasized Aura Scale"]..':', nil, 160, AlignmentColumn, panel.WidgetAuraScaleOptions, OffsetColumnB + 64, 2)
+	panel.EmphasizedAuraScale.tooltipText = L["Might require a '/reload' to display correctly"]
+	panel.WidgetEmphasizedAuraScaleOptions = CreateQuickScale(objectName.."WidgetEmphasizedAuraScaleOptions", "WidgetEmphasizedAuraScaleOptions", L["Emphasized Aura Widget"], nil, {noScale = true, label = L["Emphasized Aura Offsets"]}, AlignmentColumn, "TOP", panel.EmphasizedAuraScale, "BOTTOM", 0, -16)
+
 	panel.EmphasizedSlots = CreateQuickSlider(objectName.."EmphasizedSlots", L["Amount of Emphasized Auras"]..':', "ACTUAL", 150, AlignmentColumn, panel.SpacerSlots, 16, 2)
 	panel.EmphasizedSlots.tooltipText = L["The amount of Emphasized auras that can be displayed at once"]
 
@@ -661,6 +665,7 @@ local function BuildHubPanel(panel)
 
 	SetSliderMechanics(panel.SpacerSlots, 0, 0, 4, 1)
 	SetSliderMechanics(panel.AuraScale, 1, .5, 2.2, .01)
+	SetSliderMechanics(panel.EmphasizedAuraScale, 2, .5, 2.2, .01)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 	SetSliderMechanics(panel.PreciseAuraThreshold, 0, 0, 60, 0.1)
 

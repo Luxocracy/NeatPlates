@@ -43,8 +43,10 @@ local EmphasizedUnique = false
 local MaxEmphasizedAuras = 1
 local AuraWidth = 16.5
 local AuraScale = 1
+local EmphasizedAuraScale = 1
 local AuraAlignment = "BOTTOMLEFT"
-local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+-- local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
+local EmphasizedScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 local PreciseAuraThreshold = 0
 local BuffSeparationMode = 1
 
@@ -173,7 +175,7 @@ end
 --			AuraExpiration[destGUID][sourceGUID] = AuraExpiration[destGUID][sourceGUID] or {}
 --			AuraExpiration[destGUID][sourceGUID][spellID] = {expiration = expiration, duration = duration}
 --		end
-		
+
 --	end
 --end
 
@@ -184,7 +186,7 @@ end
 local AuraEvents = {
 	--["UNIT_TARGET"] = EventUnitTarget,
 	["UNIT_AURA"] = EventUnitAura,
-	["NAME_PLATE_UNIT_REMOVED"] = ClearAuraCache, 
+	["NAME_PLATE_UNIT_REMOVED"] = ClearAuraCache,
 	--["COMBAT_LOG_EVENT_UNFILTERED"]  = EventCombatLog,
 }
 
@@ -251,7 +253,7 @@ local function UpdateIcon(frame, aura)
 
 			frame.Cooldown:SetDrawSwipe(not HideCooldownSpiral)
 			frame.Cooldown:SetDrawEdge(not HideCooldownSpiral)
-			
+
 		else
 			--SetCooldown(frame.Cooldown, 0, 0)	-- Clear Cooldown (Clean Version)
 			frame.Cooldown:SetCooldown(0, 0)
@@ -400,7 +402,7 @@ local function UpdateIconGrid(frame, unitid)
 			}
 		end
 		--]]
-		
+
 
 		-- Display Auras
 		------------------------------------------------------------------------------------------------------
@@ -426,7 +428,7 @@ local function UpdateIconGrid(frame, unitid)
 
 				if aura.spellid and aura.expiration and not(EmphasizedUnique and EmphasizedAura[tostring(aura.spellid)]) then
 					-- Sort buffs and debuffs
-					if aura.effect == "HELPFUL" then 
+					if aura.effect == "HELPFUL" then
 						table.insert(BuffAuras, aura)
 						BuffSlotCount = BuffSlotCount + 1
 					elseif DebuffSlotCount < DebuffLimit then
@@ -699,6 +701,9 @@ local function UpdateEmphasizedIconConfig(frame)
 
 	--local columns = 1
 	local auraLimit = MaxEmphasizedAuras
+	frame:SetScale(EmphasizedAuraScale)
+	frame:ClearAllPoints()
+	frame:SetPoint("BOTTOM", frame:GetParent(), "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
 
 	if iconTable then
 		-- Create Icons
@@ -751,7 +756,11 @@ local function CreateAuraWidget(parent, style)
 
 	-- Create Emphasized Frame
 	frame.emphasized = CreateFrame("Frame", nil, frame)
-	frame.emphasized:SetWidth(32); frame.emphasized:SetHeight(32); frame.emphasized:SetPoint("BOTTOM", frame, "TOP", 0, 2); frame.emphasized:SetScale(2); frame.emphasized:Show()
+	frame.emphasized:SetWidth(32)
+	frame.emphasized:SetHeight(32)
+	frame.emphasized:SetPoint("BOTTOM", frame, "TOP", 0, 2)
+	frame.emphasized:SetScale(EmphasizedAuraScale)
+	frame.emphasized:Show()
 
 	-- Create Icon Grid
 	frame.AuraIconFrames = {}
@@ -785,7 +794,7 @@ local function CreateAuraWidget(parent, style)
 			ids[tostring(auras[index].spellid)] = true
 			UpdateIcon(frame.AuraIconFrames[index], auras[index])
 		end
-		
+
 		-- Cleanup empty aura slots
 		for i=shown+1, #frame.AuraIconFrames do
 			UpdateIcon(frame.AuraIconFrames[i])
@@ -846,8 +855,10 @@ local function SetAuraOptions(LocalVars)
 	HideAuraDuration = LocalVars.HideAuraDuration
 	HideAuraStacks = LocalVars.HideAuraStacks
 	AuraScale = LocalVars.AuraScale
+	EmphasizedAuraScale = LocalVars.EmphasizedAuraScale
 	AuraAlignment = Alignments[LocalVars.WidgetAuraAlignment]
-	ScaleOptions = LocalVars.WidgetAuraScaleOptions
+	-- ScaleOptions = LocalVars.WidgetAuraScaleOptions
+	EmphasizedScaleOptions = LocalVars.WidgetEmphasizedAuraScaleOptions
 	HideInHeadlineMode = LocalVars.HideAuraInHeadline
 	PreciseAuraThreshold = LocalVars.PreciseAuraThreshold
 	BuffSeparationMode = LocalVars.BuffSeparationMode

@@ -92,7 +92,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			local multiplier = 1
 			if increment < 1 and increment >= .1 then multiplier = 10 elseif increment < .1 then multiplier = 100 end
 			slider.ceil = function(v) return ceil(v*multiplier-.5)/multiplier end
-			
+
 			slider.Low:SetText(minimum)
 			slider.High:SetText(maximum)
 		else
@@ -353,7 +353,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				end
 			end
 		end
-		
+
 
 		frame:SetScrollChild(child)
 		frame:SetScript("OnMouseWheel", OnMouseWheelScrollFrame)
@@ -464,7 +464,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	  			local itemType = type(default[getObjectName(item)])
 	  			item:Show()
 	  			item.enabled = true
-					
+
 	  			if itemType == "boolean" then
 	  				item:SetChecked(getOptionValue(item))
 					elseif itemType == "number" then
@@ -664,7 +664,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 			-- On panel hide
 			CustomizationPanel:SetScript("OnHide", function(self)
-				NeatPlates._TestMode = false 
+				NeatPlates._TestMode = false
 				CustomizationPanel:ClearSelections() -- Clear Selected item
 
 				-- Restore old values if user didn't hit Okay button
@@ -719,7 +719,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 	local function CreateQuickCustomization(objectName, parent, ...)
 		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
-	
+
 		frame:SetPoint(...)
 		frame:SetText(L["Theme Customization"])
 		frame:SetWidth(frame:GetTextWidth()+32)
@@ -752,7 +752,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate");
 
 			--local panel = CreateFrame( "Frame", "OffsetAndScale_InterfaceOptionsPanel", UIParent);
-		
+
 			--panel.MainFrame = CreateFrame("Frame")
 			--panel.MainFrame:SetWidth(412)
 			--panel.MainFrame:SetHeight(2760) 		-- This can be set VERY long since we've got it in a scrollable window.
@@ -765,27 +765,27 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			--panel.ScrollFrame:SetPoint("BOTTOMRIGHT", -32 , 16 )
 			--panel.ScrollFrame:SetScrollChild(panel.MainFrame)
 			--panel.ScrollFrame:SetScript("OnMouseWheel", OnMouseWheelScrollFrame)
-			
-			ScalePanel:Hide()
-		  ScalePanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
-		  ScalePanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
-		  ScalePanel:SetWidth(390)
-		  ScalePanel:SetHeight(180)
-		  ScalePanel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
-		  ScalePanel:SetFrameStrata("DIALOG")
 
-		  ScalePanel:SetMovable(true)
-		  ScalePanel:EnableMouse(true)
-		  ScalePanel:RegisterForDrag("LeftButton", "RightButton")
-		  ScalePanel:SetScript("OnMouseDown", function(self,arg1)
-		    self:StartMoving()
-		  end)
-		  ScalePanel:SetScript("OnMouseUp", function(self,arg1)
-		    self:StopMovingOrSizing()
-		  end)
+			ScalePanel:Hide()
+			ScalePanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
+			ScalePanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
+			ScalePanel:SetWidth(390)
+			ScalePanel:SetHeight(180)
+			ScalePanel:SetPoint("CENTER", UIParent, "CENTER", 0, 0 )
+			ScalePanel:SetFrameStrata("DIALOG")
+
+			ScalePanel:SetMovable(true)
+			ScalePanel:EnableMouse(true)
+			ScalePanel:RegisterForDrag("LeftButton", "RightButton")
+			ScalePanel:SetScript("OnMouseDown", function(self,arg1)
+				self:StartMoving()
+			end)
+			ScalePanel:SetScript("OnMouseUp", function(self,arg1)
+				self:StopMovingOrSizing()
+			end)
 
 		  -- Create SLiders
-		  ScalePanel.ScaleX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleX", ScalePanel, L["Scale X"], 1, .1, 3, .01, nil, 160)
+			ScalePanel.ScaleX = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleX", ScalePanel, L["Scale X"], 1, .1, 3, .01, nil, 160)
 			ScalePanel.ScaleX:SetPoint("TOPLEFT", ScalePanel, "TOPLEFT", 20, -54)
 			ScalePanel.ScaleY = PanelHelpers:CreateSliderFrame("NeatPlatesScalePanel_ScaleY", ScalePanel, L["Scale Y"], 1, .1, 3, .01, nil, 160)
 			ScalePanel.ScaleY:SetPoint("TOPLEFT", ScalePanel.ScaleX, "TOPLEFT", 0, -45)
@@ -826,13 +826,6 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			parent.Callback()
 		end)
 
-		ScalePanel:SetScript("OnShow", function(self)
-			self.ScaleX:updateValues()
-			self.ScaleY:updateValues()
-			self.OffsetX:updateValues()
-			self.OffsetY:updateValues()
-		end)
-
 		-- Restore values
 		local scale = frame.values
 		--table.foreach(values, print)
@@ -841,10 +834,20 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		ScalePanel.ScaleY:Show()
 		ScalePanel.OffsetX:Show()
 		ScalePanel.OffsetY:Show()
+
+		ScalePanel.OffsetX:SetMinMaxValues((scale.offset.x or 0) - 50, (scale.offset.x) + 50)
+		ScalePanel.OffsetY:SetMinMaxValues((scale.offset.y or 0) - 50, (scale.offset.y) + 50)
+
 		ScalePanel.ScaleX:SetValue(scale.x or 1)
 		ScalePanel.ScaleY:SetValue(scale.y or 1)
 		ScalePanel.OffsetX:SetValue(scale.offset.x or 0)
 		ScalePanel.OffsetY:SetValue(scale.offset.y or 0)
+
+		ScalePanel.ScaleX:updateValues()
+		ScalePanel.ScaleY:updateValues()
+		ScalePanel.OffsetX:updateValues()
+		ScalePanel.OffsetY:updateValues()
+
 
 		if options and (options.noScale or options.noPos) then ScalePanel:SetWidth(200) else ScalePanel:SetWidth(390) end
 		if options and options.noScale then
@@ -860,7 +863,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 	local function CreateQuickScale(objectName, name, label, onOkay, options, parent, ...)
 		local frame = CreateFrame("Button", objectName, parent, "NeatPlatesPanelButtonTemplate")
-	
+
 		frame:SetWidth(22)
 		frame:SetHeight(22)
 		frame:SetPoint(...)
@@ -875,12 +878,12 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			frame:SetText(options.label)
 			frame:SetWidth(frame:GetTextWidth()+16)
 		end
-		
+
 		if not (options and options.label) then frame.tooltipText = L["Display Scale Options"] end
 
 		-- Create Value handlers
 		frame.SetValue = function(self, values)
-			frame.values = values or {} 
+			frame.values = values or {}
 		end
 		frame.GetValue = function() return frame.values end
 
@@ -921,7 +924,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 					panel.EditBox.EditBox:HighlightText()
 				end
 			end)
-			
+
 			-- Fix editbox not focusing as expected
 			panel.EditBox.BorderFrame:SetScript("OnMouseUp", function()
 				panel.EditBox.EditBox:SetFocus()

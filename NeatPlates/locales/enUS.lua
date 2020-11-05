@@ -212,6 +212,7 @@ L["Friendly Headline Subtext"] = true
 ------------------------------
 L["Buffs & Debuffs"] = true
 L["Aura Widget"] = true
+L["Emphasized Aura Widget"] = true
 
 L["Enable Aura Widget"] = true
 	-- Aura Widget Options
@@ -232,7 +233,9 @@ L["Enable Aura Widget"] = true
 
 L["Space Between buffs & debuffs"] = true
 L["Aura Scale"] = true
+L["Emphasized Aura Scale"] = true
 L["Aura Offsets"] = true
+L["Emphasized Aura Offsets"] = true
 L["Amount of Emphasized Auras"] = true
 L["Precise Aura Duration Threshold"] = true
 L["Additional Auras"] = true
