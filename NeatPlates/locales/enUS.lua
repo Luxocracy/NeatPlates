@@ -387,12 +387,13 @@ L["CUSTOM_COLOR_CONDITION_TIP"] = [=[|cffCCCCCCColor value in Hex(#) followed by
 - Unit Name
 - Buff/Debuff Name/SpellID
 - Health Threshold
+- Target Marker ({rt1-8})
 
 Available prefixes:
 - Unit (Only match units)
 - My (Only match your auras)
 
-(ex. '#A300FF Spawn of G'huun', or 'unit #A300FF Skyfury Totem')
+(ex. '#A300FF Spawn of G'huun', 'unit #A300FF Skyfury Totem', or '#FF0000 {rt7}')
 
 |cffff9320Prioritised top to bottom]=]
 

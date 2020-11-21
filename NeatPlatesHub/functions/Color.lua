@@ -208,21 +208,34 @@ local function CustomColorDelegate(unit)
 	-- Functions is a bit messy because it attempts to use the order of items as a priority...
 	local color, aura, threshold, current, lowest
 	local health = (unit.health/unit.healthmax)*100
+	local raidIconTable = {
+		[1] = "STAR",
+		[2] = "CIRCLE",
+		[3] = "DIAMOND",
+		[4] = "TRIANGLE",
+		[5] = "MOON",
+		[6] = "SQUARE",
+		[7] = "CROSS",
+		[8] = "SKULL"
+	}
 
 	if NeatPlatesWidgets.AuraCache then aura = NeatPlatesWidgets.AuraCache[unit.unitid] end
 
 	local temp = {strsplit("\n", LocalVars.CustomColorList)}
 	for index=1, #temp do
-		local key = select(3, string.find(temp[index], "#%x+[%s%p]*(.*)"))
+		local key = select(3, string.find(temp[index], "#%x+[%s]*(.*)"))
+		local raidIconId = select(3, string.find(key or "", "{rt(%d)}"))
 
 		if key then
-		--Custom Color by Unit Name
-			if not color and key == unit.name then
+		-- Custom Color by Raid Marker
+			if not color and raidIconId and unit.isMarked and unit.raidIcon == raidIconTable[tonumber(raidIconId)] then
+				color = HexToRGB(LocalVars.CustomColorLookup[key].hex); break
+		-- Custom Color by Unit Name
+			elseif not color and key == unit.name then
 				color = HexToRGB(LocalVars.CustomColorLookup[unit.name].hex); break
-
 			elseif string.lower(LocalVars.CustomColorLookup[key].prefix) == "unit" then
 				-- Do nothing, and skip the other checks for this line/condition
-		--Custom Color by Buff/Debuff
+		-- Custom Color by Buff/Debuff
 			elseif not color and aura and aura[key] then
 				if string.lower(LocalVars.CustomColorLookup[key].prefix) ~= "my" or aura[key].caster == "player" then
 					color = HexToRGB(LocalVars.CustomColorLookup[key].hex); break
