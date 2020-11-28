@@ -26,17 +26,15 @@ local function UpdateArenaWidget(self, unit)
 	end
 end
 
-local function UpdateWidget(frame)
-	local unitid = frame.unitid
+-- local function UpdateWidget(frame)
+-- 	local unitid = frame.unitid
 
-	UpdateArenaWidget(frame, unitid)
-end
+-- 	UpdateArenaWidget(frame, unitid)
+-- end
 
 local function UpdateWidgetContext(frame, unit)
-	local unitid = unit.unitid
-
-	frame.unitid = unitid
-	UpdateArenaWidget(frame, unitid)
+	frame.unitid = unit.unitid
+	UpdateArenaWidget(frame, unit)
 end
 
 local function CreateArenaWidget(parent)
