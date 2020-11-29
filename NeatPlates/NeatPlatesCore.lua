@@ -925,7 +925,7 @@ do
 		-- Subtext
 		if style.subtext.show and style.subtext.enabled and activetheme.SetSubText then
 				local text, r, g, b, a = activetheme.SetSubText(unit)
-				visual.subtext:SetText( text or "")
+				visual.subtext:SetText(text or "")
 				visual.subtext:SetTextColor(r or 1, g or 1, b or 1, a or 1)
 		else visual.subtext:SetText("") end
 	end

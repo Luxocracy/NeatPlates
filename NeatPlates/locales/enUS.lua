@@ -299,6 +299,7 @@ L["Current Target Opacity"] = true
 L["Non-Target Opacity"] = true
 
 L["Spotlight Casting Units"] = true
+L["Spotlight Casting Units (Interruptible)"] = true
 L["Spotlight Mouseover"] = true
 L["Spotlight Raid Marked"] = true
 L["Use Target Opacity When No Target Exists"] = true

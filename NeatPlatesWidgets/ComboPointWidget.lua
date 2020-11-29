@@ -12,14 +12,14 @@ local artfile = {
 }
 local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
-local t = { 	
+local t = {
 	['DRUID'] = {
 		["POWER"] = Enum.PowerType.Energy,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
 	},
-	
+
 	['ROGUE'] = {
 		["POWER"] = Enum.PowerType.Energy,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
@@ -40,7 +40,7 @@ local function GetPlayerPower()
 	local points = 0
 	local maxPoints = 0
 	local needsEnemy = playeRole ~= "HEALER"
-	
+
 	if UnitAffectingCombat("player") and not UnitCanAttack("player", "target") and needsEnemy then
 		return 0, 0
 	end
@@ -50,7 +50,7 @@ local function GetPlayerPower()
 	PlayerPowerUnmodified = t[PlayerClass]["NOMOD"]
 
 	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified) or 5
-	
+
 	if PlayerPowerType == Enum.PowerType.Energy then
 		points = GetComboPoints("player", "target")
 	elseif PlayerPowerType == 5 then
@@ -60,16 +60,16 @@ local function GetPlayerPower()
 		points = UnitPower("player", PlayerPowerType, PlayerPowerUnmodified)
 	end
 	return points, maxPoints
-end 
+end
 
 local function SelectPattern(maxPower)
 	local selectedPattern
-	
+
 	if (t[PlayerClass] == nil) then
 		local _temp = { ["w"] = 64, ["h"] = 16, ["o"] = 0}
 		return _temp
 	end
-	
+
 	-- Custom case if somehow the player should not have 5 but 6 combos
 	if PlayerClass == "DRUID" or PlayerClass == "ROGUE" or PlayerClass == "MONK" then
 		selectedPattern = t[PlayerClass][tostring(maxPower)]
@@ -103,32 +103,33 @@ local function UpdateWidgetFrame(frame)
 		end
 
 		local offset = pattern["o"];
+		if offset then
+			if maxPoints == 6 then
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
+			elseif maxPoints == 50 then -- Warlock Specific
+				local modPoints = math.floor(points/10)
+				local fragments = points % 10
+				local fOffset = math.min(1, fragments)
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
+				frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + fOffset + offset), grid*(math.min(6, modPoints + fOffset + 1) + offset))
+				frame.PartialFill:SetValue(fragments)
 
-		if maxPoints == 6 then
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
-		elseif maxPoints == 50 then -- Warlock Specific
-			local modPoints = math.floor(points/10)
-			local fragments = points % 10
-			local fOffset = math.min(1, fragments)
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
-			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + fOffset + offset), grid*(math.min(6, modPoints + fOffset + 1) + offset))
-			frame.PartialFill:SetValue(fragments)
+				if t[PlayerClass]["SPARK"] then
+					frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["SPARK"][modPoints] or 0)*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture per shard
+					if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
+					frame.Spark.lastpower = modPoints
+				end
 
-			if t[PlayerClass]["SPARK"] then
-				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["SPARK"][modPoints] or 0)*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture per shard
-				if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
-				frame.Spark.lastpower = modPoints
+				frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
+			else
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
 			end
 
-			frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
-		else
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
+			frame.Icon:SetTexture(artfile[artstyle])
+
+			frame:UpdateScale()
+			frame:Show()
 		end
-
-		frame.Icon:SetTexture(artfile[artstyle])
-
-		frame:UpdateScale()
-		frame:Show()
 		return
 	end
 
@@ -215,7 +216,7 @@ local function CreateSparkAnimation(parent)
 	spark.Texture:SetWidth(16)
 	spark.Texture:SetTexture(artpath.."ShardSpark.tga")
 	spark.Texture:SetBlendMode("ADD")
-	
+
 	spark:SetAlpha(0)
 
 	-- Spark Animation
