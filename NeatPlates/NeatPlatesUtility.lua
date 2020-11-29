@@ -279,7 +279,7 @@ local function GetUnitQuestInfo(unit)
     local questName, questUnit, questProgress
     local questList = {}
     local questTexture = {[628564] = true, [3083385] = false}	-- 628564(Completed), 3083385(Incomplete/In progress)
-    local objectiveCount = 0
+	local objectiveCount = 0
 
     if not unitid then return end
 
@@ -287,14 +287,16 @@ local function GetUnitQuestInfo(unit)
     TooltipScanner:SetUnit(unitid)
 
   	-- Get lines with quest information on them
-    local questCompleted = {}
+	local questCompleted = {}
+	local textureIds = ""
     for line = 1, TooltipScanner:NumLines() do
     	 -- Get amount of quest objectives through counting textures
-    	local texture = _G[ScannerName .. "Texture" .. line]
+		local texture = _G[ScannerName .. "Texture" .. line]
 
+		if textureIds ~= nil and texture:GetTexture() ~= nil then textureIds = textureIds..", "..texture:GetTexture() elseif texture:GetTexture() ~= nil then textureIds = texture:GetTexture() end
     	if texture and questTexture[texture:GetTexture()] ~= nil then
     		objectiveCount = objectiveCount + 1
-    		questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
+			questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
     	end
 
     	if line > 1 then
@@ -306,6 +308,7 @@ local function GetUnitQuestInfo(unit)
 	      	questList[questName] = questList[questName] or {}
 	      elseif questName and objectiveCount > 0 then
 					questList[questName][tooltipText] = questCompleted[#questCompleted+1 - objectiveCount]	-- Quest objective completed?
+					questList[questName]["texture"] = textureIds
 
 					-- Old method for checking quest completion as backup
 					--if questList[questName][tooltipText] == nil then

@@ -148,31 +148,33 @@ local function UpdateWidgetFrame(frame)
 		end
 
 		local offset = pattern["o"];
-		if maxPoints == 6 then
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
-		elseif maxPoints == 50 then -- Warlock Specific
-			local modPoints = math.floor(points/10)
-			local fragments = points % 10
-			local fOffset = math.min(1, fragments)
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
-			frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + fOffset + offset), grid*(math.min(6, modPoints + fOffset + 1) + offset))
-			frame.PartialFill:SetValue(fragments)
+		if offset then
+			if maxPoints == 6 then
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset), grid *(points + offset + 1))
+			elseif maxPoints == 50 then -- Warlock Specific
+				local modPoints = math.floor(points/10)
+				local fragments = points % 10
+				local fOffset = math.min(1, fragments)
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + offset), grid *(modPoints + 1 + offset))
+				frame.PartialFill:SetTexCoord(pattern["l"], pattern["r"], grid*(modPoints + fOffset + offset), grid*(math.min(6, modPoints + fOffset + 1) + offset))
+				frame.PartialFill:SetValue(fragments)
 
-			if t[PlayerClass]["SPARK"] then
-				frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["SPARK"][modPoints] or 0)*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture per shard
-				if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
-				frame.Spark.lastpower = modPoints
+				if t[PlayerClass]["SPARK"] then
+					frame.Spark.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["SPARK"][modPoints] or 0)*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture per shard
+					if frame.Spark.lastpower and modPoints > frame.Spark.lastpower then frame.Spark.Anim:Play() end -- Play Spark Animation
+					frame.Spark.lastpower = modPoints
+				end
+
+				frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
+			else
+				frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
 			end
 
-			frame.PartialFill:SetStatusBarTexture(artfile[artstyle])
-		else
-			frame.Icon:SetTexCoord(pattern["l"], pattern["r"], grid*(points + offset - 1), grid *(points + offset))
+			frame.Icon:SetTexture(artfile[artstyle])
+
+			frame:UpdateScale()
+			frame:Show()
 		end
-
-		frame.Icon:SetTexture(artfile[artstyle])
-
-		frame:UpdateScale()
-		frame:Show()
 		return
 	end
 

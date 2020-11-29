@@ -82,6 +82,7 @@ NeatPlatesHubDefaults = {
 	--OpacityFullMouseover = false,			-- Deprecated 6.13
 
 	OpacitySpotlightSpell = false,			-- Added 6.14
+	OpacitySpotlightSpellInt = false,
 	OpacitySpotlightMouseover = false,		-- Added 6.14
 	OpacitySpotlightRaidMarked = false,		-- Added 6.14
 

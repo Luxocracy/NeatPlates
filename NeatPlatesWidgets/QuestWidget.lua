@@ -16,8 +16,8 @@ local function UpdateQuestWidget(self, unit)
 					showIcon = true
 				end
 			end
-		end	
-		
+		end
+
 		if showIcon then
 			self.Icon:SetTexture(art)
 			self:Show()
@@ -26,6 +26,7 @@ local function UpdateQuestWidget(self, unit)
 		end
 	end
 end
+-- table.foreach(NeatPlatesUtility.GetUnitQuestInfo({["unitid"] = "target"}), function(name, objectives) print("Name:", name); table.foreach(objectives, print) end)
 
 local function UpdateQuestWidgetContext(self, unit, extended)
 	local config = NeatPlates:GetTheme().WidgetConfig
@@ -62,7 +63,7 @@ local function DebugQuests()
 				if questCompleted then prefix = "Completed - " end
 				print(prefix..questObjective)
 			end
-		end	
+		end
 	end
 end
 

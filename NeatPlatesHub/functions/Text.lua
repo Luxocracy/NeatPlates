@@ -555,6 +555,12 @@ AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextMod
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextArenaIDOnly, L["Arena ID"], "TextArenaIDOnly")
 AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, TextAll, L["Everything"], "RoleGuildLevelHealth")
 
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, HealthFunctionExact, L["Exact Health"], "HealthFunctionExact")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, HealthFunctionApprox, L["Approximate Health"], "HealthFunctionApprox")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, HealthFunctionDeficit, L["Health Deficit"], "HealthFunctionDeficit")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, HealthFunctionTotal, L["Health Total & Percent"], "HealthFunctionTotal")
+AddHubFunction(EnemyNameSubtextFunctions, NeatPlatesHubMenus.EnemyNameSubtextModes, HealthFunctionExactTotal, L["Exact Health & Percent"], "HealthFunctionExactTotal")
+
 --[[
 local FriendlyNameSubtextFunctions = {}
 NeatPlatesHubMenus.FriendlyNameSubtextModes = {}
