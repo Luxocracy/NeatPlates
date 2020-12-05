@@ -850,25 +850,26 @@ do
 			for i = 1, #widgetSet do
 				local widgetID = widgetSet[i].widgetID
 				local widgetType = widgetSet[i].widgetType
-				if widgetType == 2 then
-					widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
-				elseif widgetType == 1 then
-					if NeatPlatesOptions.BlizzardWidgets then
-						nameplate.showBlizzardPlate = true
-					else
-						widget = C_UIWidgetManager.GetCaptureBarWidgetVisualizationInfo(widgetID)
-					end
-				elseif widgetType == 8 then
-					-- Do nothing
-				else
-					if not _G['NeatPlatesWidgetError'] then
-						_G['NeatPlatesWidgetError'] = true
-						error("NeatPlates: Unsupported widget type ("..widgetType..") please report this and what you were doing to the addon author.")
-					end
-					return -- Unsupported widget type
-				end
 
-				if widget then break end
+				if NeatPlatesOptions.BlizzardWidgets then
+					nameplate.showBlizzardPlate = true
+				else
+					if widgetType == 2 then
+						widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
+					elseif widgetType == 1 then
+						widget = C_UIWidgetManager.GetCaptureBarWidgetVisualizationInfo(widgetID)
+					elseif widgetType == 8 then
+						-- Do nothing
+					else
+						if not _G['NeatPlatesWidgetError'] then
+							_G['NeatPlatesWidgetError'] = true
+							error("NeatPlates: Unsupported widget type ("..widgetType..") please report this and what you were doing to the addon author.")
+						end
+						return -- Unsupported widget type
+					end
+
+					if widget then break end
+				end
 			end
 
 			if not widget then return end
