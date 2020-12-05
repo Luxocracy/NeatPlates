@@ -32,6 +32,14 @@ local t = {
 		["all"] = { ["w"] = 80, ["h"] = 20 },
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
+		["OVERLAY"] = {
+			["art"] = {
+				artpath.."RogueKyrianOverlay.tga",
+				artpath.."RogueKyrianOverlayNeat.tga",
+				artpath.."RogueKyrianOverlayNeat.tga",
+			},
+			["offset"] = {-30, -15, 0, 15, 30, 45}
+		}
 	},
 
 	['MAGE'] = {
@@ -175,6 +183,24 @@ local function UpdateWidgetFrame(frame)
 			frame:UpdateScale()
 			frame:Show()
 		end
+
+		-- Combo point overlay
+		if t[PlayerClass]["OVERLAY"] then
+			if PlayerClass == "ROGUE" then
+				local chargedPowerPoints = GetUnitChargedPowerPoints("player");
+				-- there's only going to be 1 max
+				local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[1];
+				if chargedPowerPoints then
+					frame.Overlay.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"]["offset"][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
+					frame.Overlay:SetAlpha(1)
+				else
+					frame.Overlay:SetAlpha(0)
+				end
+			end
+			frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["art"][artstyle])
+		end
+
+		-- Return as to not hide the frame
 		return
 	end
 
@@ -198,6 +224,10 @@ local function UpdateWidgetScaling(frame)
 	if frame.Spark then
 		frame.Spark.Texture:SetWidth(16*ScaleOptions.x)
 		frame.Spark.Texture:SetHeight(16*ScaleOptions.y)
+	end
+	if frame.Overlay then
+		frame.Overlay.Texture:SetWidth(16*ScaleOptions.x)
+		frame.Overlay.Texture:SetHeight(16*ScaleOptions.y)
 	end
 end
 
@@ -311,6 +341,20 @@ local function CreateSparkAnimation(parent)
 	return spark
 end
 
+local function CreateOverlay(parent, texture)
+	local overlay = CreateFrame("Frame", nil, parent)
+	overlay.Texture = overlay:CreateTexture(nil, "OVERLAY")
+	overlay.Texture:SetPoint("CENTER", parent, "CENTER")
+	overlay.Texture:SetHeight(20)
+	overlay.Texture:SetWidth(20)
+	overlay.Texture:SetTexture(texture)
+	overlay.Texture:SetBlendMode("BLEND")
+
+	overlay:SetAlpha(0)
+
+	return overlay
+end
+
 -- Widget Creation
 local function CreateWidgetFrame(parent)
 	SetPlayerSpecData()
@@ -340,8 +384,13 @@ local function CreateWidgetFrame(parent)
 	if t[PlayerClass] and t[PlayerClass]["MinMax"] then
 		local min, max = unpack(t[PlayerClass]["MinMax"][artstyle])
 		frame.PartialFill:SetMinMaxValues(min, max)
-		frame.Spark = CreateSparkAnimation(frame)
+		if t[PlayerClass]["SPARK"] then
+			frame.Spark = CreateSparkAnimation(frame)
+		end
 	else
+		if t[PlayerClass]["OVERLAY"] then
+			frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["art"][artstyle])
+		end
 		frame.PartialFill:Hide()
 	end
 

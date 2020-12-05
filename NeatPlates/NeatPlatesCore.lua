@@ -45,7 +45,7 @@ local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
 local OverrideOutline = 1
-local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
+-- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -965,9 +965,9 @@ do
 			extended.requestedAlpha = unit.alpha or 1
 		end
 
-		if unit.alphaMult <= NameplateOccludedAlphaMult then
+		-- if unit.alphaMult <= NameplateOccludedAlphaMult then
 			extended.requestedAlpha = extended.requestedAlpha * unit.alphaMult
-		end
+		-- end
 
 		extended:SetAlpha(extended.requestedAlpha)
 		if extended.requestedAlpha > 0 then
@@ -1470,9 +1470,9 @@ do
 	end
 
 	function CoreEvents:CVAR_UPDATE(name, value)
-		if name == "nameplateOccludedAlphaMult" then
-			NameplateOccludedAlphaMult = value
-		end
+		-- if name == "nameplateOccludedAlphaMult" then
+		-- 	NameplateOccludedAlphaMult = tonumber(value) --Unusued?
+		-- end
 	end
 
 	function CoreEvents:UPDATE_UI_WIDGET(widget)
