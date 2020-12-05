@@ -455,7 +455,7 @@ local function SetCVarValue(self, cvar, isBool)
 		else
 			value = self.ceil(self:GetValue())
 		end
-		SetCVar(cvar, value)
+		C_CVar.SetCVar(cvar, value, cvar)
 	else
 		print(orange.."NeatPlates: "..red..L["CVars could not applied due to combat"])
 	end

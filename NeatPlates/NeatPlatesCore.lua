@@ -52,7 +52,7 @@ local OverrideFonts = false
 local OverrideOutline = 1
 local SpellCastCache = {}
 local CTICache = {}
-local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
+-- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -1033,10 +1033,10 @@ do
 			extended.requestedAlpha = unit.alpha or 1
 		end
 
-		-- Verify that alphaMult is set (because for some reason it might not be?)
-		if unit.alphaMult and unit.alphaMult <= NameplateOccludedAlphaMult then
+		-- if unit.alphaMult <= NameplateOccludedAlphaMult then
+			unit.alphaMult = unit.alphaMult or 0
 			extended.requestedAlpha = extended.requestedAlpha * unit.alphaMult
-		end
+		-- end
 
 		extended:SetAlpha(extended.requestedAlpha)
 		if extended.requestedAlpha > 0 then
@@ -1660,9 +1660,9 @@ do
 	end
 
 	function CoreEvents:CVAR_UPDATE(name, value)
-		if name == "nameplateOccludedAlphaMult" then
-			NameplateOccludedAlphaMult = value
-		end
+		-- if name == "nameplateOccludedAlphaMult" then
+		-- 	NameplateOccludedAlphaMult = tonumber(value) --Unusued?
+		-- end
 	end
 
 	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
