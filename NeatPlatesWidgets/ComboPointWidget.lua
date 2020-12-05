@@ -388,7 +388,7 @@ local function CreateWidgetFrame(parent)
 			frame.Spark = CreateSparkAnimation(frame)
 		end
 	else
-		if t[PlayerClass]["OVERLAY"] then
+		if t[PlayerClass] and t[PlayerClass]["OVERLAY"] then
 			frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["art"][artstyle])
 		end
 		frame.PartialFill:Hide()
