@@ -191,8 +191,6 @@ local function UpdateWidgetFrame(frame)
 				local chargedPowerPoints = GetUnitChargedPowerPoints("player");
 				-- there's only going to be 1 max
 				local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[1];
-				chargedPowerPoints = true
-				chargedPowerPointIndex = points
 				if chargedPowerPoints then
 					frame.Overlay.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
 					frame.Overlay:SetAlpha(1)
