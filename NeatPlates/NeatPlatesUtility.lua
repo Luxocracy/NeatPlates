@@ -1180,7 +1180,7 @@ local function CreateMultiStateOptions(self, name, labelArray, stateArray, width
 	return frame, frame
 end
 
-PanelHelpers = {}
+local PanelHelpers = {}
 
 PanelHelpers.CreatePanelFrame = CreatePanelFrame
 PanelHelpers.CreateDescriptionFrame = CreateDescriptionFrame

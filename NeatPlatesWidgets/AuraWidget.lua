@@ -40,6 +40,7 @@ local AuraAlignment = "BOTTOMLEFT"
 local EmphasizedScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 local PreciseAuraThreshold = 0
 local BuffSeparationMode = 1
+local HideInHeadlineMode = false
 
 local function DummyFunction() end
 

@@ -27,7 +27,7 @@ local CreateQuickCustomization = NeatPlatesHubRapidPanel.CreateQuickCustomizatio
 local OnMouseWheelScrollFrame = NeatPlatesHubRapidPanel.OnMouseWheelScrollFrame
 local CreateHubInterfacePanel = NeatPlatesHubRapidPanel.CreateInterfacePanel
 
-local PanelHelpers = PanelHelpers
+local PanelHelpers = NeatPlatesUtility.PanelHelpers
 
 -- Modes
 local ThemeList = NeatPlatesHubMenus.ThemeList
@@ -980,7 +980,7 @@ NeatPlatesHubMenus.ExportProfile = ExportProfile
 -- Slash Commands
 ---------------------------------------------
 
-function ShowNeatPlatesHubPanel()
+local function ShowNeatPlatesHubPanel()
 	local profile = NeatPlates.GetProfile()
 	if profile then
 		NeatPlatesUtility.OpenInterfacePanel(Panels[profile])

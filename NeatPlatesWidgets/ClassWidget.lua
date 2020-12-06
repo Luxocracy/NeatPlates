@@ -6,7 +6,7 @@ local classWidgetCustomPath = "Interface\\NeatPlatesTextures\\ClassWidget\\"
 local classIcon = {}
 --local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
-function VerifyTextures()
+local function VerifyTextures()
 		local classes = {"WARRIOR","PALADIN","HUNTER","ROGUE","PRIEST","DEATHKNIGHT","SHAMAN","MAGE","WARLOCK","MONK","DRUID","DEMONHUNTER"}
 		for i,class in pairs(classes) do
 			if not classIcon[class] then
@@ -49,7 +49,7 @@ local function UpdateWidgetConfig(frame)
 	local width = frame:GetParent()._width or 24;
 	local height = frame:GetParent()._height or 24;
 	frame:SetWidth(width); frame:SetHeight(height)
-	
+
 	frame.Icon:SetAllPoints(frame)
 	--frame.Icon:SetPoint("CENTER", frame, "CENTER", ScaleOptions.offset.x, ScaleOptions.offset.y)
 end
@@ -57,7 +57,7 @@ end
 local function CreateClassWidget(parent)
 
 	local frame = CreateFrame("Frame", nil, parent)
-	
+
 	frame.Icon = frame:CreateTexture(nil, "ARTWORK")
 	UpdateWidgetConfig(frame)
 

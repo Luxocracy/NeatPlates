@@ -761,6 +761,8 @@ L["When aura durations should start to display tenths of a second"] = true
 -- Warnings about unfinished stuff
 L["powerbar_unfinished_warning"] = "The powerbar still has some overlap issues with some themes,\nyou might need to adjust this yourself in the 'Theme Customization'"
 
+-- General warnings
+L["Some settings could not be applied properly due to certain combat restrictions."] = true
 
 -- Classic Specific
 L["Couldn't update the targets role."] = true

@@ -451,7 +451,7 @@ local function ValidateCombatRestrictedSettings()
 		for k, v in pairs(settings) do
 			if LastErrorMessage+5 < time and LocalVars[k] ~= v then
 				LastErrorMessage = time
-				print("|cffff6906NeatPlates:|cffffdd00 Some settings could not be applied properly due to certain combat restrictions.")
+				ChatFrame1:AddMessage("|cffff6906"..L['NeatPlates']..":|cffffdd00 "..L['Some settings could not be applied properly due to certain combat restrictions.'])
 			end
 		end
 	end
