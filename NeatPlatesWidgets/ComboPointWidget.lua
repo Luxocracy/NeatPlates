@@ -33,7 +33,12 @@ local t = {
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
 		["OVERLAY"] = {
-			["art"] = {
+			["off"] = {
+				artpath.."RogueKyrianOverlayOff.tga",
+				artpath.."RogueKyrianOverlayNeatOff.tga",
+				artpath.."RogueKyrianOverlayNeatOff.tga",
+			},
+			["on"] = {
 				artpath.."RogueKyrianOverlay.tga",
 				artpath.."RogueKyrianOverlayNeat.tga",
 				artpath.."RogueKyrianOverlayNeat.tga",
@@ -197,8 +202,15 @@ local function UpdateWidgetFrame(frame)
 				else
 					frame.Overlay:SetAlpha(0)
 				end
+
+				if chargedPowerPointIndex == points then
+					frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+				else
+					frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
+				end
+			else
+				frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
 			end
-			frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["art"][artstyle])
 		end
 
 		-- Return as to not hide the frame
@@ -390,7 +402,11 @@ local function CreateWidgetFrame(parent)
 		end
 	else
 		if t[PlayerClass] and t[PlayerClass]["OVERLAY"] then
-			frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["art"][artstyle])
+			if t[PlayerClass]["OVERLAY"]["off"] then
+				frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["off"][artstyle])
+			else
+				frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["on"][artstyle])
+			end
 		end
 		frame.PartialFill:Hide()
 	end
