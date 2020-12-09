@@ -467,7 +467,7 @@ local function SmartFilterMode(aura)
 
 		--print(aura.name, show, prefix, priority)
 		if show == true then
-			return true, 20 + (priority or 0)		-- , r, g, b
+			return true, (priority or 20)		-- , r, g, b
 		else
 			return false
 		end
