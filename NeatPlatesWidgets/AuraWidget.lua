@@ -484,7 +484,8 @@ local function ClearWidgetContext(frame)
 end
 
 local function ExpireFunction(icon)
-	UpdateWidget(icon.Parent)
+	-- UpdateWidget(icon.Parent)
+	UpdateIcon(icon) -- Won't re-arrange auras to fill empty slots, but at least it won't show and hopefully will prevent script timeouts from the expire function (This function is really just a backup that rarely gets run anyways)
 end
 
 -------------------------------------------------------------
