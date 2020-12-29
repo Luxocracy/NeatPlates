@@ -785,6 +785,30 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
 
+	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, {
+		{
+			name = "Ignite",
+			filter = "my",
+			type = "",
+		},
+		{
+			name = "Second Ignite",
+			filter = "my",
+			type = "",
+		},
+		{
+			name = "Third Ignite",
+			filter = "my",
+			type = "",
+		},
+		{
+			name = "Fourth Ignite",
+			filter = "my",
+			type = "",
+		},
+
+	}, 500, 150)
+	panel.GlobalAuraManagement:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
 	----------------------------------------------
 	-- Other Options
 	----------------------------------------------
@@ -792,7 +816,8 @@ local function BuildInterfacePanel(panel)
 	panel.OtherOptionsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.OtherOptionsLabel:SetFont(font, 22)
 	panel.OtherOptionsLabel:SetText(L["Other Options"])
-	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	-- panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraManagement, "BOTTOMLEFT", 0, -30)
 	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Cast Bars
