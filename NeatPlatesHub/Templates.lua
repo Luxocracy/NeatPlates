@@ -279,23 +279,6 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 		return frame, frame
 	end
 
-	local function OptionsList_ClearSelection(listFrame, buttons)
-		for _, button in pairs(buttons) do
-			button.highlight:SetVertexColor(.196, .388, .8);
-			button:UnlockHighlight();
-		end
-
-		listFrame.selection = nil;
-	end
-
-	local function OptionsList_SelectButton(listFrame, button)
-		button.highlight:SetVertexColor(1, 1, 0);
-		button:LockHighlight()
-
-		listFrame.selection = button;
-	end
-
-
 	local CustomizationPanel
 	local function CreateQuickCustomizationPanel(frame, parent, profile)
 		-- Things to add:
@@ -550,7 +533,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			-- Scripts
 			-- Clear selected option
 			CustomizationPanel.ClearSelections = function(self)
-				OptionsList_ClearSelection(self.List.listFrame, {self.List.listFrame:GetChildren()}) -- Clear Selected item
+				self.List.listFrame:OptionsList_ClearSelection({self.List.listFrame:GetChildren()}) -- Clear Selected item
 			end
 
 			-- Reset Prompt Buttons

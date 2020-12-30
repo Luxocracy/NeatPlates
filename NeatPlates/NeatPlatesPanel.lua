@@ -785,29 +785,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
 
-	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, {
-		{
-			name = "Ignite",
-			filter = "my",
-			type = "",
-		},
-		{
-			name = "Second Ignite",
-			filter = "my",
-			type = "",
-		},
-		{
-			name = "Third Ignite",
-			filter = "my",
-			type = "",
-		},
-		{
-			name = "Fourth Ignite",
-			filter = "my",
-			type = "",
-		},
-
-	}, 500, 150)
+	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, 500, 150)
 	panel.GlobalAuraManagement:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
 	----------------------------------------------
 	-- Other Options

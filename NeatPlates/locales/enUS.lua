@@ -683,6 +683,20 @@ L["BOTTOMLEFT"] = true
 L["BOTTOMRIGHT"] = true
 
 
+-- Aura management
+L["New Aura"] = true
+L["Mine only"] = true
+L["Anyones"] = true
+L["Exclude"] = true
+L["Emphasized"] = true
+L["Priority"] = true
+L["Aura Name/ID"] = true
+L["Aura Filter"] = true
+L["Aura Type"] = true
+L["Filter"] = true
+L["Type"] = true
+L["Empty aura"] = true
+
 
 ------------------------------
 -- Import Settings Prompt
