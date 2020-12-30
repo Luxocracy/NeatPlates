@@ -1203,6 +1203,8 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 	-- Create scroll frame
 	local frame = _G[name.."_Scrollframe"] or CreateFrame("ScrollFrame", name.."_Scrollframe", parent, 'UIPanelScrollFrameTemplate')
 	local child = _G[name.."_ScrollList"] or CreateFrame("Frame", name.."_ScrollList")
+	if not width then width = 160 end
+	if not height then height = 260 end
 	frame.listFrame = child
 	frame:SetWidth(width)
 	frame:SetHeight(height)
@@ -1240,30 +1242,32 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 			if lastItem then
 				label:SetPoint("TOPLEFT", lastItem, "BOTTOMLEFT", 0, -8)
 			else
-				label:SetPoint("TOPLEFT", -2, 0)
+				label:SetPoint("TOPLEFT", 0, 0)
 			end
 			lastItem = label
 		end
 
 		-- Hide unused list items
 		for i = #{ child:GetChildren() } or 1, #list.list+1, -1 do
-			if _G[name..i.."_Button"] then _G[name..i.."_Button"]:Hide() end
+			if _G[name..k..i.."_Button"] then _G[name..k..i.."_Button"]:Hide() end
 		end
 
 		-- Create Buttons
 		for i,item in pairs(list.list) do
 			if item.text and item.value then
 				-- create button
-				local button = _G[name..i.."_Button"] or CreateFrame("Button", name..i.."_Button", child, 'NeatPlatesOptionsListButtonTemplate')
+				local button = _G[name..k..i.."_Button"] or CreateFrame("Button", name..k..i.."_Button", child, 'NeatPlatesOptionsListButtonTemplate')
 				button.value = item.value
 				button.index = item.index or i
+				button.color = item.color or ""
+				button.text = item.text or ""
 				button.tooltipText = item.tooltip
 				button.category = list.value
 				button.options = item.options or {}
 				button.highlight = button:GetHighlightTexture()
 
-				button:SetText(item.color..item.text)
-				print(i, item.text)
+				button:SetText(button.color..button.text)
+				print(i, button.text)
 				button:SetScript("OnClick", function(self)
 					child:ClearSelection({child:GetChildren()})
 					child:SelectButton(self)
@@ -1279,30 +1283,32 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 				end
 
 				button.actions = {}
-				for _, action in pairs(item.buttons) do
-					local actionFrame = _G[name..item.value.."_Action_"..action] or CreateFrame("Button", name..button.index.."_Action_"..action, button, 'NeatPlatesOptionsListButtonTemplate')
-					actionFrame:SetWidth(15)
-					actionFrame:SetHeight(15)
-					table.insert(button.actions, actionFrame)
+				if item.buttons then
+					for _, action in pairs(item.buttons) do
+						local actionFrame = _G[name..item.value.."_Action_"..action] or CreateFrame("Button", name..button.index.."_Action_"..action, button, 'NeatPlatesOptionsListButtonTemplate')
+						actionFrame:SetWidth(15)
+						actionFrame:SetHeight(15)
+						table.insert(button.actions, actionFrame)
 
-					if action == "remove" then
-						actionFrame:SetNormalTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
-						actionFrame:SetPushedTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Down")
-						actionFrame:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
+						if action == "remove" then
+							actionFrame:SetNormalTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
+							actionFrame:SetPushedTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Down")
+							actionFrame:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
 
-						actionFrame:SetScript("OnClick", function()
-							buttonFunc(button, "remove")
-						end)
+							actionFrame:SetScript("OnClick", function()
+								buttonFunc(button, "remove")
+							end)
+						end
+
+						if #button.actions > 1 then
+							actionFrame:SetPoint("TOPLEFT", button.actions[#button.actions-1], "TOPRIGHT", 0, 0)
+						else
+							actionFrame:SetPoint("TOPLEFT", button, "TOPRIGHT", 0, 0)
+						end
+						actionFrame.text = actionFrame:GetFontString()
+						actionFrame.text:SetJustifyH("CENTER")
+						actionFrame.text:SetJustifyV("CENTER")
 					end
-
-					if #button.actions > 1 then
-						actionFrame:SetPoint("TOPLEFT", button.actions[#button.actions-1], "TOPRIGHT", 0, 0)
-					else
-						actionFrame:SetPoint("TOPLEFT", button, "TOPRIGHT", 0, 0)
-					end
-					actionFrame.text = actionFrame:GetFontString()
-					actionFrame.text:SetJustifyH("CENTER")
-					actionFrame.text:SetJustifyV("CENTER")
 				end
 
 

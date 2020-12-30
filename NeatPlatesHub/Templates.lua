@@ -533,7 +533,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 			-- Scripts
 			-- Clear selected option
 			CustomizationPanel.ClearSelections = function(self)
-				self.List.listFrame:OptionsList_ClearSelection({self.List.listFrame:GetChildren()}) -- Clear Selected item
+				self.List.listFrame:ClearSelection({self.List.listFrame:GetChildren()}) -- Clear Selected item
 			end
 
 			-- Reset Prompt Buttons
