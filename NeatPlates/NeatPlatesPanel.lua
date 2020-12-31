@@ -70,6 +70,7 @@ NeatPlatesSettings = {
 	GlobalAuraList = "",
 	GlobalAuraLookup = {},
 	GlobalAuraPriority = {},
+	GlobalAuras = {},
 
 	GlobalEmphasizedAuraList = "",
 	GlobalEmphasizedAuraLookup = {},
@@ -785,7 +786,7 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
 
-	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, 500, 150)
+	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, NeatPlatesSettings.GlobalAuras, 500, 150)
 	panel.GlobalAuraManagement:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
 	----------------------------------------------
 	-- Other Options

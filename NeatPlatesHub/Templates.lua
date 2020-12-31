@@ -615,7 +615,8 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 				if self.fetching then return end
 				local activeOption = CustomizationPanel.activeOption
 				local category = CustomizationPanel.activeCategory
-		  	if activeOption then
+
+		  		if activeOption then
 					for k,v in pairs(CustomizationPanel) do
 						if type(v) == "table" and v.enabled and v.objectName then
 							local valueFunc = v.GetChecked or v.GetValue

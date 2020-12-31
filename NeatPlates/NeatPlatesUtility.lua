@@ -1230,7 +1230,9 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 
 	-- Populate with list
 	local lastItem
+	table.foreach(lists, print)
 	for k,list in pairs(lists) do
+		print(k, list)
 		-- Create Label
 		if list.label then
 			local label = _G[name..k.."_label"] or child:CreateFontString(name..k.."_label", "OVERLAY")
@@ -1328,10 +1330,14 @@ end
 
 function ConvertAuraTableToScrollListTable(auraTable)
 	local auras = {}
+	if not auraTable then return auras end
+
 	for i,aura in ipairs(auraTable) do
 		print(i, aura)
 		local color = ""
-		if aura.filter == "my" then
+		if not aura.name then
+			color = ""
+		elseif aura.filter == "my" then
 			color = NeatPlatesUtility.Colors["blue"]
 		elseif aura.filter == "not" then
 			color = NeatPlatesUtility.Colors["red"]
@@ -1369,30 +1375,7 @@ function ConvertAuraTableToScrollListTable(auraTable)
 	return auras
 end
 
-globalAuras = {
-	{
-		name = "Ignite",
-		filter = "not",
-		type = "normal",
-	},
-	{
-		name = "Second Ignite",
-		filter = "my",
-		type = "normal",
-	},
-	{
-		name = "Third Ignite",
-		filter = "all",
-		type = "normal",
-	},
-	{
-		name = "Fourth Ignite",
-		filter = "my",
-		type = "normal",
-	},
-}
-
-local function CreateAuraManagement(self, objectName, parent, width, height)
+local function CreateAuraManagement(self, objectName, parent, defaults, width, height)
 	if not width then width = 260 end
 	if not height then height = 160 end
 
@@ -1413,8 +1396,36 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 
 	frame.ListItems = {
-		{ list = ConvertAuraTableToScrollListTable(globalAuras) }
+		{ list = ConvertAuraTableToScrollListTable(defaults) }
 	}
+
+	-- Update Panel Values
+	local function updatePanelValues(self)
+		if not self then
+			frame.Options:Hide()
+			return
+		else
+			frame.Options:Show()
+		end
+
+		local current = defaults[self.index] or {}
+		print("update panel values")
+
+		-- Set Customization Values & Show/Hide Elements
+		for k,f in pairs(frame) do
+			if type(f) == "table" then
+				if f.objectName then
+					f.fetching = true -- Prevents 'OnValueChanged' from triggering while setting values.
+					if f.SetValue then
+						f:SetValue(current[f.objectName])
+					elseif f.SetText then
+						f:SetText(current[f.objectName] or "")
+					end
+					f.fetching = false
+				end
+			end
+		end
+	end
 
 	local function eventHandler(self, eventType)
 		print(eventType)
@@ -1428,25 +1439,28 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 				newIndex = newIndex + 1
 			end
 
-			if newIndex < 1 or newIndex > #globalAuras then return end
+			if newIndex < 1 or newIndex > #defaults then return end
 
-			local newList = {}
-			for i, listItem in pairs(globalAuras) do
+			local itemToMove = copytable(defaults[self.index])
+			local index = 1
+			for i, listItem in pairs(defaults) do
 				if i ~= self.index then
 					if self.index < i then
-						newList[#newList+1] = listItem
+						defaults[index] = listItem
+						index = index + 1
 					end
 					if i == newIndex then
-						newList[#newList+1] = globalAuras[self.index]
+						defaults[index] = itemToMove
+						index = index + 1
 					end
 					if self.index > i then
-						newList[#newList+1] = listItem
+						defaults[index] = listItem
+						index = index + 1
 					end
 				end
 			end
 
-			globalAuras = newList
-			frame.ListItems[1].list = ConvertAuraTableToScrollListTable(globalAuras)
+			frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
 
 			-- Update ScrollList
 			frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
@@ -1456,111 +1470,33 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 			frame.List.listFrame:ClearSelection(buttons)
 			frame.List.listFrame:SelectButton(buttons[newIndex])
 		elseif eventType == "remove" then
-			-- Clear selection if we are deleting the active list item
-			if frame.List.listFrame and frame.List.listFrame.selection == self then
-				frame.List.listFrame:ClearSelection({frame.List.listFrame:GetChildren()})
+			-- Remove element and update both the list order and values
+			local index = 1
+			for i, listItem in pairs(defaults) do
+				if i ~= self.index then
+					defaults[index] = listItem
+					index = index + 1
+				end
+				if i == #defaults then defaults[i] = nil end
 			end
 
-			-- Remove element and update both the list order and values
-			local newList = {}
-			for i, listItem in pairs(globalAuras) do
-				print(listItem)
-				if i ~= self.index then
-					newList[#newList+1] = listItem
-				end
-			end
-			globalAuras = newList
-			frame.ListItems[1].list = ConvertAuraTableToScrollListTable(globalAuras)
+			frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
 
 			-- Update ScrollList
 			frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
-		end
-	end
 
-	-- Update Panel Values
-	local function updatePanelValues(self)
-		if not self and not frame.activeFrame then return end
-		if not self then self = frame.activeFrame end
-		  local theme = NeatPlates:GetTheme()
-		  local category = "WidgetConfig"
-		if self.category == "main" then
-			category = frame.StyleDropdown:GetValue()
-		  end
-		local current = NeatPlatesHubFunctions.GetCustomizationOption(frame.profile, category, self.value) or {}
-		local default = theme[category.."Backup"][self.value] or {}
-
-		local getObjectName = function(item)
-			local objectName = item.objectName
-			if type(objectName) == "table" then
-				for i=1, #objectName, 1 do
-					if default[objectName[i]] then
-						objectName = objectName[i]
-						break
-					end
+			-- Update selected button (Clear selection if we are deleting the active list item)
+			local selectedIndex = frame.List.listFrame.selection and frame.List.listFrame.selection.index
+			if selectedIndex and self.index <= selectedIndex then
+				local buttons = {frame.List.listFrame:GetChildren()}
+				frame.List.listFrame:ClearSelection(buttons)
+				if self.index == selectedIndex then
+					updatePanelValues()
+				else
+					frame.List.listFrame:SelectButton(buttons[selectedIndex-1])
 				end
 			end
-			return objectName
 		end
-
-		local getOptionValue = function(item, defaultValue)
-			local objectName = getObjectName(item)
-			local value = current[objectName]
-			if type(value) == "table" and value.value ~= nil then value = value.value end
-
-			if value == nil and defaultValue ~= nil then
-				value = defaultValue
-			elseif value == nil then
-				value = default[objectName]
-			end
-
-			return value
-		end
-
-		-- If not empty
-		if next(self) then
-			frame.activeFrame = self
-			frame.activeOption = self.value
-			frame.activeCategory = category
-
-			-- Button OnClick
-			frame.Title:SetText(L["Theme Customization"].." ("..self:GetText()..")") -- Set Title Text
-		else
-			frame.Title:SetText(L["Theme Customization"]) -- Set Title Text
-		end
-		-- Set Customization Values & Show/Hide Elements
-		for k,option in pairs(options) do
-			local item = frame[k]
-			item.fetching = true -- Prevents 'OnValueChanged' from triggering while setting values.
-			if self and option(self, default) then
-				local itemType = type(default[getObjectName(item)])
-				item:Show()
-				item.enabled = true
-
-				if itemType == "boolean" then
-					item:SetChecked(getOptionValue(item))
-					elseif itemType == "number" then
-					-- For Offsets default value to zero instead of actaul value
-					if item.objectType == "offset" then
-							item:updateValues(getOptionValue(item, 0))
-					else
-							item:updateValues(getOptionValue(item))
-					end
-					elseif item.objectName then
-						item:SetValue(getOptionValue(item))
-					elseif self.value == "import" then
-						if item.SetValue then item:SetValue("") end
-					elseif self.value == "export" then
-						item:SetValue(AceSerializer:Serialize(NeatPlatesHubFunctions.GetCustomizationOption(frame.profile)))
-					end
-			else
-				item:Hide()
-				item.enabled = false
-			end
-			item.fetching = false
-		end
-
-		-- Custom Callback
-		if listCallback[self.value] and type(listCallback[self.value]) == "function" then listCallback[self.value]() end
 	end
 
 	-- Create List Items
@@ -1585,9 +1521,12 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	NewAuraButton:SetWidth(width/3)
 	NewAuraButton:SetText(L["New Aura"])
 	NewAuraButton:SetScript("OnClick", function()
-		table.insert(globalAuras, {})
+		table.insert(defaults, {
+			filter = "my",
+			type = "normal",
+		})
 
-		frame.ListItems[1].list = ConvertAuraTableToScrollListTable(globalAuras)
+		frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
 		-- table.foreach(frame.ListItems[1].list, function(i, t) print(t.name) end)
 		-- Update ScrollList
 		frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
@@ -1604,26 +1543,31 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 		{ text = L["Emphasized"], value = "emphasized" },
 	}
 
+	-- Options wrapper for easier hiding
+	frame.Options = CreateFrame("Frame", "NeatPlates"..objectName.."Wrapper", frame)
+	frame.Options:Hide()
+
 	-- Aura name
-	frame.AuraNameLabel = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	frame.AuraNameLabel = frame.Options:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	frame.AuraNameLabel:SetText(L["Aura Name/ID"])
 	frame.AuraNameLabel:SetPoint("TOPLEFT", frame.List, "TOPRIGHT", 40, -10)
 
-	frame.AuraName = CreateFrame("EditBox", "NeatPlates"..objectName.."AuraName", frame, "InputBoxTemplate")
+	frame.AuraName = CreateFrame("EditBox", "NeatPlates"..objectName.."AuraName", frame.Options, "InputBoxTemplate")
 	frame.AuraName:SetWidth(124)
 	frame.AuraName:SetHeight(25)
 	frame.AuraName:SetPoint("TOPLEFT", frame.AuraNameLabel, "BOTTOMLEFT", 4, -2)
 	frame.AuraName:SetAutoFocus(false)
 	frame.AuraName:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
 	frame.AuraName:SetFrameStrata("DIALOG")
-	frame.AuraName.OnValueChanged = function() updatePanelValues() end
+	frame.AuraName.objectName = "name"
+	frame.AuraName:SetScript("OnTextChanged", function() frame.OnValueChanged(frame.AuraName) end)
 
 	-- Priority buttons
-	frame.PriorityLabel = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	frame.PriorityLabel = frame.Options:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	frame.PriorityLabel:SetText(L["Priority"])
 	frame.PriorityLabel:SetPoint("TOPLEFT", frame.AuraNameLabel, "TOPRIGHT", 50, 0)
 
-	frame.MoveUp = CreateFrame("Button", "NeatPlates"..objectName.."MoveUp", frame, "NeatPlatesPanelButtonTemplate")
+	frame.MoveUp = CreateFrame("Button", "NeatPlates"..objectName.."MoveUp", frame.Options, "NeatPlatesPanelButtonTemplate")
 	frame.MoveUp:SetPoint("TOPLEFT", frame.PriorityLabel, "BOTTOMLEFT", 0, -6)
 	frame.MoveUp:SetWidth(20)
 	frame.MoveUp:SetHeight(20)
@@ -1632,7 +1576,7 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	frame.MoveUp:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
 	frame.MoveUp:SetScript("OnClick", function(self) eventHandler(self:GetParent().List.listFrame.selection, "moveup") end)
 
-	frame.MoveDown = CreateFrame("Button", "NeatPlates"..objectName.."MoveDown", frame, "NeatPlatesPanelButtonTemplate")
+	frame.MoveDown = CreateFrame("Button", "NeatPlates"..objectName.."MoveDown", frame.Options, "NeatPlatesPanelButtonTemplate")
 	frame.MoveDown:SetPoint("TOPLEFT", frame.MoveUp, "TOPRIGHT", 2, 0)
 	frame.MoveDown:SetWidth(20)
 	frame.MoveDown:SetHeight(20)
@@ -1642,15 +1586,40 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	frame.MoveDown:SetScript("OnClick", function(self) eventHandler(self:GetParent().List.listFrame.selection, "movedown") end)
 
 	-- Aura filter
-	frame.AuraFilter = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraFilter", frame, auraFilters, "my", L["Aura Filter"], true)
+	frame.AuraFilter = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraFilter", frame.Options, auraFilters, "my", L["Aura Filter"], true)
 	frame.AuraFilter:SetPoint("TOPLEFT", frame.AuraName, "BOTTOMLEFT", -20, -30)
-	frame.AuraFilter.OnValueChanged = function() updatePanelValues() end
+	-- frame.AuraFilter.OnValueChanged = function() updatePanelValues(frame.AuraFilter) end
+	frame.AuraFilter.objectName = "filter"
 
 	-- Aura type
-	frame.AuraType = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraType", frame, auraTypes, "normal", L["Aura Type"], true)
+	frame.AuraType = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraType", frame.Options, auraTypes, "normal", L["Aura Type"], true)
 	frame.AuraType:SetPoint("TOPLEFT", frame.AuraFilter, "TOPRIGHT", 20, 0)
-	frame.AuraType.OnValueChanged = function() updatePanelValues() end
+	-- frame.AuraType.OnValueChanged = function() updatePanelValues(frame.AuraType) end
+	frame.AuraType.objectName = "type"
 
+	frame.OnValueChanged = function(self)
+		print("on value changed on main frame", self.fetching)
+		if self.fetching then return end
+		if not frame.List.listFrame.selection then return end
+		local auraObject = defaults[frame.List.listFrame.selection.index]
+
+		local value = nil
+		if self.GetValue then
+			value = self:GetValue()
+		elseif self.GetText then
+			value = self:GetText()
+			if value == "" then value = nil end
+		end
+		auraObject[self.objectName] = value
+		print(self.objectName, auraObject[self.objectName])
+
+		frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
+		-- Update ScrollList
+		frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
+
+		-- -- Style Update
+		-- NeatPlatesHubHelpers.CallForStyleUpdate()
+	end
 
 	return frame
 end
