@@ -1345,6 +1345,8 @@ function ConvertAuraTableToScrollListTable(auraTable)
 			color = NeatPlatesUtility.Colors["orange"]
 		end
 
+
+
 		local filterMap = {
 			["my"] = L["Mine only"],
 			["all"] = L ["Anyones"],
@@ -1362,6 +1364,9 @@ function ConvertAuraTableToScrollListTable(auraTable)
 		end
 
 		local auraName = aura.name or L["Empty aura"]
+		if aura.name and aura.type == "emphasized" then
+			auraName = "++"..auraName
+		end
 		auras[i] = {
 			text = auraName,
 			value = auraName,
@@ -1375,7 +1380,8 @@ function ConvertAuraTableToScrollListTable(auraTable)
 	return auras
 end
 
-local function CreateAuraManagement(self, objectName, parent, defaults, width, height)
+local function CreateAuraManagement(self, objectName, parent, width, height)
+	local defaults = {}
 	if not width then width = 260 end
 	if not height then height = 160 end
 
@@ -1396,7 +1402,7 @@ local function CreateAuraManagement(self, objectName, parent, defaults, width, h
 	frame.BorderFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
 
 	frame.ListItems = {
-		{ list = ConvertAuraTableToScrollListTable(defaults) }
+		{ list = {} }
 	}
 
 	-- Update Panel Values
@@ -1574,7 +1580,7 @@ local function CreateAuraManagement(self, objectName, parent, defaults, width, h
 	frame.MoveUp:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollUp-Up")
 	frame.MoveUp:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollUp-Down")
 	frame.MoveUp:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
-	frame.MoveUp:SetScript("OnClick", function(self) eventHandler(self:GetParent().List.listFrame.selection, "moveup") end)
+	frame.MoveUp:SetScript("OnClick", function() eventHandler(frame.List.listFrame.selection, "moveup") end)
 
 	frame.MoveDown = CreateFrame("Button", "NeatPlates"..objectName.."MoveDown", frame.Options, "NeatPlatesPanelButtonTemplate")
 	frame.MoveDown:SetPoint("TOPLEFT", frame.MoveUp, "TOPRIGHT", 2, 0)
@@ -1583,18 +1589,18 @@ local function CreateAuraManagement(self, objectName, parent, defaults, width, h
 	frame.MoveDown:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollDown-Up")
 	frame.MoveDown:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollDown-Down")
 	frame.MoveDown:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
-	frame.MoveDown:SetScript("OnClick", function(self) eventHandler(self:GetParent().List.listFrame.selection, "movedown") end)
+	frame.MoveDown:SetScript("OnClick", function() eventHandler(frame.List.listFrame.selection, "movedown") end)
 
 	-- Aura filter
 	frame.AuraFilter = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraFilter", frame.Options, auraFilters, "my", L["Aura Filter"], true)
 	frame.AuraFilter:SetPoint("TOPLEFT", frame.AuraName, "BOTTOMLEFT", -20, -30)
-	-- frame.AuraFilter.OnValueChanged = function() updatePanelValues(frame.AuraFilter) end
+	frame.AuraFilter.OnValueChanged = function() frame.OnValueChanged(frame.AuraFilter) end
 	frame.AuraFilter.objectName = "filter"
 
 	-- Aura type
 	frame.AuraType = CreateDropdownFrame(frame, "NeatPlates"..objectName.."AuraType", frame.Options, auraTypes, "normal", L["Aura Type"], true)
 	frame.AuraType:SetPoint("TOPLEFT", frame.AuraFilter, "TOPRIGHT", 20, 0)
-	-- frame.AuraType.OnValueChanged = function() updatePanelValues(frame.AuraType) end
+	frame.AuraType.OnValueChanged = function() frame.OnValueChanged(frame.AuraType) end
 	frame.AuraType.objectName = "type"
 
 	frame.OnValueChanged = function(self)
@@ -1610,6 +1616,7 @@ local function CreateAuraManagement(self, objectName, parent, defaults, width, h
 			value = self:GetText()
 			if value == "" then value = nil end
 		end
+		print(value)
 		auraObject[self.objectName] = value
 		print(self.objectName, auraObject[self.objectName])
 
@@ -1619,6 +1626,16 @@ local function CreateAuraManagement(self, objectName, parent, defaults, width, h
 
 		-- -- Style Update
 		-- NeatPlatesHubHelpers.CallForStyleUpdate()
+	end
+
+	frame.SetValue = function(self, auraList)
+		defaults = auraList
+		frame.ListItems = {
+			{ list = ConvertAuraTableToScrollListTable(auraList) }
+		}
+
+		-- Update ScrollList
+		frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
 	end
 
 	return frame
@@ -1643,6 +1660,38 @@ PanelHelpers.CreateScrollList = CreateScrollList
 PanelHelpers.CreateAuraManagement = CreateAuraManagement
 
 NeatPlatesUtility.PanelHelpers = PanelHelpers
+
+
+
+local function ConvertAuraListToAuraManagement(target, normalSource, emphasizedSource)
+	local prefixIdMap = {
+		[1] = "all",
+		[2] = "my",
+		[5] = "not",
+	}
+	for i,v in pairs(target) do
+		target[i] = nil
+	end
+
+	-- Normal auras
+	for name,prefixId in pairs(normalSource) do
+		table.insert(target, {
+			["type"] = "normal",
+			["name"] = name,
+			["filter"] = prefixIdMap[prefixId],
+		})
+	end
+
+	-- Emphasized auras
+	for name,prefixId in pairs(emphasizedSource) do
+		table.insert(target, {
+			["type"] = "emphasized",
+			["name"] = name,
+			["filter"] = prefixIdMap[prefixId],
+		})
+	end
+end
+NeatPlatesUtility.ConvertAuraListToAuraManagement = ConvertAuraListToAuraManagement
 
 
 

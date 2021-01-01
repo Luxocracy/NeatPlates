@@ -268,7 +268,10 @@ local function BuildHubPanel(panel)
 	panel.EmphasizedAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
 	PanelHelpers.CreateEditBoxButton(panel.EmphasizedAuraList, panel.onEditboxOkay)
 
-	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.EmphasizedAuraList, 16, 4)
+	panel.WidgetAdditionalAuras = PanelHelpers:CreateAuraManagement(objectName.."WidgetAdditionalAuras", AlignmentColumn, 500, 150)
+	panel.WidgetAdditionalAuras:SetPoint("TOPLEFT", panel.WidgetDebuffTrackList, "BOTTOMLEFT", 0, -20)
+
+	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.WidgetAdditionalAuras, 16, 24)
 	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
 	panel.HideCooldownSpiral = CreateQuickCheckbutton(objectName.."HideCooldownSpiral", L["Hide Cooldown Spiral"], AlignmentColumn, panel.EmphasizedUnique, 16, 0)
 	panel.HideCooldownSpiral.tooltipText = L["Hides the Cooldown Spiral on Auras"]
@@ -690,7 +693,9 @@ local function BuildHubPanel(panel)
 			elseif LocalVars.WidgetComboPoints == false then
 				LocalVars.WidgetComboPoints = 4
 			end
-			CallForStyleUpdate()
+
+
+			-- CallForStyleUpdate()
 			-- Convert Debuff Filter Strings
 			ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
 			-- Convert Emphasized Filter Strings
@@ -699,6 +704,14 @@ local function BuildHubPanel(panel)
 			ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 			ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
 			ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
+
+			-- Convert old aura lists to new format
+			if LocalVars and not LocalVars.HasConvertAuraList then
+				LocalVars.HasConvertAuraList = true
+				NeatPlatesUtility.ConvertAuraListToAuraManagement(LocalVars.WidgetAdditionalAuras, LocalVars.WidgetDebuffLookup, LocalVars.EmphasizedAuraLookup)
+			end
+
+			CallForStyleUpdate()
 		else
 			CallForStyleUpdate()
 		end
@@ -739,11 +752,7 @@ end
 --}
 
 local function LoadProfiles(profiles)
-	--if next(profiles) == nil then profiles = {["Default"] = "FFFFFFFF"} end -- Make sure at least something is loaded
-	--CreateProfile("Default", profiles["Default"]) -- Load Default first to keep it at the top of the list
-
 	for k, v in pairs(profiles) do
-		--if k ~= "Default" then CreateProfile(k, v) end
 		CreateProfile(k, v)
 	end
 end

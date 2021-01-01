@@ -70,7 +70,7 @@ NeatPlatesSettings = {
 	GlobalAuraList = "",
 	GlobalAuraLookup = {},
 	GlobalAuraPriority = {},
-	GlobalAuras = {},
+	GlobalAdditonalAuras = {},
 
 	GlobalEmphasizedAuraList = "",
 	GlobalEmphasizedAuraLookup = {},
@@ -385,6 +385,8 @@ local function SetPanelValues(panel)
 
 	panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
 	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
+
+	panel.GlobalAdditonalAuras:SetValue(NeatPlatesSettings.GlobalAdditonalAuras)
 
 	-- CVars
 	GetCVarValues(panel)
@@ -786,8 +788,8 @@ local function BuildInterfacePanel(panel)
 
 	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
 
-	panel.GlobalAuraManagement = PanelHelpers:CreateAuraManagement("GlobalAuraManagement", panel, NeatPlatesSettings.GlobalAuras, 500, 150)
-	panel.GlobalAuraManagement:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	panel.GlobalAdditonalAuras = PanelHelpers:CreateAuraManagement("GlobalAdditonalAuras", panel, 500, 150)
+	panel.GlobalAdditonalAuras:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
 	----------------------------------------------
 	-- Other Options
 	----------------------------------------------
@@ -796,7 +798,7 @@ local function BuildInterfacePanel(panel)
 	panel.OtherOptionsLabel:SetFont(font, 22)
 	panel.OtherOptionsLabel:SetText(L["Other Options"])
 	-- panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
-	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraManagement, "BOTTOMLEFT", 0, -30)
+	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAdditonalAuras, "BOTTOMLEFT", 0, -30)
 	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Cast Bars

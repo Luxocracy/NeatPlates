@@ -1319,7 +1319,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	panel.okay = ClosePanel --function() OnPanelItemChange(panel) end
 	panel.cancel = NeatPlates.Update
 	panel.refresh = RefreshPanel
-        panel:SetScript("OnShow", RefreshPanel)
+    panel:SetScript("OnShow", RefreshPanel)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
 
 	InterfaceOptions_AddCategory(panel)

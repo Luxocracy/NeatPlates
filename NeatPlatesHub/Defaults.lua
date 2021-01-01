@@ -297,6 +297,7 @@ NeatPlatesHubDefaults = {
 	WidgetEmphasizedAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
 	EmphasizedSlots = 1,
 	PreciseAuraThreshold = 10,
+	WidgetAdditionalAuras = {},
 	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
 	WidgetDebuffLookup = {},
 	WidgetDebuffPriority = {},
@@ -331,4 +332,6 @@ NeatPlatesHubDefaults = {
 		NameOnly = {},
 		WidgetConfig = {}
 	},
+
+	HasConvertAuraList = false,
 }
