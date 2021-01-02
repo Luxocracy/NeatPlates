@@ -1230,9 +1230,7 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 
 	-- Populate with list
 	local lastItem
-	table.foreach(lists, print)
 	for k,list in pairs(lists) do
-		print(k, list)
 		-- Create Label
 		if list.label then
 			local label = _G[name..k.."_label"] or child:CreateFontString(name..k.."_label", "OVERLAY")
@@ -1269,7 +1267,6 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 				button.highlight = button:GetHighlightTexture()
 
 				button:SetText(button.color..button.text)
-				print(i, button.text)
 				button:SetScript("OnClick", function(self)
 					child:ClearSelection({child:GetChildren()})
 					child:SelectButton(self)
@@ -1333,7 +1330,6 @@ function ConvertAuraTableToScrollListTable(auraTable)
 	if not auraTable then return auras end
 
 	for i,aura in ipairs(auraTable) do
-		print(i, aura)
 		local color = ""
 		if not aura.name then
 			color = ""
@@ -1415,7 +1411,6 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 		end
 
 		local current = defaults[self.index] or {}
-		print("update panel values")
 
 		-- Set Customization Values & Show/Hide Elements
 		for k,f in pairs(frame) do
@@ -1434,7 +1429,6 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	end
 
 	local function eventHandler(self, eventType)
-		print(eventType)
 		if eventType == "selected" then
 			updatePanelValues(self)
 		elseif eventType == "moveup" or eventType == "movedown" then
@@ -1533,7 +1527,6 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 		})
 
 		frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
-		-- table.foreach(frame.ListItems[1].list, function(i, t) print(t.name) end)
 		-- Update ScrollList
 		frame.List = CreateScrollList(frame, "NeatPlates"..objectName.."List", frame.ListItems, eventHandler, width/3, height-20)
 	end)
@@ -1604,7 +1597,6 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	frame.AuraType.objectName = "type"
 
 	frame.OnValueChanged = function(self)
-		print("on value changed on main frame", self.fetching)
 		if self.fetching then return end
 		if not frame.List.listFrame.selection then return end
 		local auraObject = defaults[frame.List.listFrame.selection.index]
@@ -1616,9 +1608,8 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 			value = self:GetText()
 			if value == "" then value = nil end
 		end
-		print(value)
+
 		auraObject[self.objectName] = value
-		print(self.objectName, auraObject[self.objectName])
 
 		frame.ListItems[1].list = ConvertAuraTableToScrollListTable(defaults)
 		-- Update ScrollList
@@ -1663,10 +1654,12 @@ NeatPlatesUtility.PanelHelpers = PanelHelpers
 
 
 
-local function ConvertAuraListToAuraManagement(target, normalSource, emphasizedSource)
+local function ConvertOldAuraListToAuraTable(target, normalSource, emphasizedSource)
 	local prefixIdMap = {
 		[1] = "all",
 		[2] = "my",
+		-- [3] = "other",
+		-- [4] = "cc",
 		[5] = "not",
 	}
 	for i,v in pairs(target) do
@@ -1686,12 +1679,12 @@ local function ConvertAuraListToAuraManagement(target, normalSource, emphasizedS
 	for name,prefixId in pairs(emphasizedSource) do
 		table.insert(target, {
 			["type"] = "emphasized",
-			["name"] = name,
+				["name"] = name,
 			["filter"] = prefixIdMap[prefixId],
 		})
 	end
 end
-NeatPlatesUtility.ConvertAuraListToAuraManagement = ConvertAuraListToAuraManagement
+NeatPlatesUtility.ConvertOldAuraListToAuraTable = ConvertOldAuraListToAuraTable
 
 
 

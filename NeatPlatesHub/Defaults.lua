@@ -298,9 +298,9 @@ NeatPlatesHubDefaults = {
 	EmphasizedSlots = 1,
 	PreciseAuraThreshold = 10,
 	WidgetAdditionalAuras = {},
-	WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
-	WidgetDebuffLookup = {},
-	WidgetDebuffPriority = {},
+	-- WidgetDebuffTrackList = "My Rake\nMy Rip\nMy Moonfire\nAll 339\nMy Regrowth\nMy Rejuvenation\nNot Facepalm Bolt",
+	-- WidgetDebuffLookup = {},
+	-- WidgetDebuffPriority = {},
 	WidgetAuraTrackDispelFriendly = false,
 	WidgetAuraTrackCurse = true,
 	WidgetAuraTrackDisease = true,
@@ -309,9 +309,9 @@ NeatPlatesHubDefaults = {
 	WidgetAuraSort = 1,
 	WidgetAuraAlignment = 1,
 	BuffSeparationMode = 1,
-	EmphasizedAuraList = "",
-	EmphasizedAuraLookup = {},
-	EmphasizedAuraPriority = {},
+	-- EmphasizedAuraList = "",
+	-- EmphasizedAuraLookup = {},
+	-- EmphasizedAuraPriority = {},
 	EmphasizedUnique = true,
 	HideCooldownSpiral = false,
 	HideAuraDuration = false,
@@ -332,6 +332,4 @@ NeatPlatesHubDefaults = {
 		NameOnly = {},
 		WidgetConfig = {}
 	},
-
-	HasConvertAuraList = false,
 }

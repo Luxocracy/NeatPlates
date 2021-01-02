@@ -259,17 +259,17 @@ local function BuildHubPanel(panel)
 	panel.BuffSeparationMode =  CreateQuickDropdown(objectName.."BuffSeparationModes", L["Buff Separation Mode"]..':', BuffSeparationModes, 1, AlignmentColumn, panel.WidgetDebuffStyle, OffsetColumnB)
 
 	panel.WidgetDebuffListLabel = CreateQuickItemLabel(nil, L["Additional Auras"]..':', AlignmentColumn, panel.WidgetAuraAlignment, 16)
-	panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
-	panel.WidgetDebuffAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetDebuffTrackList, "TOPRIGHT", 6, 0)
-	PanelHelpers.CreateEditBoxButton(panel.WidgetDebuffTrackList, panel.onEditboxOkay)
+	-- panel.WidgetDebuffTrackList = CreateQuickEditbox(objectName.."WidgetDebuffTrackList", nil, nil, AlignmentColumn, panel.WidgetDebuffListLabel, 16)
+	-- PanelHelpers.CreateEditBoxButton(panel.WidgetDebuffTrackList, panel.onEditboxOkay)
 
-	panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras"]..':', AlignmentColumn, panel.WidgetAuraAlignment, OffsetColumnB + 64)
-	panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64)
-	panel.EmphasizedAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
-	PanelHelpers.CreateEditBoxButton(panel.EmphasizedAuraList, panel.onEditboxOkay)
+	-- panel.EmphasizedAuraListLabel = CreateQuickItemLabel(nil, L["Emphasized Auras"]..':', AlignmentColumn, panel.WidgetAuraAlignment, OffsetColumnB + 64)
+	-- panel.EmphasizedAuraList = CreateQuickEditbox(objectName.."EmphasizedAuraList", nil, nil, AlignmentColumn, panel.EmphasizedAuraListLabel, OffsetColumnB + 64)
+	-- panel.EmphasizedAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.EmphasizedAuraList, "TOPRIGHT", 6, 0)
+	-- PanelHelpers.CreateEditBoxButton(panel.EmphasizedAuraList, panel.onEditboxOkay)
 
 	panel.WidgetAdditionalAuras = PanelHelpers:CreateAuraManagement(objectName.."WidgetAdditionalAuras", AlignmentColumn, 500, 150)
-	panel.WidgetAdditionalAuras:SetPoint("TOPLEFT", panel.WidgetDebuffTrackList, "BOTTOMLEFT", 0, -20)
+	panel.WidgetAdditionalAuras:SetPoint("TOPLEFT", panel.WidgetDebuffListLabel, "BOTTOMLEFT", 0, -10)
+	panel.WidgetDebuffAuraTip = PanelHelpers:CreateTipBox(objectName.."AuraTip", L["AURA_TIP"], AlignmentColumn, "BOTTOMRIGHT", panel.WidgetAdditionalAuras, "TOPRIGHT", 6, 0)
 
 	panel.EmphasizedUnique = CreateQuickCheckbutton(objectName.."EmphasizedUnique", L["Emphasize Hides Normal Aura"], AlignmentColumn, panel.WidgetAdditionalAuras, 16, 24)
 	panel.EmphasizedUnique.tooltipText = L["Hides the regular aura from the aura widget if it is currently emphasized"]
@@ -648,8 +648,8 @@ local function BuildHubPanel(panel)
 	panel.MainFrame:SetHeight(2800)
 
 	panel.OpacityFilterList:SetWidth(200)
-	panel.WidgetDebuffTrackList:SetWidth(200)
-	panel.EmphasizedAuraList:SetWidth(200)
+	-- panel.WidgetDebuffTrackList:SetWidth(200)
+	-- panel.EmphasizedAuraList:SetWidth(200)
 
 	SetSliderMechanics(panel.OpacityTarget, 1, 0, 1, .01)
 	SetSliderMechanics(panel.OpacityNonTarget, 1, 0, 1, .01)
@@ -697,24 +697,29 @@ local function BuildHubPanel(panel)
 
 			-- CallForStyleUpdate()
 			-- Convert Debuff Filter Strings
-			ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority)
+			if LocalVars.WidgetDebuffTrackList then ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority) end
 			-- Convert Emphasized Filter Strings
-			ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority)
+			if LocalVars.EmphasizedAuraList then ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority) end
 			-- Convert Unit Filter Strings
 			ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 			ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
 			ConvertColorListTable(LocalVars.CustomColorList, LocalVars.CustomColorLookup)
 
 			-- Convert old aura lists to new format
-			if LocalVars and not LocalVars.HasConvertAuraList then
-				LocalVars.HasConvertAuraList = true
-				NeatPlatesUtility.ConvertAuraListToAuraManagement(LocalVars.WidgetAdditionalAuras, LocalVars.WidgetDebuffLookup, LocalVars.EmphasizedAuraLookup)
-			end
+			if LocalVars.WidgetDebuffLookup and LocalVars.EmphasizedAuraLookup then
+				NeatPlatesUtility.ConvertOldAuraListToAuraTable(LocalVars.WidgetAdditionalAuras, LocalVars.WidgetDebuffLookup, LocalVars.EmphasizedAuraLookup)
 
-			CallForStyleUpdate()
-		else
-			CallForStyleUpdate()
+				-- Cleanup old vars
+				LocalVars.WidgetDebuffTrackList = nil
+				LocalVars.WidgetDebuffLookup = nil
+				LocalVars.WidgetDebuffPriority = nil
+				LocalVars.EmphasizedAuraList = nil
+				LocalVars.EmphasizedAuraLookup = nil
+				LocalVars.EmphasizedAuraPriority = nil
+			end
 		end
+
+		CallForStyleUpdate()
 
 	end
 
