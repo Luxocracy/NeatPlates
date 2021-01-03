@@ -277,7 +277,7 @@ L["Include Dispellable Debuffs on Friendly Units"] = true
 
 -- Aura Help Config Help Tip
 -- Important to not translate the prefixes.('My', 'All', 'Not')
-L["AURA_TIP"] = "Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can use the prefixes, 'My' or 'All', to distinguish personal damage spells from global crowd control spells. The prefix 'Not' may be used to blacklist an aura.  Auras at the top of the list will get displayed before lower ones."
+L["AURA_TIP"] = "Tip: |cffCCCCCCAuras should be listed with the exact name, or a spell ID number. You can change the filter mode to distinguish personal damage spells from global crowd control spells or simply exclude an aura completely. Auras at the top of the list will get displayed before lower ones."
 L["HITBOX_TIP"] = "Tip: |cffCCCCCCNameplates will be displayed with a green overlay while editing these values to help visualize the size of the area."
 
 ------------------------------
@@ -683,6 +683,20 @@ L["TOPRIGHT"] = true
 L["BOTTOMLEFT"] = true
 L["BOTTOMRIGHT"] = true
 
+
+-- Aura management
+L["New Aura"] = true
+L["Mine only"] = true
+L["Anyones"] = true
+L["Exclude"] = true
+L["Emphasized"] = true
+L["Priority"] = true
+L["Aura Name/ID"] = true
+L["Aura Filter"] = true
+L["Aura Type"] = true
+L["Filter"] = true
+L["Type"] = true
+L["Empty aura"] = true
 
 
 ------------------------------

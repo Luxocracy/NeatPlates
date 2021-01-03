@@ -26,7 +26,7 @@ local function GetPanelValues(panel, targetTable)
 		targetTable["Theme"] = NeatPlates:GetThemeName() -- Store active theme
 
 		for index in pairs(targetTable) do
-			if panel[index] then
+			if panel[index] and panel[index].GetValue then
 				local value = panel[index]:GetValue()
 				if tonumber(value) ~= nil then
 					if panel[index].isActual then

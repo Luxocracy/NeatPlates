@@ -13,13 +13,13 @@ local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
-local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil )
-InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
-
 local CallIn = NeatPlatesUtility.CallIn
 local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local RGBToHex = NeatPlatesUtility.RGBToHex
+
+local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil )
+InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
 
 -- Localized fonts
 if (LOCALE_koKR) then
@@ -67,13 +67,7 @@ local ActiveProfile = "None"
 NeatPlatesSettings = {
 	DefaultProfile = L["Default"],
 
-	GlobalAuraList = "",
-	GlobalAuraLookup = {},
-	GlobalAuraPriority = {},
-
-	GlobalEmphasizedAuraList = "",
-	GlobalEmphasizedAuraLookup = {},
-	GlobalEmphasizedAuraPriority = {},
+	GlobalAdditonalAuras = {},
 }
 
 NeatPlatesOptions = {
@@ -276,8 +270,21 @@ local function ApplyPanelSettings()
 	--local theme = NeatPlatesThemeList[NeatPlatesInternal.activeThemeName]
 
 	-- Global Aura Filter Lists
-	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalAuraList, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalAuraPriority)
-	NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalEmphasizedAuraList, NeatPlatesSettings.GlobalEmphasizedAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraPriority)
+	if NeatPlatesSettings.GlobalAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalAuraList, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalAuraPriority) end
+	if NeatPlatesSettings.GlobalEmphasizedAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalEmphasizedAuraList, NeatPlatesSettings.GlobalEmphasizedAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraPriority) end
+
+	-- Convert old aura lists to new format
+	if NeatPlatesSettings.GlobalAuraLookup and NeatPlatesSettings.GlobalEmphasizedAuraLookup then
+		NeatPlatesUtility.ConvertOldAuraListToAuraTable(NeatPlatesSettings.GlobalAdditonalAuras, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraLookup)
+
+		-- Cleanup old vars
+		-- NeatPlatesSettings.GlobalAuraList = nil
+		NeatPlatesSettings.GlobalAuraLookup = nil
+		NeatPlatesSettings.GlobalAuraPriority = nil
+		-- NeatPlatesSettings.GlobalEmphasizedAuraList = nil
+		NeatPlatesSettings.GlobalEmphasizedAuraLookup = nil
+		NeatPlatesSettings.GlobalEmphasizedAuraPriority = nil
+	end
 
 	-- Load Hub Profile
 	ActiveProfile = NeatPlatesSettings.DefaultProfile
@@ -355,8 +362,8 @@ local function GetPanelValues(panel)
 
 	NeatPlatesOptions.FirstSpecProfile = panel.FirstSpecDropdown:GetValue()
 
-	NeatPlatesSettings.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
-	NeatPlatesSettings.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
+	-- NeatPlatesSettings.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
+	-- NeatPlatesSettings.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
 end
 
 
@@ -377,8 +384,10 @@ local function SetPanelValues(panel)
 	panel.FriendlyAutomation:SetValue(NeatPlatesOptions.FriendlyAutomation)
 	panel.EnemyAutomation:SetValue(NeatPlatesOptions.EnemyAutomation)
 
-	panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
-	panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
+	-- panel.GlobalAuraEditBox:SetValue(NeatPlatesSettings.GlobalAuraList)
+	-- panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
+
+	panel.GlobalAdditonalAuras:SetValue(NeatPlatesSettings.GlobalAdditonalAuras)
 
 	-- CVars
 	GetCVarValues(panel)
@@ -671,31 +680,34 @@ local function BuildInterfacePanel(panel)
 	panel.GeneralAuraLabel:SetPoint("TOPLEFT", panel.EnemyAutomation, "BOTTOMLEFT", 0, -20)
 	panel.GeneralAuraLabel:SetTextColor(255/255, 105/255, 6/255)
 
-	-- Global Additional Auras
+	-- -- Global Additional Auras
 	panel.GlobalAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.GlobalAuraLabel:SetPoint("TOPLEFT", panel.GeneralAuraLabel, "BOTTOMLEFT", 0, -8)
 	panel.GlobalAuraLabel:SetWidth(190)
 	panel.GlobalAuraLabel:SetJustifyH("LEFT")
 	panel.GlobalAuraLabel:SetText(L["Additional Auras"]..':')
 
-	panel.GlobalAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, panel.GlobalAuraLabel, 16, 0)
-	panel.GlobalAuraEditBox:SetWidth(200)
-	PanelHelpers.CreateEditBoxButton(panel.GlobalAuraEditBox, function() OnOkay(_panel) end)
+	-- panel.GlobalAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalAuraEditBox", nil, nil, panel, panel.GlobalAuraLabel, 16, 0)
+	-- panel.GlobalAuraEditBox:SetWidth(200)
+	-- PanelHelpers.CreateEditBoxButton(panel.GlobalAuraEditBox, function() OnOkay(_panel) end)
 
-	panel.GlobalAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalAuraEditBox, "TOPRIGHT", 6, 0)
 
-	-- Global Emphasized Auras
-	panel.GlobalEmphasizedAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.GlobalEmphasizedAuraLabel:SetPoint("TOPLEFT", panel.GlobalAuraLabel, "TOPRIGHT", 64, 0)
-	panel.GlobalEmphasizedAuraLabel:SetWidth(170)
-	panel.GlobalEmphasizedAuraLabel:SetJustifyH("LEFT")
-	panel.GlobalEmphasizedAuraLabel:SetText(L["Emphasized Auras"]..':')
+	-- -- Global Emphasized Auras
+	-- panel.GlobalEmphasizedAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	-- panel.GlobalEmphasizedAuraLabel:SetPoint("TOPLEFT", panel.GlobalAuraLabel, "TOPRIGHT", 64, 0)
+	-- panel.GlobalEmphasizedAuraLabel:SetWidth(170)
+	-- panel.GlobalEmphasizedAuraLabel:SetJustifyH("LEFT")
+	-- panel.GlobalEmphasizedAuraLabel:SetText(L["Emphasized Auras"]..':')
 
-	panel.GlobalEmphasizedAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, panel.GlobalEmphasizedAuraLabel, 264, 0)
-	panel.GlobalEmphasizedAuraEditBox:SetWidth(200)
-	PanelHelpers.CreateEditBoxButton(panel.GlobalEmphasizedAuraEditBox, function() OnOkay(_panel) end)
+	-- panel.GlobalEmphasizedAuraEditBox = PanelHelpers.CreateEditBox("NeatPlatesOptions_GlobalEmphasizedAuraEditBox", nil, nil, panel, panel.GlobalEmphasizedAuraLabel, 264, 0)
+	-- panel.GlobalEmphasizedAuraEditBox:SetWidth(200)
+	-- PanelHelpers.CreateEditBoxButton(panel.GlobalEmphasizedAuraEditBox, function() OnOkay(_panel) end)
 
-	panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
+	-- panel.GlobalEmphasizedAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalEmphasizedAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalEmphasizedAuraEditBox, "TOPRIGHT", 6, 0)
+
+	panel.GlobalAdditonalAuras = PanelHelpers:CreateAuraManagement("GlobalAdditonalAuras", panel, 500, 150)
+	panel.GlobalAdditonalAuras:SetPoint("TOPLEFT", panel.GlobalAuraLabel, "BOTTOMLEFT", 0, -10)
+	panel.GlobalAuraTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_GlobalAuraTip", L["AURA_TIP"], panel, "BOTTOMRIGHT", panel.GlobalAdditonalAuras, "TOPRIGHT", 6, 0)
 
 	----------------------------------------------
 	-- Other Options
@@ -704,7 +716,8 @@ local function BuildInterfacePanel(panel)
 	panel.OtherOptionsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.OtherOptionsLabel:SetFont(font, 22)
 	panel.OtherOptionsLabel:SetText(L["Other Options"])
-	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	-- panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
+	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAdditonalAuras, "BOTTOMLEFT", 0, -30)
 	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Emulated Target Plate

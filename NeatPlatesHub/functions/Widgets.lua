@@ -401,15 +401,27 @@ local AURA_TYPE_COLORS = {
 
 
 
-local function GetPrefixPriority(aura)
+local function GetPrefixPriority(aura, auraType)
+	if not auraType then auraType = "normal" end
+
+	local filter, priority
+
 	local spellid = tostring(aura.spellid)
 	local name = aura.name
 
-	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.WidgetDebuffLookup[spellid] or LocalVars.WidgetDebuffLookup[name] or NeatPlatesSettings.GlobalAuraLookup[spellid] or NeatPlatesSettings.GlobalAuraLookup[name]
-	local priority = LocalVars.WidgetDebuffPriority[spellid] or LocalVars.WidgetDebuffPriority[name] or NeatPlatesSettings.GlobalAuraPriority[spellid] or NeatPlatesSettings.GlobalAuraPriority[name]
+	local function lookup(auraTable)
+		for i,a in pairs(auraTable) do
+			if (a.name == name or a.name == spellid) and auraType == a.type then
+				return a.filter, i
+			end
+		end
+	end
 
-	return prefix, priority
+	filter, priority = lookup(LocalVars.WidgetAdditionalAuras)
+	if not filter and not priority then
+		filter, priority = lookup(NeatPlatesSettings.GlobalAdditonalAuras)
+	end
+	return filter, priority -- prefix/filter, priority
 end
 
 local function GetAuraColor(aura)
@@ -418,26 +430,21 @@ local function GetAuraColor(aura)
 end
 
 local DebuffPrefixModes = {
-	-- All
-	function(aura)
+	["all"] = function(aura)
 		return true
 	end,
-	-- My
-	function(aura)
+	["my"] = function(aura)
 		if aura.caster == "player" or aura.caster == "pet" then return true end
 	end,
-	-- Other
-	function(aura)
-		--print(aura.caster, aura.name)
-		if (aura.caster ~= "player" or aura.caster ~= "pet") then return true end
-	end,
-	-- CC
-	function(aura)
-		--return true, .5, .4, 0
-		return true, 1, 1, 0
-	end,
-	-- NOT
-	function(aura)
+	-- ["other"] = function(aura)
+	-- 	--print(aura.caster, aura.name)
+	-- 	if (aura.caster ~= "player" or aura.caster ~= "pet") then return true end
+	-- end,
+	-- ["cc"] = function(aura)
+	-- 	--return true, .5, .4, 0
+	-- 	return true, 1, 1, 0
+	-- end,
+	["not"] = function(aura)
 		return false
 	end
 }
@@ -465,7 +472,7 @@ local function SmartFilterMode(aura)
 	if prefix then
 		local show = DebuffPrefixModes[prefix](aura)
 
-		--print(aura.name, show, prefix, priority)
+		-- print(aura.name, show, prefix, priority)
 		if show == true then
 			return true, (priority or 20)		-- , r, g, b
 		else
@@ -530,13 +537,8 @@ local function DebuffFilter(aura)
 end
 
 local function EmphasizedFilter(aura)
-	local spellid = tostring(aura.spellid)
-	local name = aura.name
+	local prefix, priority = GetPrefixPriority(aura, "emphasized")
 	local r, g, b = GetAuraColor(aura)
-
-	-- Lookup using the Prefix & Priority Lists
-	local prefix = LocalVars.EmphasizedAuraLookup[spellid] or LocalVars.EmphasizedAuraLookup[name] or NeatPlatesSettings.GlobalEmphasizedAuraLookup[spellid] or NeatPlatesSettings.GlobalEmphasizedAuraLookup[name]
-	local priority = LocalVars.EmphasizedAuraPriority[spellid] or LocalVars.EmphasizedAuraPriority[name] or NeatPlatesSettings.GlobalEmphasizedAuraPriority[spellid] or NeatPlatesSettings.GlobalEmphasizedAuraPriority[name]
 
 	if prefix and priority then
 		local show = DebuffPrefixModes[prefix](aura)
