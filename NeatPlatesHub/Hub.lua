@@ -738,8 +738,10 @@ local function CreateProfile(label, color)
 	if NeatPlatesSettings.DefaultProfile == label then suffix = "|cFFFFFFFF("..L["Default"]..")" end
 
 	-- Verify Variable Integrity
-	for i,v in pairs(NeatPlatesHubDefaults) do
-		if NeatPlatesHubSettings[objectName][i] == nil then NeatPlatesHubSettings[objectName][i] = v end
+	if NeatPlatesHubSettings[objectName] then
+		for i,v in pairs(NeatPlatesHubDefaults) do
+			if NeatPlatesHubSettings[objectName][i] == nil then NeatPlatesHubSettings[objectName][i] = v end
+		end
 	end
 
 	if not NeatPlatesHubSettings.profiles[label] then NeatPlatesHubSettings.profiles[label] = color end  -- If profile doesn't exist, create it
