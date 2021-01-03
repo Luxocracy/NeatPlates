@@ -203,10 +203,12 @@ local function UpdateAuraHighlighting(frame, aura)
 		-- Remove ButtonGlow if appropriate
 		if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
 
-		if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 		if PandemicEnabled and not pandemicThreshold and aura.duration > 0 then
 			local timeLeft = math.max(expiration-aura.baseduration*0.3, 0);
-			if timeLeft > 0 then frame.PandemicTimer = C_Timer.NewTimer(timeLeft, function() UpdateAuraHighlighting(frame, aura) end)	end
+			if timeLeft > 0 then
+				if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
+				frame.PandemicTimer = C_Timer.NewTimer(timeLeft, function() print("Updating pandemic"); UpdateAuraHighlighting(frame, aura) end)
+			end
 		end
 end
 

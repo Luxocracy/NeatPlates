@@ -78,10 +78,10 @@ do
 	function PolledHideIn(frame, expiration, source)
 		if expiration == 0 then
 			if source ~= "UpdateIcon" then frame:Hide() end
+			if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
 			Framelist[frame] = nil
 		else
-			--print("Hiding in", expiration - GetTime())
-			if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
+			-- print("Hiding in", expiration - GetTime())
 			Framelist[frame] = expiration
 			frame:Show()
 
