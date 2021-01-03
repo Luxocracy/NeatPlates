@@ -697,9 +697,9 @@ local function BuildHubPanel(panel)
 
 			-- CallForStyleUpdate()
 			-- Convert Debuff Filter Strings
-			if LocalVars.WidgetDebuffTrackList then ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority) end
+			if LocalVars.WidgetDebuffTrackList and not LocalVars.WidgetAdditionalAuras then ConvertAuraListTable(LocalVars.WidgetDebuffTrackList, LocalVars.WidgetDebuffLookup, LocalVars.WidgetDebuffPriority) end
 			-- Convert Emphasized Filter Strings
-			if LocalVars.EmphasizedAuraList then ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority) end
+			if LocalVars.EmphasizedAuraList and not LocalVars.WidgetAdditionalAuras then ConvertAuraListTable(LocalVars.EmphasizedAuraList, LocalVars.EmphasizedAuraLookup, LocalVars.EmphasizedAuraPriority) end
 			-- Convert Unit Filter Strings
 			ConvertStringToTable(LocalVars.OpacityFilterList, LocalVars.OpacityFilterLookup)
 			ConvertStringToTable(LocalVars.UnitSpotlightList, LocalVars.UnitSpotlightLookup)
@@ -710,10 +710,10 @@ local function BuildHubPanel(panel)
 				NeatPlatesUtility.ConvertOldAuraListToAuraTable(LocalVars.WidgetAdditionalAuras, LocalVars.WidgetDebuffLookup, LocalVars.EmphasizedAuraLookup)
 
 				-- Cleanup old vars
-				LocalVars.WidgetDebuffTrackList = nil
+				-- LocalVars.WidgetDebuffTrackList = nil
 				LocalVars.WidgetDebuffLookup = nil
 				LocalVars.WidgetDebuffPriority = nil
-				LocalVars.EmphasizedAuraList = nil
+				-- LocalVars.EmphasizedAuraList = nil
 				LocalVars.EmphasizedAuraLookup = nil
 				LocalVars.EmphasizedAuraPriority = nil
 			end
