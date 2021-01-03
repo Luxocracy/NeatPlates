@@ -145,7 +145,18 @@
 		<NormalFont style="GameFontNormal"/>
 		<HighlightFont style="GameFontHighlight"/>
 		<DisabledFont style="GameFontDisable"/>
-		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+		<HighlightTexture>
+            <Texture name="UIPanelButtonHighlightTexture" file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD" virtual="true">
+                <Size>
+                    <AbsDimension x="12" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
+                </Anchors>
+                <TexCoords left="0.09375" right="0.53125" top="0" bottom="0.6875"/>
+            </Texture>
+        </HighlightTexture>
 	</Button>
 
 
