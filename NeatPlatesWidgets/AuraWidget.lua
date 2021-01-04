@@ -207,7 +207,7 @@ local function UpdateAuraHighlighting(frame, aura)
 			local timeLeft = math.max(expiration-aura.baseduration*0.3, 0);
 			if timeLeft > 0 then
 				if frame.PandemicTimer then frame.PandemicTimer:Cancel() end
-				frame.PandemicTimer = C_Timer.NewTimer(timeLeft, function() print("Updating pandemic"); UpdateAuraHighlighting(frame, aura) end)
+				frame.PandemicTimer = C_Timer.NewTimer(timeLeft, function() UpdateAuraHighlighting(frame, aura) end)
 			end
 		end
 end
