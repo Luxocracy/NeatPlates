@@ -269,11 +269,11 @@ local function ApplyPanelSettings()
 	--local theme = NeatPlatesThemeList[NeatPlatesInternal.activeThemeName]
 
 	-- Global Aura Filter Lists
-	if NeatPlatesSettings.GlobalAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalAuraList, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalAuraPriority) end
-	if NeatPlatesSettings.GlobalEmphasizedAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalEmphasizedAuraList, NeatPlatesSettings.GlobalEmphasizedAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraPriority) end
+	-- if NeatPlatesSettings.GlobalAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalAuraList, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalAuraPriority) end
+	-- if NeatPlatesSettings.GlobalEmphasizedAuraList and not NeatPlatesSettings.GlobalAdditonalAuras then NeatPlatesHubHelpers.ConvertAuraListTable(NeatPlatesSettings.GlobalEmphasizedAuraList, NeatPlatesSettings.GlobalEmphasizedAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraPriority) end
 
 	-- Convert old aura lists to new format
-	if NeatPlatesSettings.GlobalAuraLookup and NeatPlatesSettings.GlobalEmphasizedAuraLookup then
+	if NeatPlatesSettings.GlobalAuraLookup and NeatPlatesSettings.GlobalEmphasizedAuraLookup and NeatPlatesSettings.GlobalAdditonalAura then
 		NeatPlatesUtility.ConvertOldAuraListToAuraTable(NeatPlatesSettings.GlobalAdditonalAuras, NeatPlatesSettings.GlobalAuraLookup, NeatPlatesSettings.GlobalEmphasizedAuraLookup)
 
 		-- Cleanup old vars

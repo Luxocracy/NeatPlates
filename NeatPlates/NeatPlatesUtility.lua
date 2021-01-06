@@ -301,11 +301,17 @@ local function GetUnitQuestInfo(unit)
     	 -- Get amount of quest objectives through counting textures
 		local texture = _G[ScannerName .. "Texture" .. line]
 
-		if textureIds ~= nil and texture and texture:GetTexture() ~= nil then textureIds = textureIds..", "..texture:GetTexture() elseif texture:GetTexture() ~= nil then textureIds = texture:GetTexture() end
-    	if texture and questTexture[texture:GetTexture()] ~= nil then
-    		objectiveCount = objectiveCount + 1
-			questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
-    	end
+		if texture then
+			if textureIds ~= nil and texture:GetTexture() ~= nil then
+				textureIds = textureIds..", "..texture:GetTexture()
+			elseif texture:GetTexture() ~= nil then
+				textureIds = texture:GetTexture()
+			end
+			if texture and questTexture[texture:GetTexture()] ~= nil then
+				objectiveCount = objectiveCount + 1
+				questCompleted[objectiveCount] = questTexture[texture:GetTexture()]
+			end
+		end
 
     	if line > 1 then
 	    	local tooltipText, r, g, b = GetTooltipLineText( line )
