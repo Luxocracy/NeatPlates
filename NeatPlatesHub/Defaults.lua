@@ -144,6 +144,7 @@ NeatPlatesHubDefaults = {
 	TextShowOnlyOnTargets = false,
 	TextShowServerIndicator = true,
 	TextShowUnitTitle = false,
+	TextUnitNameArenaID = false,
 	CustomTargetColor = false,
 	CustomFocusColor = false,
 	CustomMouseoverColor = false,

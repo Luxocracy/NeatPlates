@@ -36,12 +36,11 @@ local EnableFadeIn = true
 local ShowCastBars = true
 local ShowIntCast = true
 local ShowIntWhoCast = true
-local ShowServerIndicator = true
-local ShowUnitTitle = true
 local ShowEnemyPowerBar = false
 local ShowFriendlyPowerBar = false
 local ShowSpellTarget = false
 local ThreatSoloEnable = true
+local ReplaceUnitNameArenaID = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll = false, false
 local OverrideFonts = false
@@ -768,12 +767,10 @@ do
 
 	-- UpdateIndicator_Name:
 	function UpdateIndicator_Name()
-		local unitname = unit.name
-		if ShowUnitTitle then  unitname = unit.pvpname or unit.name end
-		if ShowServerIndicator and unit.realm then unitname = unitname.." (*)" end
+		local unitname = activetheme.SetUnitName(unit)
 
 		if unit.showName then
-			visual.name:SetText(unitname) -- Set name
+				visual.name:SetText(unitname) -- Set name
 		else
 			visual.name:SetText("") -- Clear name
 		end
@@ -1715,12 +1712,11 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates:SetCoreVariables(LocalVars)
 	ShowIntCast = LocalVars.IntCastEnable
 	ShowIntWhoCast = LocalVars.IntCastWhoEnable
-	ShowServerIndicator = LocalVars.TextShowServerIndicator
-	ShowUnitTitle = LocalVars.TextShowUnitTitle
 	ShowFriendlyPowerBar = LocalVars.StyleShowFriendlyPowerBar
 	ShowEnemyPowerBar = LocalVars.StyleShowEnemyPowerBar
 	ShowSpellTarget = LocalVars.SpellTargetEnable
 	ThreatSoloEnable = LocalVars.ThreatSoloEnable
+	ReplaceUnitNameArenaID = LocalVars.TextUnitNameArenaID
 end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end

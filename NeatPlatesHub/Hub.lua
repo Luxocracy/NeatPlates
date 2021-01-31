@@ -152,6 +152,7 @@ local function BuildHubPanel(panel)
 	panel.StyleForceBarsOnTargets, F = CreateQuickCheckbutton(objectName.."StyleForceBarsOnTargets", L["Force Bars on Targets"], AlignmentColumn, F, 16, 2)
 	panel.TextShowLevel, F = CreateQuickCheckbutton(objectName.."TextShowLevel", L["Show Unit Level"], AlignmentColumn, F, 16)
 	panel.TextShowUnitTitle, F = CreateQuickCheckbutton(objectName.."TextShowUnitTitle", L["Show Unit Title"], AlignmentColumn, F, 16)
+	panel.TextUnitNameArenaID, F = CreateQuickCheckbutton(objectName.."TextUnitNameArenaID", L["Replace Unit Name with Arena ID"], AlignmentColumn, F, 16)
 	panel.StyleShowFriendlyPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowFriendlyPowerBar", L["Show Friendly Unit Powerbar"], AlignmentColumn, F, 16)
 	panel.StyleShowFriendlyPowerBar.tooltipText = L["powerbar_unfinished_warning"]
 	panel.StyleShowEnemyPowerBar, F = CreateQuickCheckbutton(objectName.."StyleShowEnemyPowerBar", L["Show Enemy Unit Powerbar"], AlignmentColumn, F, 16)
