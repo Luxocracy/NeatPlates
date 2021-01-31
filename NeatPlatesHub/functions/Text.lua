@@ -36,6 +36,26 @@ local function DummyFunction() end
 --local WhiteColor = { r = 250/255, g = 250/255, b = 250/255, }
 
 
+
+
+
+------------------------------------------------------------------------------
+-- Unit name text
+------------------------------------------------------------------------------
+
+local function UnitNameDelegate(unit)
+	local unitname = unit.name
+	if LocalVars.TextShowUnitTitle then unitname = unit.pvpname or unit.name end
+	if LocalVars.TextShowServerIndicator and unit.realm then unitname = unitname.." (*)" end
+
+	-- Overwrite current name with Arena ID
+	local arenaindex = GetArenaIndex(unit.rawName)
+	if LocalVars.TextUnitNameArenaID and unit.type == "PLAYER" and arenaindex then unitname = tostring(GetArenaIndex(unit.rawName)) end
+
+	return unitname
+end
+
+
 ------------------------------------------------------------------------------
 -- Optional/Health Text
 ------------------------------------------------------------------------------
@@ -554,4 +574,6 @@ HubData.RegisterCallback(OnVariableChange)
 NeatPlatesHubFunctions.SetCustomText = HealthTextDelegate
 NeatPlatesHubFunctions.SetSubText = SubTextDelegate
 NeatPlatesHubFunctions.SetCastbarDuration = CastbarDurationDelegate
+NeatPlatesHubFunctions.GetArenaIndex = GetArenaIndex
+NeatPlatesHubFunctions.SetUnitName = UnitNameDelegate
 

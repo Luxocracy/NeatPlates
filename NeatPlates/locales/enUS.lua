@@ -175,6 +175,7 @@ L["Friendly Subtext"] = true
 L["Additional settings"] = true
 	L["Show Unit Level"] = true
 	L["Show Unit Title"] = true
+	L["Replace Unit Name with Arena ID"] = true
 	L["Show Friendly Unit Powerbar"] = true
 	L["Show Enemy Unit Powerbar"] = true
 	L["Show Different Server Indicator (*)"] = true

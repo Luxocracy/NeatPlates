@@ -573,6 +573,7 @@ end
 
 -- Quickly add functions to a Theme
 local function ApplyHubFunctions(theme)
+	theme.SetUnitName = NeatPlatesHubFunctions.SetUnitName
 	theme.SetNameColor = NeatPlatesHubFunctions.SetNameColor
 	theme.SetScale = NeatPlatesHubFunctions.SetScale
 	theme.GetClickableArea = NeatPlatesHubFunctions.GetClickableArea
