@@ -159,8 +159,9 @@ local function BuildHubPanel(panel)
 	panel.StyleShowEnemyPowerBar.tooltipText = L["powerbar_unfinished_warning"]
 	panel.TextShowServerIndicator, F = CreateQuickCheckbutton(objectName.."TextShowServerIndicator", L["Show Different Server Indicator (*)"], AlignmentColumn, F, 16)
 	panel.TextStatusForceShadow, F = CreateQuickCheckbutton(objectName.."TextStatusForceShadow", L["Force Shadow on Status Text"], AlignmentColumn, F, 16)
-  panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 16)
-  panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 16)
+	panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 16)
+	panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 16)
+	panel.TextHealthPercentPrecision, F = CreateQuickSlider(objectName.."TextHealthPercentPrecision", L["Health Percent Precision"]..':', "ACTUAL", 160, AlignmentColumn, F, 16)
 
 
 	------------------------------
@@ -666,6 +667,7 @@ local function BuildHubPanel(panel)
 	SetSliderMechanics(panel.EmphasizedAuraScale, 2, .5, 2.2, .01)
 	SetSliderMechanics(panel.EmphasizedSlots, 0, 1, 3, 1)
 	SetSliderMechanics(panel.PreciseAuraThreshold, 0, 0, 60, 0.1)
+	SetSliderMechanics(panel.TextHealthPercentPrecision, 0, 0, 5, 1)
 
 	SetSliderMechanics(panel.WidgetRangeMax, 0, 1, 100, 1)
 

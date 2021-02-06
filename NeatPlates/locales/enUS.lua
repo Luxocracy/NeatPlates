@@ -184,6 +184,8 @@ L["Additional settings"] = true
 	L["Show Subtext in Bar View"] = true -- Not in use?
 	L["Show Status Text on Target & Mouseover"] = true
 	L["Show Status Text on Active/Damaged Units"] = true
+	L["Health Percent Precision"] = true
+
 	L["Use Custom Target Color"] = true
 	L["Use Custom Focus Color"] = true
 	L["Use Custom Mouseover Color"] = true
