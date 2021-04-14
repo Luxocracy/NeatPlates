@@ -128,8 +128,10 @@
 				if(self.tooltipText ~= nil) then
 					C_Timer.After(0.25, function()
                         if self.isMouseover then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			                GameTooltip_SetTitle(GameTooltip, self.tooltipText);
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
                         end
                     end);
 				end
@@ -181,8 +183,10 @@
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
                         if self.isMouseover then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			                GameTooltip_SetTitle(GameTooltip, self.tooltipText);
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
                         end
                     end);
                 end
@@ -394,8 +398,10 @@
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
                         if self.isMouseover then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			                GameTooltip_SetTitle(GameTooltip, self.tooltipText);
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
                         end
                     end);
                 end
@@ -453,8 +459,10 @@
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
                         if self.isMouseover then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			                GameTooltip_SetTitle(GameTooltip, self.tooltipText);
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
                         end
                     end);
                 end
