@@ -127,7 +127,12 @@
                 self.isMouseover = true
 				if(self.tooltipText ~= nil) then
 					C_Timer.After(0.25, function()
-                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                        if self.isMouseover then
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
                     end);
 				end
 			</OnEnter>
@@ -177,7 +182,12 @@
                 self.isMouseover = true
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
-                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                        if self.isMouseover then
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
                     end);
                 end
             </OnEnter>
@@ -387,7 +397,12 @@
                 self.isMouseover = true
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
-                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                        if self.isMouseover then
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
                     end);
                 end
             </OnEnter>
@@ -443,7 +458,12 @@
                 self.isMouseover = true
                 if(self.tooltipText ~= nil) then
                     C_Timer.After(0.25, function()
-                        if self.isMouseover then GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText) end
+                        if self.isMouseover then
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
                     end);
                 end
             </OnEnter>
