@@ -752,6 +752,8 @@ do
 		unit.pvpname = UnitPVPName(unitid)
 		unit.rawName = unit.name  -- gsub(unit.name, " %(%*%)", "")
 
+		unit.showName = not NeatPlatesOptions.BlizzardNameVisibility or UnitShouldDisplayName(unit.unitid)
+
 		local classification = UnitClassification(unitid)
 		unit.isBoss = UnitLevel(unitid) == -1
 		unit.isDangerous = unit.isBoss
