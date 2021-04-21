@@ -1,4 +1,4 @@
-## Interface: 11306
+## Interface: 11307
 ## Title: NeatPlates Hub
 ## Notes: Provides a common configuration panel for supported themes.
 ## Author: Luxocracy and friends

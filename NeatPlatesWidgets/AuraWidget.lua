@@ -11,8 +11,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local LibClassicDurations = LibStub("LibClassicDurations", true)
 local LCDUnitAura = function() end
 if LibClassicDurations then
-    LibClassicDurations:Register("NeatPlates")
-    LCDUnitAura = LibClassicDurations.UnitAuraWithBuffs
+	LibClassicDurations:Register("NeatPlates")
+	LCDUnitAura = LibClassicDurations.UnitAuraWithBuffs
 end
 
 
