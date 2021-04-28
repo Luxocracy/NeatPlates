@@ -457,6 +457,7 @@ local function OnMouseWheelScrollFrame(frame, value, name)
 end
 
 local function SetCVarValue(self, cvar, isBool)
+	local SetCVar = SetCVar or C_CVar.SetCVar
 	if not InCombatLockdown() then
 		local value
 		if isBool then
@@ -464,7 +465,7 @@ local function SetCVarValue(self, cvar, isBool)
 		else
 			value = self.ceil(self:GetValue())
 		end
-		C_CVar.SetCVar(cvar, value, cvar)
+		SetCVar(cvar, value, cvar)
 	else
 		print(orange.."NeatPlates: "..red..L["CVars could not applied due to combat"])
 	end
