@@ -822,11 +822,20 @@ local function ShowDropdownMenu(sourceFrame, menu, clickScript)
 			numOfItems = numOfItems + 1
 			button:SetScript("OnClick", clickScript)
 			button:SetScript("OnEnter", function(self)
+				self.isMouseover = true
 				if(self.tooltipText ~= nil) then
-					GameTooltip_AddNewbieTip(self, self.tooltipText, 1.0, 1.0, 1.0, self.newbieText);
+					C_Timer.After(0.25, function()
+						if self.isMouseover then
+							GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+							GameTooltip:ClearAllPoints();
+							GameTooltip:SetText(self.tooltipText, 1.0, 1.0, 1.0, self.newbieText, true);
+							GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+						end
+					end);
 				end
 			end);
 			button:SetScript("OnLeave", function(self)
+				self.isMouseover = false
 				if(self.tooltipText ~= nil) then
 					GameTooltip:Hide();
 				end
