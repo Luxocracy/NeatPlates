@@ -68,16 +68,6 @@ local RaidIconCoordinate = {
 		["SKULL"] = { x = .75, y = 0.25},
 }
 
--- Special case spells
-local spellBlacklist = {
-	[GetSpellInfo(75)] = true, 				-- Auto Shot
-	[GetSpellInfo(5019)] = true, 			-- Shoot
-	-- [GetSpellInfo(2480)] = true, 			-- Shoot Bow
-	-- [GetSpellInfo(7918)] = true, 			-- Shoot Gun
-	-- [GetSpellInfo(7919)] = true, 			-- Shoot Crossbow
-	[GetSpellInfo(2764)] = true, 			-- Throw
-}
-
 local spellCCList = {
 	[GetSpellInfo(118)] = true,				-- Polymorph
 	[GetSpellInfo(408)] = true,				-- Kidney Shot
@@ -342,14 +332,14 @@ do
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
 
-				if plate.UpdateCastbar then -- Check if spell is being cast
-					if unit and unit.unitid then
-						local unitGUID = UnitGUID(unit.unitid)
-						if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
-						else OnStopCasting(plate) end
-					end
-					plate.UpdateCastbar = false
-				end
+				-- if plate.UpdateCastbar then -- Check if spell is being cast
+				-- 	if unit and unit.unitid then
+				-- 		local unitGUID = UnitGUID(unit.unitid)
+				-- 		if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
+				-- 		else OnStopCasting(plate) end
+				-- 	end
+				-- 	plate.UpdateCastbar = false
+				-- end
 			elseif unitid and not plate:IsVisible() then
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
@@ -1110,78 +1100,51 @@ do
 	end
 
 	-- OnShowCastbar
-	function OnStartCasting(plate, guid, channeled)
+	function OnStartCasting(plate, unitid, channeled)
 		UpdateReferences(plate)
 		--if not extended:IsShown() then return end
 		if not extended:IsShown() then return end
 
 		local castBar = extended.visual.castbar
-		local unitType,_,_,_,_,creatureID = ParseGUID(guid)
-		local spell = SpellCastCache[guid]
-		local startTime, endTime, increase
-		local spellEntry
 
-		if not spell or not unitType then return end -- Return if neccessary info is missing
+		local name, text, texture, startTime, endTime, isTradeSkill, castID, spellID
 
-		if creatureID then spellEntry = NeatPlatesSpellDB[unitType][spell.name][creatureID]
-		else spellEntry = NeatPlatesSpellDB[unitType][spell.name] end
-
-		if spellEntry.castTime then
-			startTime = spell.startTime
-			endTime = spell.startTime + (spellEntry.castTime * spell.increase)
-
+		if channeled then
+			name, text, texture, startTime, endTime, isTradeSkill, spellID = UnitChannelInfo(unitid)
+			castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
+		else
+			name, text, texture, startTime, endTime, isTradeSkill, castID, spellID = UnitCastingInfo(unitid)
 			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
 		end
+
+		if isTradeSkill then return end
 
 		unit.isCasting = true
 		unit.interrupted = false
 		unit.interruptLogged = false
-		unit.spellInterruptible = true -- Always true for Classic as we cannot tell.
+		-- unit.spellIsShielded = notInterruptible
+		-- unit.spellInterruptible = not unit.spellIsShielded
 
 		-- Clear registered events incase they weren't
 		castBar:SetScript("OnEvent", nil)
 		--castBar:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
-		-- -- Set spell target (Target doesn't usually update until a little bit after the combat event, so we need to recheck)
-		-- if ShowSpellTarget and unit.unitid then
-		-- 	local maxTries = 10
-		-- 	local targetof = unit.unitid.."target"
-		-- 	local function setSpellTarget()
-		-- 		local targetname =  UnitName(targetof) or ""
-		-- 		if UnitIsUnit(targetof, "player") then
-		-- 			targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
-		-- 		elseif UnitIsPlayer(targetof) then
-		-- 			local targetclass = select(2, UnitClass(targetof))
-		-- 			targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
-		-- 		end
-		-- 		visual.spelltarget:SetText(targetname)
-
-		-- 		-- Retry if target is empty
-		-- 		if targetname == "" and maxTries > 0 then
-		-- 			maxTries = maxTries - 1
-		-- 			C_Timer.After(0.1, setSpellTarget)
-		-- 		end
-		-- 	end
-		-- 	C_Timer.After(0.002, setSpellTarget) -- Next Frame
-		-- end
-
 		OnUpdateCastTarget(plate, unitid)
 
 		-- Set spell text & duration
-		visual.spelltext:SetText(spell.name)
+		visual.spelltext:SetText(text)
 		visual.durationtext:SetText("")
-		visual.spellicon:SetTexture(NeatPlatesSpellDB.default[spell.name].texture or 136243) -- 136243 (Default to Engineering Cog)
-		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
+		visual.spellicon:SetTexture(texture)
+		castBar:SetMinMaxValues( startTime, endTime )
 
 		local r, g, b, a = 1, 1, 0, 1
 
 		if activetheme.SetCastbarColor then
-			r, g, b, a = activetheme.SetCastbarColor(unit, spell.school)
+			r, g, b, a = activetheme.SetCastbarColor(unit)
 			if not (r and g and b and a) then return end
 		end
 
 		castBar:SetStatusBarColor( r, g, b)
-
 		castBar:SetAlpha(a or 1)
 
 
@@ -1299,12 +1262,11 @@ do
 		if not ShowCastBars then return end
 		local currentTime = GetTime() * 1000
 
-
-		--if UnitCastingInfo(unitid) then
-		--	OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
-		--elseif UnitChannelInfo(unitid) then
-		--	OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
-		--end
+		if UnitCastingInfo(unitid) then
+			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
+		elseif UnitChannelInfo(unitid) then
+			OnStartCasting(plate, unitid, true)	-- See if one is being channeled...
+		end
 	end
 
 	function OnUpdateCastTarget(plate, unitid)
@@ -1550,11 +1512,11 @@ do
 	end
 
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
-		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName,spellSchool = CombatLogGetCurrentEventInfo()
-		--spellID = select(7, GetSpellInfo(spellName)) or ""
+		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
+		spellID = spellID or ""
 		local plate = nil
 		local ownerGUID
-		local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
+		--local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
 
 		-- Spell Interrupts
 		if ShowIntCast then
@@ -1562,11 +1524,11 @@ do
 				-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
 				-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
 				-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
-				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
+				plate = PlatesByGUID[destGUID]
 
-				if plate and plate.extended.unit.isCasting then
-					if event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
-					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and not spellCCList[spellName] and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
+				if plate then
+					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
+					local unitType = strsplit("-", sourceGUID)
 
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
@@ -1576,83 +1538,21 @@ do
 					plate.extended.unit.interruptLogged = true
 					OnInterruptedCast(plate, ownerGUID or sourceGUID, sourceName, destGUID)
 				end
-
-				-- Set spell cast cache to finished
-				if SpellCastCache[destGUID] and (event ~= "SPELL_AURA_APPLIED" or spellCCList[spellName]) then
-					SpellCastCache[destGUID].finished = true
-				end
 			end
 		end
 
-		-- Cast time increases
-		CTICache[sourceGUID] = CTICache[sourceGUID] or {}
-		if event == "SPELL_AURA_APPLIED" and spellCTI[spellName] then
-			if CTICache[sourceGUID].timeout then CTICache[sourceGUID].timeout:Cancel() end
-			CTICache[sourceGUID].increase = spellCTI[spellName]
-			CTICache[sourceGUID].timeout = C_Timer.NewTimer(60, function()
-				CTICache[sourceGUID] = {}
-			end)
-		elseif event == "SPELL_AURA_REMOVED" and spellCTI[spellName] then
-			if CTICache[sourceGUID] and CTICache[sourceGUID].timeout then CTICache[sourceGUID].timeout:Cancel() end
-			CTICache[sourceGUID] = {}
-		end
-
-		-- Spellcasts (Classic)
-		if ShowCastBars and unitType and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
-			local currentTime = GetTime() * 1000
-			local spellEntry
-			plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
-			NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
-			NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
-			if creatureID then
-				NeatPlatesSpellDB[unitType][spellName][creatureID] = NeatPlatesSpellDB[unitType][spellName][creatureID] or {}
-				spellEntry = NeatPlatesSpellDB[unitType][spellName][creatureID]
-			else
-				spellEntry = NeatPlatesSpellDB[unitType][spellName]
+		-- Fixate
+		local fixate = {
+			[268074] = true,	-- Spawn of G'huun(Uldir)
+			[282209] = true,	-- Ravenous Stalker(Dazar'alor)
+		}
+		if (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED") and fixate[spellID] then
+			plate = PlatesByGUID[sourceGUID]
+			if plate and event == "SPELL_AURA_APPLIED" and UnitIsUnit("player", destName) then
+				plate.extended.unit.fixate = true 	-- Fixating player
+			elseif plate then
+				plate.extended.unit.fixate = false 	-- NOT Fixating player
 			end
-
-			if event == "SPELL_CAST_START" then
-				-- Add Spell to Spell Cast Cache
-				SpellCastCache[sourceGUID] = SpellCastCache[sourceGUID] or {}
-				SpellCastCache[sourceGUID].name = spellName
-				SpellCastCache[sourceGUID].school = spellSchool
-				SpellCastCache[sourceGUID].startTime = currentTime
-				SpellCastCache[sourceGUID].finished = false
-				SpellCastCache[sourceGUID].increase = CTICache[sourceGUID].increase or 1
-
-				-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 1 seconds, or 12 seconds if the spell is unknown)
-				-- The FAILED event doesn't seem to trigger properly in the current beta test.
-				if not spellEntry.castTime then spellEntry.castTime = NeatPlatesSpellDB.default[spellName].castTime end
-				local timeout = 12
-				local castTime = (spellEntry.castTime or 0) * SpellCastCache[sourceGUID].increase
-				if castTime > 0 then timeout = (castTime+1000)/1000 end -- If we have a recorded cast time, use that as timeout base
-				if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
-
-				SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
-					local plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
-					if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID].finished = true end -- Make sure we are on the same cast
-					if plate then OnStopCasting(plate) end
-				end)
-
-				if plate then OnStartCasting(plate, sourceGUID, false) end
-			elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
-				-- Update SpellDB with castTime
-				if event == "SPELL_CAST_SUCCESS" and SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].startTime then
-					castTime = (currentTime-SpellCastCache[sourceGUID].startTime)/SpellCastCache[sourceGUID].increase -- Cast Time
-					if castTime > 0 then spellEntry.castTime = castTime end
-				end
-
-				-- Clear Cast Cache
-				if SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the spell Timeout
-				SpellCastCache[sourceGUID] = nil
-				if plate then
-					OnStopCasting(plate)
-				end
-			end
-
-			-- Remove empty entries as they only take up space
-			--if not next(NeatPlatesSpellDB[unitType][spellName]) then NeatPlatesSpellDB[unitType][spellName] = nil
-			--elseif creatureID and not next(NeatPlatesSpellDB[unitType][spellName][creatureID]) then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
 		end
 	end
 
