@@ -10,5 +10,4 @@
   <Include file="libs\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml"/>
 
   <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
-  <Include file="libs\LibClassicDurations\LibClassicDurations.xml"/>
 </Ui>

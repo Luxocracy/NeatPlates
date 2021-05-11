@@ -13,9 +13,6 @@ local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
-local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil, NeatPlatesBackdrop)
-InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
-
 local CallIn = NeatPlatesUtility.CallIn
 local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
