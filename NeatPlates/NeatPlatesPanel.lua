@@ -21,7 +21,7 @@ local copytable = NeatPlatesUtility.copyTable
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local RGBToHex = NeatPlatesUtility.RGBToHex
 
-local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil )
+local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil, NeatPlatesBackdrop)
 InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
 
 -- Localized fonts
@@ -223,7 +223,7 @@ local ThemeDropdownMenuItems = {}
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
 	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
-	NeatPlates:SetHealthUpdateMethod(NeatPlatesOptions.HealthFrequent)
+	-- NeatPlates:SetHealthUpdateMethod(NeatPlatesOptions.HealthFrequent)
 	NeatPlates:ToggleEmulatedTargetPlate(NeatPlatesOptions.EmulatedTargetPlate)
 
 	if NeatPlatesOptions._EnableMiniButton then

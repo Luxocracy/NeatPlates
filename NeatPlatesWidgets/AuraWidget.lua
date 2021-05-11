@@ -348,6 +348,9 @@ local function UpdateIconGrid(frame, unitid)
 				local show, priority, r, g, b, a = AuraFilterFunction(aura)
 				local emphasized, ePriority = EmphasizedAuraFilterFunction(aura)
 				local existing = AuraCache[unitid][aura.name]
+				-- if(auraFilter == "HELPFUL" and not show) then
+				-- 	print(aura.name, show, priority)
+				-- end
 				--print(aura.name, show, priority)
 				--show = true
 

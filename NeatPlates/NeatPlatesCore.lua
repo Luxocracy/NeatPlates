@@ -72,9 +72,9 @@ local RaidIconCoordinate = {
 local spellBlacklist = {
 	[GetSpellInfo(75)] = true, 				-- Auto Shot
 	[GetSpellInfo(5019)] = true, 			-- Shoot
-	[GetSpellInfo(2480)] = true, 			-- Shoot Bow
-	[GetSpellInfo(7918)] = true, 			-- Shoot Gun
-	[GetSpellInfo(7919)] = true, 			-- Shoot Crossbow
+	-- [GetSpellInfo(2480)] = true, 			-- Shoot Bow
+	-- [GetSpellInfo(7918)] = true, 			-- Shoot Gun
+	-- [GetSpellInfo(7919)] = true, 			-- Shoot Crossbow
 	[GetSpellInfo(2764)] = true, 			-- Throw
 }
 
