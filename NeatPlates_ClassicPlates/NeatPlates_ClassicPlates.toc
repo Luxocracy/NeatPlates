@@ -1,7 +1,7 @@
 ## Interface: 11307
 ## Title: NeatPlates: |cffff6060ClassicPlates
 ## Notes: Vanilla-Style Plates.
-## Author: delabarra 
+## Author: delabarra
 ## Dependencies: NeatPlates, NeatPlatesHub
 
 NeatPlates_ClassicPlates.lua

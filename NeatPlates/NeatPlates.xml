@@ -555,6 +555,7 @@
         </Frames>
     </Frame>
 
+    <Script file="NeatPlatesGlobals.lua"/>
 	<Script file="NeatPlatesStatusbar.lua"/>
     <Script file="NeatPlatesUtility.lua"/>
 	<Script file="NeatPlatesCore.lua"/>

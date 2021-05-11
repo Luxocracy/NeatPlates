@@ -1471,15 +1471,6 @@ do
 	end
 
 	function CoreEvents:UNIT_HEALTH(...)
-		if FrequentHealthUpdate then return end
-		local unitid = ...
-		local plate = PlatesByUnit[unitid]
-
-		if plate then OnHealthUpdate(plate) end
-	end
-
-	function CoreEvents:UNIT_HEALTH_FREQUENT(...)
-		if not FrequentHealthUpdate then return end
 		local unitid = ...
 		local plate = PlatesByUnit[unitid]
 
@@ -1937,7 +1928,6 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates.ColorCastBars(enable) ColorCastBars = enable end
 function NeatPlates:ToggleEmulatedTargetPlate(show) if not show then toggleNeatPlatesTarget(false) end; ShowEmulatedTargetPlate = show end
 
-function NeatPlates:SetHealthUpdateMethod(useFrequent) FrequentHealthUpdate = useFrequent end
 function NeatPlates:SetCoreVariables(LocalVars)
 	ShowIntCast = LocalVars.IntCastEnable
 	ShowIntWhoCast = LocalVars.IntCastWhoEnable
