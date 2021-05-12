@@ -322,7 +322,7 @@ local function GetCVarValues(panel)
 		NameplateTargetClamp = (function() if GetCVar("nameplateTargetRadialPosition") == "1" then return true else return false end end)(),
 		NameplateStacking = (function() if GetCVar("nameplateMotion") == "1" then return true else return false end end)(),
 		NameplateFriendlyNPCs = (function() if GetCVar("nameplateShowFriendlyNPCs") == "1" then return true else return false end end)(),
-		-- NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
+		NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
 		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
 		NameplateMinAlpha = GetCVar("nameplateMinAlpha"),
 		NameplateMaxAlpha = GetCVar("nameplateMaxAlpha"),
@@ -772,13 +772,12 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateFriendlyNPCs:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 0, -25)
 	panel.NameplateFriendlyNPCs:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateShowFriendlyNPCs", true) end)
 
-	-- Disabled until blizzard fixes their shit, if ever...
-	-- panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 60, 10, 100, 1, "ACTUAL", 250)
-	-- panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 10, -50)
-	-- panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
+	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 41, 0, 41, 1, "ACTUAL", 170)
+	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateFriendlyNPCs, "TOPLEFT", 10, -50)
+	panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
 
 	panel.NameplateOccludedAlphaMult = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateOccludedAlphaMult", panel, L["Occluded Alpha Multiplier"], 0.4, 0, 1, 0.01, "ACTUAL", 170)
-	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateFriendlyNPCs, "TOPLEFT", 10, -50)
+	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -50)
 	panel.NameplateOccludedAlphaMult.Callback = function(self) SetCVarValue(self, "nameplateOccludedAlphaMult") end
 	panel.NameplateOccludedAlphaMult.tooltipText = L["The opacity multiplier for units occluded by line of sight"]
 
