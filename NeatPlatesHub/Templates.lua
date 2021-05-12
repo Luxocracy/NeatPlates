@@ -416,7 +416,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		if not CustomizationPanel then
 			-- Build the actual panel
-			CustomizationPanel = CreateFrame("Frame", "NeatPlatesCustomizationPanel", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
+			CustomizationPanel = CreateFrame("Frame", "NeatPlatesCustomizationPanel", UIParent, "NeatPlatesUIPanelDialogTemplate");
 			CustomizationPanel:Hide()
 			CustomizationPanel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 			CustomizationPanel:SetBackdropColor(0.06, 0.06, 0.06, .7)
@@ -671,7 +671,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 
 		if not ScalePanel then
 			-- Build the actual panel
-			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
+			ScalePanel = CreateFrame("Frame", "NeatPlatesScalePanel", UIParent, "NeatPlatesUIPanelDialogTemplate");
 
 			--local panel = CreateFrame( "Frame", "OffsetAndScale_InterfaceOptionsPanel", UIParent);
 
@@ -821,7 +821,7 @@ local function CreateQuickSlider(name, label, mode, width, ... ) --, neighborFra
 	local function CreateQuickEditboxPopup(label, onOkay, highlight)
 		if not EditboxPopup then
 			-- Build the actual panel
-			panel = CreateFrame("Frame", "NeatPlatesEditboxPopup", UIParent, "UIPanelDialogTemplate", NeatPlatesBackdrop);
+			panel = CreateFrame("Frame", "NeatPlatesEditboxPopup", UIParent, "NeatPlatesUIPanelDialogTemplate");
 			panel:Hide()
 		  panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 		  panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
