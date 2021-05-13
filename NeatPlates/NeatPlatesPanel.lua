@@ -363,9 +363,11 @@ local function GetPanelValues(panel)
 	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
 
 	NeatPlatesOptions.FirstSpecProfile = panel.FirstSpecDropdown:GetValue()
-	NeatPlatesOptions.SecondSpecProfile = panel.SecondSpecDropdown:GetValue()
-	NeatPlatesOptions.ThirdSpecProfile = panel.ThirdSpecDropdown:GetValue()
-	NeatPlatesOptions.FourthSpecProfile = panel.FourthSpecDropdown:GetValue()
+	if not NEATPLATES_IS_CLASSIC then
+		NeatPlatesOptions.SecondSpecProfile = panel.SecondSpecDropdown:GetValue()
+		NeatPlatesOptions.ThirdSpecProfile = panel.ThirdSpecDropdown:GetValue()
+		NeatPlatesOptions.FourthSpecProfile = panel.FourthSpecDropdown:GetValue()
+	end
 
 	-- NeatPlatesSettings.GlobalAuraList = panel.GlobalAuraEditBox:GetValue()
 	-- NeatPlatesSettings.GlobalEmphasizedAuraList = panel.GlobalEmphasizedAuraEditBox:GetValue()
@@ -376,9 +378,11 @@ local function SetPanelValues(panel)
 	panel.ActiveThemeDropdown:SetValue(NeatPlatesOptions.ActiveTheme)
 
 	panel.FirstSpecDropdown:SetValue(NeatPlatesOptions.FirstSpecProfile)
-	panel.SecondSpecDropdown:SetValue(NeatPlatesOptions.SecondSpecProfile)
-	panel.ThirdSpecDropdown:SetValue(NeatPlatesOptions.ThirdSpecProfile)
-	panel.FourthSpecDropdown:SetValue(NeatPlatesOptions.FourthSpecProfile)
+	if not NEATPLATES_IS_CLASSIC then
+		panel.SecondSpecDropdown:SetValue(NeatPlatesOptions.SecondSpecProfile)
+		panel.ThirdSpecDropdown:SetValue(NeatPlatesOptions.ThirdSpecProfile)
+		panel.FourthSpecDropdown:SetValue(NeatPlatesOptions.FourthSpecProfile)
+	end
 
 	panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
@@ -426,14 +430,14 @@ local function OnRefresh(panel)
 
 	SetPanelValues(panel)
 
-	------------------------
-	-- Spec Notes
-	------------------------
-	local currentSpec = GetSpecialization()
-
 	if NEATPLATES_IS_CLASSIC then
-		panel.FirstSpecLabel:SetText(L["ActiveProfile"])
+		panel.FirstSpecLabel:SetText(L["Active Profile"])
 	else
+		------------------------
+		-- Spec Notes
+		------------------------
+		local currentSpec = GetSpecialization()
+
 		------------------------
 		-- First Spec Details
 		------------------------
@@ -606,7 +610,7 @@ local function BuildInterfacePanel(panel)
 	---------------
 	-- Column 1
 	---------------
-	-- Spec 1
+-- Spec 1
 	panel.FirstSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.FirstSpecLabel:SetPoint("TOPLEFT", panel.ProfileLabel,"BOTTOMLEFT", 0, -8)
 	panel.FirstSpecLabel:SetWidth(170)
@@ -616,42 +620,44 @@ local function BuildInterfacePanel(panel)
 	panel.FirstSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFirstSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
 	panel.FirstSpecDropdown:SetPoint("TOPLEFT", panel.FirstSpecLabel, "BOTTOMLEFT", -20, -2)
 
-	-- Spec 3
-	panel.ThirdSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.ThirdSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecDropdown,"BOTTOMLEFT", 20, -8)
-	panel.ThirdSpecLabel:SetWidth(170)
-	panel.ThirdSpecLabel:SetJustifyH("LEFT")
-	panel.ThirdSpecLabel:SetText(L["Third Spec"])
-	panel.ThirdSpecLabel:Hide()
+	if not NEATPLATES_IS_CLASSIC then
+		-- Spec 3
+		panel.ThirdSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+		panel.ThirdSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecDropdown,"BOTTOMLEFT", 20, -8)
+		panel.ThirdSpecLabel:SetWidth(170)
+		panel.ThirdSpecLabel:SetJustifyH("LEFT")
+		panel.ThirdSpecLabel:SetText(L["Third Spec"])
+		panel.ThirdSpecLabel:Hide()
 
-	panel.ThirdSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesThirdSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
-	panel.ThirdSpecDropdown:SetPoint("TOPLEFT", panel.ThirdSpecLabel, "BOTTOMLEFT", -20, -2)
-	panel.ThirdSpecLabel:Hide()
+		panel.ThirdSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesThirdSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
+		panel.ThirdSpecDropdown:SetPoint("TOPLEFT", panel.ThirdSpecLabel, "BOTTOMLEFT", -20, -2)
+		panel.ThirdSpecLabel:Hide()
 
-	---------------
-	-- Column 2
-	---------------
-	-- Spec 2
-	panel.SecondSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.SecondSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecLabel,"TOPLEFT", 150, 0)
-	panel.SecondSpecLabel:SetWidth(170)
-	panel.SecondSpecLabel:SetJustifyH("LEFT")
-	panel.SecondSpecLabel:SetText(L["Second Spec"])
+		---------------
+		-- Column 2
+		---------------
+		-- Spec 2
+		panel.SecondSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+		panel.SecondSpecLabel:SetPoint("TOPLEFT", panel.FirstSpecLabel,"TOPLEFT", 150, 0)
+		panel.SecondSpecLabel:SetWidth(170)
+		panel.SecondSpecLabel:SetJustifyH("LEFT")
+		panel.SecondSpecLabel:SetText(L["Second Spec"])
 
-	panel.SecondSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesSecondSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
-	panel.SecondSpecDropdown:SetPoint("TOPLEFT",panel.SecondSpecLabel, "BOTTOMLEFT", -20, -2)
+		panel.SecondSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesSecondSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
+		panel.SecondSpecDropdown:SetPoint("TOPLEFT",panel.SecondSpecLabel, "BOTTOMLEFT", -20, -2)
 
-	-- Spec 4
-	panel.FourthSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.FourthSpecLabel:SetPoint("TOPLEFT", panel.SecondSpecDropdown,"BOTTOMLEFT", 20, -8)
-	panel.FourthSpecLabel:SetWidth(170)
-	panel.FourthSpecLabel:SetJustifyH("LEFT")
-	panel.FourthSpecLabel:SetText(L["Fourth Spec"])
-	panel.FourthSpecLabel:Hide()
+		-- Spec 4
+		panel.FourthSpecLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+		panel.FourthSpecLabel:SetPoint("TOPLEFT", panel.SecondSpecDropdown,"BOTTOMLEFT", 20, -8)
+		panel.FourthSpecLabel:SetWidth(170)
+		panel.FourthSpecLabel:SetJustifyH("LEFT")
+		panel.FourthSpecLabel:SetText(L["Fourth Spec"])
+		panel.FourthSpecLabel:Hide()
 
-	panel.FourthSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFourthSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
-	panel.FourthSpecDropdown:SetPoint("TOPLEFT",panel.FourthSpecLabel, "BOTTOMLEFT", -20, -2)
-	panel.FourthSpecDropdown:Hide()
+		panel.FourthSpecDropdown = PanelHelpers:CreateDropdownFrame("NeatPlatesFourthSpecDropdown", panel, HubProfileList, NeatPlatesSettings.DefaultProfile, nil, true)
+		panel.FourthSpecDropdown:SetPoint("TOPLEFT",panel.FourthSpecLabel, "BOTTOMLEFT", -20, -2)
+		panel.FourthSpecDropdown:Hide()
+	end
 
 
 	----------------------------------------------
@@ -661,7 +667,11 @@ local function BuildInterfacePanel(panel)
 	panel.ProfileManagementLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ProfileManagementLabel:SetFont(font, 22)
 	panel.ProfileManagementLabel:SetText(L["Profile Management"])
-	panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.ThirdSpecDropdown, "BOTTOMLEFT", 20, -20)
+	if NEATPLATES_IS_CLASSIC then
+		panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.FirstSpecDropdown, "BOTTOMLEFT", 20, -20)
+	else
+		panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.ThirdSpecDropdown, "BOTTOMLEFT", 20, -20)
+	end
 	panel.ProfileManagementLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	-- Profile Name
@@ -947,9 +957,11 @@ local function BuildInterfacePanel(panel)
 	panel.ActiveThemeDropdown.OnValueChanged = OnValueChange
 
 	panel.FirstSpecDropdown.OnValueChanged = OnValueChange
-	panel.SecondSpecDropdown.OnValueChanged = OnValueChange
-	panel.ThirdSpecDropdown.OnValueChanged = OnValueChange
-	panel.FourthSpecDropdown.OnValueChanged = OnValueChange
+	if not NEATPLATES_IS_CLASSIC then
+		panel.SecondSpecDropdown.OnValueChanged = OnValueChange
+		panel.ThirdSpecDropdown.OnValueChanged = OnValueChange
+		panel.FourthSpecDropdown.OnValueChanged = OnValueChange
+	end
 
 
 	local createNewProfile = function(profileName)
@@ -1117,10 +1129,6 @@ function panelevents:PLAYER_LOGIN()
 		SetCVar("threatWarning", 3)		-- Required for threat/aggro detection
 		NeatPlatesOptions.WelcomeShown = true
 
-		--NeatPlatesOptions.FirstSpecProfile = Role2Profile(1)
-		--NeatPlatesOptions.SecondSpecProfile = Role2Profile(2)
-		--NeatPlatesOptions.ThirdSpecProfile = Role2Profile(3)
-		--NeatPlatesOptions.FourthSpecProfile = Role2Profile(4)
 		NeatPlatesOptions.FirstSpecProfile = NeatPlatesSettings.DefaultProfile
 		NeatPlatesOptions.SecondSpecProfile = NeatPlatesSettings.DefaultProfile
 		NeatPlatesOptions.ThirdSpecProfile = NeatPlatesSettings.DefaultProfile

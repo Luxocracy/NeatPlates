@@ -78,7 +78,8 @@ local t = {
 
 local grid =  .0625
 local playeRole = "DAMAGER"
-local PlayerClass = "NONE"
+-- local PlayerClass = "NONE"
+local PlayerClass = select(2, UnitClass("player"))
 local playerSpec = 0
 local WidgetList = {}
 
@@ -110,7 +111,7 @@ local function GetPlayerPower()
 
 	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified)
 
-	if PlayerPowerType == 4 then
+	if PlayerPowerType == Enum.PowerType.Energy then
 		points = GetComboPoints("player", "target")
 	elseif PlayerPowerType == 5 then
 		maxPoints = 6
@@ -193,20 +194,22 @@ local function UpdateWidgetFrame(frame)
 		-- Combo point overlay
 		if t[PlayerClass]["OVERLAY"] then
 			if PlayerClass == "ROGUE" then
-				local chargedPowerPoints = GetUnitChargedPowerPoints("player");
-				-- there's only going to be 1 max
-				local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[1];
-				if chargedPowerPoints then
-					frame.Overlay.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
-					frame.Overlay:SetAlpha(1)
-				else
-					frame.Overlay:SetAlpha(0)
-				end
+				if not NEATPLATES_IS_CLASSIC then
+					local chargedPowerPoints = GetUnitChargedPowerPoints("player");
+					-- there's only going to be 1 max
+					local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[1];
+					if chargedPowerPoints then
+						frame.Overlay.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
+						frame.Overlay:SetAlpha(1)
+					else
+						frame.Overlay:SetAlpha(0)
+					end
 
-				if chargedPowerPointIndex == points then
-					frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
-				else
-					frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
+					if chargedPowerPointIndex == points then
+						frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+					else
+						frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
+					end
 				end
 			else
 				frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
