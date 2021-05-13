@@ -109,9 +109,9 @@ local function GetPlayerPower()
 	PlayerPowerType = t[PlayerClass]["POWER"]
 	PlayerPowerUnmodified = t[PlayerClass]["NOMOD"]
 
-	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified)
+	local maxPoints = UnitPowerMax("player", PlayerPowerType, PlayerPowerUnmodified) or 5
 
-	if PlayerPowerType == Enum.PowerType.Energy then
+	if PlayerPowerType == Enum.PowerType.ComboPoints then
 		points = GetComboPoints("player", "target")
 	elseif PlayerPowerType == 5 then
 		maxPoints = 6
@@ -440,12 +440,12 @@ local function SpecWatcherEvent(self, event, ...)
 	SetPlayerSpecData()
 end
 
-local SpecWatcher = CreateFrame("Frame")
-SpecWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-SpecWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
-SpecWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 if not NEATPLATES_IS_CLASSIC then
+	local SpecWatcher = CreateFrame("Frame")
 	SpecWatcher:SetScript("OnEvent", SpecWatcherEvent)
+	SpecWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	SpecWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
+	SpecWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SpecWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
 	SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
