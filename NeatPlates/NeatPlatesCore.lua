@@ -6,6 +6,7 @@
 local addonName, NeatPlatesInternal = ...
 local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 local NeatPlatesCore = CreateFrame("Frame", nil, WorldFrame)
+local NeatPlatesTarget
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 local ParseGUID = NeatPlatesUtility.ParseGUID
 NeatPlates = {}
@@ -99,6 +100,34 @@ local UpdateUnitIdentity
 local OnUpdate
 local OnNewNameplate
 local ForEachPlate
+
+-- Show Custom NeatPlates target frame
+local ShowEmulatedTargetPlate = false
+
+local function IsEmulatedFrame(guid)
+	if NeatPlatesTarget and NeatPlatesTarget.unitGUID == guid then return NeatPlatesTarget else return end
+end
+
+local function toggleNeatPlatesTarget(show, ...)
+	if not ShowEmulatedTargetPlate then return end
+	local friendlyPlates, enemyPlates = GetCVar("nameplateShowFriends") == "0" and UnitIsFriend("player", "target"), GetCVar("nameplateShowEnemies") == "0" and UnitIsEnemy("player", "target")
+
+	-- Create a new target frame if needed
+	if not NeatPlatesTarget then
+		NeatPlatesTarget = NeatPlatesUtility:CreateTargetFrame()
+		OnNewNameplate(NeatPlatesTarget)
+	end
+
+	local _,_,_,x,y = ...
+	local target = UnitExists("target")
+
+	if not show or friendlyPlates or enemyPlates then OnHideNameplate(NeatPlatesTarget, "target"); return end
+	if target then
+		OnShowNameplate(NeatPlatesTarget, "target")
+		if not x then x, y = GetCursorPosition() end
+		NeatPlatesTarget:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y+20)
+	end
+end
 
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate, show, cWidth, cHeight)
@@ -448,7 +477,7 @@ do
 
 		PlatesVisible[plate] = unitid
 		PlatesByUnit[unitid] = plate
-		if unitGUID then PlatesByGUID[unitGUID] = plate end
+		if unitGUID and unitid ~= "target" then PlatesByGUID[unitGUID] = plate end
 
 		unit.frame = extended
 		unit.alpha = 0
@@ -503,7 +532,7 @@ do
 
 		PlatesVisible[plate] = nil
 		PlatesByUnit[unitid] = nil
-		if unitGUID then PlatesByGUID[unitGUID] = nil end
+		if unitGUID and unitid ~= "target" then PlatesByGUID[unitGUID] = nil end
 
 		visual.extrabar:Hide()
 		visual.castbar:Hide()
@@ -535,6 +564,7 @@ do
 	-- OnHealthUpdate
 	function OnHealthUpdate(plate)
 		local unitid = PlatesVisible[plate]
+		if not unitid then return end
 
 		UpdateUnitCondition(plate, unitid)
 		ProcessUnitChanges()
@@ -1317,6 +1347,7 @@ do
 				--local children = plate:GetChildren() -- Do children even need to be hidden anymore when UnitFrame is unhooked
 				--if children then children:Hide() end
 				--if plate._frame then plate._frame:Show() end -- Show Questplates frame
+				if NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 
 				-- Unhook UnitFrame events
 				if plate.UnitFrame then
@@ -1333,11 +1364,29 @@ do
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
 
+		if NeatPlatesTarget and plate.extended.unit.guid == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(true, plate:GetPoint()) end
+
 		OnHideNameplate(plate, unitid)
+	end
+
+	local function UpdateCustomTarget()
+		local unitAlive = UnitIsDead("target") == false
+		local guid = UnitGUID("target")
+		HasTarget = (UnitExists("target") == true and not UnitIsUnit("target", "player"))
+		-- Create a new target frame if needed
+		if not NeatPlatesTarget then
+			NeatPlatesTarget = NeatPlatesUtility:CreateTargetFrame()
+			OnNewNameplate(NeatPlatesTarget)
+		end
+		-- Show Target frame, if other frame doesn't exist and isn't dead
+		if HasTarget and NeatPlatesTarget then NeatPlatesTarget.unitGUID = guid end
+		toggleNeatPlatesTarget(HasTarget and unitAlive and not PlatesByGUID[guid])
+		SetUpdateAll()
 	end
 
 	function CoreEvents:PLAYER_TARGET_CHANGED()
 		HasTarget = UnitExists("target") == true;
+		UpdateCustomTarget()
 		SetUpdateAll()
 	end
 
@@ -1717,6 +1766,7 @@ end
 --------------------------------------------------------------------------------------------------------------
 function NeatPlates:DisableCastBars() ShowCastBars = false end
 function NeatPlates:EnableCastBars() ShowCastBars = true end
+function NeatPlates:ToggleEmulatedTargetPlate(show) if not show then toggleNeatPlatesTarget(false) end; ShowEmulatedTargetPlate = show end
 
 function NeatPlates:SetCoreVariables(LocalVars)
 	ShowIntCast = LocalVars.IntCastEnable

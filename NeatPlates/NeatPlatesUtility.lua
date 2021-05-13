@@ -1742,8 +1742,18 @@ end
 
 PanelHelpers.EnableFreePositioning = EnableFreePositioning
 
+-- Custom target frame
+local function CreateTargetFrame()
+	local frame = CreateFrame("Frame", "NeatPlatesTarget", WorldFrame)
+	NeatPlatesTarget:Show()
+	NeatPlatesTarget:SetPoint("CENTER", UIParent, "CENTER", 0, 300)
+	NeatPlatesTarget:SetWidth(200)
+	NeatPlatesTarget:SetHeight(200)
+	NeatPlatesTarget:SetClampedToScreen(true)
+	return frame
+end
 
-
+NeatPlatesUtility.CreateTargetFrame = CreateTargetFrame
 
 ----------------------
 -- Call In() - Registers a callback, which hides the specified frame in X seconds

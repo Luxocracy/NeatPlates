@@ -80,6 +80,7 @@ NeatPlatesOptions = {
 
 	FriendlyAutomation = {},
 	EnemyAutomation = {},
+	EmulatedTargetPlate = false,
 	DisableCastBars = false,
 	ForceBlizzardFont = false,
 	BlizzardScaling = false,
@@ -222,6 +223,7 @@ local ThemeDropdownMenuItems = {}
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
 	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
+	NeatPlates:ToggleEmulatedTargetPlate(NeatPlatesOptions.EmulatedTargetPlate)
 
 	if NeatPlatesOptions._EnableMiniButton then
 		NeatPlatesUtility:CreateMinimapButton()
@@ -351,6 +353,7 @@ local function GetPanelValues(panel)
 
 	NeatPlatesOptions.FriendlyAutomation = panel.FriendlyAutomation:GetValue()
 	NeatPlatesOptions.EnemyAutomation = panel.EnemyAutomation:GetValue()
+	NeatPlatesOptions.EmulatedTargetPlate = panel.EmulatedTargetPlate:GetChecked()
 	NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
@@ -384,6 +387,7 @@ local function SetPanelValues(panel)
 		panel.FourthSpecDropdown:SetValue(NeatPlatesOptions.FourthSpecProfile)
 	end
 
+	panel.EmulatedTargetPlate:SetChecked(NeatPlatesOptions.EmulatedTargetPlate)
 	panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
@@ -825,9 +829,15 @@ local function BuildInterfacePanel(panel)
 	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAdditonalAuras, "BOTTOMLEFT", 0, -30)
 	panel.OtherOptionsLabel:SetTextColor(255/255, 105/255, 6/255)
 
+	-- Emulated Target Plate
+	panel.EmulatedTargetPlate = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EmulatedTargetPlate", panel, L["Emulate Target Nameplate"].."*")
+	panel.EmulatedTargetPlate:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
+	panel.EmulatedTargetPlate:SetScript("OnClick", function(self) NeatPlates:ToggleEmulatedTargetPlate(self:GetChecked()) end)
+	panel.EmulatedTargetPlate.tooltipText = L["This feature is highly experimental, use on your own risk"]
+
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
-	panel.DisableCastBars:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
+	panel.DisableCastBars:SetPoint("TOPLEFT", panel.EmulatedTargetPlate, "BOTTOMLEFT", 0, -8)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
 	-- ForceBlizzardFont
