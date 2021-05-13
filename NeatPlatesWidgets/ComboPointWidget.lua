@@ -275,7 +275,9 @@ end
 local WatcherFrame = CreateFrame("Frame", nil, WorldFrame )
 local isEnabled = false
 WatcherFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-WatcherFrame:RegisterEvent("RUNE_POWER_UPDATE")
+if not NEATPLATES_IS_CLASSIC then
+	WatcherFrame:RegisterEvent("RUNE_POWER_UPDATE")
+end
 WatcherFrame:RegisterEvent("UNIT_POWER_FREQUENT")
 WatcherFrame:RegisterEvent("UNIT_MAXPOWER")
 WatcherFrame:RegisterEvent("UNIT_POWER_UPDATE")
@@ -370,7 +372,9 @@ end
 
 -- Widget Creation
 local function CreateWidgetFrame(parent)
-	SetPlayerSpecData()
+	if not NEATPLATES_IS_CLASSIC then
+		SetPlayerSpecData()
+	end
 
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:Hide()
@@ -434,13 +438,15 @@ local function SpecWatcherEvent(self, event, ...)
 end
 
 local SpecWatcher = CreateFrame("Frame")
-SpecWatcher:SetScript("OnEvent", SpecWatcherEvent)
 SpecWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 SpecWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
 SpecWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
-SpecWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
-SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+if not NEATPLATES_IS_CLASSIC then
+	SpecWatcher:SetScript("OnEvent", SpecWatcherEvent)
+	SpecWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+	SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+end
 
 NeatPlatesWidgets.CreateComboPointWidget = CreateWidgetFrame
 NeatPlatesWidgets.SetComboPointsWidgetOptions = SetComboPointsWidgetOptions

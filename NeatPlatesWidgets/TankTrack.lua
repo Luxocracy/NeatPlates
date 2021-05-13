@@ -42,18 +42,44 @@ local function IsPlayerTank()
 	return playerTankRole
 end
 
-local function UpdatePlayerRole()
-	local playerTankAura = false
+if NEATPLATES_IS_CLASSIC then
+	local function UpdatePlayerRole(playerTankAura)
+		if not playerTankAura then
+			if playerClass == "WARRIOR" then
+				playerTankAura = GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
+			elseif playerClass == "DRUID" then
+				playerTankAura = GetShapeshiftForm() == 1 -- Bear Form
+			elseif playerClass == "PALADIN" then
+				for i=1,40 do
+					local spellId = select(10, UnitBuff("player",i))
+					if spellId == rfSpellId then
+						playerTankAura = true
+					end
+				end
+			end
+		end
 
-	-- Look at the Player's Specialization
-	local specializationIndex = tonumber(GetSpecialization())
+		if playerTankAura then
+			playerTankRole = true
+		else
+			playerTankRole = false
+		end
+	end
+else
+	local function UpdatePlayerRole()
+		local playerTankAura = false
 
-	if specializationIndex and GetSpecializationRole(specializationIndex) == "TANK" then
-		playerTankRole = true
-	else
-		playerTankRole = false
+		-- Look at the Player's Specialization
+		local specializationIndex = tonumber(GetSpecialization())
+
+		if specializationIndex and GetSpecializationRole(specializationIndex) == "TANK" then
+			playerTankRole = true
+		else
+			playerTankRole = false
+		end
 	end
 end
+
 
 ------------------------------------------------------------------------
 -- UpdateGroupRoles: Builds a list of tanks and squishies
@@ -92,9 +118,33 @@ local function UpdateGroupRoles()
 
 end
 
-local function TankWatcherEvents(self, event, ...)
-	UpdateGroupRoles()
-	UpdatePlayerRole()
+if NEATPLATES_IS_CLASSIC then
+	local function TankWatcherEvents(self, event, ...)
+		local tankAura = false
+		local triggerUpdate = event ~= "COMBAT_LOG_EVENT_UNFILTERED"
+
+		-- Check for Tank Aura application/removal
+		if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellId,spellName = CombatLogGetCurrentEventInfo()
+			if (event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_APPLIED") and sourceGUID == playerGUID and destGUID == playerGUID then
+				spellId = select(7, GetSpellInfo(spellName))
+				if spellId == rfSpellId then
+					if event == "SPELL_AURA_APPLIED" then tankAura = true end
+					triggerUpdate = true
+				end
+			end
+		end
+
+		if triggerUpdate then
+			UpdateGroupRoles()
+			UpdatePlayerRole(tankAura)
+		end
+	end
+else
+	local function TankWatcherEvents(self, event, ...)
+		UpdateGroupRoles()
+		UpdatePlayerRole()
+	end
 end
 
 if not TankWatcher then TankWatcher = CreateFrame("Frame") end
@@ -103,8 +153,10 @@ TankWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
 TankWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
 TankWatcher:RegisterEvent("UNIT_PET")
 TankWatcher:RegisterEvent("PET_BAR_UPDATE_USABLE")
-TankWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-TankWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+if not NEATPLATES_IS_CLASSIC then
+	TankWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	TankWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+end
 TankWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 
 

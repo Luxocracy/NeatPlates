@@ -288,7 +288,10 @@ local function ApplyPanelSettings()
 	-- Load Hub Profile
 	ActiveProfile = NeatPlatesSettings.DefaultProfile
 
-	local currentSpec = GetSpecialization()
+	local currentSpec = 1
+	if not NEATPLATES_IS_CLASSIC then
+		currentSpec = GetSpecialization()
+	end
 
 	if currentSpec == 4 then
 		ActiveProfile = NeatPlatesOptions.FourthSpecProfile
@@ -428,45 +431,49 @@ local function OnRefresh(panel)
 	------------------------
 	local currentSpec = GetSpecialization()
 
-	------------------------
-	-- First Spec Details
-	------------------------
-	local id, name = GetSpecializationInfo(1)
+	if NEATPLATES_IS_CLASSIC then
+		panel.FirstSpecLabel:SetText(L["ActiveProfile"])
+	else
+		------------------------
+		-- First Spec Details
+		------------------------
+		local id, name = GetSpecializationInfo(1)
 
-	if name then
-		if currentSpec == 1 then name = name.." ("..L["Active"]..")" end
-		panel.FirstSpecLabel:SetText(name)
-	end
-	------------------------
-	-- Second Spec Details
-	------------------------
-	local id, name = GetSpecializationInfo(2)
+		if name then
+			if currentSpec == 1 then name = name.." ("..L["Active"]..")" end
+			panel.FirstSpecLabel:SetText(name)
+		end
+		------------------------
+		-- Second Spec Details
+		------------------------
+		local id, name = GetSpecializationInfo(2)
 
-	if name then
-		if currentSpec == 2 then name = name.." ("..L["Active"]..")" end
-		panel.SecondSpecLabel:SetText(name)
-	end
-	------------------------
-	-- Third Spec Details
-	------------------------
-	local id, name = GetSpecializationInfo(3)
+		if name then
+			if currentSpec == 2 then name = name.." ("..L["Active"]..")" end
+			panel.SecondSpecLabel:SetText(name)
+		end
+		------------------------
+		-- Third Spec Details
+		------------------------
+		local id, name = GetSpecializationInfo(3)
 
-	if name then
-		if currentSpec == 3 then name = name.." ("..L["Active"]..")" end
-		panel.ThirdSpecLabel:SetText(name)
-		panel.ThirdSpecLabel:Show()
-		panel.ThirdSpecDropdown:Show()
-	end
-	------------------------
-	-- Fourth Spec Details
-	------------------------
-	local id, name = GetSpecializationInfo(4)
+		if name then
+			if currentSpec == 3 then name = name.." ("..L["Active"]..")" end
+			panel.ThirdSpecLabel:SetText(name)
+			panel.ThirdSpecLabel:Show()
+			panel.ThirdSpecDropdown:Show()
+		end
+		------------------------
+		-- Fourth Spec Details
+		------------------------
+		local id, name = GetSpecializationInfo(4)
 
-	if name then
-		if currentSpec == 4 then name = name.." ("..L["Active"]..")" end
-		panel.FourthSpecLabel:SetText(name)
-		panel.FourthSpecLabel:Show()
-		panel.FourthSpecDropdown:Show()
+		if name then
+			if currentSpec == 4 then name = name.." ("..L["Active"]..")" end
+			panel.FourthSpecLabel:SetText(name)
+			panel.FourthSpecLabel:Show()
+			panel.FourthSpecDropdown:Show()
+		end
 	end
 
 end
@@ -1047,11 +1054,12 @@ end
 -- Auto-Loader
 -------------------------------------------------------------------------------------
 local panelevents = {}
-
-function panelevents:ACTIVE_TALENT_GROUP_CHANGED(self)
-	--print("Panel:Talent Group Changed")
-	ApplyPanelSettings()
-	--OnRefresh(NeatPlatesInterfacePanel)
+if not NEATPLATES_IS_CLASSIC then
+	function panelevents:ACTIVE_TALENT_GROUP_CHANGED(self)
+		--print("Panel:Talent Group Changed")
+		ApplyPanelSettings()
+		--OnRefresh(NeatPlatesInterfacePanel)
+	end
 end
 
 function panelevents:PLAYER_ENTERING_WORLD()

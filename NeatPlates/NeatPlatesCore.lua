@@ -10,6 +10,10 @@ local GetPetOwner = NeatPlatesUtility.GetPetOwner
 local ParseGUID = NeatPlatesUtility.ParseGUID
 NeatPlates = {}
 
+if NEATPLATES_IS_CLASSIC then
+	UnitEffectiveLevel = UnitLevel
+end
+
 -- Local References
 local _
 local max = math.max
@@ -400,7 +404,9 @@ do
 				UpdateIndicator_HealthBar()
 				UpdateIndicator_PowerBar()
 				UpdateIndicator_Highlight()
-				UpdateIndicator_ExtraBar()
+				if not NEATPLATES_IS_CLASSIC then
+					UpdateIndicator_ExtraBar()
+				end
 			end
 
 			-- Update Widgets
@@ -1485,8 +1491,11 @@ do
 
 	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
 	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
-	CoreEvents.UNIT_SPELLCAST_INTERRUPTIBLE = UnitSpellcastMidway
-	CoreEvents.UNIT_SPELLCAST_NOT_INTERRUPTIBLE = UnitSpellcastMidway
+
+	if not NEATPLATES_IS_CLASSIC then
+		CoreEvents.UNIT_SPELLCAST_INTERRUPTIBLE = UnitSpellcastMidway
+		CoreEvents.UNIT_SPELLCAST_NOT_INTERRUPTIBLE = UnitSpellcastMidway
+	end
 
 	CoreEvents.UNIT_LEVEL = UnitConditionChanged
 	CoreEvents.UNIT_THREAT_SITUATION_UPDATE = UnitConditionChanged
