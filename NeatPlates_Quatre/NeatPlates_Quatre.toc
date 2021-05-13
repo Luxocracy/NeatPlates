@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 90005
 ## Title: NeatPlates: Quatre Theme
 ## Notes: It's the 4th!
 ## Author: Binny

@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 90005
 ## Title: NeatPlates: Slim Vertical|r
 ## Author: Dotfix
 ## Version: 2.2
