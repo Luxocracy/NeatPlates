@@ -17,4 +17,4 @@
 *.RTF	 diff=astextplain
 
 *.toc merge=ours
-*.pkgmeta merge=ours
+.pkgmeta merge=ours
