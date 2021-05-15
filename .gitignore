@@ -29,3 +29,5 @@ TODO.txt
 libs/
 *.code-workspace
 .vscode/
+
+*.toc merge=ours
