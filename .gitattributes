@@ -15,6 +15,3 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
-
-*.toc merge=ours
-.pkgmeta merge=ours
