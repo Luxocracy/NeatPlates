@@ -454,7 +454,7 @@ local function UpdateIconGrid(frame, unitid)
 		EmphasizedAuraCount = math.max(1, EmphasizedAuraCount) -- Make sure we aren't setting 0 as this can detach the frame...
 
 		-- Set Height/Width of Aura Frames
-		frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) -- Set Height of the parent for easier alignment of the Emphasized aura.
+		if DisplayedRows > 0 then frame:SetHeight(DisplayedRows*16 + (DisplayedRows-1)*8) else frame:SetHeight(2) end -- Set Height of the parent for easier alignment of the Emphasized aura.
 		frame.emphasized:SetWidth(EmphasizedAuraCount * AuraWidth)
 end
 
