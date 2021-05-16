@@ -704,7 +704,7 @@ local function UpdateEmphasizedIconConfig(frame)
 	local auraLimit = MaxEmphasizedAuras
 	frame:SetScale(EmphasizedAuraScale)
 	frame:ClearAllPoints()
-	frame:SetPoint("BOTTOM", frame:GetParent(), "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
+	frame:SetPoint("BOTTOM", frame:GetParent(), EmphasizedScaleOptions.anchor or "TOP", EmphasizedScaleOptions.offset.x, 2 + EmphasizedScaleOptions.offset.y)
 
 	if iconTable then
 		-- Create Icons

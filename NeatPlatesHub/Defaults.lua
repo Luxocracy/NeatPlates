@@ -294,7 +294,7 @@ NeatPlatesHubDefaults = {
 	AuraScale = 1,
 	EmphasizedAuraScale = 2,
 	WidgetAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
-	WidgetEmphasizedAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},
+	WidgetEmphasizedAuraScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}, anchor = "TOP"},
 	EmphasizedSlots = 1,
 	PreciseAuraThreshold = 10,
 	WidgetAdditionalAuras = {},
