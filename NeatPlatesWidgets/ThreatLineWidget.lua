@@ -1,6 +1,7 @@
 
 local GetRelativeThreat = NeatPlatesUtility.GetRelativeThreat
 local GetGroupInfo = NeatPlatesUtility.GetGroupInfo
+local IsEnemyTanked = NeatPlatesWidgets.IsEnemyTanked
 
 
 ------------------------
@@ -117,9 +118,7 @@ local function UpdateThreatLine(frame, unitid)
 		frame.Line:SetPoint(anchor, frame, "CENTER")
 
 		if targetOf and targetOf ~= "player" then
-			if UnitIsUnit(targetOf, "pet")
-				or GetPartyAssignment("MAINTANK", targetOf)
-				or ("TANK" == UnitGroupRolesAssigned(targetOf)) then
+			if IsEnemyTanked then
 					threatcolor = frame._TankedColor
 			end
 
