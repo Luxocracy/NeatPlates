@@ -1,3 +1,7 @@
+local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
+NeatPlatesWidgetSettings = {
+	RaidTankList = {}
+}
 
 ------------------------------
 -- Tank Aura/Role Tracking
@@ -53,8 +57,8 @@ local function IsPlayerTank()
 	return playerTankRole
 end
 
-if NEATPLATES_IS_CLASSIC then
-	local function UpdatePlayerRole(playerTankAura)
+local function UpdatePlayerRole(playerTankAura)
+	if NEATPLATES_IS_CLASSIC then
 		if not playerTankAura then
 			if playerClass == "WARRIOR" then
 				playerTankAura = GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
@@ -75,9 +79,7 @@ if NEATPLATES_IS_CLASSIC then
 		else
 			playerTankRole = false
 		end
-	end
-else
-	local function UpdatePlayerRole()
+	else
 		local playerTankAura = false
 
 		-- Look at the Player's Specialization
@@ -91,14 +93,31 @@ else
 	end
 end
 
+------------------------------------------------------------------------
+-- UpdateGroupRoles: Builds a list of tanks and squishies
+------------------------------------------------------------------------
+local function UpdateGroupRoles()
+	if NEATPLATES_IS_CLASSIC then
+		if not IsInGroup() then
+			RaidTankList = wipe(NeatPlatesWidgetSettings.RaidTankList)
+		else
 
+			local groupType, groupSize = GetGroupInfo()
+			local raidIndex
 
-if NEATPLATES_IS_CLASSIC then
-	------------------------------------------------------------------------
-	-- UpdateGroupRoles: Builds a list of tanks and squishies
-	------------------------------------------------------------------------
-	local function UpdateGroupRoles()
+			for raidIndex = 1, groupSize do
+				local raidid = "raid"..tostring(raidIndex)
+				local guid = UnitGUID(raidid)
 
+				local isTank = GetPartyAssignment("MAINTANK", raidid)
+
+				if isTank then
+					RaidTankList[guid] = true
+				end
+
+			end
+		end
+	else
 		RaidTankList = wipe(RaidTankList)
 		-- If a player is in a dungeon, no need for multi-tanking
 		if UnitInRaid("player") then
@@ -129,8 +148,28 @@ if NEATPLATES_IS_CLASSIC then
 		end
 
 	end
+end
 
-	local function TankWatcherEvents(self, event, ...)
+if NEATPLATES_IS_CLASSIC then
+	local function ToggleTank(arg)
+		if not IsInGroup() or not UnitExists("target") or UnitIsUnit("player", "target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
+			if arg ~= "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
+		else
+			local name = UnitName("target")
+			local guid = UnitGUID("target")
+			local isTank = GetPartyAssignment("MAINTANK", "target") or not RaidTankList[guid]
+			local role
+			if isTank then role = blue..L["Tank"] else role = white..L["None"] end
+
+			RaidTankList[guid] = isTank
+
+			print(orange..L["NeatPlates"]..": "..white..name.." - "..role)
+		end
+	end
+end
+
+local function TankWatcherEvents(self, event, ...)
+	if NEATPLATES_IS_CLASSIC then
 		local tankAura = false
 		local triggerUpdate = event ~= "COMBAT_LOG_EVENT_UNFILTERED"
 
@@ -150,32 +189,7 @@ if NEATPLATES_IS_CLASSIC then
 			UpdateGroupRoles()
 			UpdatePlayerRole(tankAura)
 		end
-	end
-else
-	local function UpdateGroupRoles()
-
-		if not IsInGroup() then
-			RaidTankList = wipe(NeatPlatesWidgetSettings.RaidTankList)
-		else
-
-			local groupType, groupSize = GetGroupInfo()
-			local raidIndex
-
-			for raidIndex = 1, groupSize do
-				local raidid = "raid"..tostring(raidIndex)
-				local guid = UnitGUID(raidid)
-
-				local isTank = GetPartyAssignment("MAINTANK", raidid)
-
-				if isTank then
-					RaidTankList[guid] = true
-				end
-
-			end
-		end
-	end
-
-	local function TankWatcherEvents(self, event, ...)
+	else
 		UpdateGroupRoles()
 		UpdatePlayerRole()
 	end
@@ -190,6 +204,10 @@ TankWatcher:RegisterEvent("PET_BAR_UPDATE_USABLE")
 if not NEATPLATES_IS_CLASSIC then
 	TankWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	TankWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+else
+	if playerClass == "PALADIN" then
+		TankWatcher:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	end
 end
 TankWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 
@@ -204,7 +222,7 @@ NeatPlatesWidgets.EnableTankWatch = Dummy
 NeatPlatesWidgets.DisableTankWatch = Dummy
 --]]
 
-
-
-
-
+if NEATPLATES_IS_CLASSIC then
+	SLASH_NeatPlatesTank1 = '/nptank'
+	SlashCmdList['NeatPlatesTank'] = ToggleTank;
+end
