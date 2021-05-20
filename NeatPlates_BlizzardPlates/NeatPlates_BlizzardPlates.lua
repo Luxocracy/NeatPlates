@@ -119,7 +119,7 @@ StyleDefault.targetindicator_arrowleft = {
 }
 
 StyleDefault.threatborder = {
-	texture =					"Interface\\TargetingFrame\\UI-TargetingFrame-Flash",
+	texture =					path.."BlizzardPlates-WarningGlow",
 	width = 140,
 	height = 32,
 	x = 0,

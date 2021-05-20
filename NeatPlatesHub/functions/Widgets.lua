@@ -631,6 +631,10 @@ local function OnInitializeWidgets(extended, configTable)
 	local EnableThreatPercentageWidget = LocalVars.WidgetThreatPercentage
 	local EnableRangeWidget = LocalVars.WidgetRangeIndicator
 
+	if NEATPLATES_IS_CLASSIC then
+		EnableAbsorbWidget = false
+	end
+
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
 	InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
