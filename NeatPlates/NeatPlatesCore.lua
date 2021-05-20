@@ -1091,6 +1091,8 @@ do
 
 		if isTradeSkill then return end
 
+		if NEATPLATES_IS_CLASSIC then notInterruptible = false end
+
 		unit.isCasting = true
 		unit.interrupted = false
 		unit.interruptLogged = false
