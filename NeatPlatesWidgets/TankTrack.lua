@@ -15,11 +15,14 @@ local RaidTankList = {}
 local inRaid = false
 local playerTankRole = false
 local currentSpec = 0
+local playerClass = select(2, UnitClass("player"))
+local rfSpellId = 25780
+local playerGUID = UnitGUID("player")
 
 local cachedAura = false
 local cachedRole = false
 local TankWatcher
-
+local white, orange, blue, green, red = "|cffffffff", "|cFFFF6906", "|cFF3782D1", "|cFF60E025", "|cFFFF1100"
 
 
 local function IsEnemyTanked(unit)
@@ -150,21 +153,19 @@ local function UpdateGroupRoles()
 	end
 end
 
-if NEATPLATES_IS_CLASSIC then
-	local function ToggleTank(arg)
-		if not IsInGroup() or not UnitExists("target") or UnitIsUnit("player", "target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
-			if arg ~= "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
-		else
-			local name = UnitName("target")
-			local guid = UnitGUID("target")
-			local isTank = GetPartyAssignment("MAINTANK", "target") or not RaidTankList[guid]
-			local role
-			if isTank then role = blue..L["Tank"] else role = white..L["None"] end
+local function ToggleTank(arg)
+	if not IsInGroup() or not UnitExists("target") or UnitIsUnit("player", "target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
+		if arg ~= "noError" then print(orange..L["NeatPlates"]..": "..red..L["Couldn't update the targets role."]) end
+	else
+		local name = UnitName("target")
+		local guid = UnitGUID("target")
+		local isTank = GetPartyAssignment("MAINTANK", "target") or not RaidTankList[guid]
+		local role
+		if isTank then role = blue..L["Tank"] else role = white..L["None"] end
 
-			RaidTankList[guid] = isTank
+		RaidTankList[guid] = isTank
 
-			print(orange..L["NeatPlates"]..": "..white..name.." - "..role)
-		end
+		print(orange..L["NeatPlates"]..": "..white..name.." - "..role)
 	end
 end
 
