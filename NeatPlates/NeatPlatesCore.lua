@@ -416,9 +416,9 @@ do
 	end
 
 	-- ProcessUnitChanges
-	local function ProcessUnitChanges()
+	local function ProcessUnitChanges(unitchanged)
 			-- Unit Cache: Determine if data has changed
-			unitchanged = false
+			unitchanged = unitchanged or false
 
 			for key, value in pairs(unit) do
 				if unitcache[key] ~= value then
@@ -427,7 +427,7 @@ do
 			end
 
 			-- Update Style/Indicators
-			if unitchanged or UpdateAll or (not style)then --
+			if unitchanged or UpdateAll or (not style) then
 				CheckNameplateStyle()
 				UpdateIndicator_Standard()
 				UpdateIndicator_HealthBar()
@@ -567,7 +567,7 @@ do
 		if not unitid then return end
 
 		UpdateUnitCondition(plate, unitid)
-		ProcessUnitChanges()
+		ProcessUnitChanges(true)
 		--UpdateIndicator_HealthBar()		-- Just to be on the safe side
 	end
 
