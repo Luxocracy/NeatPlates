@@ -421,6 +421,7 @@ do
 			unitchanged = unitchanged or false
 
 			for key, value in pairs(unit) do
+				if unitchanged then break end
 				if unitcache[key] ~= value then
 					unitchanged = true
 				end
