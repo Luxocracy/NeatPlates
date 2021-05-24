@@ -47,9 +47,10 @@ local ShowSpellTarget = false
 local ThreatSoloEnable = true
 local ReplaceUnitNameArenaID = false
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
-local ResetPlates, UpdateAll = false, false
+local ResetPlates, UpdateAll, UpdateAllHealth = false, false, false
 local OverrideFonts = false
 local OverrideOutline = 1
+local HealthTicker = nil
 -- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
@@ -74,6 +75,7 @@ local function IsPlateShown(plate) return plate and plate:IsShown() end
 -- Queueing
 local function SetUpdateMe(plate) plate.UpdateMe = true end
 local function SetUpdateAll() UpdateAll = true end
+local function SetUpdateAllHealth() UpdateAllHealth = true end
 local function SetUpdateHealth(source) source.parentPlate.UpdateHealth = true end
 
 -- Overriding
@@ -204,7 +206,7 @@ do
 		-- Poll Loop
 		local plate, curChildren
 
-        -- Detect when cursor leaves the mouseover unit
+    -- Detect when cursor leaves the mouseover unit
 		if HasMouseover and not UnitExists("mouseover") then
 			HasMouseover = false
 			SetUpdateAll()
@@ -212,7 +214,7 @@ do
 
 		for plate, unitid in pairs(PlatesVisible) do
 			local UpdateMe = UpdateAll or plate.UpdateMe
-			local UpdateHealth = plate.UpdateHealth
+			local UpdateHealth = plate.UpdateHealth or UpdateAllHealth
 			local carrier = plate.carrier
 			local extended = plate.extended
 
@@ -245,6 +247,7 @@ do
 
 		-- Reset Mass-Update Flag
 		UpdateAll = false
+		UpdateAllHealth = false
 	end
 
 
@@ -1800,3 +1803,10 @@ function NeatPlates:EnableFadeIn() EnableFadeIn = true; end
 function NeatPlates:DisableFadeIn() EnableFadeIn = nil; end
 NeatPlates.RequestWidgetUpdate = NeatPlates.RequestUpdate
 NeatPlates.RequestDelegateUpdate = NeatPlates.RequestUpdate
+
+function NeatPlates.ToggleHealthTicker(enabled)
+	if HealthTicker then HealthTicker:Cancel() end
+	if enabled then
+		HealthTicker = C_Timer.NewTicker(0.25, function() SetUpdateAllHealth() end)
+	end
+end

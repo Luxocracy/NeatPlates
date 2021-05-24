@@ -88,6 +88,7 @@ NeatPlatesOptions = {
 	BlizzardWidgets = true,
 	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
+	ForceHealthUpdates = false,
 
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
@@ -222,7 +223,8 @@ local ThemeDropdownMenuItems = {}
 
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
-	NeatPlates.OverrideFonts( NeatPlatesOptions.ForceBlizzardFont)
+	NeatPlates.OverrideFonts(NeatPlatesOptions.ForceBlizzardFont)
+	NeatPlates.ToggleHealthTicker(NeatPlatesOptions.ForceHealthUpdates)
 	if NEATPLATES_IS_CLASSIC then
 		NeatPlates:ToggleEmulatedTargetPlate(NeatPlatesOptions.EmulatedTargetPlate)
 	end
@@ -362,6 +364,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.BlizzardWidgets = panel.BlizzardWidgets:GetChecked()
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
+	NeatPlatesOptions.ForceHealthUpdates = panel.ForceHealthUpdates:GetChecked()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
 	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
@@ -399,6 +402,7 @@ local function SetPanelValues(panel)
 	panel.BlizzardWidgets:SetChecked(NeatPlatesOptions.BlizzardWidgets)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
+	panel.ForceHealthUpdates:SetChecked(NeatPlatesOptions.ForceHealthUpdates)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
 	panel.FriendlyAutomation:SetValue(NeatPlatesOptions.FriendlyAutomation)
@@ -850,10 +854,17 @@ local function BuildInterfacePanel(panel)
 	end
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
 
+	-- ForceHealthUpdates
+	panel.ForceHealthUpdates = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceHealthUpdates", panel, L["Force Health Updates"])
+	panel.ForceHealthUpdates:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
+	panel.ForceHealthUpdates:SetScript("OnClick", function(self) NeatPlates.ToggleHealthTicker( self:GetChecked()) end)
+	panel.ForceHealthUpdates.tooltipText = L["Forces health to update every .25sec, try this if you are having health update issues"]
+
 	-- ForceBlizzardFont
 	panel.ForceBlizzardFont = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceBlizzardFont", panel, L["Force Multi-Lingual Font (Requires /reload)"])
-	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
+	panel.ForceBlizzardFont:SetPoint("TOPLEFT", panel.ForceHealthUpdates, "TOPLEFT", 0, -25)
 	panel.ForceBlizzardFont:SetScript("OnClick", function(self) NeatPlates.OverrideFonts( self:GetChecked()) end)
+
 
 	-- Blizzard Scaling
 	panel.BlizzardScaling = PanelHelpers:CreateCheckButton("NeatPlatesOptions_BlizzardScaling", panel, L["Use Blizzard Scaling"])
