@@ -133,32 +133,38 @@ end
 
 -- UpdateNameplateSize
 local function UpdateNameplateSize(plate, show, cWidth, cHeight)
-	local scaleStandard = activetheme.SetScale()
-	local clickableWidth, clickableHeight = NeatPlatesPanel.GetClickableArea()
-	local hitbox = {
-		width = activetheme.Default.hitbox.width * (cWidth or clickableWidth),
-		height = activetheme.Default.hitbox.height * (cHeight or clickableHeight),
-		x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
-		y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
-	}
+	-- Needs return and timer or size will be set incorrectly on startup, no idea why...
+	if not plate then return end
 
-	if not InCombatLockdown() then
-		if IsInInstance() then
-			local zeroBasedScale = tonumber(GetCVar("NamePlateVerticalScale")) - 1.0;
-			local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
-			SetNamePlateFriendlySize(110 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))  -- Reset to blizzard nameplate default to avoid issues if we are not allowed to modify the nameplate
-		else SetNamePlateFriendlySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) end -- Clickable area of the nameplate
-		SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
-	end
+	C_Timer.NewTimer(0.1, function()
+		local scaleStandard = activetheme.SetScale()
+		local clickableWidth, clickableHeight = NeatPlatesPanel.GetClickableArea()
+		local hitbox = {
+			width = activetheme.Default.hitbox.width * (cWidth or clickableWidth),
+			height = activetheme.Default.hitbox.height * (cHeight or clickableHeight),
+			x = (activetheme.Default.hitbox.x*-1) * scaleStandard,
+			y = (activetheme.Default.hitbox.y*-1) * scaleStandard,
+		}
 
-	if plate then
-		plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
-		plate.extended.visual.hitbox:SetPoint("CENTER", plate)
-		plate.extended.visual.hitbox:SetWidth(hitbox.width)
-		plate.extended.visual.hitbox:SetHeight(hitbox.height)
+		if not InCombatLockdown() then
+			if IsInInstance() then
+				local zeroBasedScale = tonumber(GetCVar("NamePlateVerticalScale")) - 1.0;
+				local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
+				SetNamePlateFriendlySize(110 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))  -- Reset to blizzard nameplate default to avoid issues if we are not allowed to modify the nameplate
+			else SetNamePlateFriendlySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) end -- Clickable area of the nameplate
+			SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
+		end
 
-		if show then plate.extended.visual.hitbox:Show() else plate.extended.visual.hitbox:Hide() end
-	end
+		if plate then
+			plate.carrier:SetPoint("CENTER", plate, "CENTER", hitbox.x, hitbox.y)	-- Offset
+			plate.extended.visual.hitbox:SetPoint("CENTER", plate)
+			plate.extended.visual.hitbox:SetWidth(hitbox.width)
+			plate.extended.visual.hitbox:SetHeight(hitbox.height)
+
+			if show then plate.extended.visual.hitbox:Show() else plate.extended.visual.hitbox:Hide() end
+		end
+
+	end)
 end
 
 -- UpdateReferences
