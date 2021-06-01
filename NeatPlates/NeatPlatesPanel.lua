@@ -333,6 +333,7 @@ local function GetCVarValues(panel)
 		NameplateFriendlyNPCs = (function() if GetCVar("nameplateShowFriendlyNPCs") == "1" then return true else return false end end)(),
 		NameplateMaxDistance = GetCVar("nameplateMaxDistance"),
 		NameplateOccludedAlphaMult = GetCVar("nameplateOccludedAlphaMult"),
+		NameplateNotSelectedAlpha = GetCVar("nameplateNotSelectedAlpha"),
 		NameplateMinAlpha = GetCVar("nameplateMinAlpha"),
 		NameplateMaxAlpha = GetCVar("nameplateMaxAlpha"),
 		NameplateMinAlphaDistance = GetCVar("nameplateMinAlphaDistance"),
@@ -926,6 +927,11 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateOccludedAlphaMult:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 0, -50)
 	panel.NameplateOccludedAlphaMult.Callback = function(self) SetCVarValue(self, "nameplateOccludedAlphaMult") end
 	panel.NameplateOccludedAlphaMult.tooltipText = L["The opacity multiplier for units occluded by line of sight"]
+
+	panel.NameplateNotSelectedAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateNotSelectedAlpha", panel, L["Non-target Alpha"], 1, 0, 1, 0.01, "ACTUAL", 170)
+	panel.NameplateNotSelectedAlpha:SetPoint("TOPLEFT", panel.NameplateMaxDistance, "TOPLEFT", 200, -50)
+	panel.NameplateNotSelectedAlpha.Callback = function(self) SetCVarValue(self, "nameplateNotSelectedAlpha") end
+	panel.NameplateNotSelectedAlpha.tooltipText = L["The opacity of nameplates when not selected, there is also options for this per profile"]
 
 	panel.NameplateMinAlpha = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlpha", panel, L["Minimum Alpha"], 0.6, 0, 1, 0.01, "ACTUAL", 170)
 	panel.NameplateMinAlpha:SetPoint("TOPLEFT", panel.NameplateOccludedAlphaMult, "TOPLEFT", 0, -50)
