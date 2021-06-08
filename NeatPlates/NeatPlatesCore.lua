@@ -1376,7 +1376,7 @@ do
 		local unitid = ...
 		local plate = GetNamePlateForUnit(unitid);
 
-		if NEATPLATES_IS_CLASSIC and NeatPlatesTarget and plate.extended.unit.guid == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(true, plate:GetPoint()) end
+		if NEATPLATES_IS_CLASSIC and NeatPlatesTarget and plate.extended.unit.guid == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(true) end
 
 		OnHideNameplate(plate, unitid)
 	end
