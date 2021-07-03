@@ -167,7 +167,7 @@ local function UpdateTotemIconWidget(self, unit)
 	if icon then
 		self.Icon:SetTexture(icon)
 		self:Show()
-		if not self.ticker then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
+		if not self.ticker and select(3, NeatPlatesUtility.GetTotemOwner(unit.unitid)) == 'Player' then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
 		UpdateWidgetTime(self)
 	else
 		if self.ticker then self.ticker:Cancel() end

@@ -264,12 +264,26 @@ local function GetPetOwner(petName)
 	if not ownerText then return nil, nil end
 	local owner, _ = string.split("'",ownerText)
 	local ownerGUID = UnitGUID(string.split("-",owner))
+	local ownerIsPlayer = string.split("-",ownerGUID)
 
-	return ownerGUID, owner -- This is the pet's owner
+	return ownerGUID, owner, ownerIsPlayer -- This is the pet's owner
+end
+
+local function GetTotemOwner(unitid)
+	TooltipScanner:ClearLines()
+	TooltipScanner:SetUnit(unitid)
+	local ownerText = _G[ScannerName.."TextLeft3"]:GetText()
+	if not ownerText then return nil, nil end
+	local owner, _ = string.split("'",ownerText)
+	local ownerGUID = UnitGUID(string.split("-",owner))
+	local ownerIsPlayer = string.split("-",ownerGUID)
+
+	return ownerGUID, owner, ownerIsPlayer -- This is the pet's owner
 end
 
 NeatPlatesUtility.GetUnitSubtitle = GetUnitSubtitle
 NeatPlatesUtility.GetPetOwner = GetPetOwner
+NeatPlatesUtility.GetTotemOwner = GetTotemOwner
 
 ------------------------------------------
 -- Quest Info
