@@ -18,13 +18,14 @@ end
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
-if (tonumber((select(2, GetBuildInfo()))) >= 33978) then
+local wowtocversion = tonumber((select(4, GetBuildInfo())))
+if (wowtocversion >= 90000) then
 -- Shadowlands update
 	-- Covenant totems
 	SetTotemInfo(324386,UNSPECIFIED_TOTEM) -- Vesper Totem
 end
 
-if (tonumber((select(2, GetBuildInfo()))) >= 22642) then
+if (wowtocversion >= 70000) then
 -- Legion Update
 	-- Talent Totems
 	SetTotemInfo(207399,UNSPECIFIED_TOTEM) -- Ancestral Protection Totem
@@ -54,7 +55,7 @@ if (tonumber((select(2, GetBuildInfo()))) >= 22642) then
 	SetTotemInfo(5394,UNSPECIFIED_TOTEM)   -- Healing Stream Totem
 	SetTotemInfo(61882,UNSPECIFIED_TOTEM)  -- Earthquake Totem
 
-else
+elseif(not NEATPLATES_IS_CLASSIC) then
 	-- Mists of Pandaria 5.x Specific Totems
 	SetTotemInfo(120668, AIR_TOTEM) --  Stormlash
 	SetTotemInfo(108273, AIR_TOTEM) --  Windwalk
@@ -80,7 +81,24 @@ else
 	SetTotemInfo(5675,WATER_TOTEM) -- Mana Spring Totem
 	SetTotemInfo(87718,WATER_TOTEM) -- Totem of Tranquil Mind
 
-
+elseif (NEATPLATES_IS_CLASSIC) then
+	SetTotemInfo(8170, WATER_TOTEM) 		-- Disease Cleansing Totem
+	SetTotemInfo(1535, FIRE_TOTEM) 			-- Fire Nova Totem
+	SetTotemInfo(8184, WATER_TOTEM) 		-- Fire Resistance Totem
+	SetTotemInfo(8227, FIRE_TOTEM) 			-- Flametongue Totem
+	SetTotemInfo(8181, FIRE_TOTEM) 			-- Frost Resistance Totem
+	SetTotemInfo(8835, AIR_TOTEM) 			-- Grace of Air Totem
+	SetTotemInfo(5675, WATER_TOTEM) 		-- Mana Spring Totem
+	SetTotemInfo(10595, AIR_TOTEM) 			-- Nature Resistance Totem
+	SetTotemInfo(5730, EARTH_TOTEM) 		-- Stoneclaw Totem
+	SetTotemInfo(8166, WATER_TOTEM) 		-- Poison Cleansing Totem
+	SetTotemInfo(6495, AIR_TOTEM) 			-- Sentry Totem
+	SetTotemInfo(8071, EARTH_TOTEM) 		-- Stoneskin Totem
+	SetTotemInfo(8075, EARTH_TOTEM) 		-- Strength of Earth Totem
+	SetTotemInfo(25908, AIR_TOTEM) 			-- Tranquil Air Totem
+	SetTotemInfo(8512, AIR_TOTEM) 			-- Windfury Totem
+	SetTotemInfo(15107, AIR_TOTEM) 			-- Windwall Totem
+	SetTotemInfo(3738, AIR_TOTEM) 			-- Wrath of Air Totem
 end
 
 
@@ -105,18 +123,18 @@ end
 local function IsTotem(name) if name then return (TotemIcons[name] ~= nil) end end
 local function TotemSlot(name) if name then return TotemTypes[name] end end
 
-local function UpdateWidgetTime(frame, expiration)
-	if expiration <= 0 or HideAuraDuration then
+local function UpdateWidgetTime(frame)
+	expiration = frame.expiration or 0
+	local timeleft = expiration-GetTime()
+	if timeleft <= 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
-		local timeleft = expiration-GetTime()
 		if timeleft > 60 then
-			frame.TimeLeft:SetText(floor(timeleft/60).."m")
+			frame.TimeLeft:SetText(round(timeleft/60).."m")
 		else
 			-- if timeleft < PreciseAuraThreshold then
 			-- 	frame.TimeLeft:SetText((("%%.%df"):format(1)):format(timeleft))
 			-- else
-				print(floor(timeleft))
 				frame.TimeLeft:SetText(floor(timeleft))
 			-- end
 			--frame.TimeLeft:SetText(floor(timeleft*10)/10)
@@ -140,10 +158,11 @@ end
 
 local function UpdateTotemIconWidget(self, unit)
 	local icon = TotemIcons[unit.name]
-	
+
 	if icon then
 		self.Icon:SetTexture(icon)
 		self:Show()
+		UpdateWidgetTime(self)
 	end
 end
 
@@ -172,12 +191,15 @@ local function UpdateWidgetConfig(frame)
 	local expiration = 0
 	for i=1,5 do
 		local exists, name, startTime, duration = GetTotemInfo(i)
-		if exists then
-			expiration = startTime+duration
+		if exists and TotemTypes[name] == i then
+			frame.expiration = startTime+duration + 1 -- Because the given time is off by about a second
+			frame.Cooldown:SetCooldown(startTime, duration + 1)
 			break
 		end
 	end
-	UpdateWidgetTime(frame, expiration)
+
+
+	UpdateWidgetTime(frame)
 
 	-- frame.Overlay:SetAllPoints(frame)
 	frame.Icon:SetPoint("CENTER",frame)
@@ -198,6 +220,9 @@ local function CreateTotemIconWidget(parent)
 	frame.Cooldown:SetReverse(true)
 	frame.Cooldown:SetHideCountdownNumbers(true)
 	frame.Cooldown:SetDrawEdge(true)
+	frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
+
+	frame.Info:SetAllPoints(frame)
 
 	-- Text
 	frame.TimeLeft = frame.Info:CreateFontString(nil, "OVERLAY")
