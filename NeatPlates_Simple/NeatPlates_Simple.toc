@@ -1,4 +1,4 @@
-## Interface: 90005
+## Interface: 90100
 ## Title: NeatPlates: |cffffffffSimple|r
 ## Notes: Simple NeatPlates skin with some built-in Healer functionality.
 ## Author: FunkyCold
