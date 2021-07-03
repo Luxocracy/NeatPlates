@@ -2,7 +2,7 @@
 -- Totem Icon Widget
 --------------------
 local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
-local TotemIcons, TotemTypes = {}, {}
+local TotemIcons, TotemTypes, TotemDurations = {}, {}, {}
 local TotemFont = "FONTS\\ARIALN.TTF"
 
 
@@ -124,11 +124,14 @@ local function IsTotem(name) if name then return (TotemIcons[name] ~= nil) end e
 local function TotemSlot(name) if name then return TotemTypes[name] end end
 
 local function UpdateWidgetTime(frame)
-	expiration = frame.expiration or 0
+	local totem = TotemDurations[frame.unitname]
+	if not totem then return end
+	local expiration = totem.expiration or 0
 	local timeleft = expiration-GetTime()
 	if timeleft <= 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
+		frame.Cooldown:SetCooldown(totem.startTime, totem.duration + 1)
 		if timeleft > 60 then
 			frame.TimeLeft:SetText(round(timeleft/60).."m")
 		else
@@ -147,6 +150,7 @@ local function ExpireFunction(icon)
 end
 
 function UpdateWidget(frame)
+	print(frame)
 	-- local unitid = frame.unitid
 	-- if(HideInHeadlineMode and frame.style == "NameOnly") then
 	-- 	frame:Hide()
@@ -158,11 +162,15 @@ end
 
 local function UpdateTotemIconWidget(self, unit)
 	local icon = TotemIcons[unit.name]
+	self.unitname = unit.name
 
 	if icon then
 		self.Icon:SetTexture(icon)
 		self:Show()
+		if not self.ticker then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
 		UpdateWidgetTime(self)
+	else
+		if self.ticker then self.ticker:Cancel() end
 	end
 end
 
@@ -189,15 +197,16 @@ local function UpdateWidgetConfig(frame)
 	frame.Stacks:SetJustifyH("RIGHT")
 
 	local expiration = 0
-	for i=1,5 do
+	for i=1, MAX_TOTEMS do
 		local exists, name, startTime, duration = GetTotemInfo(i)
-		if exists and TotemTypes[name] == i then
-			frame.expiration = startTime+duration + 1 -- Because the given time is off by about a second
-			frame.Cooldown:SetCooldown(startTime, duration + 1)
-			break
+		if exists then
+			TotemDurations[name] = {
+				['startTime'] = startTime,
+				['duration'] = duration,
+				['expiration'] = startTime+duration + 1 -- Because the given time is off by about a second
+			}
 		end
 	end
-
 
 	UpdateWidgetTime(frame)
 
