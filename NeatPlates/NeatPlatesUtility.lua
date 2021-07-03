@@ -203,6 +203,14 @@ local ScannerName = "NeatPlatesScanningTooltip"
 local TooltipScanner = CreateFrame( "GameTooltip", ScannerName , nil, "GameTooltipTemplate" ); -- Tooltip name cannot be nil
 TooltipScanner:SetOwner( WorldFrame, "ANCHOR_NONE" );
 
+local function getTooltipLineText(i, ...)
+	local region = select(i, ...)
+	if region and region:GetObjectType() == "FontString" then
+			return region:GetText() -- string or nil
+	end
+	return nil
+end
+
 ------------------------------------------
 -- Unit Subtitles/NPC Roles
 ------------------------------------------
@@ -272,7 +280,14 @@ end
 local function GetTotemOwner(unitid)
 	TooltipScanner:ClearLines()
 	TooltipScanner:SetUnit(unitid)
-	local ownerText = _G[ScannerName.."TextLeft3"]:GetText()
+
+	local ownerText
+	if NEATPLATES_IS_CLASSIC then
+		ownerText = getTooltipLineText(5, TooltipScanner:GetRegions())
+	else
+		ownerText = _G[ScannerName.."TextLeft3"]:GetText()
+	end
+
 	if not ownerText then return nil, nil end
 	local owner, _ = string.split("'",ownerText)
 	local ownerGUID = UnitGUID(string.split("-",owner))
