@@ -46,6 +46,7 @@ local ShowFriendlyPowerBar = false
 local ShowSpellTarget = false
 local ThreatSoloEnable = true
 local ReplaceUnitNameArenaID = false
+local ForceDefaultNameplates = {}
 local EMPTY_TEXTURE = "Interface\\Addons\\NeatPlates\\Media\\Empty"
 local ResetPlates, UpdateAll, UpdateAllHealth = false, false, false
 local OverrideFonts = false
@@ -200,7 +201,11 @@ do
 
 	function ShouldShowBlizzardPlate(plate)
 		if plate.UnitFrame then
-			if plate.showBlizzardPlate then
+			local unit = plate.extended.unit
+			local useDefault = ForceDefaultNameplates[unit.reaction]
+			if useDefault ~= nil then	useDefault = useDefault[unit.type] end
+
+			if plate.showBlizzardPlate or useDefault then
 				plate.UnitFrame:Show()
 				plate.extended:Hide()
 			else plate.UnitFrame:Hide() end
@@ -1788,6 +1793,21 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowSpellTarget = LocalVars.SpellTargetEnable
 	ThreatSoloEnable = LocalVars.ThreatSoloEnable
 	ReplaceUnitNameArenaID = LocalVars.TextUnitNameArenaID
+
+	ForceDefaultNameplates = {
+		["HOSTILE"] = {
+			["PLAYER"] = LocalVars.DefaultEnemyNameplatesOnPlayers,
+			["NPC"] = LocalVars.DefaultEnemyNameplatesOnNPCs
+		},
+		["FRIENDLY"] = {
+			["PLAYER"] = LocalVars.DefaultFriendlyNameplatesOnPlayers,
+			["NPC"] = LocalVars.DefaultFriendlyNameplatesOnNPCs
+		},
+		["NEUTRAL"] = {
+			["PLAYER"] = false, -- Shouldn't be possible to be a neutral player?
+			["NPC"] = LocalVars.DefaultNeutralNameplatesOnNPCs
+		},
+	}
 end
 
 function NeatPlates:ShowNameplateSize(show, width, height) ForEachPlate(function(plate) UpdateNameplateSize(plate, show, width, height) end) end
