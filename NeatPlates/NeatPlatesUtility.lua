@@ -291,6 +291,7 @@ local function GetTotemOwner(unitid)
 	if not ownerText then return nil, nil end
 	local owner, _ = string.split("'",ownerText)
 	local ownerGUID = UnitGUID(string.split("-",owner))
+	if not ownerGUID then return nil, nil end
 	local ownerIsPlayer = string.split("-",ownerGUID)
 
 	return ownerGUID, owner, ownerIsPlayer -- This is the pet's owner
