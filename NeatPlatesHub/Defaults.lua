@@ -48,6 +48,12 @@ NeatPlatesHubDefaults = {
 	--ColorFriendlyNameMode = 1,
 	--ColorFriendlyStatusTextMode = 1,
 
+	DefaultEnemyNameplatesOnPlayers = false,
+	DefaultFriendlyNameplatesOnPlayers = false,
+	DefaultEnemyNameplatesOnNPCs = false,
+	DefaultFriendlyNameplatesOnNPCs = false,
+	DefaultNeutralNameplatesOnNPCs = false,
+
 	TextShowOnlyOnActive = false,
 
 

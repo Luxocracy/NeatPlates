@@ -132,6 +132,14 @@ L["Force Headline on Neutral Units"] = true
 L["Force Headline while Out-of-Combat"] = true
 L["Force Headline on Mini-Mobs"] = true
 
+
+L["Force Default Nameplates"] = true
+L["Enemy Players"] = true
+L["Friendly Players"] = true
+L["Enemy NPCs"] = true
+L["Friendly NPCs"] = true
+L["Neutral NPCs"] = true
+
 ------------------------------
 -- Health Bar View
 ------------------------------
