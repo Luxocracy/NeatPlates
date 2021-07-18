@@ -4,7 +4,7 @@
 local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
 local TotemIcons, TotemTypes, TotemDurations = {}, {}, {}
 local TotemFont = "FONTS\\ARIALN.TTF"
-
+local TotemWatcher
 
 local AIR_TOTEM, EARTH_TOTEM, FIRE_TOTEM, WATER_TOTEM = 1, 2, 3, 4
 
@@ -145,12 +145,8 @@ local function UpdateWidgetTime(frame)
 	end
 end
 
-local function ExpireFunction(icon)
-	UpdateWidget(icon.Parent)
-end
-
 function UpdateWidget(frame)
-	print(frame)
+	-- print(frame)
 	-- local unitid = frame.unitid
 	-- if(HideInHeadlineMode and frame.style == "NameOnly") then
 	-- 	frame:Hide()
@@ -167,11 +163,10 @@ local function UpdateTotemIconWidget(self, unit)
 	if icon then
 		self.Icon:SetTexture(icon)
 		self:Show()
-		if not self.ticker and select(3, NeatPlatesUtility.GetTotemOwner(unit.unitid)) == 'Player' then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
+		if icon ~= self.iconID and select(3, NeatPlatesUtility.GetTotemOwner(unit.unitid)) == true then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
+		self.iconID = icon
 		UpdateWidgetTime(self)
-	else
-		if self.ticker then self.ticker:Cancel() end
-	end
+	elseif self.ticker then self.ticker:Cancel() end
 end
 
 local function UpdateWidgetConfig(frame)
@@ -237,7 +232,6 @@ local function CreateTotemIconWidget(parent)
 	frame.TimeLeft = frame.Info:CreateFontString(nil, "OVERLAY")
 	frame.Stacks = frame.Info:CreateFontString(nil, "OVERLAY")
 
-	frame.Expire = ExpireFunction
 	frame.Poll = UpdateWidgetTime
 
 	UpdateWidgetConfig(frame)
@@ -247,6 +241,24 @@ local function CreateTotemIconWidget(parent)
 	frame.UpdateConfig = UpdateWidgetConfig
 	return frame
 end
+
+-- Not necessary?
+-- local function TotemWatcherEvents(self, event, ...)
+-- 	if event == "NAME_PLATE_UNIT_REMOVED" then
+-- 		local unitid = ...
+-- 		local frame = C_NamePlate.GetNamePlateForUnit(unitid)
+-- 		if frame and frame.extended and frame.extended.widgets.TotemWidgetHub.Icon then
+-- 			local icon = frame.extended.widgets.TotemWidgetHub.Icon
+-- 			table.foreach(icon, print)
+-- 			if icon.ticker then icon.ticker:Cancel() end
+-- 			print(icon.ticker)
+-- 		end
+-- 	end
+-- end
+
+-- if not TotemWatcher then TotemWatcher = CreateFrame("Frame") end
+-- TotemWatcher:SetScript("OnEvent", TotemWatcherEvents)
+-- TotemWatcher:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
 NeatPlatesWidgets.CreateTotemIconWidget = CreateTotemIconWidget
 NeatPlatesUtility.IsTotem = IsTotem

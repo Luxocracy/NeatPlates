@@ -272,7 +272,7 @@ local function GetPetOwner(petName)
 	if not ownerText then return nil, nil end
 	local owner, _ = string.split("'",ownerText)
 	local ownerGUID = UnitGUID(string.split("-",owner))
-	local ownerIsPlayer = string.split("-",ownerGUID)
+	local ownerIsPlayer = ownerGUID == UnitGUID("player")
 
 	return ownerGUID, owner, ownerIsPlayer -- This is the pet's owner
 end
@@ -292,7 +292,7 @@ local function GetTotemOwner(unitid)
 	local owner, _ = string.split("'",ownerText)
 	local ownerGUID = UnitGUID(string.split("-",owner))
 	if not ownerGUID then return nil, nil end
-	local ownerIsPlayer = string.split("-",ownerGUID)
+	local ownerIsPlayer = ownerGUID == UnitGUID("player")
 
 	return ownerGUID, owner, ownerIsPlayer -- This is the pet's owner
 end
