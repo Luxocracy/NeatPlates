@@ -121,7 +121,7 @@ end
 ----------------------------------------------------------------------------------------
 
 local function getTotemName(name)
-	return string.gsub(name, "(%s[XIVxiv]*)$", "")
+	return string.gsub(name or "", "(%s[XIVxiv]*)$", "")
 end
 local function IsTotem(name)
 	name = getTotemName(name)
@@ -136,7 +136,7 @@ local function UpdateWidgetTime(frame)
 	if timeleft <= 0 or HideAuraDuration then
 		frame.TimeLeft:SetText("")
 	else
-		frame.Cooldown:SetCooldown(totem.startTime, totem.duration + 1)
+		frame.Cooldown:SetCooldown(totem.startTime, totem.duration + 0.5)
 		if timeleft > 60 then
 			frame.TimeLeft:SetText(round(timeleft/60).."m")
 		else
@@ -169,7 +169,12 @@ local function UpdateTotemIconWidget(self, unit)
 	if icon then
 		self.Icon:SetTexture(icon)
 		self:Show()
-		if icon ~= self.iconID and select(3, NeatPlatesUtility.GetTotemOwner(unit.unitid)) == true then self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end ) end
+		-- Make sure the icon ID has changed, and that the unit is a totem.
+		if icon ~= self.iconID and select(3, NeatPlatesUtility.GetTotemOwner(unit.unitid)) == true then
+			self.ticker = C_Timer.NewTicker(1, function() UpdateWidgetTime(self) end )
+		elseif icon ~= self.iconID and self.ticker then
+			self.ticker:Cancel() -- Not sure this ever happens
+		end
 		self.iconID = icon
 		UpdateWidgetTime(self)
 	elseif self.ticker then self.ticker:Cancel() end
