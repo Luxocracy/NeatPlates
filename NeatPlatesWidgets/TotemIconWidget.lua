@@ -120,8 +120,13 @@ end
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 
-local function IsTotem(name) if name then return (TotemIcons[name] ~= nil) end end
-local function TotemSlot(name) if name then return TotemTypes[name] end end
+local function getTotemName(name)
+	return string.gsub(name, "(%s[XIVxiv]*)$", "")
+end
+local function IsTotem(name)
+	name = getTotemName(name)
+	if name then return (TotemIcons[name] ~= nil) end
+end
 
 local function UpdateWidgetTime(frame)
 	local totem = TotemDurations[frame.unitname]
@@ -157,8 +162,9 @@ function UpdateWidget(frame)
 end
 
 local function UpdateTotemIconWidget(self, unit)
-	local icon = TotemIcons[unit.name]
-	self.unitname = unit.name
+	local name = getTotemName(unit.name)
+	local icon = TotemIcons[name]
+	self.unitname = name
 
 	if icon then
 		self.Icon:SetTexture(icon)
@@ -194,6 +200,7 @@ local function UpdateWidgetConfig(frame)
 	local expiration = 0
 	for i=1, MAX_TOTEMS do
 		local exists, name, startTime, duration = GetTotemInfo(i)
+		name = getTotemName(name)
 		if exists then
 			TotemDurations[name] = {
 				['startTime'] = startTime,
@@ -262,4 +269,3 @@ end
 
 NeatPlatesWidgets.CreateTotemIconWidget = CreateTotemIconWidget
 NeatPlatesUtility.IsTotem = IsTotem
-NeatPlatesUtility.TotemSlot = TotemSlot
