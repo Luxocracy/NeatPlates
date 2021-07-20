@@ -1329,7 +1329,7 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 				button.actions = {}
 				if item.buttons then
 					for _, action in pairs(item.buttons) do
-						local actionFrame = _G[name..item.value.."_Action_"..action] or CreateFrame("Button", name..button.index.."_Action_"..action, button, 'NeatPlatesOptionsListButtonTemplate')
+						local actionFrame = _G[name..button.index.."_Action_"..action] or CreateFrame("Button", name..button.index.."_Action_"..action, button, 'NeatPlatesOptionsListButtonTemplate')
 						actionFrame:SetWidth(15)
 						actionFrame:SetHeight(15)
 						table.insert(button.actions, actionFrame)
