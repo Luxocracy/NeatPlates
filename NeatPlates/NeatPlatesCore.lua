@@ -52,6 +52,7 @@ local ResetPlates, UpdateAll, UpdateAllHealth = false, false, false
 local OverrideFonts = false
 local OverrideOutline = 1
 local HealthTicker = nil
+local SpellSchoolByGUID = {}
 -- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
@@ -1084,8 +1085,6 @@ do
 		self:SetValue((endTime + startTime) - currentTime)
 	end
 
-
-
 	-- OnShowCastbar
 	function OnStartCasting(plate, unitid, channeled)
 		UpdateReferences(plate)
@@ -1129,7 +1128,7 @@ do
 		local r, g, b, a = 1, 1, 0, 1
 
 		if activetheme.SetCastbarColor then
-			r, g, b, a = activetheme.SetCastbarColor(unit)
+			r, g, b, a = activetheme.SetCastbarColor(unit, SpellSchoolByGUID[unit.guid])
 			if not (r and g and b and a) then return end
 		end
 
@@ -1495,12 +1494,36 @@ do
 		end
 	end
 
+	function updateCastbarSchoolColor(plate, school)
+		local castBar = plate.extended.visual.castbar
+		local unit = plate.extended.unit
+
+		if activetheme.SetCastbarColor then
+			r, g, b, a = activetheme.SetCastbarColor(unit, school)
+			if not (r and g and b and a) then return end
+		end
+
+		castBar:SetStatusBarColor(r, g, b)
+		castBar:SetAlpha(a or 1)
+	end
+
 	function CoreEvents:COMBAT_LOG_EVENT_UNFILTERED(...)
-		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID = CombatLogGetCurrentEventInfo()
+		local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellID,spellName,spellSchool = CombatLogGetCurrentEventInfo()
 		spellID = spellID or ""
 		local plate = nil
 		local ownerGUID
 		--local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
+
+		-- Tracking spell school
+		if event == "SPELL_CAST_START" or event == "SPELL_CAST_SUCCESS" then
+			plate = PlatesByGUID[sourceGUID]
+			SpellSchoolByGUID[sourceGUID] = spellSchool
+			if plate and plate.extended and plate.extended.unit then
+				updateCastbarSchoolColor(plate, spellSchool) -- Make sure color updates
+			end
+		elseif event == "SPELL_CAST_FAILED" or event == "SPELL_CAST_SUCCESS" or event == "SPELL_INTERRUPT" then
+			SpellSchoolByGUID[sourceGUID] = nil -- Cleanup
+		end
 
 		-- Spell Interrupts
 		if ShowIntCast then
