@@ -1395,7 +1395,7 @@ do
 			OnNewNameplate(NeatPlatesTarget)
 		end
 		-- Show Target frame, if other frame doesn't exist and isn't dead
-		if HasTarget and NeatPlatesTarget then NeatPlatesTarget.unitGUID = guid end
+		if NEATPLATES_IS_CLASSIC and HasTarget and NeatPlatesTarget then NeatPlatesTarget.unitGUID = guid end
 		toggleNeatPlatesTarget(HasTarget and unitAlive and not PlatesByGUID[guid])
 		SetUpdateAll()
 	end
