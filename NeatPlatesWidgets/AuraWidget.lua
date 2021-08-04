@@ -317,6 +317,7 @@ local function UpdateIconGrid(frame, unitid)
 				local show, priority, r, g, b, a = AuraFilterFunction(aura)
 				local emphasized, ePriority = EmphasizedAuraFilterFunction(aura)
 				local existing = AuraCache[unitid][aura.name]
+				show = show or emphasized -- Overwrite 'show' if 'emphasized' is true and 'show' is not true
 				--print(aura.name, show, priority)
 				--show = true
 
@@ -865,7 +866,7 @@ local function SetSpacerSlots(amount)
 end
 
 local function SetEmphasizedSlots(amount)
-	MaxEmphasizedAuras = math.min(amount, DebuffColumns-1)
+	MaxEmphasizedAuras = amount
 end
 
 -----------------------------------------------------
