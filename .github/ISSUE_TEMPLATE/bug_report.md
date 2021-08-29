@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+**What version of the game you are experiencing the issue with:**
+Live/Retail, TBC, Classic
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -22,9 +25,6 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
-
-**What version of the game you are experiencing the issue with:**
-Live/Retail, TBC, Classic
 
 **Additional context**
 Add any other context about the problem here.
