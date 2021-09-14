@@ -149,10 +149,16 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 		}
 
 		if not InCombatLockdown() then
-			if IsInInstance() then
+			if IsInInstance() or DisplayingBlizzardPlate(plate) then
+				-- Reset to blizzard nameplate default to avoid issues while diplaying default blizzard nameplate
+				-- NOTE: This means the 'Force Default Nameplates' option will still have this issue in some cases, but it's a much better than currently
 				local zeroBasedScale = tonumber(GetCVar("NamePlateVerticalScale")) - 1.0;
 				local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
-				SetNamePlateFriendlySize(110 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))  -- Reset to blizzard nameplate default to avoid issues if we are not allowed to modify the nameplate
+				if NEATPLATES_IS_CLASSIC then
+					SetNamePlateFriendlySize(128 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))
+				else
+					SetNamePlateFriendlySize(145 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))
+				end
 			else SetNamePlateFriendlySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) end -- Clickable area of the nameplate
 			SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
 		end
@@ -167,6 +173,21 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 		end
 
 	end)
+end
+
+-- Check if the nameplate should be displayed as a blizzard plate or not
+function DisplayingBlizzardPlate(plate)
+	if plate.UnitFrame then
+		local unit = plate.extended.unit
+		local useDefault = ForceDefaultNameplates[unit.reaction]
+		if useDefault ~= nil then	useDefault = useDefault[unit.type] end
+
+		if plate.showBlizzardPlate or useDefault then
+			return true
+		end
+	end
+
+	return false
 end
 
 -- UpdateReferences
@@ -201,15 +222,11 @@ do
 	end
 
 	function ShouldShowBlizzardPlate(plate)
-		if plate.UnitFrame then
-			local unit = plate.extended.unit
-			local useDefault = ForceDefaultNameplates[unit.reaction]
-			if useDefault ~= nil then	useDefault = useDefault[unit.type] end
-
-			if plate.showBlizzardPlate or useDefault then
-				plate.UnitFrame:Show()
-				plate.extended:Hide()
-			else plate.UnitFrame:Hide() end
+		if DisplayingBlizzardPlate(plate) then
+			plate.UnitFrame:Show()
+			plate.extended:Hide()
+		else
+			plate.UnitFrame:Hide()
 		end
 	end
 
@@ -1134,7 +1151,6 @@ do
 
 		castBar:SetStatusBarColor( r, g, b)
 		castBar:SetAlpha(a or 1)
-
 
 		if style.castnostop and style.castnostop.enabled and unit.spellIsShielded then
 			visual.castnostop:Show(); visual.castborder:Hide()

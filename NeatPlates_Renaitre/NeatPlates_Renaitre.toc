@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 20502
 ## Title: NeatPlates:|cffa335ee Renaitre|r
 ## Version: v7.0.3
 ## Notes: Renaitre's custom nameplates.
