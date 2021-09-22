@@ -687,7 +687,7 @@ do
 
 		local classification = UnitClassification(unitid)
 
-		unit.isBoss = UnitLevel(unitid) == -1
+		unit.isBoss = UnitEffectiveLevel(unitid) == -1
 		unit.isDangerous = unit.isBoss
 
 		unit.isElite = EliteReference[classification]
