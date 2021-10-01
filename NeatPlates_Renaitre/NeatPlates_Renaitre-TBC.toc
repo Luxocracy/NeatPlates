@@ -1,0 +1,9 @@
+## Interface: 20502
+## Title: NeatPlates:|cffa335ee Renaitre|r
+## Version: v7.0.3
+## Notes: Renaitre's custom nameplates.
+## Author: Renaitre
+## Credits: Binbwen
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_Renaitre.lua

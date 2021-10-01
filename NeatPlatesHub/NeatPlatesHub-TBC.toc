@@ -1,0 +1,22 @@
+## Interface: 20502
+## Title: NeatPlates Hub
+## Notes: Provides a common configuration panel for supported themes.
+## Author: Luxocracy and friends
+## Dependencies: NeatPlates, NeatPlatesWidgets
+## OptionalDeps: NeatPlatesHubDE, NeatPlatesHubES, NeatPlatesHubMX, NeatPlatesHubFR, NeatPlatesHubKR, NeatPlatesHubRU, NeatPlatesHubCN, NeatPlatesHubTW
+## SavedVariables: NeatPlatesHubSettings
+
+Defaults.lua
+Helpers.lua
+Templates.lua
+
+functions\Core.lua
+functions\Filter.lua
+functions\Style.lua
+functions\Alpha.lua
+functions\Scale.lua
+functions\Color.lua
+functions\Text.lua
+functions\Widgets.lua
+
+Hub.lua

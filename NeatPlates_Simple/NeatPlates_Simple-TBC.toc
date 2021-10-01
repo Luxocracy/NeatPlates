@@ -1,0 +1,8 @@
+## Interface: 20502
+## Title: NeatPlates: |cffffffffSimple|r
+## Notes: Simple NeatPlates skin with some built-in Healer functionality.
+## Author: FunkyCold
+## Version: 7.3.0
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_Simple.lua
