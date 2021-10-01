@@ -28,3 +28,4 @@ externals:
   NeatPlates/libs/Ace3/LibStub: https://repos.wowace.com/wow/ace3/trunk/LibStub
   NeatPlates/libs/LibButtonGlow-1.0: https://repos.curseforge.com/wow/libbuttonglow-1-0
   NeatPlates/libs/LibRangeCheck-2.0: https://repos.curseforge.com/wow/librangecheck-2-0/trunk/LibRangeCheck-2.0
+  NeatPlates/libs/LibClassicDurations: https://repos.curseforge.com/wow/libclassicdurations
