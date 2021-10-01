@@ -1,0 +1,7 @@
+## Interface: 20502
+## Title: NeatPlates: Quatre Theme
+## Notes: It's the 4th!
+## Author: Binny
+## Dependencies: NeatPlates, NeatPlatesHub
+
+Quatre.lua
