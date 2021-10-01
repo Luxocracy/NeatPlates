@@ -1699,6 +1699,17 @@ do
 			SpellSchoolByGUID[sourceGUID] = nil -- Cleanup
 		end
 
+		-- Tracking spell school
+		if event == "SPELL_CAST_START" or event == "SPELL_CAST_SUCCESS" then
+			plate = PlatesByGUID[sourceGUID]
+			SpellSchoolByGUID[sourceGUID] = spellSchool
+			if plate and plate.extended and plate.extended.unit then
+				updateCastbarSchoolColor(plate, spellSchool) -- Make sure color updates
+			end
+		elseif event == "SPELL_CAST_FAILED" or event == "SPELL_CAST_SUCCESS" or event == "SPELL_INTERRUPT" then
+			SpellSchoolByGUID[sourceGUID] = nil -- Cleanup
+		end
+
 		-- Spell Interrupts
 		if ShowIntCast then
 			if event == "SPELL_INTERRUPT" or event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED" then
