@@ -2,7 +2,7 @@
 ## Title: NeatPlates
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Luxocracy and friends
-## Version: 1.14.0.@project-version@
+## Version: @project-version@
 ## SavedVariables: NeatPlatesSettings
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
