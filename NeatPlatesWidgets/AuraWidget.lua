@@ -7,6 +7,17 @@
 	frame.Cooldown:SetHideCountdownNumbers(true)
 	--]]
 
+local LibClassicDurations
+local _UnitAura = UnitAura
+if NEATPLATES_IS_CLASSIC_ERA then
+	LibClassicDurations = LibStub("LibClassicDurations", true)
+	if LibClassicDurations then
+		LibClassicDurations:Register("NeatPlates")
+		_UnitAura = LibClassicDurations.UnitAuraWithBuffs
+	else
+		_UnitAura = function() end
+	end
+end
 
 NeatPlatesWidgets.DebuffWidgetBuild = 2
 
@@ -286,7 +297,7 @@ local function UpdateIconGrid(frame, unitid)
 			local aura = {}
 
 			do
-				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
+				local name, icon, stacks, auraType, duration, expiration, caster, canStealOrPurge, nameplateShowPersonal, spellid = _UnitAura(unitid, auraIndex, auraFilter)		-- UnitaAura
 
 				aura.name = name
 				aura.texture = icon

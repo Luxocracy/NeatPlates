@@ -10,6 +10,7 @@ local NeatPlatesTarget
 local GetPetOwner = NeatPlatesUtility.GetPetOwner
 local ParseGUID = NeatPlatesUtility.ParseGUID
 NeatPlates = {}
+NeatPlatesSpellDB = {}
 
 if NEATPLATES_IS_CLASSIC then
 	UnitEffectiveLevel = UnitLevel
@@ -53,6 +54,8 @@ local OverrideFonts = false
 local OverrideOutline = 1
 local HealthTicker = nil
 local SpellSchoolByGUID = {}
+local SpellCastCache = {} -- Classic era
+local CTICache = {} -- Classic era
 -- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference
@@ -66,6 +69,116 @@ local RaidIconCoordinate = {
 		["CROSS"] = { x = .5, y = 0.25},
 		["SKULL"] = { x = .75, y = 0.25},
 }
+
+local spellBlacklist, spellCCList, spellCTI
+
+if NEATPLATES_IS_CLASSIC_ERA then
+	-- Special case spells
+	spellBlacklist = {
+		[GetSpellInfo(75)] = true, 				-- Auto Shot
+		[GetSpellInfo(5019)] = true, 			-- Shoot
+		[GetSpellInfo(2480)] = true, 			-- Shoot Bow
+		[GetSpellInfo(7918)] = true, 			-- Shoot Gun
+		[GetSpellInfo(7919)] = true, 			-- Shoot Crossbow
+		[GetSpellInfo(2764)] = true, 			-- Throw
+	}
+
+	spellCCList = {
+		[GetSpellInfo(118)] = true,				-- Polymorph
+		[GetSpellInfo(408)] = true,				-- Kidney Shot
+		[GetSpellInfo(605)] = true,				-- Mind Control
+		[GetSpellInfo(853)] = true,				-- Hammer of Justice
+		[GetSpellInfo(1090)] = true,			-- Sleep
+		[GetSpellInfo(1513)] = true,			-- Scare Beast
+		[GetSpellInfo(1776)] = true,			-- Gouge
+		[GetSpellInfo(1833)] = true,			-- Cheap Shot
+		[GetSpellInfo(2094)] = true,			-- Blind
+		[GetSpellInfo(2637)] = true,			-- Hibernate
+		[GetSpellInfo(3355)] = true,			-- Freezing Trap
+		[GetSpellInfo(5211)] = true,			-- Bash
+		[GetSpellInfo(5246)] = true,			-- Intimidating Shout
+		[GetSpellInfo(5484)] = true,			-- Howl of Terror
+		[GetSpellInfo(5530)] = true,			-- Mace Stun
+		[GetSpellInfo(5782)] = true,			-- Fear
+		[GetSpellInfo(6358)] = true,			-- Seduction
+		[GetSpellInfo(6770)] = true,			-- Sap
+		[GetSpellInfo(6789)] = true,			-- Death Coil
+		[GetSpellInfo(7922)] = true,			-- Charge Stun
+		[GetSpellInfo(8122)] = true,			-- Psychic Scream
+		[GetSpellInfo(9005)] = true,			-- Pounce
+		[GetSpellInfo(12355)] = true,			-- Impact
+		[GetSpellInfo(12798)] = true,			-- Revenge Stun
+		[GetSpellInfo(12809)] = true,			-- Concussion Blow
+		[GetSpellInfo(15269)] = true,			-- Blackout
+		[GetSpellInfo(15487)] = true,			-- Silence
+		[GetSpellInfo(16922)] = true,			-- Improved Starfire
+		[GetSpellInfo(18093)] = true,			-- Pyroclasm
+		[GetSpellInfo(18425)] = true,			-- Kick - Silenced
+		[GetSpellInfo(18469)] = true,			-- Counterspell - Silenced
+		[GetSpellInfo(18498)] = true,			-- Shield Bash - Silenced
+		[GetSpellInfo(19386)] = true,			-- Wyvern Sting
+		[GetSpellInfo(19410)] = true,			-- Improved Concussive Shot
+		[GetSpellInfo(19503)] = true,			-- Scatter Shot
+		[GetSpellInfo(20066)] = true,			-- Repentance
+		[GetSpellInfo(20170)] = true,			-- Seal of Justice Stun
+		[GetSpellInfo(20253)] = true,			-- Intercept Stun
+		[GetSpellInfo(20549)] = true,			-- War Stomp
+		[GetSpellInfo(22703)] = true,			-- Inferno Effect (Summon Infernal)
+		[GetSpellInfo(24259)] = true,			-- Spell Lock
+		[GetSpellInfo(24394)] = true,			-- Intimidation
+		[GetSpellInfo(28271)] = true,			-- Polymorph: Turtle
+		[GetSpellInfo(28272)] = true,			-- Polymorph: Pig
+
+		-- Items, Talents etc.
+		[GetSpellInfo(56)] = true,				-- Stun (Weapon Proc)
+		[GetSpellInfo(835)] = true,				-- Tidal Charm
+		[GetSpellInfo(4064)] = true,			-- Rough Copper Bomb
+		[GetSpellInfo(4065)] = true,			-- Large Copper Bomb
+		[GetSpellInfo(4066)] = true,			-- Small Bronze Bomb
+		[GetSpellInfo(4067)] = true,			-- Big Bronze Bomb
+		[GetSpellInfo(4068)] = true,			-- Iron Grenade
+		[GetSpellInfo(4069)] = true,			-- Big Iron Bomb
+		[GetSpellInfo(5134)] = true,			-- Flash Bomb Fear
+		[GetSpellInfo(12421)] = true,			-- Mithril Frag Bomb
+		[GetSpellInfo(12543)] = true,			-- Hi-Explosive Bomb
+		[GetSpellInfo(12562)] = true,			-- The Big One
+		[GetSpellInfo(13181)] = true,			-- Gnomish Mind Control Cap
+		[GetSpellInfo(13237)] = true,			-- Goblin Mortar
+		[GetSpellInfo(13327)] = true,			-- Reckless Charge
+		[GetSpellInfo(13808)] = true,			-- M73 Frag Grenade
+		[GetSpellInfo(15283)] = true,			-- Stunning Blow (Weapon Proc)
+		[GetSpellInfo(19769)] = true,			-- Thorium Grenade
+		[GetSpellInfo(19784)] = true,			-- Dark Iron Bomb
+		[GetSpellInfo(19821)] = true,			-- Arcane Bomb Silence
+		[GetSpellInfo(26108)] = true,			-- Glimpse of Madness
+	}
+
+	spellCTI = {
+		[GetSpellInfo(1714)] = 1.6,				-- Curse of Tongues
+		[GetSpellInfo(1098)] = 1.3,				-- Enslave Demon
+		[GetSpellInfo(5760)] = 1.6,				-- Mind-Numbing Poison
+		[GetSpellInfo(17331)] = 1.1,			-- Fang of the Crystal Spider
+
+		-- NPC Abilities
+		[GetSpellInfo(3603)] = 1.35,			-- Distracting Pain
+		[GetSpellInfo(7102)] = 1.25,			-- Contagion of Rot
+		[GetSpellInfo(7127)] = 1.2,				-- Wavering Will
+		[GetSpellInfo(8140)] = 1.5,				-- Befuddlement
+		[GetSpellInfo(8272)] = 1.2,				-- Mind Tremor
+		[GetSpellInfo(10651)] = 1.2,			-- Curse of the Eye
+		[GetSpellInfo(12255)] = 1.15,			-- Curse of Tuten'kash
+		[GetSpellInfo(19365)] = 1.5,			-- Ancient Dread
+		[GetSpellInfo(22247)] = 1.8,			-- Suppression Aura
+		[GetSpellInfo(22642)] = 1.5,			-- Brood Power: Bronze
+		[GetSpellInfo(22909)] = 1.5,			-- Eye of Immol'thar
+		[GetSpellInfo(23153)] = 1.5,			-- Brood Power: Blue
+		[GetSpellInfo(28732)] = 1.25,			-- Widow's Embrace
+
+		-- Uncategorized (Not sure if they are used)
+		[GetSpellInfo(14538)] = 1.35,			-- Aural Shock
+		--[GetSpellInfo(24415)] = 1.5,   	-- Slow
+	}
+end
 
 ---------------------------------------------------------------------------------------------------------------------
 -- Core Function Declaration
@@ -262,6 +375,17 @@ do
 				end
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
+
+				if NEATPLATES_IS_CLASSIC_ERA then
+					if plate.UpdateCastbar then -- Check if spell is being cast
+						if unit and unit.unitid then
+							local unitGUID = UnitGUID(unit.unitid)
+							if unitGUID and SpellCastCache[unitGUID] and not SpellCastCache[unitGUID].finished then OnStartCasting(plate, unitGUID, false)
+							else OnStopCasting(plate) end
+						end
+						plate.UpdateCastbar = false
+					end
+				end
 			elseif unitid and not plate:IsVisible() then
 				OnHideNameplate(plate, unitid)  -- If the 'NAME_PLATE_UNIT_REMOVED' event didn't trigger
 			end
@@ -549,6 +673,7 @@ do
 
 		-- Skip the initial data gather and let the second cycle do the work.
 		plate.UpdateMe = true
+		plate.UpdateCastbar = true -- Classic era
 
 	end
 
@@ -1034,6 +1159,7 @@ do
 		end
 
 		-- if unit.alphaMult <= NameplateOccludedAlphaMult then
+			unit.alphaMult = unit.alphaMult or 0
 			extended.requestedAlpha = extended.requestedAlpha * unit.alphaMult
 		-- end
 
@@ -1104,24 +1230,47 @@ do
 
 	-- OnShowCastbar
 	function OnStartCasting(plate, unitid, channeled)
+		local guid = unitid -- Clasic era, we pass a guid instead of unitid
+
 		UpdateReferences(plate)
 		--if not extended:IsShown() then return end
 		if not extended:IsShown() then return end
 
+		local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, increase
 		local castBar = extended.visual.castbar
 
-		local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible
+		if NEATPLATES_IS_CLASSIC_ERA then
+			local unitType,_,_,_,_,creatureID = ParseGUID(guid)
+			local spell = SpellCastCache[guid]
+			local spellEntry
 
-		if channeled then
-			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unitid)
-			castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
+			if not spell or not unitType then return end -- Return if neccessary info is missing
+
+			text = spell.name
+			texture = NeatPlatesSpellDB.default[spell.name].texture or 136243
+
+			if creatureID then spellEntry = NeatPlatesSpellDB[unitType][spell.name][creatureID]
+			else spellEntry = NeatPlatesSpellDB[unitType][spell.name] end
+
+			if spellEntry.castTime then
+				startTime = spell.startTime
+				endTime = spell.startTime + (spellEntry.castTime * spell.increase)
+
+				castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
+			end
 		else
-			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unitid)
-			castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
+			if channeled then
+				name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unitid)
+				castBar:SetScript("OnUpdate", OnUpdateCastBarReverse)
+			else
+				name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unitid)
+				castBar:SetScript("OnUpdate", OnUpdateCastBarForward)
+			end
+
+			if isTradeSkill then return end
 		end
 
-		if isTradeSkill then return end
-
+		-- Set 'notInterruptible' to false, Because we cannot tell if it's interruptible or not in classic
 		if NEATPLATES_IS_CLASSIC then notInterruptible = false end
 
 		unit.isCasting = true
@@ -1140,7 +1289,7 @@ do
 		visual.spelltext:SetText(text)
 		visual.durationtext:SetText("")
 		visual.spellicon:SetTexture(texture)
-		castBar:SetMinMaxValues( startTime, endTime )
+		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
 
 		local r, g, b, a = 1, 1, 0, 1
 
@@ -1265,6 +1414,8 @@ do
 		if not ShowCastBars then return end
 		local currentTime = GetTime() * 1000
 
+		if NEATPLATES_IS_CLASSIC_ERA then return end -- Skip if Classic era
+
 		if UnitCastingInfo(unitid) then
 			OnStartCasting(plate, unitid, false)	-- Check to see if there's a spell being cast
 		elseif UnitChannelInfo(unitid) then
@@ -1346,8 +1497,15 @@ do
 	----------------------------------------
 	-- Game Events
 	----------------------------------------
+	local builtThisSession = false
 	function CoreEvents:PLAYER_ENTERING_WORLD()
 		NeatPlatesCore:SetScript("OnUpdate", OnUpdate);
+
+		if NEATPLATES_IS_CLASSIC_ERA and not builtThisSession then
+			NeatPlates.BuildDefaultSpellDB() -- Temporarily force a rebuild on login as this is a work in progress
+			NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
+			builtThisSession = true
+		end
 	end
 
 	function CoreEvents:UNIT_NAME_UPDATE(...)
@@ -1528,7 +1686,7 @@ do
 		spellID = spellID or ""
 		local plate = nil
 		local ownerGUID
-		--local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
+		local unitType,_,_,_,_,creatureID = ParseGUID(sourceGUID)
 
 		-- Tracking spell school
 		if event == "SPELL_CAST_START" or event == "SPELL_CAST_SUCCESS" then
@@ -1547,11 +1705,13 @@ do
 				-- With "SPELL_AURA_APPLIED" we are looking for stuns etc. that were applied.
 				-- As the "SPELL_INTERRUPT" event doesn't get logged for those types of interrupts, but does trigger a "UNIT_SPELLCAST_INTERRUPTED" event.
 				-- "SPELL_CAST_FAILED" is for when the unit themselves interrupt the cast.
-				plate = PlatesByGUID[destGUID]
+				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
 
-				if plate then
-					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) then return end
-					local unitType = strsplit("-", sourceGUID)
+				if plate and (not NEATPLATES_IS_CLASSIC_ERA or plate.extended.unit.isCasting) then
+					if NEATPLATES_IS_CLASSIC_ERA and event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
+					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) and (not NEATPLATES_IS_CLASSIC_ERA or not spellCCList[spellName]) then return end
+
+					-- local unitType = strsplit("-", sourceGUID)
 
 					-- If a pet interrupted, we need to change the source from the pet to the owner
 					if unitType == "Pet" then
@@ -1560,6 +1720,11 @@ do
 
 					plate.extended.unit.interruptLogged = true
 					OnInterruptedCast(plate, ownerGUID or sourceGUID, sourceName, destGUID)
+				end
+
+				-- Set spell cast cache to finished
+				if NEATPLATES_IS_CLASSIC_ERA and SpellCastCache[destGUID] and (event ~= "SPELL_AURA_APPLIED" or spellCCList[spellName]) then
+					SpellCastCache[destGUID].finished = true
 				end
 			end
 		end
@@ -1575,6 +1740,79 @@ do
 				plate.extended.unit.fixate = true 	-- Fixating player
 			elseif plate then
 				plate.extended.unit.fixate = false 	-- NOT Fixating player
+			end
+		end
+
+		if NEATPLATES_IS_CLASSIC_ERA then
+			-- Cast time increases
+			CTICache[sourceGUID] = CTICache[sourceGUID] or {}
+			if event == "SPELL_AURA_APPLIED" and spellCTI[spellName] then
+				if CTICache[sourceGUID].timeout then CTICache[sourceGUID].timeout:Cancel() end
+				CTICache[sourceGUID].increase = spellCTI[spellName]
+				CTICache[sourceGUID].timeout = C_Timer.NewTimer(60, function()
+					CTICache[sourceGUID] = {}
+				end)
+			elseif event == "SPELL_AURA_REMOVED" and spellCTI[spellName] then
+				if CTICache[sourceGUID] and CTICache[sourceGUID].timeout then CTICache[sourceGUID].timeout:Cancel() end
+				CTICache[sourceGUID] = {}
+			end
+
+			-- Spellcasts (Classic)
+			if ShowCastBars and unitType and (spellName and type(spellName) == "string") and not spellBlacklist[spellName] then
+				local currentTime = GetTime() * 1000
+				local spellEntry
+				plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
+				NeatPlatesSpellDB[unitType] = NeatPlatesSpellDB[unitType] or {}
+				NeatPlatesSpellDB[unitType][spellName] = NeatPlatesSpellDB[unitType][spellName] or {}
+				if creatureID then
+					NeatPlatesSpellDB[unitType][spellName][creatureID] = NeatPlatesSpellDB[unitType][spellName][creatureID] or {}
+					spellEntry = NeatPlatesSpellDB[unitType][spellName][creatureID]
+				else
+					spellEntry = NeatPlatesSpellDB[unitType][spellName]
+				end
+
+				if event == "SPELL_CAST_START" then
+					-- Add Spell to Spell Cast Cache
+					SpellCastCache[sourceGUID] = SpellCastCache[sourceGUID] or {}
+					SpellCastCache[sourceGUID].name = spellName
+					SpellCastCache[sourceGUID].school = spellSchool
+					SpellCastCache[sourceGUID].startTime = currentTime
+					SpellCastCache[sourceGUID].finished = false
+					SpellCastCache[sourceGUID].increase = CTICache[sourceGUID].increase or 1
+
+					-- Timeout spell incase we don't catch the SUCCESS or FAILED event.(Times out after recorded casttime + 1 seconds, or 12 seconds if the spell is unknown)
+					-- The FAILED event doesn't seem to trigger properly in the current beta test.
+					if not spellEntry.castTime then spellEntry.castTime = NeatPlatesSpellDB.default[spellName].castTime end
+					local timeout = 12
+					local castTime = (spellEntry.castTime or 0) * SpellCastCache[sourceGUID].increase
+					if castTime > 0 then timeout = (castTime+1000)/1000 end -- If we have a recorded cast time, use that as timeout base
+					if SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the old spell timeout if it exists
+
+					SpellCastCache[sourceGUID].spellTimeout = C_Timer.NewTimer(timeout, function()
+						local plate = PlatesByGUID[sourceGUID] or IsEmulatedFrame(sourceGUID)
+						if SpellCastCache[sourceGUID].startTime == currentTime then SpellCastCache[sourceGUID].finished = true end -- Make sure we are on the same cast
+						if plate then OnStopCasting(plate) end
+					end)
+
+					if plate then OnStartCasting(plate, sourceGUID, false) end
+				elseif (event == "SPELL_CAST_SUCCESS" or event == "SPELL_CAST_FAILED") then
+					-- Update SpellDB with castTime
+					if event == "SPELL_CAST_SUCCESS" and SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].startTime then
+						castTime = (currentTime-SpellCastCache[sourceGUID].startTime)/SpellCastCache[sourceGUID].increase -- Cast Time
+						if castTime > 0 then spellEntry.castTime = castTime end
+					end
+
+					-- Clear Cast Cache
+					if SpellCastCache[sourceGUID] and SpellCastCache[sourceGUID].spellTimeout then SpellCastCache[sourceGUID].spellTimeout:Cancel() end	-- Cancel the spell Timeout
+					SpellCastCache[sourceGUID] = nil
+					if plate then
+						OnStopCasting(plate)
+					end
+				end
+
+				-- Remove empty entries as they only take up space
+				--if not next(NeatPlatesSpellDB[unitType][spellName]) then NeatPlatesSpellDB[unitType][spellName] = nil
+				--elseif creatureID and not next(NeatPlatesSpellDB[unitType][spellName][creatureID]) then NeatPlatesSpellDB[unitType][spellName][creatureID] = nil end
 			end
 		end
 	end
@@ -1815,6 +2053,49 @@ local function OnResetWidgets(plate)
 
 	plate.UpdateMe = true
 end
+
+--------------------------------------------------------------------------------------------------------------
+-- Classic era specific functions
+--------------------------------------------------------------------------------------------------------------
+
+-- Cleanup Spell DB
+local function CleanSpellDB()
+	local checkTable
+	checkTable = function(t)
+		for k,v in pairs(t) do
+			if type(v) == "table" then
+				if next(v) then
+					checkTable(v)
+				else
+					t[k] = nil
+				end
+			end
+		end
+	end
+	checkTable(NeatPlatesSpellDB)
+end
+
+-- Build classic texture DB
+local function BuildDefaultSpellDB()
+	NeatPlatesSpellDB.texture = nil
+	NeatPlatesSpellDB.default = {}
+	for i = 1, 100000 do
+		local spellName,_,icon,castTime = GetSpellInfo(i)
+		-- 136235(Default Placeholder Icon)
+		if spellName then
+			if not NeatPlatesSpellDB.default[spellName] then NeatPlatesSpellDB.default[spellName] = {} end
+			if not NeatPlatesSpellDB.default[spellName].texture and icon ~= 136235 then
+				NeatPlatesSpellDB.default[spellName].texture = icon
+				if castTime > 0 then NeatPlatesSpellDB.default[spellName].castTime = castTime end
+			end
+			if not NeatPlatesSpellDB.default[spellName].castTime and castTime > 0 then NeatPlatesSpellDB.default[spellName].castTime = castTime end
+		end
+
+	end
+end
+
+NeatPlates.BuildDefaultSpellDB = BuildDefaultSpellDB
+NeatPlates.CleanSpellDB = CleanSpellDB
 
 --------------------------------------------------------------------------------------------------------------
 -- External Commands: Allows widgets and themes to request updates to the plates.
