@@ -7,6 +7,5 @@
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
 embeds-classic.xml
-embeds.xml
 locales.xml
 NeatPlates.xml
