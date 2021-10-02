@@ -52,6 +52,7 @@ local EmphasizedScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 local PreciseAuraThreshold = 0
 local BuffSeparationMode = 1
 local HideInHeadlineMode = false
+local BlizzardStyleIcons = false
 
 local function DummyFunction() end
 
@@ -209,7 +210,10 @@ local function UpdateAuraHighlighting(frame, aura)
 			frame.BorderHighlight:SetVertexColor(r, g or 1, b or 1, a or 1)
 			frame.BorderHighlight:Show()
 			frame.Border:Hide()
-		else frame.BorderHighlight:Hide(); frame.Border:Show() end
+		else
+			frame.BorderHighlight:Hide()
+			if not BlizzardStyleIcons then frame.Border:Show() end
+		end
 
 		-- Remove ButtonGlow if appropriate
 		if frame.__LBGoverlay and removeGlow then ButtonGlow.HideOverlayGlow(frame) end
@@ -507,6 +511,7 @@ end
 -------------------------------------------------------------
 local WideArt = "Interface\\Addons\\NeatPlatesWidgets\\Aura\\AuraFrameWide"
 local SquareArt = "Interface\\Addons\\NeatPlatesWidgets\\Aura\\AuraFrameSquare"
+local BlizzardArt = "Interface\\Common\\WhiteIconFrame"
 local WideHighlightArt = "Interface\\Addons\\NeatPlatesWidgets\\Aura\\AuraFrameHighlightWide"
 local SquareHighlightArt = "Interface\\Addons\\NeatPlatesWidgets\\Aura\\AuraFrameHighlightSquare"
 local AuraFont = "FONTS\\ARIALN.TTF"
@@ -540,14 +545,28 @@ local function TransformWideAura(frame)
 	frame:SetHeight(14.5)
 	-- Icon
 	frame.Icon:SetAllPoints(frame)
-	frame.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)  -- obj:SetTexCoord(left,right,top,bottom)
-	-- Border
-	frame.Border:SetWidth(32); frame.Border:SetHeight(32)
-	frame.Border:SetPoint("CENTER", 1, -2)
-	frame.Border:SetTexture(WideArt)
-	-- Highlight
-	frame.BorderHighlight:SetAllPoints(frame.Border)
-	frame.BorderHighlight:SetTexture(WideHighlightArt)
+	frame.Border:ClearAllPoints()
+	frame.BorderHighlight:ClearAllPoints()
+	if BlizzardStyleIcons then
+		frame.Icon:SetTexCoord(0, 1, 0, 1)  -- obj:SetTexCoord(left,right,top,bottom)
+		-- Border
+		frame.Border:SetAllPoints(frame.Icon)
+		frame.Border:SetTexture(BlizzardArt)
+		frame.Border:Hide()
+		-- Highlight
+		frame.BorderHighlight:SetAllPoints(frame.Border)
+		frame.BorderHighlight:SetTexture(BlizzardArt)
+	else
+		frame.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)  -- obj:SetTexCoord(left,right,top,bottom)
+		-- Border
+		frame.Border:SetWidth(32); frame.Border:SetHeight(32)
+		frame.Border:SetPoint("CENTER", 1, -2)
+		frame.Border:SetTexture(WideArt)
+		-- Highlight
+		frame.BorderHighlight:SetAllPoints(frame.Border)
+		frame.BorderHighlight:SetTexture(WideHighlightArt)
+	end
+
 	--  Time Text
 	frame.TimeLeft:SetFont(AuraFont ,9, "OUTLINE")
 	frame.TimeLeft:SetShadowOffset(1, -1)
@@ -575,14 +594,27 @@ local function TransformSquareAura(frame)
 	frame:SetHeight(14.5)
 	-- Icon
 	frame.Icon:SetAllPoints(frame)
-	frame.Icon:SetTexCoord(.10, 1-.07, .12, 1-.12)  -- obj:SetTexCoord(left,right,top,bottom)
-	-- Border
-	frame.Border:SetWidth(32); frame.Border:SetHeight(32)
-	frame.Border:SetPoint("CENTER", 0, -2)
-	frame.Border:SetTexture(SquareArt)
-	-- Highlight
-	frame.BorderHighlight:SetAllPoints(frame.Border)
-	frame.BorderHighlight:SetTexture(SquareHighlightArt)
+	frame.Border:ClearAllPoints()
+	frame.BorderHighlight:ClearAllPoints()
+	if BlizzardStyleIcons then
+		frame.Icon:SetTexCoord(0, 1, 0, 1)  -- obj:SetTexCoord(left,right,top,bottom)
+		-- Border
+		frame.Border:SetAllPoints(frame.Icon)
+		frame.Border:SetTexture(BlizzardArt)
+		frame.Border:Hide()
+		-- Highlight
+		frame.BorderHighlight:SetAllPoints(frame.Border)
+		frame.BorderHighlight:SetTexture(BlizzardArt)
+	else
+		frame.Icon:SetTexCoord(.10, 1-.07, .12, 1-.12)  -- obj:SetTexCoord(left,right,top,bottom)
+		-- Border
+		frame.Border:SetWidth(32); frame.Border:SetHeight(32)
+		frame.Border:SetPoint("CENTER", 0, -2)
+		frame.Border:SetTexture(SquareArt)
+		-- Highlight
+		frame.BorderHighlight:SetAllPoints(frame.Border)
+		frame.BorderHighlight:SetTexture(SquareHighlightArt)
+	end
 	--  Time Text
 	frame.TimeLeft:SetFont(AuraFont ,9, "OUTLINE")
 	frame.TimeLeft:SetShadowOffset(1, -1)
@@ -799,21 +831,20 @@ local function CreateAuraWidget(parent, style)
 	return frame
 end
 
-local function UseSquareDebuffIcon(scale)
+local function SetAuraIconStyle(style, scale)
 	AuraScale = scale
-	useWideIcons = false
-	DebuffColumns = math.max(math.ceil(5/AuraScale), 5)
-	DebuffLimit = DebuffColumns * 2
-	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
-	NeatPlates:ForceUpdate()
-end
+	BlizzardStyleIcons = style == 3
+	useWideIcons = style == 1
 
-local function UseWideDebuffIcon(scale)
-	AuraScale = scale
-	useWideIcons = true
-	DebuffColumns = math.max(math.ceil(3/AuraScale), 3)
+	if style >= 2 or style <= 3 then
+		DebuffColumns = math.max(math.ceil(5/AuraScale), 5) -- Compact
+	else
+		DebuffColumns = math.max(math.ceil(3/AuraScale), 3) -- Wide
+	end
+
 	DebuffLimit = DebuffColumns * 2
 	AuraLimit = DebuffColumns * 3	-- Extra row for buffs
+
 	NeatPlates:ForceUpdate()
 end
 
@@ -886,8 +917,7 @@ end
 -- NeatPlatesWidgets.GetAuraWidgetByGUID = GetAuraWidgetByGUID
 NeatPlatesWidgets.IsAuraShown = IsAuraShown
 
-NeatPlatesWidgets.UseSquareDebuffIcon = UseSquareDebuffIcon
-NeatPlatesWidgets.UseWideDebuffIcon = UseWideDebuffIcon
+NeatPlatesWidgets.SetAuraIconStyle = SetAuraIconStyle
 
 NeatPlatesWidgets.SetAuraSortMode = SetAuraSortMode
 NeatPlatesWidgets.SetAuraFilter = SetAuraFilter

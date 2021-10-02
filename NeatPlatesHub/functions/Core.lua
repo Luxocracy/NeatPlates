@@ -164,7 +164,7 @@ local function CallbackUpdate()
 end
 
 local function EnableWatchers()
-	if LocalVars.WidgetDebuffStyle == 2 then NeatPlatesWidgets.UseSquareDebuffIcon(LocalVars.AuraScale) else NeatPlatesWidgets.UseWideDebuffIcon(LocalVars.AuraScale)end
+	NeatPlatesWidgets.SetAuraIconStyle(LocalVars.WidgetDebuffStyle, LocalVars.AuraScale)
 	--NeatPlatesUtility:EnableGroupWatcher()
 	NeatPlatesUtility:EnableHealerTrack()
 	--NeatPlatesWidgets:EnableTankWatch()

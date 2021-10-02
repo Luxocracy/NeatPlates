@@ -52,7 +52,8 @@ NeatPlatesHubMenus.AbsorbUnits = {
 NeatPlatesHubDefaults.WidgetDebuffStyle = 1
 NeatPlatesHubMenus.DebuffStyles = {
 				{ text = L["Wide"],  } ,
-				{ text = L["Compact (May require UI reload to take effect)"],  } ,
+				{ text = L["Compact"],  } ,
+				{ text = L["Blizzlike"],  } ,
 			}
 
 NeatPlatesHubDefaults.WidgetDebuffFilter = 2 -- Show Mine by default
