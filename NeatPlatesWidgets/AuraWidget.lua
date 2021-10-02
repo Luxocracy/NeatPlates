@@ -836,7 +836,7 @@ local function SetAuraIconStyle(style, scale)
 	BlizzardStyleIcons = style == 3
 	useWideIcons = style == 1
 
-	if style >= 2 or style <= 3 then
+	if style >= 2 and style <= 3 then
 		DebuffColumns = math.max(math.ceil(5/AuraScale), 5) -- Compact
 	else
 		DebuffColumns = math.max(math.ceil(3/AuraScale), 3) -- Wide
