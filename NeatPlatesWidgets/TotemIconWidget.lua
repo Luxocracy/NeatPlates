@@ -1,6 +1,8 @@
 --------------------
 -- Totem Icon Widget
 --------------------
+local round = NeatPlatesUtility.round
+
 local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
 local TotemIcons, TotemTypes, TotemDurations = {}, {}, {}
 local TotemFont = "FONTS\\ARIALN.TTF"

@@ -1,4 +1,4 @@
-## Interface: 11400
+## Interface: 90100
 ## Title: NeatPlates
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Luxocracy and friends
@@ -6,6 +6,6 @@
 ## SavedVariables: NeatPlatesSettings
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
-embeds-classic.xml
+embeds.xml
 locales.xml
 NeatPlates.xml

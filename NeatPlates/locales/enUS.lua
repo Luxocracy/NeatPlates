@@ -264,10 +264,11 @@ L["Hide Aura Widget in Headline Mode"] = true
 L["Icon Style"] = true
 	-- Icon Style Dropdown
 	L["Wide"] = true
-	L["Compact (May require UI reload to take effect)"] = true
+	L["Compact"] = true
+	L["Blizzlike"] = true
 
 L["Sorting Mode"] = true
-	-- Aura Sorting Dropdown
+		-- Aura Sorting Dropdown
 	L["By Duration"] = true
 
 L["Aura Alignment"] = true
