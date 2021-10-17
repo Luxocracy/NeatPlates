@@ -40,6 +40,7 @@ local activetheme = {}                                                    	-- Ta
 local InCombat, HasTarget, HasMouseover = false, false, false					   		-- Player State Data
 local EnableFadeIn = true
 local ShowCastBars = true
+local ShowCastSpellName = true
 local ShowIntCast = true
 local ShowIntWhoCast = true
 local ShowEnemyPowerBar = false
@@ -1286,7 +1287,11 @@ do
 		OnUpdateCastTarget(plate, unitid)
 
 		-- Set spell text & duration
-		visual.spelltext:SetText(text)
+		if ShowCastSpellName then
+			visual.spelltext:SetText(text)
+		else
+			visual.spelltext:SetText("")
+		end
 		visual.durationtext:SetText("")
 		visual.spellicon:SetTexture(texture)
 		castBar:SetMinMaxValues(startTime or 0, endTime or 0)
@@ -1335,7 +1340,11 @@ do
 				spellString = eventText
 			end
 
-			visual.spelltext:SetText(spellString)
+			if ShowCastSpellName then
+				visual.spelltext:SetText(text)
+			else
+				visual.spelltext:SetText("")
+			end
 			visual.durationtext:SetText("")
 			visual.spelltarget:SetText("")
 		end
@@ -2117,6 +2126,7 @@ function NeatPlates:EnableCastBars() ShowCastBars = true end
 function NeatPlates:ToggleEmulatedTargetPlate(show) if not show then toggleNeatPlatesTarget(false) end; ShowEmulatedTargetPlate = show end
 
 function NeatPlates:SetCoreVariables(LocalVars)
+	ShowCastSpellName = LocalVars.CastSpellNameEnable
 	ShowIntCast = LocalVars.IntCastEnable
 	ShowIntWhoCast = LocalVars.IntCastWhoEnable
 	ShowFriendlyPowerBar = LocalVars.StyleShowFriendlyPowerBar

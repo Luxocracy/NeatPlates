@@ -482,6 +482,7 @@ L["Castbar Duration Style"] = true
 	L["Time Elapsed"] = true
 	L["Time Elapsed/Cast Time"] = true
 L["Show Spell Icon"] = true
+L["Show Name of Spell"] = true
 L["Show Target of Spell"] = true
 L["Show Enemy Cast Bars"] = true
 L["Show Friendly Cast Bars"] = true
