@@ -233,6 +233,7 @@ NeatPlatesHubDefaults = {
 	ColorCastBySchool = false,
 	SpellCastEnableEnemy = true,
 	SpellCastEnableFriendly = false,
+	CastSpellNameEnable = true,
 	IntCastEnable = true,
 	IntCastWhoEnable = true,
 	SpellIconEnable = true,
