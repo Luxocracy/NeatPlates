@@ -1340,11 +1340,7 @@ do
 				spellString = eventText
 			end
 
-			if ShowCastSpellName then
-				visual.spelltext:SetText(text)
-			else
-				visual.spelltext:SetText("")
-			end
+			visual.spelltext:SetText(spellString)
 			visual.durationtext:SetText("")
 			visual.spelltarget:SetText("")
 		end
