@@ -1,15 +1,25 @@
 ------------------------------
 -- Debug
 ------------------------------
-local function DebugGetUnitChargedPowerPoints(unit)
-	local used = {}
-	local points = {}
-	for i = 1, 4 do
-		local point = math.random(0, 5)
-		if not used[point] and point > 0 then
-			used[point] = true
-			table.insert(points, point)
+local lastDebugPoints = {}
+local function DebugGetUnitChargedPowerPoints(currentPoints)
+	local used = {
+		[1] = true,
+	}
+	local points = lastDebugPoints
+	if currentPoints == 1 then
+		points = {}
+		for i = 1, 4 do
+			local point = math.random(0, 5)
+			if not used[point] and point > 0 then
+				used[point] = true
+				table.insert(points, point)
+			end
 		end
+		lastDebugPoints = points
+	end
+	if currentPoints == 2 then
+		return {}
 	end
 
 	return points
@@ -214,23 +224,21 @@ local function UpdateWidgetFrame(frame)
 		if t[PlayerClass]["OVERLAY"] then
 			if PlayerClass == "ROGUE" then
 				if not NEATPLATES_IS_CLASSIC then
-					-- local chargedPowerPoints = DebugGetUnitChargedPowerPoints("player")
+					-- local chargedPowerPoints = DebugGetUnitChargedPowerPoints(points)
 					local chargedPowerPoints = GetUnitChargedPowerPoints("player")
-					if chargedPowerPoints then
-						for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
-							local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[i];
-							if chargedPowerPointIndex then
-								frame.Overlay[i].Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
-								frame.Overlay[i]:SetAlpha(1)
-							else
-								frame.Overlay[i]:SetAlpha(0)
-							end
+					for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
+						local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[i];
+						if chargedPowerPointIndex then
+							frame.Overlay[i].Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
+							frame.Overlay[i]:SetAlpha(1)
+						else
+							frame.Overlay[i]:SetAlpha(0)
+						end
 
-							if chargedPowerPointIndex == points then
-								frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
-							else
-								frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
-							end
+						if chargedPowerPointIndex and chargedPowerPointIndex <= points then
+							frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+						else
+							frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
 						end
 					end
 				end
