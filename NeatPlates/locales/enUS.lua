@@ -70,7 +70,7 @@ L["The minimum opacity of nameplates for 'Nameplate Minimum Alpha Distance'"] = 
 L["Maximum Alpha"] = true
 L["The maximum opacity of nameplates for 'Nameplate Maximum Alpha Distance'"] = true -- Tooltip
 L["Minimum Alpha Distance"] = true
-L["The distance from the camera that nameplates will reach their minimum alpha"] = true -- Tooltip
+L["The distance from the max distance that nameplates will reach their minimum alpha"] = true -- Tooltip
 L["Maximum Alpha Distance"] = true
 L["The distance from the camera that nameplates will reach their maxmimum alpha"] = true -- Tooltip
 L["Horizontal Overlap"] = true
@@ -183,6 +183,7 @@ L["Friendly Status Text"] = true
 	L["Arena ID, Health, and Power"] = true
 L["Enemy Subtext"] = true
 L["Friendly Subtext"] = true
+L["Subtext color override (0 opacity = default colors)"] = true
 
 
 L["Additional settings"] = true

@@ -620,7 +620,18 @@ local function SubTextDelegate(unit)
 			func = EnemyNameSubtextFunctions[LocalVars.EnemySubtext or 0] or DummyFunction
 		end
 	end
-	return func(unit)
+
+	local text, r, g, b, a = func(unit)
+	local c = {}
+
+	-- Override the color from the function with the color chosen by the user
+	if unit.reaction == "FRIENDLY" and (LocalVars.FriendlySubtextColor["a"] > 0 and text and text ~= "") then
+		c = LocalVars.FriendlySubtextColor
+	elseif unit.reaction ~= "FRIENDLY" and (LocalVars.EnemySubtextColor["a"] > 0 and text and text ~= "") then
+		c = LocalVars.EnemySubtextColor
+	end
+
+	return text, (c.r or r), (c.g or g), (c.b or b), (c.a or a)
 end
 
 local function CastbarDurationRemaining(currentTime, startTime, endTime, isChannel)

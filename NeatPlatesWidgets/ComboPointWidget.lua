@@ -1,6 +1,34 @@
 ------------------------------
+-- Debug
+------------------------------
+local lastDebugPoints = {}
+local function DebugGetUnitChargedPowerPoints(currentPoints)
+	local used = {
+		[1] = true,
+	}
+	local points = lastDebugPoints
+	if currentPoints == 1 then
+		points = {}
+		for i = 1, 4 do
+			local point = math.random(0, 5)
+			if not used[point] and point > 0 then
+				used[point] = true
+				table.insert(points, point)
+			end
+		end
+		lastDebugPoints = points
+	end
+	if currentPoints == 2 then
+		return {}
+	end
+
+	return points
+end
+
+------------------------------
 -- Combo Point Widget
 ------------------------------
+
 
 local comboWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ComboWidget\\"
 local artpath = "Interface\\Addons\\NeatPlatesWidgets\\ComboWidget\\"
@@ -33,6 +61,7 @@ local t = {
 		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
 		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
 		["OVERLAY"] = {
+			["amount"] = 4,
 			["off"] = {
 				artpath.."RogueKyrianOverlayOff.tga",
 				artpath.."RogueKyrianOverlayNeatOff.tga",
@@ -195,24 +224,28 @@ local function UpdateWidgetFrame(frame)
 		if t[PlayerClass]["OVERLAY"] then
 			if PlayerClass == "ROGUE" then
 				if not NEATPLATES_IS_CLASSIC then
-					local chargedPowerPoints = GetUnitChargedPowerPoints("player");
-					-- there's only going to be 1 max
-					local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[1];
-					if chargedPowerPoints then
-						frame.Overlay.Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
-						frame.Overlay:SetAlpha(1)
-					else
-						frame.Overlay:SetAlpha(0)
-					end
+					-- local chargedPowerPoints = DebugGetUnitChargedPowerPoints(points)
+					local chargedPowerPoints = GetUnitChargedPowerPoints("player")
+					for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
+						local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[i];
+						if chargedPowerPointIndex then
+							frame.Overlay[i].Texture:SetPoint("CENTER", frame, "CENTER", (t[PlayerClass]["OVERLAY"][tostring(maxPoints)][chargedPowerPointIndex])*ScaleOptions.x+ScaleOptions.offset.x, 1*ScaleOptions.x+ScaleOptions.offset.y) -- Offset texture to overcharged combo point
+							frame.Overlay[i]:SetAlpha(1)
+						else
+							frame.Overlay[i]:SetAlpha(0)
+						end
 
-					if chargedPowerPointIndex == points then
-						frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
-					else
-						frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
+						if chargedPowerPointIndex and chargedPowerPointIndex <= points then
+							frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+						else
+							frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["off"][artstyle])
+						end
 					end
 				end
 			else
-				frame.Overlay.Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+				for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
+					frame.Overlay[i].Texture:SetTexture(t[PlayerClass]["OVERLAY"]["on"][artstyle])
+				end
 			end
 		end
 
@@ -242,8 +275,10 @@ local function UpdateWidgetScaling(frame)
 		frame.Spark.Texture:SetHeight(16*ScaleOptions.y)
 	end
 	if frame.Overlay then
-		frame.Overlay.Texture:SetWidth(16*ScaleOptions.x)
-		frame.Overlay.Texture:SetHeight(16*ScaleOptions.y)
+		for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
+			frame.Overlay[i].Texture:SetWidth(16*ScaleOptions.x)
+			frame.Overlay[i].Texture:SetHeight(16*ScaleOptions.y)
+		end
 	end
 end
 
@@ -409,10 +444,13 @@ local function CreateWidgetFrame(parent)
 		end
 	else
 		if t[PlayerClass] and t[PlayerClass]["OVERLAY"] then
-			if t[PlayerClass]["OVERLAY"]["off"] then
-				frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["off"][artstyle])
-			else
-				frame.Overlay = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["on"][artstyle])
+			frame.Overlay = {}
+			for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
+				if t[PlayerClass]["OVERLAY"]["off"] then
+					frame.Overlay[i] = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["off"][artstyle])
+				else
+					frame.Overlay[i] = CreateOverlay(frame, t[PlayerClass]["OVERLAY"]["on"][artstyle])
+				end
 			end
 		end
 		frame.PartialFill:Hide()
