@@ -200,6 +200,30 @@
         </Scripts>
     </CheckButton>
 
+    <Frame name="NeatPlatesColorButtonTemplate" virtual="true" inherits="BackdropTemplate">
+        <Scripts>
+            <OnEnter>
+                self.isMouseover = true
+                if(self.tooltipText ~= nil) then
+                    C_Timer.After(0.25, function()
+                        if self.isMouseover then
+                            GameTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+                            GameTooltip:ClearAllPoints();
+                            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+                            GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT", -12, -12);
+                        end
+                    end);
+                end
+            </OnEnter>
+            <OnLeave>
+                self.isMouseover = false
+                if(self.tooltipText ~= nil) then
+                    GameTooltip:Hide();
+                end
+            </OnLeave>
+        </Scripts>
+    </Frame>
+
     <Frame name="NeatPlatesPanelTipTemplate" virtual="true">
         <Size>
                 <AbsDimension x="40" y="32"/>
