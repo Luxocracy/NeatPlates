@@ -1,4 +1,4 @@
-## Interface: 11400
+## Interface: 11402
 ## Title: NeatPlates: |cFF3782D1BlizzardPlates
 ## Notes: Blizzard Vanilla´s Plates.
 ## Author: delabarra.
