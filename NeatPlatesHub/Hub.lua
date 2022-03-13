@@ -141,6 +141,8 @@ local function BuildHubPanel(panel)
 	panel.EnemyStatusTextMode, F =  CreateQuickDropdown(objectName.."EnemyStatusTextMode", cEnemy..L["Enemy Status Text"]..':', TextModes, 1, AlignmentColumn, F )
 	--panel.EnemyStatusTextModeCenter, F =  CreateQuickDropdown(objectName.."EnemyStatusTextModeCenter", "", BasicTextModes, 1, AlignmentColumn, F, 0, -14 )
 	--panel.EnemyStatusTextModeRight, F =  CreateQuickDropdown(objectName.."EnemyStatusTextModeRight", "", BasicTextModes, 1, AlignmentColumn, F, 0, -14 )
+	panel.EnemySubtextColor = CreateQuickColorbox(objectName.."EnemySubtextColor", "", nil, AlignmentColumn, F, 132, 10.5)
+	panel.EnemySubtextColor.tooltipText = L["Subtext color override (0 opacity = default colors)"]
 	panel.EnemySubtext, F =  CreateQuickDropdown(objectName.."EnemySubtext", cEnemy..L["Enemy Subtext"]..':', EnemyNameSubtextModes, 1, AlignmentColumn, F )
 
 	-- Friendly
@@ -149,7 +151,10 @@ local function BuildHubPanel(panel)
 	panel.FriendlyStatusTextMode, F =  CreateQuickDropdown(objectName.."FriendlyStatusTextMode", cFriendly..L["Friendly Status Text"]..':', TextModes, 1, AlignmentColumn, F, OffsetColumnB)
 	--panel.FriendlyStatusTextModeCenter, F =  CreateQuickDropdown(objectName.."FriendlyStatusTextModeCenter", "", BasicTextModes, 1, AlignmentColumn, F, OffsetColumnB, -14)
 	--panel.FriendlyStatusTextModeRight, F =  CreateQuickDropdown(objectName.."FriendlyStatusTextModeRight", "", BasicTextModes, 1, AlignmentColumn, F, OffsetColumnB, -14)
+	panel.FriendlySubtextColor = CreateQuickColorbox(objectName.."FriendlySubtextColor", "", nil, AlignmentColumn, F, OffsetColumnB + 132, 10.5)
+	panel.FriendlySubtextColor.tooltipText = L["Subtext color override (0 opacity = default colors)"]
 	panel.FriendlySubtext, F =  CreateQuickDropdown(objectName.."FriendlySubtext", cFriendly..L["Friendly Subtext"]..':', EnemyNameSubtextModes, 1, AlignmentColumn, F, OffsetColumnB )
+
 
 	-- Other
 	panel.HealthBarStyleLabel, F = CreateQuickItemLabel(nil, L["Additional settings"]..':', AlignmentColumn, F, 0, 8)

@@ -946,7 +946,7 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateMinAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMinAlphaDistance", panel, L["Minimum Alpha Distance"], 10, 0, 100, 1, "ACTUAL", 170)
 	panel.NameplateMinAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 0, -50)
 	panel.NameplateMinAlphaDistance.Callback = function(self) SetCVarValue(self, "nameplateMinAlphaDistance") end
-	panel.NameplateMinAlphaDistance.tooltipText = L["The distance from the camera that nameplates will reach their minimum alpha"]
+	panel.NameplateMinAlphaDistance.tooltipText = L["The distance from the max distance that nameplates will reach their minimum alpha"]
 
 	panel.NameplateMaxAlphaDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxAlphaDistance", panel, L["Maximum Alpha Distance"], 40, 0, 100, 1, "ACTUAL", 170)
 	panel.NameplateMaxAlphaDistance:SetPoint("TOPLEFT", panel.NameplateMinAlpha, "TOPLEFT", 200, -50)

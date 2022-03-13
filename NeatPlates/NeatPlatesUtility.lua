@@ -1041,7 +1041,7 @@ do
 	end
 
 	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
-		local colorbox = CreateFrame("Button", reference, parent, NeatPlatesBackdrop)
+		local colorbox = CreateFrame("Button", reference, parent, "NeatPlatesColorButtonTemplate")
 		colorbox:SetWidth(24)
 		colorbox:SetHeight(24)
 		colorbox:SetBackdrop({bgFile = "Interface\\ChatFrame\\ChatFrameColorSwatch",
