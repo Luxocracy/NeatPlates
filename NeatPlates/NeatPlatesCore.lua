@@ -25,7 +25,10 @@ local select, pairs, tostring  = select, pairs, tostring 			    -- Local functio
 local CreateNeatPlatesStatusbar = CreateNeatPlatesStatusbar			    -- Local function copy
 local WorldFrame, UIParent = WorldFrame, UIParent
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local SetNamePlateFriendlySize = function(x,y)
+	if NameplateNoStackingFriendly then x, y = 1, 1 end
+	C_NamePlate.SetNamePlateFriendlySize(x,y)
+end
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
@@ -2130,6 +2133,7 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ShowSpellTarget = LocalVars.SpellTargetEnable
 	ThreatSoloEnable = LocalVars.ThreatSoloEnable
 	ReplaceUnitNameArenaID = LocalVars.TextUnitNameArenaID
+	NameplateNoStackingFriendly = LocalVars.NameplateNoStackingFriendly
 
 	ForceDefaultNameplates = {
 		["HOSTILE"] = {
