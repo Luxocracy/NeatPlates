@@ -170,6 +170,8 @@ local function BuildHubPanel(panel)
 	panel.TextStatusForceShadow, F = CreateQuickCheckbutton(objectName.."TextStatusForceShadow", L["Force Shadow on Status Text"], AlignmentColumn, F, 16)
 	panel.TextShowOnlyOnTargets, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnTargets", L["Show Status Text on Target & Mouseover"], AlignmentColumn, F, 16)
 	panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 16)
+	panel.NameplateNoStackingFriendly, F = CreateQuickCheckbutton(objectName.."NameplateNoStackingFriendly", L["Prevent Friendly Nameplate Stacking *"], AlignmentColumn, F, 16)
+	F.tooltipText = L["nameplate_no_stacking_friendly_tooltip"]
 	panel.TextHealthPercentPrecision, F = CreateQuickSlider(objectName.."TextHealthPercentPrecision", L["Health Percent Precision"]..':', "ACTUAL", 160, AlignmentColumn, F, 16)
 
 

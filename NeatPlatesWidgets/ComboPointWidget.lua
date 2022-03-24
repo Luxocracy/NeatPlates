@@ -423,6 +423,7 @@ local function CreateWidgetFrame(parent)
 	local h = pattern["h"] or 64
 	frame:SetHeight(32)
 	frame:SetWidth(w)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.Icon:SetPoint("CENTER", frame, "CENTER")
 	frame.Icon:SetHeight(h)
