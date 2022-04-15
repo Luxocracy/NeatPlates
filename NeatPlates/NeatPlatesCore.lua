@@ -420,9 +420,9 @@ do
 	-- ApplyPlateExtesion
 	function OnNewNameplate(plate, unitid)
 
-    -- NeatPlates Frame
-    --------------------------------
-    local bars, regions = {}, {}
+	-- NeatPlates Frame
+	--------------------------------
+		local bars, regions = {}, {}
 		local carrier
 		local frameName = "NeatPlatesCarrier"..numChildren
 
@@ -542,6 +542,87 @@ do
 		UpdateNameplateSize(plate)
 	end
 
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Nameplate Event Handlers
+---------------------------------------------------------------------------------------------------------------------
+local function NameplateEventHandler(self, event, ...)
+	-- Make sure we have a frame, as this can be called directly
+	if not self then return end
+
+	-- print(event, ...)
+
+	local unitid = ...
+	if event == "UNIT_HEALTH"
+	or event == "UNIT_MAXHEALTH"
+	or event == "UNIT_POWER_UPDATE"
+	or event == "UNIT_LEVEL"
+	or event == "UNIT_FACTION"
+	or event == "UNIT_THREAT_SITUATION_UPDATE"
+	then
+		OnHealthUpdate(self)
+	elseif event == "UNIT_NAME_UPDATE" then
+		SetUpdateMe(self)
+	elseif event == "UNIT_TARGET" then
+		OnUpdateCastTarget(self, unitid)
+	elseif event == "UNIT_LEVEL"
+		or event == "UNIT_FACTION"
+		or event == "UNIT_THREAT_SITUATION_UPDATE"
+	then
+		OnHealthUpdate(self)
+	elseif event == "UNIT_SPELLCAST_START" then
+		if not ShowCastBars then return end
+		OnStartCasting(self, unitid, false)
+	elseif event == "UNIT_SPELLCAST_STOP" then
+		if not ShowCastBars then return end
+		OnStopCasting(self, unitid, false)
+	elseif event == "UNIT_SPELLCAST_CHANNEL_START" then
+		if not ShowCastBars then return end
+		OnStartCasting(self, unitid, true)
+	elseif event == "UNIT_SPELLCAST_CHANNEL_STOP" then
+		if not ShowCastBars then return end
+		OnStopCasting(self)
+	elseif event == "UNIT_SPELLCAST_INTERRUPTED"
+		or event == "UNIT_SPELLCSAT_FAILED"
+	then
+		if not ShowCastBars then return end
+		if not self.extended.unit.interrupted then OnInterruptedCast(self) end
+	elseif event == "UNIT_SPELLCAST_DELAYED"
+		or event == "UNIT_SPELLCAST_CHANNEL_UPDATE"
+		or event == "UNIT_SPELLCAST_INTERRUPTIBLE"
+		or event == "UNIT_SPELLCAST_NOT_INTERRUPTIBLE"
+	then
+		if not ShowCastBars then return end
+		OnUpdateCastMidway(self, unitid)
+	end
+end
+
+-- Register events to be handled on the nameplate
+local function RegisterNameplateEvents(plate, unitid)
+	plate:SetScript("OnEvent", NameplateEventHandler);
+
+	-- Register Events
+	plate:RegisterUnitEvent("UNIT_HEALTH", unitid)
+	plate:RegisterUnitEvent("UNIT_MAXHEALTH", unitid)
+	plate:RegisterUnitEvent("UNIT_POWER_UPDATE", unitid)
+	plate:RegisterUnitEvent("UNIT_NAME_UPDATE", unitid)
+	plate:RegisterUnitEvent("UNIT_TARGET", unitid)
+	plate:RegisterUnitEvent("UNIT_LEVEL", unitid)
+	plate:RegisterUnitEvent("UNIT_FACTION", unitid)
+	plate:RegisterUnitEvent("UNIT_THREAT_SITUATION_UPDATE", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_START", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", unitid)
+	-- plate:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_DELAYED", unitid)
+	plate:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", unitid)
+	if not NEATPLATES_IS_CLASSIC then
+		plate:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTIBLE", unitid)
+		plate:RegisterUnitEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE", unitid)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -678,6 +759,9 @@ do
 		-- Skip the initial data gather and let the second cycle do the work.
 		plate.UpdateMe = true
 		plate.UpdateCastbar = true -- Classic era
+
+		-- Register events
+		RegisterNameplateEvents(plate, unitid)
 
 	end
 
@@ -1458,42 +1542,10 @@ do
 	----------------------------------------
 	-- Frequently Used Event-handling Functions
 	----------------------------------------
-	-- Update individual plate
-	local function UnitConditionChanged(...)
-		local _, unitid = ...
-		local plate = GetNamePlateForUnit(unitid)
-
-		if plate and not UnitIsUnit("player", unitid) then OnHealthUpdate(plate) end
-	end
-
 	-- Update everything
 	local function WorldConditionChanged()
 		SetUpdateAll()
 	end
-
-	-- Update spell currently being cast
-	local function UnitSpellcastMidway(...)
-		local _, unitid = ...
-		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
-		local plate = GetNamePlateForUnit(unitid);
-
-		if plate then
-			OnUpdateCastMidway(plate, unitid)
-		end
-	 end
-
-	 -- Update spell that was interrupted/cancelled
-	 local function UnitSpellcastInterrupted(...)
-	 	local event, unitid = ...
-
-	 	if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
-	 	local plate = GetNamePlateForUnit(unitid)
-
-	 	if plate and not plate.extended.unit.interrupted then OnInterruptedCast(plate) end
-	 end
-
 
 	local CoreEvents = {}
 
@@ -1513,15 +1565,6 @@ do
 			NeatPlates.BuildDefaultSpellDB() -- Temporarily force a rebuild on login as this is a work in progress
 			NeatPlates.CleanSpellDB() -- Remove empty table entries from the Spell DB
 			builtThisSession = true
-		end
-	end
-
-	function CoreEvents:UNIT_NAME_UPDATE(...)
-		local unitid = ...
-		local plate = GetNamePlateForUnit(unitid);
-
-		if plate then
-			SetUpdateMe(plate)
 		end
 	end
 
@@ -1588,30 +1631,6 @@ do
 		SetUpdateAll()
 	end
 
-	function CoreEvents:UNIT_TARGET(...)
-		local unitid = ...
-		local plate = GetNamePlateForUnit(unitid);
-
-		if plate and plate.extended.unit.isCasting then
-			OnUpdateCastTarget(plate, unitid)
-		end
-	end
-
-	function CoreEvents:UNIT_HEALTH(...)
-		local unitid = ...
-		local plate = PlatesByUnit[unitid]
-
-		if plate then OnHealthUpdate(plate) end
-	end
-
-	function CoreEvents:UNIT_POWER_UPDATE(...)
-		local unitid = ...
-		local plate = PlatesByUnit[unitid]
-
-		if plate then OnHealthUpdate(plate) end
-	end
-
-
 	function CoreEvents:PLAYER_REGEN_ENABLED()
 		InCombat = false
 		SetUpdateAll()
@@ -1630,49 +1649,6 @@ do
 		if UnitExists("mouseover") then
 			HasMouseover = true
 			SetUpdateAll()
-		end
-	end
-
-	function CoreEvents:UNIT_SPELLCAST_START(...)
-		local unitid = ...
-		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-		local plate = GetNamePlateForUnit(unitid)
-
-		if plate then
-			OnStartCasting(plate, unitid, false)
-		end
-	end
-
-
-	 function CoreEvents:UNIT_SPELLCAST_STOP(...)
-		local unitid = ...
-		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
-		local plate = GetNamePlateForUnit(unitid)
-
-		if plate then
-			OnStopCasting(plate)
-		end
-	 end
-
-	function CoreEvents:UNIT_SPELLCAST_CHANNEL_START(...)
-		local unitid = ...
-		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
-		local plate = GetNamePlateForUnit(unitid)
-
-		if plate then
-			OnStartCasting(plate, unitid, true)
-		end
-	end
-
-	function CoreEvents:UNIT_SPELLCAST_CHANNEL_STOP(...)
-		local unitid = ...
-		if UnitIsUnit("player", unitid) or not ShowCastBars then return end
-
-		local plate = GetNamePlateForUnit(unitid)
-		if plate then
-			OnStopCasting(plate)
 		end
 	end
 
@@ -1727,7 +1703,7 @@ do
 				plate = PlatesByGUID[destGUID] or IsEmulatedFrame(destGUID)
 
 				if plate and (not NEATPLATES_IS_CLASSIC_ERA or plate.extended.unit.isCasting) then
-					if NEATPLATES_IS_CLASSIC_ERA and event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then UnitSpellcastInterrupted("UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
+					if NEATPLATES_IS_CLASSIC_ERA and event == "SPELL_AURA_APPLIED" and spellCCList[spellName] and plate.extended.unit.unitid then NameplateEventHandler(plate, "UNIT_SPELLCAST_INTERRUPTED", plate.extended.unit.unitid) end
 					if (event == "SPELL_AURA_APPLIED" or event == "SPELL_CAST_FAILED") and (not plate.extended.unit.interrupted or plate.extended.unit.interruptLogged) and (not NEATPLATES_IS_CLASSIC_ERA or not spellCCList[spellName]) then return end
 
 					-- local unitType = strsplit("-", sourceGUID)
@@ -1847,21 +1823,6 @@ do
 			SetUpdateAll()
 		end
 	end
-
-	CoreEvents.UNIT_SPELLCAST_INTERRUPTED = UnitSpellcastInterrupted
-	--CoreEvents.UNIT_SPELLCAST_FAILED = UnitSpellcastInterrupted
-
-	CoreEvents.UNIT_SPELLCAST_DELAYED = UnitSpellcastMidway
-	CoreEvents.UNIT_SPELLCAST_CHANNEL_UPDATE = UnitSpellcastMidway
-
-	if not NEATPLATES_IS_CLASSIC then
-		CoreEvents.UNIT_SPELLCAST_INTERRUPTIBLE = UnitSpellcastMidway
-		CoreEvents.UNIT_SPELLCAST_NOT_INTERRUPTIBLE = UnitSpellcastMidway
-	end
-
-	CoreEvents.UNIT_LEVEL = UnitConditionChanged
-	CoreEvents.UNIT_THREAT_SITUATION_UPDATE = UnitConditionChanged
-	CoreEvents.UNIT_FACTION = UnitConditionChanged
 
 	CoreEvents.RAID_TARGET_UPDATE = WorldConditionChanged
 	CoreEvents.PLAYER_FOCUS_CHANGED = WorldConditionChanged
