@@ -364,6 +364,7 @@ TemplateTheme.targetindicator_arrowtop = {
 TemplateTheme.targetindicator_arrowsides = {
 	color = {},
 	texture = EMPTY_TEXTURE,
+	neon_texture = EMPTY_TEXTURE,
 	width = 128,
 	height = 64,
 	x = 0,

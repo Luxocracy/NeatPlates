@@ -98,6 +98,7 @@ NeatPlatesHubMenus.HighlightTypes = {
 	{ text = L["Arrow(Sides)"],  },
 	{ text = L["Arrow(Right)"],  },
 	{ text = L["Arrow(Left)"],  },
+	{ text = L["Neon Arrow(Sides)"],  },
 }
 
 NeatPlatesHubDefaults.WidgetAuraSort = 1
