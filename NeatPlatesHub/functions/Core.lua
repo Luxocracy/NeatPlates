@@ -333,7 +333,15 @@ local function ApplyThemeCustomization(theme)
 		--local scale = object.scale
 
 		if mode then
-			-- Set Indicator style, 1 = Disabled, 2 = Healthbar, 3 = Theme Default, 4 = Arrow Top, 5 = Arrow Sides, 6 = Arrow Right, 7 = Arrow Left
+			-- Set Indicator style,
+			-- 1 - Disabled
+			-- 2 - Healthbar
+			-- 3 - Theme Default
+			-- 4 - Arrow Top
+			-- 5 - Arrow Sides
+			-- 6 - Arrow Right
+			-- 7 - Arrow Left
+			-- 8 - Arrow Sides (Neon)
 			if mode == 3 then
 				style[k] = CopyTable(style.targetindicator)
 			elseif mode == 4 then
@@ -344,6 +352,9 @@ local function ApplyThemeCustomization(theme)
 				style[k] = CopyTable(style.targetindicator_arrowright)
 			elseif mode == 7 then
 				style[k] = CopyTable(style.targetindicator_arrowleft)
+			elseif mode == 8 then
+				style[k] = CopyTable(style.targetindicator_arrowsides)
+				style[k].texture = style[k].neon_texture
 			end
 
 			--style[k].height = style[k].height * scale.x
