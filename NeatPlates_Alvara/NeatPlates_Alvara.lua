@@ -71,6 +71,7 @@ StyleDefault.targetindicator_arrowtop = {
 }
 StyleDefault.targetindicator_arrowsides = {
 	texture		 =				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Sides",
+	neon_texture = 				"Interface\\Addons\\NeatPlatesHub\\shared\\Arrow-Neon-Sides",
 	width = 132,
 	height = 18,
 	x = 0,
