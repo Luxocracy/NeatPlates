@@ -342,7 +342,7 @@ do
 		if DisplayingBlizzardPlate(plate) then
 			plate.UnitFrame:Show()
 			plate.extended:Hide()
-		else
+		elseif plate.UnitFrame then
 			plate.UnitFrame:Hide()
 		end
 	end
