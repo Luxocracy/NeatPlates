@@ -1,4 +1,4 @@
-## Interface: 20503
+## Interface: 20504
 ## Title: NeatPlates: |cffff6060ClassicPlates
 ## Notes: Vanilla-Style Plates.
 ## Author: delabarra
