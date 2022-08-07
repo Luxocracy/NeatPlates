@@ -555,6 +555,7 @@ local function NameplateEventHandler(self, event, ...)
 
 	local unitid = ...
 	if event == "UNIT_HEALTH"
+	or event == "UNIT_HEALTH_FREQUENT"
 	or event == "UNIT_MAXHEALTH"
 	or event == "UNIT_POWER_UPDATE"
 	or event == "UNIT_LEVEL"
