@@ -148,6 +148,11 @@ local function AlphaDelegate(...)
 
 	if not unit or not unit.unitid then return LocalVars.OpacitySpotlight end
 
+	-- Prioritize the 'Unit Filter', if the option is enabled
+	if LocalVars.FilterPriority and UnitFilter(unit) then
+		return Diminish(LocalVars.OpacityFiltered)
+	end
+
 	if LocalVars.UnitSpotlightOpacityEnable and LocalVars.UnitSpotlightLookup[unit.name] then
 		return LocalVars.UnitSpotlightOpacity
 	end

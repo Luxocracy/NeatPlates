@@ -1,0 +1,11 @@
+## Interface: 30400
+## Title: NeatPlates
+## Notes: Enjoys long walks on Darkshore
+## Author: Luxocracy and friends
+## Version: @project-version@
+## SavedVariables: NeatPlatesSettings
+## SavedVariablesPerCharacter: NeatPlatesOptions
+
+embeds.xml
+locales.xml
+NeatPlates.xml

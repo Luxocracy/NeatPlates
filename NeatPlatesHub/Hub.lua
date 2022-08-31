@@ -397,6 +397,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityFiltered, F = CreateQuickSlider(objectName.."OpacityFiltered", L["Filtered Unit Opacity"]..':', nil, nil, AlignmentColumn, panel.FilterLabel, 0, 2)
 	panel.ScaleFiltered, F = CreateQuickSlider(objectName.."ScaleFiltered", L["Filtered Unit Scale"]..':', nil, nil, AlignmentColumn, F, 0, 2)
 	panel.FilterScaleLock, F = CreateQuickCheckbutton(objectName.."FilterScaleLock", L["Override Target/Spotlight Scale"], AlignmentColumn, F, 16)
+	panel.FilterPriority, F = CreateQuickCheckbutton(objectName.."FilterPriority", L["Override Target/Spotlight Opacity"], AlignmentColumn, F, 16) -- Name doesn't really match the function, but it fits in the UI better.
 
 	panel.OpacityFilterNeutralUnits, F = CreateQuickCheckbutton(objectName.."OpacityFilterNeutralUnits", L["Filter Neutral Units"], AlignmentColumn, F, 8, 4)
 	panel.OpacityFilterNonElite, F = CreateQuickCheckbutton(objectName.."OpacityFilterNonElite", L["Filter Non-Elite"], AlignmentColumn, F, 8)
@@ -407,7 +408,7 @@ local function BuildHubPanel(panel)
 	panel.OpacityFilterFriendlyPet, F = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyPet", L["Filter Friendly Pets"], AlignmentColumn, F, 8)
 
 
-	panel.OpacityFilterFriendlyPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyPlayers", L["Filter Friendly Players"], AlignmentColumn, panel.FilterScaleLock, OffsetColumnB+24, 4)
+	panel.OpacityFilterFriendlyPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterFriendlyPlayers", L["Filter Friendly Players"], AlignmentColumn, panel.FilterPriority, OffsetColumnB+24, 4)
 	panel.OpacityFilterEnemyPlayers = CreateQuickCheckbutton(objectName.."OpacityFilterEnemyPlayers", L["Filter Enemy Players"], AlignmentColumn, panel.OpacityFilterFriendlyPlayers, OffsetColumnB+24)
 	panel.OpacityFilterPartyMembers = CreateQuickCheckbutton(objectName.."OpacityFilterPartyMembers", L["Filter Party/Raid Members"], AlignmentColumn, panel.OpacityFilterEnemyPlayers, OffsetColumnB+24)
 	panel.OpacityFilterNonPartyMembers = CreateQuickCheckbutton(objectName.."OpacityFilterNonPartyMembers", L["Filter Non-Party/Raid Members"], AlignmentColumn, panel.OpacityFilterPartyMembers, OffsetColumnB+24)

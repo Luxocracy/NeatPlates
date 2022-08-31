@@ -110,6 +110,7 @@ NeatPlatesHubDefaults = {
 	OpacityFiltered = 0,
 	ScaleFiltered = .8,
 	FilterScaleLock = false,
+	FilterPriority = false,
 
 	OpacityFilterNeutralUnits = false,		-- OpacityHideNeutral = false,
 	OpacityFilterNonElite = false,			-- OpacityHideNonElites = false,

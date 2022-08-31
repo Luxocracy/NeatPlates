@@ -1,0 +1,8 @@
+## Interface: 30400
+## Title: NeatPlates: |cffff6060ClassicPlates
+## Notes: Vanilla-Style Plates.
+## Author: delabarra
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_ClassicPlates.lua
+

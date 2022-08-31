@@ -1,0 +1,9 @@
+## Interface: 30400
+## Title: NeatPlates: Alvara
+## Notes: Made to Alvara's specifications. Very Simple.
+## Author: Alvara - Zul'Jin
+## Version: 5a
+## Dependencies: NeatPlates, NeatPlatesHub
+
+NeatPlates_Alvara.lua
+

@@ -353,6 +353,7 @@ L["Unit Filter"] = true
 L["Filtered Unit Opacity"] = true
 L["Filtered Unit Scale"] = true
 	L["Override Target/Spotlight Scale"] = true
+	L["Override Target/Spotlight Opacity"] = true
 
 L["Filter Neutral Units"] = true
 L["Filter Non-Elite"] = true
