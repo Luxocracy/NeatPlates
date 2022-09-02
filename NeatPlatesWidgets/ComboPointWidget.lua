@@ -58,8 +58,8 @@ local t = {
 	['ROGUE'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
-		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can combo all the time :P
-		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can combo all the time :P
+		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 4}, -- all, since you can combo all the time :P
+		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 8}, -- all, since you can combo all the time :P
 		["OVERLAY"] = {
 			["amount"] = 4,
 			["off"] = {
@@ -181,8 +181,13 @@ end
 -- Update Graphics
 local function UpdateWidgetFrame(frame)
 	local points, maxPoints = GetPlayerPower()
+	local chargedPowerPoints = nil
+	if not NEATPLATES_IS_CLASSIC then
+		-- chargedPowerPoints = DebugGetUnitChargedPowerPoints(points)
+		chargedPowerPoints = GetUnitChargedPowerPoints("player")
+	end
 
-	if points and points > 0 then
+	if (points and points > 0) or chargedPowerPoints ~= nil then
 		local pattern = SelectPattern(maxPoints)
 
 		if pattern == nil then
@@ -224,8 +229,6 @@ local function UpdateWidgetFrame(frame)
 		if t[PlayerClass]["OVERLAY"] then
 			if PlayerClass == "ROGUE" then
 				if not NEATPLATES_IS_CLASSIC then
-					-- local chargedPowerPoints = DebugGetUnitChargedPowerPoints(points)
-					local chargedPowerPoints = GetUnitChargedPowerPoints("player")
 					for i = 1, t[PlayerClass]["OVERLAY"]["amount"] do
 						local chargedPowerPointIndex = chargedPowerPoints and chargedPowerPoints[i];
 						if chargedPowerPointIndex then
