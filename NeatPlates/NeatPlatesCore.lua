@@ -1362,7 +1362,7 @@ do
 		end
 
 		-- Set 'notInterruptible' to false, Because we cannot tell if it's interruptible or not in classic
-		if NEATPLATES_IS_CLASSIC then notInterruptible = false end
+		if NEATPLATES_IS_CLASSIC_ERA or NEATPLATES_IS_CLASSIC_TBC then notInterruptible = false end
 
 		unit.isCasting = true
 		unit.interrupted = false
