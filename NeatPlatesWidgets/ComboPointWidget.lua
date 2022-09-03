@@ -51,8 +51,8 @@ local t = {
 	['DRUID'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
 		["all"] = { ["w"] = 80, ["h"] = 20 },
-		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 5}, -- all, since you can cat all the time :P
-		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 9}, -- all, since you can cat all the time :P
+		["5"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 4}, -- all, since you can cat all the time :P
+		["6"] = { ["w"] = 80, ["h"] = 20, ["l"] = 0.5, ["r"] = 0.625, ["o"] = 8}, -- all, since you can cat all the time :P
 	},
 
 	['ROGUE'] = {
