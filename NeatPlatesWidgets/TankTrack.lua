@@ -74,6 +74,8 @@ local function UpdatePlayerRole(playerTankAura)
 						playerTankAura = true
 					end
 				end
+			elseif playerClass == "DEATHKNIGHT" then
+    			playerTankAura = GetShapeshiftForm() == 2 -- Frost Presence
 			end
 		end
 
