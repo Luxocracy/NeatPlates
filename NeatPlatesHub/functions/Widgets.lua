@@ -640,7 +640,7 @@ local function OnInitializeWidgets(extended, configTable)
 
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
-	InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
+	-- InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
 	InitWidget( "ThreatWidgetHub", extended, configTable.ThreatLineWidget, CreateThreatLineWidget, EnableThreatWidget)
 	InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 	InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
@@ -657,9 +657,9 @@ local function OnContextUpdateDelegate(extended, unit)
 	local widgets = extended.widgets
 	local EnableComboWidget =  widgets.ComboWidgetHub and (LocalVars.WidgetComboPoints == 3 or (LocalVars.WidgetComboPoints == 1 and unit.reaction ~= "FRIENDLY") or (LocalVars.WidgetComboPoints == 2 and unit.reaction == "FRIENDLY"))
 
+	widgets.ResourceWidgetHub:UpdateContext(unit)
 	if EnableComboWidget then
 		widgets.ComboWidgetHub:UpdateContext(unit)
-		widgets.ResourceWidgetHub:UpdateContext(unit)
 	elseif widgets.ComboWidgetHub then
 		widgets.ComboWidgetHub:Hide()
 	end
