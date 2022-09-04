@@ -405,6 +405,7 @@ WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = -2,y = VerticalAdjust
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = 14,y = VerticalAdjustment + 7 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=VerticalAdjustment+9, w = 98, h = 8.5 }
 WidgetConfig.ArenaWidget = { anchor = "LEFT" , x = -22, y = VerticalAdjustment + 16 }
+WidgetConfig.ResourceWidget = { anchor = "TOP" , x = 0 ,y = VerticalAdjustment + 0 }
 
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template

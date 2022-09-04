@@ -23,6 +23,7 @@
 	<Script file="ThreatPercentageWidget.lua"/>
 	<Script file="RangeWidget.lua"/>
 	<Script file="ArenaWidget.lua"/>
+	<Script file="ResourceWidget.lua"/>
 
 
 

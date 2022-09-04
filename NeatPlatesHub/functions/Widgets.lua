@@ -18,6 +18,7 @@ local CreateTotemIconWidget = WidgetLib.CreateTotemIconWidget
 local CreateAbsorbWidget = WidgetLib.CreateAbsorbWidget
 local CreateQuestWidget = WidgetLib.CreateQuestWidget
 local CreateThreatPercentageWidget = WidgetLib.CreateThreatPercentageWidget
+local CreateResourceWidget = WidgetLib.CreateResourceWidget
 
 NeatPlatesHubDefaults.WidgetRangeMode = 1
 NeatPlatesHubMenus.RangeModes = {
@@ -646,6 +647,7 @@ local function OnInitializeWidgets(extended, configTable)
 	InitWidget( "ThreatPercentageWidgetHub", extended, configTable.ThreatPercentageWidget, CreateThreatPercentageWidget, EnableThreatPercentageWidget)
 	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
 	InitWidget( "ArenaWidgetHub", extended, configTable.ArenaWidget, CreateArenaWidget, EnableArenaWidget)
+	InitWidget( "ResourceWidgetHub", extended, configTable.ResourceWidget, CreateResourceWidget, true)
 
 	InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidget, CreateAuraWidget, EnableAuraWidget)
 
@@ -657,6 +659,7 @@ local function OnContextUpdateDelegate(extended, unit)
 
 	if EnableComboWidget then
 		widgets.ComboWidgetHub:UpdateContext(unit)
+		widgets.ResourceWidgetHub:UpdateContext(unit)
 	elseif widgets.ComboWidgetHub then
 		widgets.ComboWidgetHub:Hide()
 	end
