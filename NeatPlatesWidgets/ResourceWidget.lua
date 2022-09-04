@@ -81,7 +81,7 @@ local t = {
 		["POWER"] = Enum.PowerType.ComboPoints,
         ["GetPower"] = function()
             local maxPoints = UnitPowerMax("player", Enum.PowerType.ComboPoints) or 5
-            points = GetComboPoints("player", "target")
+            currentPoints = GetComboPoints("player", "target")
 
             for i = 1, maxPoints do
                 if currentPoints >= i then
