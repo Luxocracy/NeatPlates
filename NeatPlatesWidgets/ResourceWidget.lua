@@ -84,10 +84,10 @@ local t = {
             points = GetComboPoints("player", "target")
 
             for i = 1, maxPoints do
-                if points >= i then
-                    table.insert(points, "RogueKyrianOverlayNeat.tga")
+                if currentPoints >= i then
+                    table.insert(points, "ComboPoint-On.tga")
                 else
-                    table.insert(points, "RogueKyrianOverlayNeatOff.tga")
+                    table.insert(points, "ComboPoint-Off.tga")
                 end
             end
 
@@ -129,32 +129,43 @@ local t = {
 	['MAGE'] = {
 		["POWER"] = Enum.PowerType.ArcaneCharges,
         ["POINT"] = {
-            ["ON"] = "RogueKyrianOverlayNeat.tga",
-            ["OFF"] = "RogueKyrianOverlayNeatOff.tga",
+            ["ON"] = "Mage-ArcaneCharge-On.tga",
+            ["OFF"] = "Mage-ArcaneCharge-Off.tga",
         },
 	},
 
 	['MONK'] = {
 		["POWER"] = Enum.PowerType.Chi,
         ["POINT"] = {
-            ["ON"] = "RogueKyrianOverlayNeat.tga",
-            ["OFF"] = "RogueKyrianOverlayNeatOff.tga",
+            ["ON"] = "Monk-Chi-On.tga",
+            ["OFF"] = "Monk-Chi-Off.tga",
         },
 	},
 
 	['PALADIN'] = {
 		["POWER"] = Enum.PowerType.HolyPower,
-        ["POINT"] = {
-            ["ON"] = "RogueKyrianOverlayNeat.tga",
-            ["OFF"] = "RogueKyrianOverlayNeatOff.tga",
-        },
+        ["GetPower"] = function()
+            local points = {}
+            local maxPoints = UnitPowerMax("player", Enum.PowerType.HolyPower) or 5
+            local currentPoints = UnitPower("player", Enum.PowerType.HolyPower)
+
+            for i = 1, maxPoints do
+                if currentPoints >= i then
+                    table.insert(points, "Paladin-HolyPower-"..i.."-On.tga")
+                else
+                    table.insert(points, "Paladin-HolyPower-"..i.."-Off.tga")
+                end
+            end
+
+            return points, maxPoints
+        end,
 	},
 
 	['WARLOCK'] = {
 		["POWER"] = Enum.PowerType.SoulShards,
         ["POINT"] = {
-            ["ON"] = "RogueKyrianOverlayNeat.tga",
-            ["OFF"] = "RogueKyrianOverlayNeatOff.tga",
+            ["ON"] = "Warlock-Shard-On.tga",
+            ["OFF"] = "Warlock-Shard-Off.tga",
         },
 	},
 };
