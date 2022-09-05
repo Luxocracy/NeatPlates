@@ -3,6 +3,11 @@ local PlayerClass = select(2, UnitClass("player"))
 local PlayerSpec = 0
 
 ------------------------------
+-- Settings
+------------------------------
+local pointSpacing = -2
+
+------------------------------
 -- Debug
 ------------------------------
 local lastDebugPoints = {}
@@ -54,24 +59,27 @@ local t = {
             end
 
             for _, i in pairs(runeOrder) do
+                local point = {
+                    ["TEXTURE"] = "DK-Rune",
+                    ["STATE"] = "Off",
+                }
+
                 local start, duration, runeReady = GetRuneCooldown(i)
                 local runeType = ""
                 if NEATPLATES_IS_CLASSIC_WOTLKC then
                     runeType = runeMap[GetRuneType(i)]
+                    point.TEXTURE = "DK-Rune-Classic-" .. runeType
                     if runeReady then
-                        table.insert(points, "DK-Rune-Classic-"..runeType..".tga")
-                    else
-                        table.insert(points, "DK-Rune-Classic-"..runeType.."-Off.tga")
+                        point["STATE"] = "On"
                     end
                 else
                     runeType = runeMap[GetSpecialization()]
                     if runeReady then
-                        table.insert(points, "DK-Rune-"..runeType..".tga")
-                    else
-                        table.insert(points, "DK-Rune-Off.tga")
+                        point["TEXTURE"] = "DK-Rune-" .. runeType
+                        point["STATE"] = "On"
                     end
                 end
-
+                table.insert(points, point)
             end
             return points, 6
         end,
@@ -80,15 +88,20 @@ local t = {
 	['DRUID'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
         ["GetPower"] = function()
+            local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.ComboPoints) or 5
             currentPoints = GetComboPoints("player", "target")
 
             for i = 1, maxPoints do
+                local point = {
+                    ["TEXTURE"] = "ComboPoint",
+                    ["STATE"] = "Off",
+                }
                 if currentPoints >= i then
-                    table.insert(points, "ComboPoint-On.tga")
-                else
-                    table.insert(points, "ComboPoint-Off.tga")
+                    point.STATE = "On"
                 end
+               -- Insert Point
+                table.insert(points, point)
             end
 
             return points, maxPoints
@@ -109,17 +122,23 @@ local t = {
             end
 
             for i = 1, maxPoints do
+                local point = {
+                    ["TEXTURE"] = "ComboPoint",
+                    ["STATE"] = "Off",
+                }
+
+                -- Set state
                 if chargedPoints and table.contains(chargedPoints, i) then
                     if currentPoints >= i then
-                        table.insert(points, "ComboPoint-Charged-On.tga")
+                        point.STATE = "Charged-On"
                     else
-                        table.insert(points, "ComboPoint-Charged-Off.tga")
+                        point.STATE = "Charged-Off"
                     end
                 elseif currentPoints >= i then
-                    table.insert(points, "ComboPoint-On.tga")
-                else
-                    table.insert(points, "ComboPoint-Off.tga")
+                    point.STATE = "On"
                 end
+                -- Insert Point
+                table.insert(points, point)
             end
 
             return points, maxPoints
@@ -128,18 +147,12 @@ local t = {
 
 	['MAGE'] = {
 		["POWER"] = Enum.PowerType.ArcaneCharges,
-        ["POINT"] = {
-            ["ON"] = "Mage-ArcaneCharge-On.tga",
-            ["OFF"] = "Mage-ArcaneCharge-Off.tga",
-        },
+        ["POINT"] = "Mage-ArcaneCharge"
 	},
 
 	['MONK'] = {
 		["POWER"] = Enum.PowerType.Chi,
-        ["POINT"] = {
-            ["ON"] = "Monk-Chi-On.tga",
-            ["OFF"] = "Monk-Chi-Off.tga",
-        },
+        ["POINT"] = "Monk-Chi"
 	},
 
 	['PALADIN'] = {
@@ -150,11 +163,14 @@ local t = {
             local currentPoints = UnitPower("player", Enum.PowerType.HolyPower)
 
             for i = 1, maxPoints do
+                local point = {
+                    ["TEXTURE"] = "Paladin-HolyPower-"..i,
+                    ["STATE"] = "Off",
+                }
                 if currentPoints >= i then
-                    table.insert(points, "Paladin-HolyPower-"..i.."-On.tga")
-                else
-                    table.insert(points, "Paladin-HolyPower-"..i.."-Off.tga")
+                    point.STATE = "On"
                 end
+                table.insert(points, point)
             end
 
             return points, maxPoints
@@ -163,10 +179,7 @@ local t = {
 
 	['WARLOCK'] = {
 		["POWER"] = Enum.PowerType.SoulShards,
-        ["POINT"] = {
-            ["ON"] = "Warlock-Shard-On.tga",
-            ["OFF"] = "Warlock-Shard-Off.tga",
-        },
+        ["POINT"] = "Warlock-Shard"
 	},
 };
 
@@ -179,11 +192,14 @@ for class, data in pairs(t) do
             local currentPoints = UnitPower("player", data["POWER"])
 
             for i = 1, maxPoints do
+                local point = {
+                    ["TEXTURE"] = data["POINT"],
+                    ["STATE"] = "Off",
+                }
                 if currentPoints >= i then
-                    table.insert(points, data["POINT"]["ON"])
-                else
-                    table.insert(points, data["POINT"]["OFF"])
+                    point.STATE = "On"
                 end
+                table.insert(points, point)
             end
 
             return points, maxPoints
@@ -208,13 +224,31 @@ local function GetPlayerPower()
     return t[PlayerClass].GetPower()
 end
 
-local function GetResourceTexture(path)
+local function GetResourceTexture(path, state)
     -- TODO: Add support for all the different themes/styles
     -- Most likely the folder structure will dictate which theme to use
     local texturePath = "Interface\\Addons\\NeatPlatesWidgets\\ResourceWidget\\"
-    local style = ""
-    if true then style = "Blizzard\\" end
-    return texturePath .. style .. path
+    local style = "Blizzard\\"
+    return texturePath .. style .. path .. "-" .. state .. ".tga"
+end
+
+local function CalculatePointSpacing(maxPoints)
+    local spacing = {}
+    -- Calculate spacing (4, 2, 0, -2, -4)
+    for i = 1, maxPoints do
+        -- if max points is odd, and we are in the middle point, then we don't want to add spacing
+        if maxPoints % 2 == 1 and i == math.ceil(maxPoints / 2) then
+            spacing[i] = 0
+        else
+            spacing[i] =  (i - math.ceil(maxPoints / 2)) * pointSpacing -- Calculate point spacing
+            -- If we have an even mount of points.
+            -- Add half the point spacing to center the points
+            if maxPoints % 2 == 0 then
+                spacing[i] = spacing[i] + ((pointSpacing * -1) / 2)
+            end
+        end
+    end
+    return spacing
 end
 
 local function UpdatePoints(self)
@@ -225,17 +259,27 @@ local function UpdatePoints(self)
     if points == nil then
         return
     end
-    table.foreach(points, print)
 
     local pointSize = 16
     local centerOffset = ((5 - maxPoints) * pointSize) / 2
+    local spacing = CalculatePointSpacing(maxPoints)
+
+    table.foreach(spacing, print)
     -- Update Points
-    table.foreach(points, function(i, path)
+    -- TODO: Set z-index of points
+    table.foreach(points, function(i, pointData)
         local point = self.Points[i] or self:CreateTexture(nil, "OVERLAY")
         point:SetSize(pointSize, pointSize)
-        point:SetPoint("LEFT", self, "LEFT", (i - 1) * pointSize + centerOffset, 0)
+        point:SetPoint("LEFT", self, "LEFT", (i - 1) * pointSize + centerOffset + spacing[i], 0)
+        -- point:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
-        point:SetTexture(GetResourceTexture(path))
+        local texture = GetResourceTexture(pointData["TEXTURE"], pointData["STATE"])
+        print(texture)
+        point:SetTexture(texture)
+        if pointData["COLOR"] then
+            r,g,b,a = unpack(pointData["COLOR"])
+            point:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
+        end
 
         self.Points[i] = point
         self.Points[i]:Show()
@@ -336,6 +380,7 @@ end
 
 -- Widget Settings
 local function SetResourceWidgetOptions(LocalVars)
+    pointSpacing = LocalVars.ResourceWidgetSpacing
 	artstyle = LocalVars.WidgetComboPointsStyle
 	ScaleOptions = LocalVars.WidgetComboPointsScaleOptions
 
