@@ -1,11 +1,12 @@
 local WidgetList = {}
 local PlayerClass = select(2, UnitClass("player"))
 local PlayerSpec = 0
+local TimerFont = "FONTS\\ARIALN.TTF"
 
 ------------------------------
 -- Settings
 ------------------------------
-local pointSpacing = -2
+local pointSpacing = 0
 
 ------------------------------
 -- Debug
@@ -53,34 +54,55 @@ local t = {
             }
 
             -- Iterate through the runes in the order they appear in the UI
-            local runeOrder = {6,5,4,3,2,1}
+            local runeOrder = {1,2,3,4,5,6}
             if NEATPLATES_IS_CLASSIC_WOTLKC then
                 runeOrder =  {1,2,5,6,3,4}
             end
 
             for _, i in pairs(runeOrder) do
                 local point = {
-                    ["TEXTURE"] = "DK-Rune",
+                    ["ICON"] = "DK-Rune",
                     ["STATE"] = "Off",
+                    ["DURATION"] = 0,
+                    ["EXPIRATION"] = 0,
                 }
 
                 local start, duration, runeReady = GetRuneCooldown(i)
+                local expiration = start + duration
                 local runeType = ""
                 if NEATPLATES_IS_CLASSIC_WOTLKC then
                     runeType = runeMap[GetRuneType(i)]
-                    point.TEXTURE = "DK-Rune-Classic-" .. runeType
+                    point.ICON = "DK-Rune-Classic-" .. runeType
+                    point.SWIPE = point.ICON .. "-On"
                     if runeReady then
                         point["STATE"] = "On"
+                    else
+                        point["STATE"] = "Off"
+                        point["DURATION"] = duration
+                        point["EXPIRATION"] = expiration
                     end
                 else
                     runeType = runeMap[GetSpecialization()]
+                    point.SWIPE = "DK-Rune-" .. runeType .. "-On"
                     if runeReady then
-                        point["TEXTURE"] = "DK-Rune-" .. runeType
+                        point["ICON"] = "DK-Rune-" .. runeType
                         point["STATE"] = "On"
+                    else
+                        point["STATE"] = "Off"
+                        point["DURATION"] = duration
+                        point["EXPIRATION"] = expiration
                     end
                 end
                 table.insert(points, point)
             end
+
+            if not NEATPLATES_IS_CLASSIC then
+                -- Sort by expiration time
+                table.sort(points, function(a, b)
+                    return a.EXPIRATION < b.EXPIRATION
+                end)
+            end
+
             return points, 6
         end,
 	},
@@ -94,7 +116,7 @@ local t = {
 
             for i = 1, maxPoints do
                 local point = {
-                    ["TEXTURE"] = "ComboPoint",
+                    ["ICON"] = "ComboPoint",
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -123,7 +145,7 @@ local t = {
 
             for i = 1, maxPoints do
                 local point = {
-                    ["TEXTURE"] = "ComboPoint",
+                    ["ICON"] = "ComboPoint",
                     ["STATE"] = "Off",
                 }
 
@@ -164,7 +186,7 @@ local t = {
 
             for i = 1, maxPoints do
                 local point = {
-                    ["TEXTURE"] = "Paladin-HolyPower-"..i,
+                    ["ICON"] = "Paladin-HolyPower-"..i,
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -193,7 +215,7 @@ for class, data in pairs(t) do
 
             for i = 1, maxPoints do
                 local point = {
-                    ["TEXTURE"] = data["POINT"],
+                    ["ICON"] = data["POINT"],
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -228,8 +250,30 @@ local function GetResourceTexture(path, state)
     -- TODO: Add support for all the different themes/styles
     -- Most likely the folder structure will dictate which theme to use
     local texturePath = "Interface\\Addons\\NeatPlatesWidgets\\ResourceWidget\\"
-    local style = "Blizzard\\"
-    return texturePath .. style .. path .. "-" .. state .. ".tga"
+    local style = "Neat\\"
+    local fullPath = texturePath .. style .. path
+    if state then
+        fullPath = fullPath .. "-" .. state
+    end
+    return fullPath .. ".tga"
+end
+
+local function UpdateWidgetTime(frame, expiration)
+    if not expiration then return end
+	if expiration <= 0 or HideAuraDuration then
+		frame.TimeLeft:SetText("")
+	else
+		local timeleft = expiration-GetTime()
+		if timeleft > 60 then
+			frame.TimeLeft:SetText(floor(timeleft/60).."m")
+		else
+            if timeleft < 3 then
+				frame.TimeLeft:SetText((("%%.%df"):format(1)):format(timeleft))
+			else
+				frame.TimeLeft:SetText(floor(timeleft))
+			end
+		end
+	end
 end
 
 local function CalculatePointSpacing(maxPoints)
@@ -251,6 +295,45 @@ local function CalculatePointSpacing(maxPoints)
     return spacing
 end
 
+local function ExpireFunction(icon)
+	UpdatePoints(icon)
+end
+
+local function CreateResourceIcon(parent, pointData)
+    local frame = CreateFrame("Frame", nil, parent)
+    frame.Parent = parent
+
+    frame.Icon = frame:CreateTexture(nil, "ARTWORK")
+    frame.Cooldown = CreateFrame("Cooldown", nil, frame, "NeatPlatesResourceWidgetCooldown")
+    frame.Info = CreateFrame("Frame", nil, frame)
+
+    frame.Icon:SetAllPoints(frame)
+
+    frame.Cooldown:SetAllPoints(frame)
+    frame.Cooldown:SetReverse(true)
+    frame.Cooldown:SetHideCountdownNumbers(true)
+    frame.Cooldown:SetDrawEdge(false)
+    frame.Cooldown.noCooldownCount = true -- Disable OmniCC interaction
+
+    frame.Info:SetAllPoints(frame)
+    --  Time Text
+    frame.TimeLeft = frame.Info:CreateFontString(nil, "OVERLAY")
+	frame.TimeLeft:SetFont(TimerFont, 8, "OUTLINE")
+	frame.TimeLeft:SetShadowOffset(1, -1)
+	frame.TimeLeft:SetShadowColor(0,0,0,1)
+	frame.TimeLeft:SetPoint("CENTER", 0.5, 0)
+	-- frame.TimeLeft:SetWidth(32)
+	-- frame.TimeLeft:SetHeight(32)
+	frame.TimeLeft:SetJustifyH("RIGHT")
+    -- frame.Stacks = frame.Info:CreateFontString(nil, "OVERLAY")
+
+    -- frame.Expire = ExpireFunction
+    frame.Poll = UpdateWidgetTime
+    frame:Hide()
+
+    return frame
+end
+
 local function UpdatePoints(self)
     -- Create Resource Points
     self.Points = self.Points or {}
@@ -263,26 +346,41 @@ local function UpdatePoints(self)
     local pointSize = 16
     local centerOffset = ((5 - maxPoints) * pointSize) / 2
     local spacing = CalculatePointSpacing(maxPoints)
+    -- table.foreach(spacing, print)
 
-    table.foreach(spacing, print)
     -- Update Points
-    -- TODO: Set z-index of points
+    -- TODO: Set z-index/framelevel of points
     table.foreach(points, function(i, pointData)
-        local point = self.Points[i] or self:CreateTexture(nil, "OVERLAY")
-        point:SetSize(pointSize, pointSize)
-        point:SetPoint("LEFT", self, "LEFT", (i - 1) * pointSize + centerOffset + spacing[i], 0)
-        -- point:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+        local frame = self.Points[i] or CreateResourceIcon(self, pointData)
 
-        local texture = GetResourceTexture(pointData["TEXTURE"], pointData["STATE"])
-        print(texture)
-        point:SetTexture(texture)
+        local texture = GetResourceTexture(pointData["ICON"], pointData["STATE"])
+        -- print(texture)
+        frame.Icon:SetTexture(texture)
         if pointData["COLOR"] then
             r,g,b,a = unpack(pointData["COLOR"])
-            point:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
+            frame.Icon:SetVertexColor(r or 1, g or 1, b or 1, a or 1)
         end
 
-        self.Points[i] = point
-        self.Points[i]:Show()
+        frame:SetSize(pointSize, pointSize)
+        frame:SetPoint("LEFT", self, "LEFT", (i - 1) * pointSize + centerOffset + spacing[i], 0)
+
+        local expiration, duration = pointData["EXPIRATION"], pointData["DURATION"]
+        if expiration and expiration > 0 then
+            if pointData["SWIPE"] then
+                frame.Cooldown:SetSwipeTexture(GetResourceTexture(pointData["SWIPE"]))
+                frame.Cooldown:SetSwipeColor(0.8, 0.8, 0.8, 1)
+            end
+            frame.Cooldown:SetCooldown(expiration-duration, duration)
+        else
+            frame.Cooldown:SetCooldown(0, 0)
+        end
+        frame.Cooldown:SetDrawSwipe(true)
+        frame.Cooldown:SetDrawEdge(true)
+
+        frame:Poll(expiration)
+
+        frame:Show()
+        self.Points[i] = frame
     end)
 end
 

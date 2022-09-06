@@ -84,8 +84,8 @@ local HideAuraDuration = false
 local HideAuraStacks = false
 
 -- Get a clean version of the function...  Avoid OmniCC interference
-local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
-local SetCooldown = CooldownNative.SetCooldown
+-- local CooldownNative = CreateFrame("Cooldown", nil, WorldFrame)
+-- local SetCooldown = CooldownNative.SetCooldown
 
 local _
 
