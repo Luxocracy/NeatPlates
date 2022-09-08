@@ -243,7 +243,13 @@ end
 
 local function GetPlayerPower()
     -- TODO: Do checks for if the power should be displayed etc here.
-    return t[PlayerClass].GetPower()
+    if PlayerSpec and PlayerClass then
+        local data = t[PlayerClass]
+        if data then
+            return data["GetPower"]()
+        end
+    end
+    return nil, nil
 end
 
 local function GetResourceTexture(path, state)

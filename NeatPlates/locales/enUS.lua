@@ -814,3 +814,19 @@ L["Nature"] = true
 L["Frost"] = true
 L["Shadow"] = true
 L["Arcane"] = true
+
+-- Classes
+L["Class Colors"] = true
+L["Reset Class Colors"] = true
+L["DEATHKNIGHT"] = "Death Knight"
+L["DEMONHUNTER"] = "Demon Hunter"
+L["DRUID"] = "Druid"
+L["HUNTER"] = "Hunter"
+L["MAGE"] = "Mage"
+L["MONK"] = "Monk"
+L["PALADIN"] = "Paladin"
+L["PRIEST"] = "Priest"
+L["ROGUE"] = "Rogue"
+L["SHAMAN"] = "Shaman"
+L["WARLOCK"] = "Warlock"
+L["WARRIOR"] = "Warrior"

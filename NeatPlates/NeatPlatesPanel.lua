@@ -325,6 +325,17 @@ local function ApplyPanelSettings()
 	NeatPlates:ForceUpdate()
 end
 
+local function SetClassColors(panel)
+	-- Class Colors
+	table.foreach(CUSTOM_CLASS_COLORS, function(class, color)
+		local frameName = "ClassColor"..class
+		local frame = panel[frameName]
+		if frame then
+			frame:SetValue(color)
+		end
+	end)
+end
+
 local function GetCVarValues(panel)
 	-- Recursive until we get the values to make sure they exist
 	local Values = {
@@ -413,6 +424,9 @@ local function SetPanelValues(panel)
 	-- panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
 
 	panel.GlobalAdditonalAuras:SetValue(NeatPlatesSettings.GlobalAdditonalAuras)
+
+	-- Class Colors
+	SetClassColors(panel)
 
 	-- CVars
 	GetCVarValues(panel)
@@ -895,11 +909,56 @@ local function BuildInterfacePanel(panel)
 	panel.OverrideOutline = PanelHelpers:CreateDropdownFrame("NeatPlatesOverrideOutline", panel, OutlineStyleItems, 1, nil, true)
 	panel.OverrideOutline:SetPoint("TOPLEFT", panel.OverrideOutlineLabel, "BOTTOMLEFT", -15, -2)
 
+	-- Class Colors
+	panel.ClassColorLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.ClassColorLabel:SetFont(font, 22)
+	panel.ClassColorLabel:SetText(L["Class Colors"])
+	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -30)
+	panel.ClassColorLabel:SetTextColor(255/255, 105/255, 6/255)
+
+	local F = panel.ClassColorLabel
+	local columns = {
+		[0] = { -240, -30 },
+		[1] = { 120, 0 },
+		[2] = { 120, 0 },
+	}
+	local i = 0
+	for class in pairs(CUSTOM_CLASS_COLORS) do
+		local frameName = "ClassColor"..class
+		panel[frameName] = PanelHelpers:CreateColorBox("NeatPlatesOptions_"..frameName, panel, L[class], function()
+			local value = panel[frameName]:GetValue()
+			panel[frameName]:SetValue(value)
+			CUSTOM_CLASS_COLORS[class] = value
+		end, 0, .5, 1, 1)
+
+		-- Assign column
+		if i == 0 then
+			panel[frameName]:SetPoint("TOPLEFT", F, "TOPLEFT", 15, -30)
+		else
+			panel[frameName]:SetPoint("TOPLEFT", F, "TOPLEFT", unpack(columns[i%3]))
+		end
+		F = panel[frameName]
+		i = i + 1
+	end
+
+	-- Reset class colors button
+	panel.ResetClassColors = CreateFrame("Button", "NeatPlatesOptions_ResetClassColors", panel, "NeatPlatesPanelButtonTemplate")
+	panel.ResetClassColors:SetWidth(140)
+	panel.ResetClassColors:SetText(L["Reset Class Colors"])
+	panel.ResetClassColors:SetPoint("TOPLEFT", panel.ClassColorLabel, "BOTTOMLEFT", 15, -130)
+	panel.ResetClassColors:SetScript("OnClick", function()
+		table.foreach(RAID_CLASS_COLORS, function(class, color)
+			local frameName = "ClassColor"..class
+			panel[frameName]:SetValue(color)
+			CUSTOM_CLASS_COLORS[class] = color
+		end)
+	end)
+
 	-- Nameplate Behaviour
 	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.CVarsLabel:SetFont(font, 22)
 	panel.CVarsLabel:SetText("CVars")
-	panel.CVarsLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -20)
+	panel.CVarsLabel:SetPoint("TOPLEFT", panel.ResetClassColors, "BOTTOMLEFT", -15, -25)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	panel.EnforceRequiredCVars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnforceRequiredCVars", panel, L["Enforce required CVars"])

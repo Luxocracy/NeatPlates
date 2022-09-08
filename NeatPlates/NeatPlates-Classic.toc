@@ -3,7 +3,7 @@
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Luxocracy and friends
 ## Version: @project-version@
-## SavedVariables: NeatPlatesSettings
+## SavedVariables: NeatPlatesSettings, CUSTOM_CLASS_COLORS
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
 embeds-classic.xml
