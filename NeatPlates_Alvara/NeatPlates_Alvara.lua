@@ -1,4 +1,4 @@
-local path = "Interface\\Addons\\NeatPlates_Alvara\\Media" 
+local path = "Interface\\Addons\\NeatPlates_Alvara\\Media"
 local font = path.."\\anversbold.ttf";
 
 -- Non-Latin Font Bypass
@@ -335,6 +335,7 @@ WidgetConfig.QuestWidgetNameOnly = { anchor = "LEFT" , x = 4,y = 12 }
 WidgetConfig.ThreatPercentageWidget = { anchor = "RIGHT" , x = -2,y = -10 }
 WidgetConfig.RangeWidget = { anchor = "CENTER", x=0, y=-5, w = 92, h = 9 }
 WidgetConfig.ArenaWidget = { anchor = "LEFT" , x = -2, y = 0 }
+WidgetConfig.ResourceWidget = { anchor = "TOP" , x = 0 ,y = -2 }
 
 WidgetConfig._meta = true		-- tells the parser to ignore this table; ie. don't convert to "style" template
 Theme.WidgetConfig = WidgetConfig

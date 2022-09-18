@@ -80,6 +80,20 @@ NeatPlatesHubMenus.ComboPointsStyles = {
 				{ text = L["NeatPlatesTraditional"],  } ,
 			}
 
+NeatPlatesHubDefaults.WidgetResourceSpacing = 0
+NeatPlatesHubDefaults.WidgetResourceMode = 1
+NeatPlatesHubMenus.WidgetResourceModes = {
+				{ text = L["Enemy Units"],  } ,
+				{ text = L["Friendly Units"],  } ,
+				{ text = L["All Units"],  } ,
+				{ text = L["None"],  } ,
+			}
+NeatPlatesHubDefaults.WidgetResourceStyle = "Neat"
+NeatPlatesHubMenus.WidgetResourceStyles = {
+				{ text = L["Blizzlike"], value = "Blizzard" } ,
+				{ text = L["NeatPlates"], value = "Neat" } ,
+			}
+
 NeatPlatesHubDefaults.BorderPandemic = 1
 NeatPlatesHubDefaults.BorderBuffPurgeable = 1
 NeatPlatesHubDefaults.BorderBuffEnrage = 1
@@ -299,6 +313,11 @@ NeatPlatesHubMenus.WidgetOptions = {
 		text = L["ComboWidget"],
 		value = "ComboWidget",
 		tooltip = L["ComboWidget_tooltip"],
+	},
+	{
+		text = L["ResourceWidget"],
+		value = "ResourceWidget",
+		tooltip = L["ResourceWidget_tooltip"],
 	},
 	{
 		text = L["AbsorbWidget"],
@@ -625,7 +644,8 @@ local function OnInitializeWidgets(extended, configTable)
 
 	local EnableClassWidget = (LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon)
 	local EnableTotemWidget = LocalVars.WidgetTotemIcon
-	local EnableComboWidget = LocalVars.WidgetComboPoints ~= 4
+	local EnableComboWidget = LocalVars.WidgetComboPoints ~= 4 and LocalVars.WidgetResourceMode == 4
+	local EnableResourceWidget = LocalVars.WidgetResourceMode ~= 4
 	local EnableThreatWidget = LocalVars.WidgetThreatIndicator
 	local EnableAuraWidget = LocalVars.WidgetDebuff
 	local EnableArenaWidget = LocalVars.WidgetArenaIcon
@@ -641,13 +661,13 @@ local function OnInitializeWidgets(extended, configTable)
 	InitWidget( "ClassWidgetHub", extended, configTable.ClassIcon, CreateClassWidget, EnableClassWidget)
 	InitWidget( "TotemWidgetHub", extended, configTable.TotemIcon, CreateTotemIconWidget, EnableTotemWidget)
 	InitWidget( "ComboWidgetHub", extended, configTable.ComboWidget, CreateComboPointWidget, EnableComboWidget)
+	InitWidget( "ResourceWidgetHub", extended, configTable.ResourceWidget, CreateResourceWidget, EnableResourceWidget)
 	InitWidget( "ThreatWidgetHub", extended, configTable.ThreatLineWidget, CreateThreatLineWidget, EnableThreatWidget)
 	InitWidget( "AbsorbWidgetHub", extended, configTable.AbsorbWidget, CreateAbsorbWidget, EnableAbsorbWidget)
 	InitWidget( "QuestWidgetHub", extended, configTable.QuestWidget, CreateQuestWidget, EnableQuestWidget)
 	InitWidget( "ThreatPercentageWidgetHub", extended, configTable.ThreatPercentageWidget, CreateThreatPercentageWidget, EnableThreatPercentageWidget)
 	InitWidget( "RangeWidgetHub", extended, configTable.RangeWidget, CreateRangeWidget, EnableRangeWidget)
 	InitWidget( "ArenaWidgetHub", extended, configTable.ArenaWidget, CreateArenaWidget, EnableArenaWidget)
-	InitWidget( "ResourceWidgetHub", extended, configTable.ResourceWidget, CreateResourceWidget, true)
 
 	InitWidget( "AuraWidgetHub", extended, configTable.DebuffWidget, CreateAuraWidget, EnableAuraWidget)
 
@@ -656,9 +676,15 @@ end
 local function OnContextUpdateDelegate(extended, unit)
 	local widgets = extended.widgets
 	local EnableComboWidget =  widgets.ComboWidgetHub and (LocalVars.WidgetComboPoints == 3 or (LocalVars.WidgetComboPoints == 1 and unit.reaction ~= "FRIENDLY") or (LocalVars.WidgetComboPoints == 2 and unit.reaction == "FRIENDLY"))
+	local EnableResourceWidget =  widgets.ResourceWidgetHub and (LocalVars.WidgetResourceMode == 3 or (LocalVars.WidgetResourceMode == 1 and unit.reaction ~= "FRIENDLY") or (LocalVars.WidgetResourceMode == 2 and unit.reaction == "FRIENDLY"))
 
-	widgets.ResourceWidgetHub:UpdateContext(unit)
-	if EnableComboWidget then
+	if EnableResourceWidget then
+		widgets.ResourceWidgetHub:UpdateContext(unit)
+	elseif widgets.ResourceWidgetHub then
+		widgets.ResourceWidgetHub:Hide()
+	end
+
+	if EnableComboWidget and LocalVars.WidgetResourceMode == 4 then
 		widgets.ComboWidgetHub:UpdateContext(unit)
 	elseif widgets.ComboWidgetHub then
 		widgets.ComboWidgetHub:Hide()
@@ -740,6 +766,10 @@ local function OnVariableChange(vars)
 
 	if LocalVars.WidgetComboPoints then
 		NeatPlatesWidgets.SetComboPointsWidgetOptions(LocalVars)
+	end
+
+	if LocalVars.WidgetResourceMode then
+		NeatPlatesWidgets.SetResourceWidgetOptions(LocalVars)
 	end
 
 	--if (LocalVars.ClassEnemyIcon or LocalVars.ClassPartyIcon) then

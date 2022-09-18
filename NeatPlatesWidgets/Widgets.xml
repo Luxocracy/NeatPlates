@@ -12,7 +12,7 @@
 		<SwipeTexture>
 			<Color r="0" g="0" b="0" a="0.8"/>
 		</SwipeTexture>
-		<EdgeTexture file="Interface\Addons\NeatPlatesWidgets\ResourceWidget\SwipeEdge"/>
+		<EdgeTexture file="Interface\Addons\NeatPlatesWidgets\ResourceWidget\Neat\SwipeEdge"/>
 	</Cooldown>
 
 	<Script file="WidgetCore.lua"/>

@@ -522,6 +522,14 @@ L["Style"] = true
 	L["Icon"] = true
 
 ------------------------------
+-- Personal Resource
+------------------------------
+L["Personal Resource Display"] = true
+L["Show On"] = true
+L["Icon Spacing"] = true
+L["The spacing between each icon/point"] = true
+
+------------------------------
 -- Other Widgets
 ------------------------------
 L["Other Widgets"] = true
@@ -609,7 +617,8 @@ L["highlight"] = "Highlight"
 --L["targetindicator_arrowtop"] =
 --L["rangeindicator"] = "Range Indicator"
 L["raidicon"] = "Raid Icon"
-L["ComboWidget"] = "Personal Resource Widget"
+L["ComboWidget"] = "Combopoint Widget"
+L["ResourceWidget"] = "Personal Resource Widget"
 L["AbsorbWidget"] = "Absorb Widget"
 L["QuestWidgetNameOnly"] = "Quest Widget(Headline View)"
 L["ThreatPercentageWidget"] = "Threat Percent Widget"
@@ -621,6 +630,7 @@ L["QuestWidget"] = "Quest Widget"
 L["RangeWidget"] = "Range Indicator"
 L["ClassIcon"] = "Class Icon"
 L["ArenaIcon"] = "Arena Icon"
+
 
 L["Main"] = true
 L["Widgets"] = true
@@ -668,6 +678,7 @@ L["highlight_tooltip"] = "General highlighting (Only certain themes still use th
 --L["rangeindicator_tooltip"] = "Placeholder Tooltip"
 L["raidicon_tooltip"] = "The raid marker icon on units"
 L["ComboWidget_tooltip"] = "Personal resource/Combo points indicator"
+L["ResourceWidget_tooltip"] = "Personal resource/Combo points indicator"
 L["AbsorbWidget_tooltip"] = "The absorb overlay for healthbars" -- Unify all this under the 'healthbar' option?
 L["QuestWidgetNameOnly_tooltip"] = "Quest icon for 'Headline-view'"
 L["ThreatPercentageWidget_tooltip"] = "The threat percentage text"

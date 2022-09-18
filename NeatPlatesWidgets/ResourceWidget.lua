@@ -1,3 +1,4 @@
+local PolledHideIn = NeatPlatesWidgets.PolledHideIn
 local WidgetList = {}
 local PlayerClass = select(2, UnitClass("player"))
 local PlayerSpec = 0
@@ -7,6 +8,8 @@ local TimerFont = "FONTS\\ARIALN.TTF"
 -- Settings
 ------------------------------
 local pointSpacing = 0
+local timerFontSize = 8
+local artstyle = "Neat"
 
 ------------------------------
 -- Debug
@@ -38,10 +41,21 @@ end
 ------------------------------
 -- Class Powers
 ------------------------------
+local function getPointIcon(points, i)
+    -- Check if points is table
+    if type(elem) == "table" then
+        return points[i]
+    else
+        return points
+    end
+end
+
 local t = {
+    ['RESOURCE_PATH'] = "Interface\\Addons\\NeatPlatesWidgets\\ResourceWidget\\",
 	['DEATHKNIGHT'] = {
 		["POWER"] = Enum.PowerType.Runes,
-        ["GetPower"] = function()
+        ["POINT"] = "", -- Check further down, this will be diferent depending client
+        ["GetPower"] = function(self)
             local points = {}
             local runeMap = {
                 ["RUNETYPE_BLOOD"] = "Blood",
@@ -54,14 +68,14 @@ local t = {
             }
 
             -- Iterate through the runes in the order they appear in the UI
-            local runeOrder = {1,2,3,4,5,6}
+            local runeOrder = {1,2,3,4,5,6} -- Actually sorted by duration in retail
             if NEATPLATES_IS_CLASSIC_WOTLKC then
                 runeOrder =  {1,2,5,6,3,4}
             end
 
             for _, i in pairs(runeOrder) do
                 local point = {
-                    ["ICON"] = "DK-Rune",
+                    ["ICON"] = getPointIcon(self.POINT, i),
                     ["STATE"] = "Off",
                     ["DURATION"] = 0,
                     ["EXPIRATION"] = 0,
@@ -72,7 +86,7 @@ local t = {
                 local runeType = ""
                 if NEATPLATES_IS_CLASSIC_WOTLKC then
                     runeType = runeMap[GetRuneType(i)]
-                    point.ICON = "DK-Rune-Classic-" .. runeType
+                    point.ICON = point.ICON .. "-" .. runeType
                     point.SWIPE = point.ICON .. "-On"
                     if runeReady then
                         point["STATE"] = "On"
@@ -83,9 +97,9 @@ local t = {
                     end
                 else
                     runeType = runeMap[GetSpecialization()]
-                    point.SWIPE = "DK-Rune-" .. runeType .. "-On"
+                    point.SWIPE = point.ICON .. "-" .. runeType .. "-On"
                     if runeReady then
-                        point["ICON"] = "DK-Rune-" .. runeType
+                        point.ICON = point.ICON .. "-" .. runeType
                         point["STATE"] = "On"
                     else
                         point["STATE"] = "Off"
@@ -109,14 +123,15 @@ local t = {
 
 	['DRUID'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
-        ["GetPower"] = function()
+        ["POINT"] = "ComboPoint",
+        ["GetPower"] = function(self)
             local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.ComboPoints) or 5
             currentPoints = GetComboPoints("player", "target")
 
             for i = 1, maxPoints do
                 local point = {
-                    ["ICON"] = "ComboPoint",
+                    ["ICON"] = getPointIcon(self.POINT, i),
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -132,7 +147,8 @@ local t = {
 
 	['ROGUE'] = {
 		["POWER"] = Enum.PowerType.ComboPoints,
-        ["GetPower"] = function()
+        ["POINT"] = "ComboPoint",
+        ["GetPower"] = function(self)
             local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.ComboPoints) or 5
             local currentPoints = GetComboPoints("player", "target")
@@ -140,12 +156,12 @@ local t = {
 
             if not NEATPLATES_IS_CLASSIC then
                 chargedPoints = GetUnitChargedPowerPoints("player")
-                chargedPoints = DebugGetUnitChargedPowerPoints(currentPoints)
+                -- chargedPoints = DebugGetUnitChargedPowerPoints(currentPoints)
             end
 
             for i = 1, maxPoints do
                 local point = {
-                    ["ICON"] = "ComboPoint",
+                    ["ICON"] = getPointIcon(self.POINT, i),
                     ["STATE"] = "Off",
                 }
 
@@ -179,14 +195,21 @@ local t = {
 
 	['PALADIN'] = {
 		["POWER"] = Enum.PowerType.HolyPower,
-        ["GetPower"] = function()
+        ["POINT"] = {
+            [1] = "Paladin-HolyPower-1",
+            [2] = "Paladin-HolyPower-2",
+            [3] = "Paladin-HolyPower-3",
+            [4] = "Paladin-HolyPower-4",
+            [5] = "Paladin-HolyPower-5",
+        },
+        ["GetPower"] = function(self)
             local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.HolyPower) or 5
             local currentPoints = UnitPower("player", Enum.PowerType.HolyPower)
 
             for i = 1, maxPoints do
                 local point = {
-                    ["ICON"] = "Paladin-HolyPower-"..i,
+                    ["ICON"] = getPointIcon(self.POINT, i),
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -205,17 +228,24 @@ local t = {
 	},
 };
 
+-- Set DK points for retail/classic
+if NEATPLATES_IS_CLASSIC_WOTLKC then
+    t['DEATHKNIGHT'].POINT = "DK-Rune-Classic"
+else
+    t['DEATHKNIGHT'].POINT = "DK-Rune"
+end
+
 -- Assign a default 'GetPower' function if one is not defined
 for class, data in pairs(t) do
-    if data["GetPower"] == nil then
-        data["GetPower"] = function()
+    if class ~= 'RESOURCE_PATH' and data["GetPower"] == nil then
+        data["GetPower"] = function(self)
             local points = {}
             local maxPoints = UnitPowerMax("player", data["POWER"]) or 5
             local currentPoints = UnitPower("player", data["POWER"])
 
             for i = 1, maxPoints do
                 local point = {
-                    ["ICON"] = data["POINT"],
+                    ["ICON"] = getPointIcon(self.POINT, i),
                     ["STATE"] = "Off",
                 }
                 if currentPoints >= i then
@@ -225,6 +255,18 @@ for class, data in pairs(t) do
             end
 
             return points, maxPoints
+        end
+    end
+end
+
+-- TODO: Add support for customizing the resource "theme"
+ACTIVE_RESOURCE_THEME = {} -- Basically everything that is in 't'
+-- Merge the default theme with the custom theme
+for class, data in pairs(ACTIVE_RESOURCE_THEME) do
+    print(data)
+    if t[class] then
+        for key, value in pairs(data) do
+            t[class][key] = value
         end
     end
 end
@@ -246,17 +288,15 @@ local function GetPlayerPower()
     if PlayerSpec and PlayerClass then
         local data = t[PlayerClass]
         if data then
-            return data["GetPower"]()
+            return data["GetPower"](t[PlayerClass])
         end
     end
     return nil, nil
 end
 
 local function GetResourceTexture(path, state)
-    -- TODO: Add support for all the different themes/styles
-    -- Most likely the folder structure will dictate which theme to use
-    local texturePath = "Interface\\Addons\\NeatPlatesWidgets\\ResourceWidget\\"
-    local style = "Neat\\"
+    local texturePath = t['RESOURCE_PATH']
+    local style = artstyle .. "\\"
     local fullPath = texturePath .. style .. path
     if state then
         fullPath = fullPath .. "-" .. state
@@ -324,7 +364,7 @@ local function CreateResourceIcon(parent, pointData)
     frame.Info:SetAllPoints(frame)
     --  Time Text
     frame.TimeLeft = frame.Info:CreateFontString(nil, "OVERLAY")
-	frame.TimeLeft:SetFont(TimerFont, 8, "OUTLINE")
+	frame.TimeLeft:SetFont(TimerFont, timerFontSize, "OUTLINE")
 	frame.TimeLeft:SetShadowOffset(1, -1)
 	frame.TimeLeft:SetShadowColor(0,0,0,1)
 	frame.TimeLeft:SetPoint("CENTER", 0.5, 0)
@@ -333,7 +373,7 @@ local function CreateResourceIcon(parent, pointData)
 	frame.TimeLeft:SetJustifyH("RIGHT")
     -- frame.Stacks = frame.Info:CreateFontString(nil, "OVERLAY")
 
-    -- frame.Expire = ExpireFunction
+    frame.Expire = ExpireFunction
     frame.Poll = UpdateWidgetTime
     frame:Hide()
 
@@ -375,6 +415,7 @@ local function UpdatePoints(self)
             if pointData["SWIPE"] then
                 frame.Cooldown:SetSwipeTexture(GetResourceTexture(pointData["SWIPE"]))
                 frame.Cooldown:SetSwipeColor(0.8, 0.8, 0.8, 1)
+                frame.Cooldown:SetEdgeTexture(GetResourceTexture("SwipeEdge"))
             end
             frame.Cooldown:SetCooldown(expiration-duration, duration)
         else
@@ -384,6 +425,7 @@ local function UpdatePoints(self)
         frame.Cooldown:SetDrawEdge(true)
 
         frame:Poll(expiration)
+        PolledHideIn(frame, expiration, "UpdateIcon")
 
         frame:Show()
         self.Points[i] = frame
@@ -451,9 +493,19 @@ local function EnableWatcherFrame(arg)
 	else WatcherFrame:SetScript("OnEvent", nil); isEnabled = false end
 end
 
--- Used to decide whether we should display player power indicator on the target or not
 local function SpecWatcherEvent(self, event, ...)
 	SetPlayerSpecData()
+end
+
+if not NEATPLATES_IS_CLASSIC then
+	local SpecWatcher = CreateFrame("Frame")
+	SpecWatcher:SetScript("OnEvent", SpecWatcherEvent)
+	SpecWatcher:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	SpecWatcher:RegisterEvent("GROUP_ROSTER_UPDATE")
+	SpecWatcher:RegisterEvent("PLAYER_ENTERING_WORLD")
+	SpecWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	SpecWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
+	SpecWatcher:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
 end
 
 -- Widget Creation
@@ -484,9 +536,9 @@ end
 
 -- Widget Settings
 local function SetResourceWidgetOptions(LocalVars)
-    pointSpacing = LocalVars.ResourceWidgetSpacing
-	artstyle = LocalVars.WidgetComboPointsStyle
-	ScaleOptions = LocalVars.WidgetComboPointsScaleOptions
+    pointSpacing = LocalVars.WidgetResourceSpacing
+	artstyle = LocalVars.WidgetResourceStyle
+	-- timerFontSize = LocalVars.timerFontSize
 
 	NeatPlates:ForceUpdate()
 end

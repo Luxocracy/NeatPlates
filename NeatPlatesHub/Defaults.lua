@@ -294,6 +294,12 @@ NeatPlatesHubDefaults = {
 	WidgetThreatPercentage = false,
 	WidgetArenaIcon = false,
 
+	-- Resource Widget
+	---------------------------------------
+	WidgetResourceMode = 1,
+	WidgetResourceSpacing = 0,
+	WidgetResourceStyle = 'Neat',
+
 	-- Aura Widget
 	---------------------------------------
 	WidgetDebuff = true,
