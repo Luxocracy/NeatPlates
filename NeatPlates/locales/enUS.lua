@@ -528,6 +528,9 @@ L["Personal Resource Display"] = true
 L["Show On"] = true
 L["Icon Spacing"] = true
 L["The spacing between each icon/point"] = true
+L["Display Duration"] = true
+L["Duration Font Size"] = true
+L["Show the time remaining on the resource icon. Only applicable to Death Knight runes"] = true
 
 ------------------------------
 -- Other Widgets

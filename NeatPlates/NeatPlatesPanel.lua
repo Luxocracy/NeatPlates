@@ -170,28 +170,32 @@ local function ValidateProfileName(name, callback)
 	end
 end
 
-local function SetNameplateVisibility(cvar, options)
+local function SetNameplateVisibility(cvar, options, event)
 	local inCombat = UnitAffectingCombat("player")
 	local inInstance, instanceType = IsInInstance()
-				instanceType = instanceType or "scenario"
+	instanceType = instanceType or "scenario"
 	local instanceOptions = (options.Dungeon or options.Raid or options.Battleground or options.Arena or options.Scenario)
 	local instanceTypes = {party = options.Dungeon, raid = options.Raid, pvp = options.Battleground, arena = options.Arena, scenario = options.Scenario}
 	local enable
 
-	-- Instance Automation
-	if instanceOptions and inInstance then
-		if instanceTypes[instanceType] == "show" then
-			enable = true
-		elseif instanceTypes[instanceType] == "hide" then
-			enable = false
+	if event == "PLAYER_ENTERING_WORLD" then
+		-- Instance Automation
+		if instanceOptions and inInstance then
+			if instanceTypes[instanceType] == "show" then
+				enable = true
+			elseif instanceTypes[instanceType] == "hide" then
+				enable = false
+			end
 		end
+
+		-- World Automation
+		if options.World and not inInstance then enable = options.World == "show" end
 	end
 
-	-- World Automation
-	if options.World and not inInstance then enable = options.World == "show" end
-
-	-- Combat Automation
-	if (enable or enable == nil) and options.Combat then enable = ((inCombat and options.Combat == "show") or (not inCombat and options.Combat == "hide")) end
+	if event == "PLAYER_REGEN_DISABLED" or event == "PLAYER_REGEN_ENABLED" then
+		-- Combat Automation
+		if (enable or enable == nil) and options.Combat then enable = ((inCombat and options.Combat == "show") or (not inCombat and options.Combat == "hide")) end
+	end
 
 	-- Set CVars
 	if enable == true then
@@ -1193,18 +1197,18 @@ function panelevents:PLAYER_ENTERING_WORLD()
 
 	-- Nameplate automation in case of instance
 	local inInstance, instanceType = IsInInstance()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false, instanceType == "party" or instanceType == "raid")
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false, instanceType == "party" or instanceType == "raid")
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_ENTERING_WORLD')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_ENTERING_WORLD')
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false)
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false)
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_REGEN_ENABLED')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_REGEN_ENABLED')
 end
 
 function panelevents:PLAYER_REGEN_DISABLED()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, true)
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, true)
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_REGEN_DISABLED')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_REGEN_DISABLED')
 end
 
 function panelevents:PLAYER_LOGIN()

@@ -8,8 +8,9 @@ local TimerFont = "FONTS\\ARIALN.TTF"
 -- Settings
 ------------------------------
 local pointSpacing = 0
-local timerFontSize = 8
 local artstyle = "Neat"
+local timerFontSize = 8
+local displayTimer = true
 
 ------------------------------
 -- Debug
@@ -263,7 +264,6 @@ end
 ACTIVE_RESOURCE_THEME = {} -- Basically everything that is in 't'
 -- Merge the default theme with the custom theme
 for class, data in pairs(ACTIVE_RESOURCE_THEME) do
-    print(data)
     if t[class] then
         for key, value in pairs(data) do
             t[class][key] = value
@@ -342,7 +342,9 @@ local function CalculatePointSpacing(maxPoints)
 end
 
 local function ExpireFunction(icon)
-	UpdatePoints(icon)
+    if icon and icon.Parent and icon.Parent.UpdatePoints then
+        icon.Parent:UpdatePoints()
+    end
 end
 
 local function CreateResourceIcon(parent, pointData)
@@ -373,8 +375,11 @@ local function CreateResourceIcon(parent, pointData)
 	frame.TimeLeft:SetJustifyH("RIGHT")
     -- frame.Stacks = frame.Info:CreateFontString(nil, "OVERLAY")
 
+    if displayTimer then frame.TimeLeft:Show() else frame.TimeLeft:Hide() end
+
     frame.Expire = ExpireFunction
     frame.Poll = UpdateWidgetTime
+    frame.Name = "NeatPlatesResourceWidget"
     frame:Hide()
 
     return frame
@@ -448,6 +453,12 @@ end
 
 local function UpdateWidgetContext(frame, unit)
 	local guid = unit.guid
+
+    -- Update settings
+    table.foreach(frame.Points, function(k, f)
+        f.TimeLeft:SetFont(TimerFont, timerFontSize, "OUTLINE")
+        if displayTimer then f.TimeLeft:Show() else f.TimeLeft:Hide() end
+    end)
 
 	-- Add to Widget List
 	if guid then
@@ -538,7 +549,8 @@ end
 local function SetResourceWidgetOptions(LocalVars)
     pointSpacing = LocalVars.WidgetResourceSpacing
 	artstyle = LocalVars.WidgetResourceStyle
-	-- timerFontSize = LocalVars.timerFontSize
+	timerFontSize = LocalVars.WidgetResourceTimerFontSize
+    displayTimer = LocalVars.WidgetResourceDisplayTimer
 
 	NeatPlates:ForceUpdate()
 end
