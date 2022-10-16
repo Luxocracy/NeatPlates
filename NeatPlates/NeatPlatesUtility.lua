@@ -719,7 +719,7 @@ local function CreateSliderFrame(self, reference, parent, label, val, minval, ma
 	EditBox:SetPoint("BOTTOM", 0, -10)
 	EditBox:SetHeight(5)
 	EditBox:SetWidth(50)
-	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "")
 	EditBox:SetAutoFocus(false)
 	EditBox:SetJustifyH("CENTER")
 	EditBox:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
@@ -1105,7 +1105,7 @@ local function CreateEditBox(name, width, height, parent, anchorFrame, ...)
 	EditBox:SetMultiLine(true)
 
 	EditBox:SetFrameLevel(frame:GetFrameLevel()+1)
-	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	EditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "")
 
 	EditBox:SetText("")
 	EditBox:SetAutoFocus(false)
@@ -1165,7 +1165,7 @@ local function CreateTipBox(self, name, text, parent, ...)
 	frame.Text = frame:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	frame.Text:SetTextColor(255/255, 105/255, 6/255)
 	frame.Text:SetAllPoints()
-	frame.Text:SetFont(NeatPlatesLocalizedFont, 12)
+	frame.Text:SetFont(NeatPlatesLocalizedFont, 12, "")
 	frame.Text:SetText(L["Tip"])
 
 	frame.tooltipText = text
@@ -1279,7 +1279,7 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 		-- Create Label
 		if list.label then
 			local label = _G[name..k.."_label"] or child:CreateFontString(name..k.."_label", "OVERLAY")
-			label:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 18)
+			label:SetFont(NeatPlatesLocalizedFont or "Interface\\Addons\\NeatPlates\\Media\\DefaultFont.ttf", 18, "")
 			label:SetTextColor(255/255, 105/255, 6/255)
 			label:SetText(list.label)
 
@@ -1601,7 +1601,7 @@ local function CreateAuraManagement(self, objectName, parent, width, height)
 	frame.AuraName:SetHeight(25)
 	frame.AuraName:SetPoint("TOPLEFT", frame.AuraNameLabel, "BOTTOMLEFT", 4, -2)
 	frame.AuraName:SetAutoFocus(false)
-	frame.AuraName:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	frame.AuraName:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "")
 	frame.AuraName:SetFrameStrata("DIALOG")
 	frame.AuraName.objectName = "name"
 	frame.AuraName:SetScript("OnTextChanged", function() frame.OnValueChanged(frame.AuraName) end)
@@ -1836,7 +1836,7 @@ do
 	local fixed = false
 
 	local function OpenInterfacePanel(panel)
-		if not fixed then
+		if not Settings and not fixed then
 
 			local panelName = panel.name
 			if not panelName then return end
@@ -1852,7 +1852,13 @@ do
 			fixed = true
 		end
 
-		InterfaceOptionsFrame_OpenToCategory(panel)
+		if Settings then
+			local category = Settings.GetCategory("NeatPlates")
+			category.expanded = true
+			Settings.OpenToCategory(panel.name)
+		else
+			InterfaceOptionsFrame_OpenToCategory(panel)
+		end
 	end
 
 	NeatPlatesUtility.OpenInterfacePanel = OpenInterfacePanel

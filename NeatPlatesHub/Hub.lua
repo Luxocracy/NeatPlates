@@ -796,7 +796,7 @@ local function CreateProfile(label, color)
 	end
 	Panels[label].RefreshSettings(NeatPlatesHubSettings[objectName])	-- Update existing profile
 
-	InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
+	-- InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
 
 	return Panels[label]
 end
@@ -1033,7 +1033,7 @@ local function UpdateDefaultPanel(name)
 		panel.MainLabel.Text:SetText(label)
 
 		-- Update List Label
-		InterfaceAddOnsList_Update()
+		-- InterfaceAddOnsList_Update()
 	end
 end
 
