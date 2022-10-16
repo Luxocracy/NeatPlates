@@ -8,6 +8,13 @@
 		<EdgeTexture file="Interface\Addons\NeatPlatesWidgets\Aura\Edge"/>
 	</Cooldown>
 
+	<Cooldown name="NeatPlatesResourceWidgetCooldown" setAllPoints="true" hidden="true" virtual="true">
+		<SwipeTexture>
+			<Color r="0" g="0" b="0" a="0.8"/>
+		</SwipeTexture>
+		<EdgeTexture file="Interface\Addons\NeatPlatesWidgets\ResourceWidget\Neat\SwipeEdge"/>
+	</Cooldown>
+
 	<Script file="WidgetCore.lua"/>
 
 	<Script file="TankTrack.lua"/>
@@ -23,6 +30,7 @@
 	<Script file="ThreatPercentageWidget.lua"/>
 	<Script file="RangeWidget.lua"/>
 	<Script file="ArenaWidget.lua"/>
+	<Script file="ResourceWidget.lua"/>
 
 
 

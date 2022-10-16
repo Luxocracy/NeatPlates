@@ -1339,10 +1339,19 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	panel.okay = ClosePanel --function() OnPanelItemChange(panel) end
 	panel.cancel = NeatPlates.Update
 	panel.refresh = RefreshPanel
+	panel.OnOkay = panel.okay
+	panel.OnRefresh = panel.refresh
+	panel.OnDefault = panel.default
     panel:SetScript("OnShow", RefreshPanel)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
 
-	InterfaceOptions_AddCategory(panel)
+	local category
+	if Settings then
+		category = Settings.RegisterCanvasLayoutSubcategory(Settings.GetCategory(panel.parent), panel, panelTitle, panelTitle)
+		-- category:Init(category.name)
+	else
+		category = InterfaceOptions_AddCategory(panel)
+	end
 	----------------
 	-- Return a pointer to the whole thingy
 	----------------

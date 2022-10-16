@@ -15,7 +15,23 @@ local versionString = "|cFF666666"..version
 
 local PanelHelpers = NeatPlatesUtility.PanelHelpers
 local NeatPlatesInterfacePanel = PanelHelpers:CreatePanelFrame( "NeatPlatesInterfacePanel", "NeatPlates", nil, NeatPlatesBackdrop)
-InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
+-- Attach update functions (Has to be setup earlier because of Dragonflight)
+NeatPlatesInterfacePanel.okay = OnOkay
+NeatPlatesInterfacePanel.refresh = OnRefresh
+
+NeatPlatesInterfacePanel.OnCommit = NeatPlatesInterfacePanel.okay;
+NeatPlatesInterfacePanel.OnDefault = NeatPlatesInterfacePanel.default;
+NeatPlatesInterfacePanel.OnRefresh = NeatPlatesInterfacePanel.refresh;
+local category
+if Settings then
+	-- TODO: Figure out why the new, proper, method isn't working with subcategories
+	-- category = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
+	-- Settings.RegisterAddOnCategory(category);
+	category = InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
+	category.expanded = true -- Open by default
+else
+	category = InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
+end
 
 local CallIn = NeatPlatesUtility.CallIn
 local copytable = NeatPlatesUtility.copyTable
@@ -140,7 +156,7 @@ local function RemoveProfile(panel)
 
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
 	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
-	InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
+	-- InterfaceAddOnsList_Update()	-- Update Interface Options to remove the profile
 	return true
 end
 
@@ -170,28 +186,32 @@ local function ValidateProfileName(name, callback)
 	end
 end
 
-local function SetNameplateVisibility(cvar, options)
+local function SetNameplateVisibility(cvar, options, event)
 	local inCombat = UnitAffectingCombat("player")
 	local inInstance, instanceType = IsInInstance()
-				instanceType = instanceType or "scenario"
+	instanceType = instanceType or "scenario"
 	local instanceOptions = (options.Dungeon or options.Raid or options.Battleground or options.Arena or options.Scenario)
 	local instanceTypes = {party = options.Dungeon, raid = options.Raid, pvp = options.Battleground, arena = options.Arena, scenario = options.Scenario}
 	local enable
 
-	-- Instance Automation
-	if instanceOptions and inInstance then
-		if instanceTypes[instanceType] == "show" then
-			enable = true
-		elseif instanceTypes[instanceType] == "hide" then
-			enable = false
+	if event == "PLAYER_ENTERING_WORLD" then
+		-- Instance Automation
+		if instanceOptions and inInstance then
+			if instanceTypes[instanceType] == "show" then
+				enable = true
+			elseif instanceTypes[instanceType] == "hide" then
+				enable = false
+			end
 		end
+
+		-- World Automation
+		if options.World and not inInstance then enable = options.World == "show" end
 	end
 
-	-- World Automation
-	if options.World and not inInstance then enable = options.World == "show" end
-
-	-- Combat Automation
-	if (enable or enable == nil) and options.Combat then enable = ((inCombat and options.Combat == "show") or (not inCombat and options.Combat == "hide")) end
+	if event == "PLAYER_REGEN_DISABLED" or event == "PLAYER_REGEN_ENABLED" then
+		-- Combat Automation
+		if (enable or enable == nil) and options.Combat then enable = ((inCombat and options.Combat == "show") or (not inCombat and options.Combat == "hide")) end
+	end
 
 	-- Set CVars
 	if enable == true then
@@ -325,6 +345,17 @@ local function ApplyPanelSettings()
 	NeatPlates:ForceUpdate()
 end
 
+local function SetClassColors(panel)
+	-- Class Colors
+	table.foreach(CUSTOM_CLASS_COLORS, function(class, color)
+		local frameName = "ClassColor"..class
+		local frame = panel[frameName]
+		if frame then
+			frame:SetValue(color)
+		end
+	end)
+end
+
 local function GetCVarValues(panel)
 	-- Recursive until we get the values to make sure they exist
 	local Values = {
@@ -413,6 +444,9 @@ local function SetPanelValues(panel)
 	-- panel.GlobalEmphasizedAuraEditBox:SetValue(NeatPlatesSettings.GlobalEmphasizedAuraList)
 
 	panel.GlobalAdditonalAuras:SetValue(NeatPlatesSettings.GlobalAdditonalAuras)
+
+	-- Class Colors
+	SetClassColors(panel)
 
 	-- CVars
 	GetCVarValues(panel)
@@ -550,7 +584,7 @@ local function BuildInterfacePanel(panel)
 	panel:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", insets = { left = 2, right = 2, top = 2, bottom = 2 },})
 	panel:SetBackdropColor(0.06, 0.06, 0.06, .7)
 
-	panel.Label:SetFont(font, 26)
+	panel.Label:SetFont(font, 26, "")
 	panel.Label:SetPoint("TOPLEFT", panel, "TOPLEFT", 16+6, -16-4)
 	panel.Label:SetTextColor(255/255, 105/255, 6/255)
 
@@ -561,7 +595,7 @@ local function BuildInterfacePanel(panel)
 	panel.Version:SetJustifyH("RIGHT")
 	panel.Version:SetJustifyV("TOP")
 	panel.Version:SetText(versionString)
-	panel.Version:SetFont(font, 18)
+	panel.Version:SetFont(font, 18, "")
 
 	panel.DividerLine = panel:CreateTexture(nil, 'ARTWORK')
 	panel.DividerLine:SetTexture("Interface\\Addons\\NeatPlatesHub\\shared\\ThinBlackLine")
@@ -602,7 +636,7 @@ local function BuildInterfacePanel(panel)
 	-- Theme
 	----------------------------------------------
 	panel.ThemeCategoryTitle = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.ThemeCategoryTitle:SetFont(font, 22)
+	panel.ThemeCategoryTitle:SetFont(font, 22, "")
 	panel.ThemeCategoryTitle:SetText(L["Theme"])
 	panel.ThemeCategoryTitle:SetPoint("TOPLEFT", 20, -10)
 	panel.ThemeCategoryTitle:SetTextColor(255/255, 105/255, 6/255)
@@ -615,7 +649,7 @@ local function BuildInterfacePanel(panel)
 	-- Profiles
 	----------------------------------------------
 	panel.ProfileLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.ProfileLabel:SetFont(font, 22)
+	panel.ProfileLabel:SetFont(font, 22, "")
 	panel.ProfileLabel:SetText(L["Profile Selection"])
 	panel.ProfileLabel:SetPoint("TOPLEFT", panel.ActiveThemeDropdown, "BOTTOMLEFT", 20, -20)
 	panel.ProfileLabel:SetTextColor(255/255, 105/255, 6/255)
@@ -678,7 +712,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 
 	panel.ProfileManagementLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.ProfileManagementLabel:SetFont(font, 22)
+	panel.ProfileManagementLabel:SetFont(font, 22, "")
 	panel.ProfileManagementLabel:SetText(L["Profile Management"])
 	if NEATPLATES_IS_CLASSIC then
 		panel.ProfileManagementLabel:SetPoint("TOPLEFT", panel.FirstSpecDropdown, "BOTTOMLEFT", 20, -20)
@@ -699,7 +733,7 @@ local function BuildInterfacePanel(panel)
 	panel.ProfileNameEditBox:SetHeight(25)
 	panel.ProfileNameEditBox:SetPoint("TOPLEFT", panel.ProfileName, "BOTTOMLEFT", 4, 0)
 	panel.ProfileNameEditBox:SetAutoFocus(false)
-	panel.ProfileNameEditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "NONE")
+	panel.ProfileNameEditBox:SetFont(NeatPlatesLocalizedInputFont or "Fonts\\FRIZQT__.TTF", 11, "")
 	panel.ProfileNameEditBox:SetFrameStrata("DIALOG")
 
 	-- Profile Color picker
@@ -753,7 +787,7 @@ local function BuildInterfacePanel(panel)
 	-- Automation
 	----------------------------------------------
 	panel.AutomationLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.AutomationLabel:SetFont(font, 22)
+	panel.AutomationLabel:SetFont(font, 22, "")
 	panel.AutomationLabel:SetText(L["Automation"])
 	panel.AutomationLabel:SetPoint("TOPLEFT", panel.ExportProfileDropdown, "BOTTOMLEFT", 20, -20)
 	panel.AutomationLabel:SetTextColor(255/255, 105/255, 6/255)
@@ -793,7 +827,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 
 	panel.GeneralAuraLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.GeneralAuraLabel:SetFont(font, 22)
+	panel.GeneralAuraLabel:SetFont(font, 22, "")
 	panel.GeneralAuraLabel:SetText(L["General Aura Filters"])
 	panel.GeneralAuraLabel:SetPoint("TOPLEFT", panel.EnemyAutomation, "BOTTOMLEFT", 0, -20)
 	panel.GeneralAuraLabel:SetTextColor(255/255, 105/255, 6/255)
@@ -832,7 +866,7 @@ local function BuildInterfacePanel(panel)
 	----------------------------------------------
 
 	panel.OtherOptionsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.OtherOptionsLabel:SetFont(font, 22)
+	panel.OtherOptionsLabel:SetFont(font, 22, "")
 	panel.OtherOptionsLabel:SetText(L["Other Options"])
 	-- panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAuraEditBox, "BOTTOMLEFT", 0, -20)
 	panel.OtherOptionsLabel:SetPoint("TOPLEFT", panel.GlobalAdditonalAuras, "BOTTOMLEFT", 0, -30)
@@ -895,11 +929,56 @@ local function BuildInterfacePanel(panel)
 	panel.OverrideOutline = PanelHelpers:CreateDropdownFrame("NeatPlatesOverrideOutline", panel, OutlineStyleItems, 1, nil, true)
 	panel.OverrideOutline:SetPoint("TOPLEFT", panel.OverrideOutlineLabel, "BOTTOMLEFT", -15, -2)
 
+	-- Class Colors
+	panel.ClassColorLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
+	panel.ClassColorLabel:SetFont(font, 22, "")
+	panel.ClassColorLabel:SetText(L["Class Colors"])
+	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -30)
+	panel.ClassColorLabel:SetTextColor(255/255, 105/255, 6/255)
+
+	local F = panel.ClassColorLabel
+	local columns = {
+		[0] = { -240, -30 },
+		[1] = { 120, 0 },
+		[2] = { 120, 0 },
+	}
+	local i = 0
+	for class in pairs(CUSTOM_CLASS_COLORS) do
+		local frameName = "ClassColor"..class
+		panel[frameName] = PanelHelpers:CreateColorBox("NeatPlatesOptions_"..frameName, panel, L[class], function()
+			local value = panel[frameName]:GetValue()
+			panel[frameName]:SetValue(value)
+			CUSTOM_CLASS_COLORS[class] = value
+		end, 0, .5, 1, 1)
+
+		-- Assign column
+		if i == 0 then
+			panel[frameName]:SetPoint("TOPLEFT", F, "TOPLEFT", 15, -30)
+		else
+			panel[frameName]:SetPoint("TOPLEFT", F, "TOPLEFT", unpack(columns[i%3]))
+		end
+		F = panel[frameName]
+		i = i + 1
+	end
+
+	-- Reset class colors button
+	panel.ResetClassColors = CreateFrame("Button", "NeatPlatesOptions_ResetClassColors", panel, "NeatPlatesPanelButtonTemplate")
+	panel.ResetClassColors:SetWidth(140)
+	panel.ResetClassColors:SetText(L["Reset Class Colors"])
+	panel.ResetClassColors:SetPoint("TOPLEFT", panel.ClassColorLabel, "BOTTOMLEFT", 15, -160)
+	panel.ResetClassColors:SetScript("OnClick", function()
+		table.foreach(RAID_CLASS_COLORS, function(class, color)
+			local frameName = "ClassColor"..class
+			panel[frameName]:SetValue(color)
+			CUSTOM_CLASS_COLORS[class] = color
+		end)
+	end)
+
 	-- Nameplate Behaviour
 	panel.CVarsLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
-	panel.CVarsLabel:SetFont(font, 22)
+	panel.CVarsLabel:SetFont(font, 22, "")
 	panel.CVarsLabel:SetText("CVars")
-	panel.CVarsLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -20)
+	panel.CVarsLabel:SetPoint("TOPLEFT", panel.ResetClassColors, "BOTTOMLEFT", -15, -25)
 	panel.CVarsLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	panel.EnforceRequiredCVars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_EnforceRequiredCVars", panel, L["Enforce required CVars"])
@@ -991,6 +1070,10 @@ local function BuildInterfacePanel(panel)
 	-- Update Functions
 	_panel.okay = OnOkay
 	_panel.refresh = OnRefresh
+
+	_panel.OnCommit = _panel.okay;
+	_panel.OnDefault = _panel.default;
+	_panel.OnRefresh = _panel.refresh;
 	panel.ActiveThemeDropdown.OnValueChanged = OnValueChange
 
 	panel.FirstSpecDropdown.OnValueChanged = OnValueChange
@@ -1134,18 +1217,18 @@ function panelevents:PLAYER_ENTERING_WORLD()
 
 	-- Nameplate automation in case of instance
 	local inInstance, instanceType = IsInInstance()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false, instanceType == "party" or instanceType == "raid")
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false, instanceType == "party" or instanceType == "raid")
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_ENTERING_WORLD')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_ENTERING_WORLD')
 end
 
 function panelevents:PLAYER_REGEN_ENABLED()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, false)
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, false)
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_REGEN_ENABLED')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_REGEN_ENABLED')
 end
 
 function panelevents:PLAYER_REGEN_DISABLED()
-	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, true)
-	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, true)
+	SetNameplateVisibility("nameplateShowEnemies", NeatPlatesOptions.EnemyAutomation, 'PLAYER_REGEN_DISABLED')
+	SetNameplateVisibility("nameplateShowFriends", NeatPlatesOptions.FriendlyAutomation, 'PLAYER_REGEN_DISABLED')
 end
 
 function panelevents:PLAYER_LOGIN()
@@ -1154,6 +1237,7 @@ function panelevents:PLAYER_LOGIN()
 	-- Setup the interface panels
 	CreateMenuTables()				-- Look at the theme table and get names
 	BuildInterfacePanel(NeatPlatesInterfacePanel)
+
 
 	-- First time setup
 	if not NeatPlatesOptions.WelcomeShown then
@@ -1171,10 +1255,25 @@ function panelevents:PLAYER_LOGIN()
 		NeatPlatesOptions.ThirdSpecProfile = NeatPlatesSettings.DefaultProfile
 		NeatPlatesOptions.FourthSpecProfile = NeatPlatesSettings.DefaultProfile
 	end
+
+	-- NeatPlatesInterfacePanel:OnRefresh()
 end
 
 NeatPlatesInterfacePanel:SetScript("OnEvent", function(self, event, ...) panelevents[event](self, ...) end)
 for eventname in pairs(panelevents) do NeatPlatesInterfacePanel:RegisterEvent(eventname) end
+
+-- local PanelHandler = CreateFrame("Frame")
+-- PanelHandler:SetScript("OnEvent", function(...)
+-- 	local _,_,addon = ...
+
+-- 	if addon == "NeatPlates" then
+
+-- 		-- Frames are required to have OnCommit, OnDefault, and OnRefresh functions even if their implementations are empty.
+
+-- 		PanelHandler:UnregisterEvent("ADDON_LOADED")
+-- 	end
+-- end)
+-- PanelHandler:RegisterEvent("ADDON_LOADED")
 
 -------------------------------------------------------------------------------------
 -- Slash Commands

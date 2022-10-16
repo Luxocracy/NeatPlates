@@ -60,6 +60,7 @@ local AbsorbModes = NeatPlatesHubMenus.AbsorbModes
 local AbsorbUnits = NeatPlatesHubMenus.AbsorbUnits
 local ComboPointsModes = NeatPlatesHubMenus.ComboPointsModes
 local ComboPointsStyles = NeatPlatesHubMenus.ComboPointsStyles
+local ResourceWidgetStyles = NeatPlatesHubMenus.WidgetResourceStyles
 local BorderTypes = NeatPlatesHubMenus.BorderTypes
 local HighlightTypes = NeatPlatesHubMenus.HighlightTypes
 local BuffSeparationModes = NeatPlatesHubMenus.BuffSeparationModes
@@ -587,6 +588,17 @@ local function BuildHubPanel(panel)
 	panel.WidgetRangeMax.tooltipText = L["Your 'Out of Range' distance"]
 	panel.WidgetRangeScaleOptions = CreateQuickScale(objectName.."WidgetRangeScaleOptions", "WidgetRangeScaleOptions", L["Range Indicator"], nil, {noAnchor = true}, AlignmentColumn, "LEFT", panel.WidgetRangeStyle, "RIGHT", 28, 2)
 
+	------------------------------
+	-- Resource Widget
+	------------------------------
+	panel.WidgetResourceLabel = CreateQuickHeadingLabel(nil, L["Personal Resource Display"] .. ' (BETA)', AlignmentColumn, F, 0, 5)
+	panel.WidgetResourceMode, F =  CreateQuickDropdown(objectName.."WidgetResource", L["Show On"]..':', ComboPointsModes, 1, AlignmentColumn, panel.WidgetResourceLabel)
+	panel.WidgetResourceStyle, F =  CreateQuickDropdown(objectName.."WidgetResourceStyle", L["Style"]..':', ResourceWidgetStyles, 2, AlignmentColumn, panel.WidgetResourceMode)
+	panel.WidgetResourceSpacing, F = CreateQuickSlider(objectName.."WidgetResourceSpacing", L["Icon Spacing"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetResourceStyle)
+	panel.WidgetResourceSpacing.tooltipText = L["The spacing between each icon/point"]
+	panel.WidgetResourceDisplayTimer = CreateQuickCheckbutton(objectName.."WidgetResourceDisplayTimer", L["Display Duration"], AlignmentColumn, panel.WidgetResourceLabel, OffsetColumnB+76)
+	panel.WidgetResourceDisplayTimer.tooltipText = L["Show the time remaining on the resource icon. Only applicable to Death Knight runes"]
+	panel.WidgetResourceTimerFontSize = CreateQuickSlider(objectName.."WidgetResourceTimerFontSize", L["Duration Font Size"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetResourceDisplayTimer, OffsetColumnB+76)
 	--[[
 	------------------------------
 	-- Text
@@ -697,6 +709,9 @@ local function BuildHubPanel(panel)
 
 	SetSliderMechanics(panel.WidgetRangeMax, 0, 1, 100, 1)
 
+	SetSliderMechanics(panel.WidgetResourceSpacing, 0, -50, 50, 1)
+	SetSliderMechanics(panel.WidgetResourceTimerFontSize, 0, 0, 20, 1)
+
 	SetSliderMechanics(panel.FrameVerticalPosition, .5, 0, 1, .02)
 	SetSliderMechanics(panel.FrameBarWidth, 1, .3, 1.7, .02)
 	SetSliderMechanics(panel.CastBarWidth, 1, .3, 1.7, .02)
@@ -781,7 +796,7 @@ local function CreateProfile(label, color)
 	end
 	Panels[label].RefreshSettings(NeatPlatesHubSettings[objectName])	-- Update existing profile
 
-	InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
+	-- InterfaceAddOnsList_Update()	-- Update Interface Options to display new profile
 
 	return Panels[label]
 end
@@ -1018,7 +1033,7 @@ local function UpdateDefaultPanel(name)
 		panel.MainLabel.Text:SetText(label)
 
 		-- Update List Label
-		InterfaceAddOnsList_Update()
+		-- InterfaceAddOnsList_Update()
 	end
 end
 
