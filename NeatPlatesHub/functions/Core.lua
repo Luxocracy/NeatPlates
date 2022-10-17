@@ -109,8 +109,6 @@ HubData.Colors.PaleBlue = {r = 0, g = 130/255, b = 225/255,}
 HubData.Colors.PaleBlueText = {r = 194/255, g = 253/255, b = 1,}
 HubData.Colors.DarkRed = {r = .9, g = 0.08, b = .08,}
 
-local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-
 ------------------------------------------------------------------------------------
 
 local ReactionColors = {
@@ -513,7 +511,6 @@ local function ApplyProfileSettings(theme, source, ...)
 	NeatPlates.UpdateNameplateSize() -- Set/Update nameplate size
 
 	NeatPlates:ForceUpdate()
-	RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 end
 
 local function ApplyRequiredCVars(NeatPlatesOptions)

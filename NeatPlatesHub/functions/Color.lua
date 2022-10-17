@@ -19,7 +19,6 @@ local RaidIconColors = {
 	["SKULL"] = {r = 244/255, g = 242/255, b = 240/255,},
 }
 
-local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local ReactionColors = HubData.Colors.ReactionColors
 local NameReactionColors = HubData.Colors.NameReactionColors
 
@@ -88,7 +87,7 @@ end
 
 --"By Class"
 local function ColorFunctionByClass(unit)
-	local classColor = RaidClassColors[unit.class]
+	local classColor = NEATPLATES_CLASS_COLORS[unit.class]
 	--print(unit.name, unit.class, classColor.r)
 	if classColor then
 
@@ -145,7 +144,7 @@ Threat Value
 
 
 local function ColorFunctionByThreat(unit)
-	local classColor = RaidClassColors[unit.class]
+	local classColor = NEATPLATES_CLASS_COLORS[unit.class]
 
 	if classColor then
 		return classColor
@@ -376,7 +375,7 @@ local function WarningBorderFunctionByEnemyHealer(unit)
 		--if NeatPlatesCache and NeatPlatesCache.HealerListByName[unit.rawName] then
 
 		if IsHealer(unit.rawName) then
-			return RaidClassColors[unit.class or ""] or ReactionColors[unit.reaction][unit.type]
+			return NEATPLATES_CLASS_COLORS[unit.class or ""] or ReactionColors[unit.reaction][unit.type]
 		end
 	end
 end
@@ -504,8 +503,8 @@ local function NameColorByClass(unit)
 		else class = unit.class or GetEnemyClass(unit.name); end
 
 		-- Return color
-		if class and RaidClassColors[class] then
-			return RaidClassColors[class] end
+		if class and NEATPLATES_CLASS_COLORS[class] then
+			return NEATPLATES_CLASS_COLORS[class] end
 	end
 
 --]]
@@ -513,7 +512,7 @@ local function NameColorByClass(unit)
 	local class = unit.class
 
 	if class then
-		return RaidClassColors[unit.class]
+		return NEATPLATES_CLASS_COLORS[unit.class]
 	end
 
 	-- For unit types with no Class info available, return reaction color
@@ -525,7 +524,7 @@ local function NameColorByFriendlyClass(unit)
 	local class, color
 
 	if unit.type == "PLAYER" and unit.reaction == "FRIENDLY" then
-		return RaidClassColors[unit.class]
+		return NEATPLATES_CLASS_COLORS[unit.class]
 	end
 
 	-- For unit types with no Class info available, return reaction color
@@ -538,7 +537,7 @@ local function NameColorByEnemyClass(unit)
 	local class, color
 
 	if unit.type == "PLAYER" and unit.reaction == "HOSTILE" then
-		return RaidClassColors[unit.class]
+		return NEATPLATES_CLASS_COLORS[unit.class]
 	end
 
 	-- For unit types with no Class info available, return reaction color
@@ -546,7 +545,7 @@ local function NameColorByEnemyClass(unit)
 end
 
 local function NameColorByClass(unit)
-	local color = RaidClassColors[unit.class]
+	local color = NEATPLATES_CLASS_COLORS[unit.class]
 
 	if color then
 		return color
@@ -559,7 +558,7 @@ end
 local function NameColorByThreat(unit)
 	if unit.reaction == "NEUTRAL" and unit.threatValue < 2 then return NameReactionColors[unit.reaction][unit.type]
 	elseif InCombatLockdown() and (unit.isInCombat or UnitIsUnit(unit.unitid.."target", "player")) then return ColorFunctionByThreat(unit)
-	else return RaidClassColors[unit.class or ""] or NameReactionColors[unit.reaction][unit.type] end
+	else return NEATPLATES_CLASS_COLORS[unit.class or ""] or NameReactionColors[unit.reaction][unit.type] end
 end
 
 local SemiWhite = {r=1, g=1, b=1, a=.8}

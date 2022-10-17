@@ -6,8 +6,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 ------------------------------------------------------------------
 -- References
 ------------------------------------------------------------------
-local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-
 local GetFriendlyThreat = NeatPlatesUtility.GetFriendlyThreat
 
 local IsFriend = NeatPlatesUtility.IsFriend
@@ -207,7 +205,7 @@ local function HealthFunctionTargetOfClass(unit)
 
 		if UnitIsPlayer(targetof) then
 			local targetclass = select(2, UnitClass(targetof))
-			return ConvertRGBtoColorString(RaidClassColors[targetclass])..name
+			return ConvertRGBtoColorString(NEATPLATES_CLASS_COLORS[targetclass])..name
 		else
 			return name
 		end
@@ -497,7 +495,7 @@ local function TextRoleClass(unit)
 
 	elseif unit.type == "PLAYER" then
 		description = UnitClassBase(unit.unitid)
-		local classColor = RaidClassColors[unit.class]
+		local classColor = NEATPLATES_CLASS_COLORS[unit.class]
 		r, g, b = classColor.r, classColor.g, classColor.b
 	end
 

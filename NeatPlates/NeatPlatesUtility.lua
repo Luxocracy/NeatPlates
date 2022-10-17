@@ -1785,6 +1785,19 @@ end
 
 NeatPlatesUtility.CreateTargetFrame = CreateTargetFrame
 
+-- Custom Class Colors
+local function SetupClassColors()
+	if CUSTOM_CLASS_COLORS then
+		NEATPLATES_CLASS_COLORS = CUSTOM_CLASS_COLORS
+	elseif NeatPlatesSettings.ClassColors then
+		NEATPLATES_CLASS_COLORS = NeatPlatesSettings.ClassColors
+	end
+
+	NeatPlatesSettings.ClassColors = NEATPLATES_CLASS_COLORS
+end
+
+NeatPlatesUtility.SetupClassColors = SetupClassColors
+
 ----------------------
 -- Call In() - Registers a callback, which hides the specified frame in X seconds
 ----------------------

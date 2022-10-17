@@ -347,7 +347,7 @@ end
 
 local function SetClassColors(panel)
 	-- Class Colors
-	table.foreach(CUSTOM_CLASS_COLORS, function(class, color)
+	table.foreach(NEATPLATES_CLASS_COLORS, function(class, color)
 		local frameName = "ClassColor"..class
 		local frame = panel[frameName]
 		if frame then
@@ -943,12 +943,12 @@ local function BuildInterfacePanel(panel)
 		[2] = { 120, 0 },
 	}
 	local i = 0
-	for class in pairs(CUSTOM_CLASS_COLORS) do
+	for class in pairs(NEATPLATES_CLASS_COLORS) do
 		local frameName = "ClassColor"..class
 		panel[frameName] = PanelHelpers:CreateColorBox("NeatPlatesOptions_"..frameName, panel, L[class], function()
 			local value = panel[frameName]:GetValue()
 			panel[frameName]:SetValue(value)
-			CUSTOM_CLASS_COLORS[class] = value
+			NEATPLATES_CLASS_COLORS[class] = value
 		end, 0, .5, 1, 1)
 
 		-- Assign column
@@ -970,7 +970,7 @@ local function BuildInterfacePanel(panel)
 		table.foreach(RAID_CLASS_COLORS, function(class, color)
 			local frameName = "ClassColor"..class
 			panel[frameName]:SetValue(color)
-			CUSTOM_CLASS_COLORS[class] = color
+			NEATPLATES_CLASS_COLORS[class] = color
 		end)
 	end)
 
@@ -1233,6 +1233,9 @@ end
 
 function panelevents:PLAYER_LOGIN()
 	-- This happens only once a session
+
+	-- Setup class colors
+	NeatPlatesUtility.SetupClassColors()
 
 	-- Setup the interface panels
 	CreateMenuTables()				-- Look at the theme table and get names

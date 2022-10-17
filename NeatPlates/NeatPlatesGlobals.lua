@@ -8,9 +8,7 @@ if wowtocversion and (wowtocversion > 90000 or (NEATPLATES_IS_CLASSIC and wowtoc
 end
 
 -- Fill CUSTOM_CLASS_COLORS with the default colors
-if not CUSTOM_CLASS_COLORS then
-	CUSTOM_CLASS_COLORS = {}
-	for class, color in pairs(RAID_CLASS_COLORS) do
-		CUSTOM_CLASS_COLORS[class] = {r = color.r, g = color.g, b = color.b}
-	end
+NEATPLATES_CLASS_COLORS = {}
+for class, color in pairs(RAID_CLASS_COLORS) do
+	NEATPLATES_CLASS_COLORS[class] = {r = color.r, g = color.g, b = color.b}
 end

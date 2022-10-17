@@ -30,7 +30,6 @@ local SetNamePlateFriendlySize = function(x,y)
 	C_NamePlate.SetNamePlateFriendlySize(x,y)
 end
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local RaidClassColors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 -- Internal Data
 local Plates, PlatesVisible, PlatesFading, GUID = {}, {}, {}, {}	         	-- Plate Lists
@@ -1421,7 +1420,7 @@ do
 
 			if sourceGUID and sourceGUID ~= "" and ShowIntWhoCast then
 				local _, engClass = GetPlayerInfoByGUID(sourceGUID)
-				if RaidClassColors[engClass] then color = RaidClassColors[engClass].colorStr end
+				if NEATPLATES_CLASS_COLORS[engClass] then color = NEATPLATES_CLASS_COLORS[engClass].colorStr end
 			end
 
 			if sourceName and color then
@@ -1526,7 +1525,7 @@ do
 				targetname = "|cFFFF1100"..">> "..L["You"].." <<" or ""	-- Red '>> You <<' instead of character name
 			elseif UnitIsPlayer(targetof) then
 				local targetclass = select(2, UnitClass(targetof))
-				targetname = ConvertRGBtoColorString(RaidClassColors[targetclass])..targetname or ""
+				targetname = ConvertRGBtoColorString(NEATPLATES_CLASS_COLORS[targetclass])..targetname or ""
 			end
 			plate.extended.visual.spelltarget:SetText(targetname)
 		end
