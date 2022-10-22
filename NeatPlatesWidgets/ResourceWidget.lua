@@ -44,7 +44,7 @@ end
 ------------------------------
 local function getPointIcon(points, i)
     -- Check if points is table
-    if type(elem) == "table" then
+    if type(points) == "table" then
         return points[i]
     else
         return points
@@ -55,7 +55,7 @@ local t = {
     ['RESOURCE_PATH'] = "Interface\\Addons\\NeatPlatesWidgets\\ResourceWidget\\",
 	['DEATHKNIGHT'] = {
 		["POWER"] = Enum.PowerType.Runes,
-        ["POINT"] = "", -- Check further down, this will be diferent depending client
+        ["POINT"] = "", -- Check further down, this will be diferent depending on client
         ["GetPower"] = function(self)
             local points = {}
             local runeMap = {

@@ -204,6 +204,9 @@ AddHubFunction(FriendlyBarFunctions, NeatPlatesHubMenus.FriendlyBarModes, ColorF
 
 ------------------
 local function CustomColorDelegate(unit)
+	-- Make sure the unit has some health values so we don't attempt to divide by zero
+	unit.health = unit.health or 0
+	unit.healthmax = unit.healthmax or 1
 	-- Functions is a bit messy because it attempts to use the order of items as a priority...
 	local color, aura, threshold, current, lowest
 	local health = (unit.health/unit.healthmax)*100
