@@ -224,6 +224,9 @@ local ForEachPlate
 -- Show Custom NeatPlates target frame
 local ShowEmulatedTargetPlate = false
 
+-- Store players faction
+local PlayerFaction = UnitFactionGroup("player")
+
 local function IsEmulatedFrame(guid)
 	if NeatPlatesTarget and NeatPlatesTarget.unitGUID == guid then return NeatPlatesTarget else return end
 end
@@ -870,6 +873,23 @@ do
 		end
 	end
 
+	local function GetReactionByUnit(unit)
+		local reaction = UnitReaction("player", unit.unitid)
+		local isEnemy = UnitExists(unit.unitid) and UnitIsEnemy("player", unit.unitid)
+
+		if reaction == 4 then
+			return "NEUTRAL"
+		elseif isEnemy then
+			return "HOSTILE"
+		elseif reaction < 4 then
+			return "HOSTILE"
+		elseif reaction > 4 then
+			return "FRIENDLY"
+		end
+
+		return nil
+	end
+
 
 	local EliteReference = {
 		["elite"] = true,
@@ -958,9 +978,11 @@ do
 
 		unit.red, unit.green, unit.blue = UnitSelectionColor(unitid)
 		unit.reaction = GetReactionByColor(unit.red, unit.green, unit.blue) or "HOSTILE"
+		-- unit.reaction = GetReactionByUnit(unit) or "HOSTILE"
 
 		unit.health = UnitHealth(unitid) or 0
-		unit.healthmax = UnitHealthMax(unitid) or 1
+		unit.healthmax = UnitHealthMax(unitid) or 0
+		if unit.healthmax == 0 then unit.healthmax = 1 end
 
 		local powerType = UnitPowerType(unitid) or 0
 		unit.power = UnitPower(unitid, powerType) or 0
