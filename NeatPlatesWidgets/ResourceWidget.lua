@@ -129,6 +129,13 @@ local t = {
             local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.ComboPoints) or 5
             currentPoints = GetComboPoints("player", "target")
+            local powerType, powerTypeString = UnitPowerType("player");
+
+            -- Don't show if not in cat form
+            -- Note: Maybe still show if there are combopoints available
+            if powerType ~= 3 then
+                return nil, nil
+            end
 
             for i = 1, maxPoints do
                 local point = {
@@ -167,7 +174,7 @@ local t = {
                 }
 
                 -- Set state
-                if chargedPoints and table.contains(chargedPoints, i) then
+                if chargedPoints and NeatPlatesUtility.contains(chargedPoints, i) then
                     if currentPoints >= i then
                         point.STATE = "Charged-On"
                     else

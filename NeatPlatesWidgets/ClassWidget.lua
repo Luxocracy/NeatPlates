@@ -7,24 +7,26 @@ local classIcon = {}
 --local ScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}}
 
 local function VerifyTextures()
-		local classes = {"WARRIOR","PALADIN","HUNTER","ROGUE","PRIEST","DEATHKNIGHT","SHAMAN","MAGE","WARLOCK","MONK","DRUID","DEMONHUNTER"}
-		for i,class in pairs(classes) do
+		-- local classes = {"WARRIOR","PALADIN","HUNTER","ROGUE","PRIEST","DEATHKNIGHT","SHAMAN","MAGE","WARLOCK","MONK","DRUID","DEMONHUNTER","EVOKER"}
+		for class in pairs(RAID_CLASS_COLORS) do
 			if not classIcon[class] then
 				local f = CreateFrame('frame')
 		    local tx = f:CreateTexture()
 		    tx:SetPoint('BOTTOMLEFT', WorldFrame, -200, -200) -- The texture has to be "visible", but not necessarily on-screen (you can also set its alpha to 0)
 		    tx:SetAlpha(0)
 		    f:SetAllPoints(tx)
-		    f:SetScript('OnSizeChanged', function(self, width, height)
+			f.SetClassColors = function(self, width, height)
 		        local size = format('%.0f%.0f', width, height) -- The floating point numbers need to be rounded or checked like "width < 8.1 and width > 7.9"
 		        if size == '11' then
 		            classIcon[class] = classWidgetPath..class
 		        else
 		            classIcon[class] = classWidgetCustomPath..class
 		        end
-		    end)
+		    end
+		    f:SetScript('OnSizeChanged', f.SetClassColors)
 		    tx:SetTexture(classWidgetCustomPath..class)
 		    tx:SetSize(0,0) -- Size must be set after every SetTexture
+			f:SetClassColors(1, 1) -- Hack because 'OnSizeChanged' doesn't seem to trigger properly anymore
 		  end
 		end
 end

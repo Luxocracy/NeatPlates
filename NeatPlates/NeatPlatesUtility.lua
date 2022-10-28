@@ -16,6 +16,15 @@ copytable = function(original)
 	return duplicate
 end
 
+local tableContains = function(table, element)
+  for _, value in pairs(table) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
+
 NeatPlatesUtility.Colors = {
 	white = "|cFFFFFFFF",
 	yellow = "|cffffff00",
@@ -188,6 +197,7 @@ end
 
 NeatPlatesUtility.abbrevNumber = valueToString
 NeatPlatesUtility.copyTable = copytable
+NeatPlatesUtility.contains = tableContains
 NeatPlatesUtility.mergeTable = mergetable
 NeatPlatesUtility.updateTable = updatetable
 NeatPlatesUtility.HexToRGB = HexToRGB
