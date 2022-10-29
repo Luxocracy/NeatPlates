@@ -599,6 +599,8 @@ local function BuildHubPanel(panel)
 	panel.WidgetResourceDisplayTimer = CreateQuickCheckbutton(objectName.."WidgetResourceDisplayTimer", L["Display Duration"], AlignmentColumn, panel.WidgetResourceLabel, OffsetColumnB+76)
 	panel.WidgetResourceDisplayTimer.tooltipText = L["Show the time remaining on the resource icon. Only applicable to Death Knight runes"]
 	panel.WidgetResourceTimerFontSize = CreateQuickSlider(objectName.."WidgetResourceTimerFontSize", L["Duration Font Size"]..':', "ACTUAL", 150, AlignmentColumn, panel.WidgetResourceDisplayTimer, OffsetColumnB+76)
+	panel.WidgetResourceHideEmpty = CreateQuickCheckbutton(objectName.."WidgetResourceHideEmpty", L["Hide when empty"], AlignmentColumn, panel.WidgetResourceTimerFontSize, OffsetColumnB+76)
+	panel.WidgetResourceHideEmpty.tooltipText = L["Hide the widget if the resource is empty/zero. Only applicable to some classes"]
 	--[[
 	------------------------------
 	-- Text
