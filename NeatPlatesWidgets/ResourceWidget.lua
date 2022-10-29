@@ -219,7 +219,6 @@ local t = {
             [4] = "Paladin-HolyPower-4",
             [5] = "Paladin-HolyPower-5",
         },
-        ["SPEC"] = {65, 66},
         ["GetPower"] = function(self)
             local points = {}
             local maxPoints = UnitPowerMax("player", Enum.PowerType.HolyPower) or 5
