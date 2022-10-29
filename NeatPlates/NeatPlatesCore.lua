@@ -1442,11 +1442,11 @@ do
 
 			if sourceGUID and sourceGUID ~= "" and ShowIntWhoCast then
 				local _, engClass = GetPlayerInfoByGUID(sourceGUID)
-				if NEATPLATES_CLASS_COLORS[engClass] then color = NEATPLATES_CLASS_COLORS[engClass].colorStr end
+				if NEATPLATES_CLASS_COLORS[engClass] then color = ConvertRGBtoColorString(NEATPLATES_CLASS_COLORS[engClass]) end
 			end
 
 			if sourceName and color then
-				spellString = eventText.." |c"..color.."("..sourceName..")"
+				spellString = eventText.." "..color.."("..sourceName..")"
 			else
 				spellString = eventText
 			end
