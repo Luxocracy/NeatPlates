@@ -307,9 +307,11 @@ local function GetPlayerPower()
     -- TODO: Do checks for if the power should be displayed etc here.
     if PlayerClass and PlayerSpec then
         local data = t[PlayerClass]
-        local showForSpec = not data["SPEC"] or NeatPlatesUtility.contains(data["SPEC"], PlayerSpec)
-        if data and showForSpec then
-            return data["GetPower"](data)
+        if data then
+            local showForSpec = not data["SPEC"] or NeatPlatesUtility.contains(data["SPEC"], PlayerSpec)
+            if showForSpec then
+                return data["GetPower"](data)
+            end
         end
     end
     return nil, nil
