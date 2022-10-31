@@ -150,9 +150,19 @@ local function RemoveProfile(panel)
 	panel:Hide()	-- Hide panel, as a frame cannot be deleted
 
 	-- Remove interface category for profile
-	table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
-		if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
-	end)
+	if not Settings then
+		table.foreach(INTERFACEOPTIONS_ADDONCATEGORIES, function(i, category)
+			if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
+		end)
+	else
+		local category = Settings.GetCategory(panel.parent)
+		table.foreach(category.subcategories, function(i, c)
+			if c.name == panel.name then
+				c:SetParentCategory(nil)
+				table.remove(category.subcategories, i)
+			end
+		end)
+	end
 
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
 	NeatPlatesPanel:RemoveProfile(panel.objectName:gsub("HubPanelProfile", "")) -- Object Name with prefix removed
