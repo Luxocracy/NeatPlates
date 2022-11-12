@@ -4,6 +4,11 @@ local PlayerClass = select(2, UnitClass("player"))
 local PlayerSpec = 0
 local TimerFont = "FONTS\\ARIALN.TTF"
 
+local validArtStyles = {
+    ["Blizzard"] = true,
+    ["Neat"] = true
+}
+
 ------------------------------
 -- Settings
 ------------------------------
@@ -67,6 +72,7 @@ local t = {
                 [1] = "Blood",
                 [2] = "Frost",
                 [3] = "Unholy",
+                [4] = "Death",
             }
 
             -- Iterate through the runes in the order they appear in the UI
@@ -87,7 +93,8 @@ local t = {
                 local expiration = start + duration
                 local runeType = ""
                 if NEATPLATES_IS_CLASSIC_WOTLKC then
-                    runeType = runeMap[GetRuneType(i)]
+                    runeTypeIndex = GetRuneType(i)
+                    runeType = runeMap[runeTypeIndex]
                     point.ICON = point.ICON .. "-" .. runeType
                     point.SWIPE = point.ICON .. "-On"
                     if runeReady then
@@ -572,7 +579,13 @@ end
 local function SetResourceWidgetOptions(LocalVars)
     pointSpacing = LocalVars.WidgetResourceSpacing
 	artstyle = LocalVars.WidgetResourceStyle
+    if not validArtStyles[artstyle] then
+        artstyle = "Neat"
+    end
 	timerFontSize = LocalVars.WidgetResourceTimerFontSize
+    if timerFontSize == nil or timerFontSize <= 0 then
+        timerFontSize = 8
+    end
     displayTimer = LocalVars.WidgetResourceDisplayTimer
     hideOnEmpty = LocalVars.WidgetResourceHideEmpty
 

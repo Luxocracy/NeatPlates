@@ -930,7 +930,7 @@ do
 		unit.isMini = classification == "minus"
 		--unit.isPet = UnitIsOtherPlayersPet(unitid)
 		--unit.isPet = ("Pet" == strsplit("-", UnitGUID(unitid)))
-		unit.isPet = ParseGUID(UnitGUID(unitid)) == "Pet"
+		unit.isPet = ParseGUID(UnitGUID(unitid)) == "Pet" or UnitIsOtherPlayersPet(unitid)
 
 		if UnitIsPlayer(unitid) then
 			_, unit.class = UnitClass(unitid)
