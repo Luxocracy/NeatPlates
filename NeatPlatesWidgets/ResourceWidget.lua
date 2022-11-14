@@ -90,30 +90,32 @@ local t = {
                 }
 
                 local start, duration, runeReady = GetRuneCooldown(i)
-                local expiration = start + duration
-                local runeType = ""
-                if NEATPLATES_IS_CLASSIC_WOTLKC then
-                    runeTypeIndex = GetRuneType(i)
-                    runeType = runeMap[runeTypeIndex]
-                    point.ICON = point.ICON .. "-" .. runeType
-                    point.SWIPE = point.ICON .. "-On"
-                    if runeReady then
-                        point["STATE"] = "On"
-                    else
-                        point["STATE"] = "Off"
-                        point["DURATION"] = duration
-                        point["EXPIRATION"] = expiration
-                    end
-                else
-                    runeType = runeMap[GetSpecialization()]
-                    point.SWIPE = point.ICON .. "-" .. runeType .. "-On"
-                    if runeReady then
+                if runeReady ~= nil then
+                    local expiration = start + duration
+                    local runeType = ""
+                    if NEATPLATES_IS_CLASSIC_WOTLKC then
+                        runeTypeIndex = GetRuneType(i)
+                        runeType = runeMap[runeTypeIndex]
                         point.ICON = point.ICON .. "-" .. runeType
-                        point["STATE"] = "On"
+                        point.SWIPE = point.ICON .. "-On"
+                        if runeReady then
+                            point["STATE"] = "On"
+                        else
+                            point["STATE"] = "Off"
+                            point["DURATION"] = duration
+                            point["EXPIRATION"] = expiration
+                        end
                     else
-                        point["STATE"] = "Off"
-                        point["DURATION"] = duration
-                        point["EXPIRATION"] = expiration
+                        runeType = runeMap[GetSpecialization()]
+                        point.SWIPE = point.ICON .. "-" .. runeType .. "-On"
+                        if runeReady then
+                            point.ICON = point.ICON .. "-" .. runeType
+                            point["STATE"] = "On"
+                        else
+                            point["STATE"] = "Off"
+                            point["DURATION"] = duration
+                            point["EXPIRATION"] = expiration
+                        end
                     end
                 end
                 table.insert(points, point)
@@ -407,7 +409,7 @@ local function CreateResourceIcon(parent, pointData)
 
     if displayTimer then frame.TimeLeft:Show() else frame.TimeLeft:Hide() end
 
-    frame.Expire = ExpireFunction
+    -- frame.Expire = ExpireFunction
     frame.Poll = UpdateWidgetTime
     frame.Name = "NeatPlatesResourceWidget"
     frame:Hide()
