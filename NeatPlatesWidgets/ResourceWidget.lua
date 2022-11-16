@@ -252,6 +252,11 @@ local t = {
 		["POWER"] = Enum.PowerType.SoulShards,
         ["POINT"] = "Warlock-Shard",
 	},
+
+    ['EVOKER'] = {
+		["POWER"] = Enum.PowerType.Essence,
+        ["POINT"] = "Evoker-Essence",
+	},
 };
 
 -- Set DK points for retail/classic
