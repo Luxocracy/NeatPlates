@@ -193,7 +193,7 @@ local function UpdateAuraHighlighting(frame, aura)
 		local r, g, b, a = aura.r, aura.g, aura.b, aura.a
 		local glowType = aura.type
 		local expiration = aura.expiration-GetTime()
-		local pandemicThreshold = aura.duration and aura.expiration and aura.effect == "HARMFUL" and aura.duration > 0 and expiration <= aura.baseduration*0.3
+		local pandemicThreshold = aura.duration and aura.expiration and aura.duration > 0 and expiration <= aura.baseduration*0.3
 		local removeGlow = true
 	-- Pandemic and other Hightlighting
 		if (aura.effect == "HELPFUL" and ButtonGlowEnabled[aura.type]) or (PandemicEnabled and pandemicThreshold and ButtonGlowEnabled["Pandemic"]) then
