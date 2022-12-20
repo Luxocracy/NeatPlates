@@ -23,7 +23,7 @@ NeatPlatesInterfacePanel.OnCommit = NeatPlatesInterfacePanel.okay;
 NeatPlatesInterfacePanel.OnDefault = NeatPlatesInterfacePanel.default;
 NeatPlatesInterfacePanel.OnRefresh = NeatPlatesInterfacePanel.refresh;
 local category
-if Settings then
+if Settings and not NEATPLATES_IS_CLASSIC then
 	-- TODO: Figure out why the new, proper, method isn't working with subcategories
 	-- category = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
 	-- Settings.RegisterAddOnCategory(category);

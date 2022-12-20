@@ -1874,7 +1874,7 @@ do
 			fixed = true
 		end
 
-		if Settings then
+		if Settings and not NEATPLATES_IS_CLASSIC then
 			local category = Settings.GetCategory("NeatPlates")
 			category.expanded = true
 			Settings.OpenToCategory(panel.name)

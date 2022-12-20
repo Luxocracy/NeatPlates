@@ -1346,7 +1346,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
 
 	local category
-	if Settings then
+	if Settings and not NEATPLATES_IS_CLASSIC then
 		category = Settings.RegisterCanvasLayoutSubcategory(Settings.GetCategory(panel.parent), panel, panelTitle, panelTitle)
 		-- category:Init(category.name)
 	else

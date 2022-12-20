@@ -1,4 +1,4 @@
-## Interface: 100000
+## Interface: 100002
 ## Title: NeatPlates
 ## Notes: Enjoys long walks on Darkshore
 ## Author: Luxocracy and friends
