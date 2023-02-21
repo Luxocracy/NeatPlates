@@ -591,7 +591,7 @@ local function TransformSquareAura(frame)
 	frame.Parent:SetWidth(DebuffColumns*(16 + 5))
 
 	frame:SetWidth(16.5)
-	frame:SetHeight(14.5)
+	frame:SetHeight(16.5)
 	-- Icon
 	frame.Icon:SetAllPoints(frame)
 	frame.Border:ClearAllPoints()
