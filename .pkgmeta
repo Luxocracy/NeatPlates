@@ -20,6 +20,7 @@ move-folders:
     NeatPlates/NeatPlates_Alvara: NeatPlates_Alvara
     NeatPlates/NeatPlatesHub: NeatPlatesHub
     NeatPlates/NeatPlatesWidgets: NeatPlatesWidgets
+    NeatPlates/libs/LibRangeCheck-3.0/LibRangeCheck-3.0: NeatPlates/libs/LibRangeCheck-3.0
 
 externals:
     NeatPlates/libs/Ace3/AceLocale-3.0: https://repos.wowace.com/wow/ace3/trunk/AceLocale-3.0
@@ -27,5 +28,5 @@ externals:
     NeatPlates/libs/Ace3/CallbackHandler-1.0: https://repos.wowace.com/wow/ace3/trunk/CallbackHandler-1.0
     NeatPlates/libs/Ace3/LibStub: https://repos.wowace.com/wow/ace3/trunk/LibStub
     NeatPlates/libs/LibButtonGlow-1.0: https://repos.curseforge.com/wow/libbuttonglow-1-0
-    NeatPlates/libs/LibRangeCheck-3.0: https://github.com/WeakAuras/LibRangeCheck-3.0/tree/main/LibRangeCheck-3.0
+    NeatPlates/libs/LibRangeCheck-3.0: https://github.com/WeakAuras/LibRangeCheck-3.0
     NeatPlates/libs/LibClassicDurations: https://repos.curseforge.com/wow/libclassicdurations
