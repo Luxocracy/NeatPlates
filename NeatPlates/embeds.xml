@@ -3,6 +3,6 @@
   <Include file="libs\Ace3\CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
   <Include file="libs\Ace3\AceLocale-3.0\AceLocale-3.0.xml"/>
   <Include file="libs\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml"/>
-  <Script file="libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
+  <Script file="libs\LibRangeCheck-3.0\LibRangeCheck-3.0.lua"/>
   <Script file="libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua"/>
 </Ui>

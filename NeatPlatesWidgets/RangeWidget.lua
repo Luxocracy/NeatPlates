@@ -3,7 +3,7 @@
 ---------------------------------------------
 
 local AddonName, NeatPlatesInternal = ...
-local rc = LibStub('LibRangeCheck-2.0')
+local rc = LibStub('LibRangeCheck-3.0')
 
 local font = "FONTS\\arialn.ttf"
 
