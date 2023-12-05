@@ -2083,7 +2083,7 @@ end
 local function BuildDefaultSpellDB()
 	NeatPlatesSpellDB.texture = nil
 	NeatPlatesSpellDB.default = {}
-	for i = 1, 100000 do
+	for i = 1, 1000000 do
 		local spellName,_,icon,castTime = GetSpellInfo(i)
 		-- 136235(Default Placeholder Icon)
 		if spellName then
