@@ -16,7 +16,10 @@ local inRaid = false
 local playerTankRole = false
 local currentSpec = 0
 local playerClass = select(2, UnitClass("player"))
-local rfSpellId = 25780
+local rfSpellId = {
+	[25780] = true, -- Righteous Fury
+	[407627] = true, -- Righteous Fury (Hand of reckoning)
+}
 local playerGUID = UnitGUID("player")
 
 local cachedAura = false
@@ -70,7 +73,7 @@ local function UpdatePlayerRole(playerTankAura)
 			elseif playerClass == "PALADIN" then
 				for i=1,40 do
 					local spellId = select(10, UnitBuff("player",i))
-					if spellId == rfSpellId then
+					if rfSpellId[spellId] then
 						playerTankAura = true
 					end
 				end
@@ -181,7 +184,7 @@ local function TankWatcherEvents(self, event, ...)
 			local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellId,spellName = CombatLogGetCurrentEventInfo()
 			if (event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_APPLIED") and sourceGUID == playerGUID and destGUID == playerGUID then
 				spellId = select(7, GetSpellInfo(spellName))
-				if spellId == rfSpellId then
+				if rfSpellId[spellId] then
 					if event == "SPELL_AURA_APPLIED" then tankAura = true end
 					triggerUpdate = true
 				end
