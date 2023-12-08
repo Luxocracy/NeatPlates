@@ -68,8 +68,14 @@ local function UpdateRangeWidget(frame, unit)
 	local height = frame:GetParent()._height or 12;
 	local width = frame:GetParent()._width or 100;
 
+	-- If we can't get a range, assume out of range
+	if maxRange == nil then
+		minRange = 1000
+		maxRange = 1000
+	end
+
 	if WidgetStyle == 1 then width = width * WidgetWidthMod end -- Account for width scale when using bar style
-	
+
 	frame:Show()
 	frame:SetWidth(width); frame:SetHeight(32)
 
