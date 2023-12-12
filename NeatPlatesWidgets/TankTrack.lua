@@ -20,6 +20,7 @@ local rfSpellId = {
 	[25780] = true, -- Righteous Fury
 	[407627] = true, -- Righteous Fury (Hand of reckoning)
 }
+local woeSpellId = 408680 -- Way of Earth
 local playerGUID = UnitGUID("player")
 
 local cachedAura = false
@@ -63,33 +64,46 @@ local function IsPlayerTank()
 	return playerTankRole
 end
 
-local function UpdatePlayerRole(playerTankAura)
-	if NEATPLATES_IS_CLASSIC then
-		if not playerTankAura then
-			if playerClass == "WARRIOR" then
-				playerTankAura = GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
-			elseif playerClass == "DRUID" then
-				playerTankAura = GetShapeshiftForm() == 1 -- Bear Form
-			elseif playerClass == "PALADIN" then
-				for i=1,40 do
-					local spellId = select(10, UnitBuff("player",i))
-					if rfSpellId[spellId] then
-						playerTankAura = true
-					end
-				end
-			elseif playerClass == "DEATHKNIGHT" then
-    			playerTankAura = GetShapeshiftForm() == 2 -- Frost Presence
+local function HasClassicTankAura()
+	if playerClass == "WARRIOR" then
+		return GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
+	elseif playerClass == "DRUID" then
+		return GetShapeshiftForm() == 1 -- Bear Form
+	elseif playerClass == "PALADIN" then
+		-- Righteous Fury
+		for i=1,40 do
+			local spellId = select(10, UnitBuff("player",i))
+			if rfSpellId[spellId] then
+				return true
 			end
 		end
+	elseif playerClass == "DEATHKNIGHT" then
+		return GetShapeshiftForm() == 2 -- Frost Presence
+	elseif playerClass == "WARLOCK" then
+		return NEATPLATES_IS_CLASSIC_ERA and GetShapeshiftForm() == 1 -- SoD: Metamorphosis
+	elseif playerClass == "SHAMAN" then
+		-- SoD: Way of Earth
+		for i=1,40 do
+			local spellId = select(10, UnitBuff("player", i))
+			if woeSpellId == spellId then
+				return true
+			end
+		end
+	elseif playerClass == "ROGUE" then
+		return IsSpellKnownOrOverridesKnown(400014) -- SoD: Just a Flesh Wound
+	end
 
-		if playerTankAura then
+	return false
+end
+
+local function UpdatePlayerRole(playerTankAura)
+	if NEATPLATES_IS_CLASSIC then
+		if playerTankAura or HasClassicTankAura() then
 			playerTankRole = true
 		else
 			playerTankRole = false
 		end
 	else
-		local playerTankAura = false
-
 		-- Look at the Player's Specialization
 		local specializationIndex = tonumber(GetSpecialization())
 
@@ -184,7 +198,7 @@ local function TankWatcherEvents(self, event, ...)
 			local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellId,spellName = CombatLogGetCurrentEventInfo()
 			if (event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_APPLIED") and sourceGUID == playerGUID and destGUID == playerGUID then
 				spellId = select(7, GetSpellInfo(spellName))
-				if rfSpellId[spellId] then
+				if rfSpellId[spellId] or woeSpellId == spellId then
 					if event == "SPELL_AURA_APPLIED" then tankAura = true end
 					triggerUpdate = true
 				end
