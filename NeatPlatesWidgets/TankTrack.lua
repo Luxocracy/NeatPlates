@@ -225,7 +225,7 @@ if not NEATPLATES_IS_CLASSIC then
 	TankWatcher:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	TankWatcher:RegisterEvent("PLAYER_TALENT_UPDATE")
 else
-	if playerClass == "PALADIN" then
+	if playerClass == "PALADIN" or playerClass == "SHAMAN" then
 		TankWatcher:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	end
 end
