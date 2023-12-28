@@ -1008,7 +1008,10 @@ local function BuildInterfacePanel(panel)
 	panel.NameplateFriendlyNPCs:SetPoint("TOPLEFT", panel.NameplateStacking, "TOPLEFT", 0, -25)
 	panel.NameplateFriendlyNPCs:SetScript("OnClick", function(self) SetCVarValue(self, "nameplateShowFriendlyNPCs", true) end)
 
-	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], 41, 0, 41, 1, "ACTUAL", 170)
+	maxDistance = 60 -- Retail
+	if NEATPLATES_IS_CLASSIC_ERA then maxDistance = 20 -- Classic Era
+	elseif NEATPLATES_IS_CLASSIC then maxDistance = 41 end -- Classic (Era, TBC, WotLK)
+	panel.NameplateMaxDistance = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateMaxDistance", panel, L["Nameplate Max Distance"], maxDistance, 0, maxDistance, 1, "ACTUAL", 170)
 	panel.NameplateMaxDistance:SetPoint("TOPLEFT", panel.NameplateFriendlyNPCs, "TOPLEFT", 10, -50)
 	panel.NameplateMaxDistance.Callback = function(self) SetCVarValue(self, "nameplateMaxDistance") end
 
