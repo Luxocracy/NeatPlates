@@ -541,6 +541,7 @@ L["Other Widgets"] = true
 
 L["Show Target Highlight"] = true
 L["Show Elite Icon"] = true
+L["Show on Boss Enemies"] = true
 L["Show Arena ID"] = true
 L["Show Enemy Class Art"] = true
 L["Show Friendly Class Art"] = true

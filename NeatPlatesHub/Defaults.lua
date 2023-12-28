@@ -268,6 +268,7 @@ NeatPlatesHubDefaults = {
 	---------------------------------------
 	WidgetTargetHighlight = true,
 	WidgetEliteIndicator = true,
+	WidgetEliteIndicatorBoss = false,
 	ClassEnemyIcon = false,
 	ClassPartyIcon = false,
 	ClassIconScaleOptions = {x = 1, y = 1, offset = {x = 0, y = 0}},

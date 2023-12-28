@@ -423,6 +423,7 @@ local function ApplyStyleCustomization(style, defaults, widget, widgetDefaults)
 	style.focus.show = (LocalVars.HighlightFocusMode > 2)
 	style.mouseover.show = (LocalVars.HighlightMouseoverMode > 2)
 	style.eliteicon.show = (LocalVars.WidgetEliteIndicator == true)
+	style.eliteicon.showBoss = (LocalVars.WidgetEliteIndicatorBoss == true)
 	style.spellicon.show = (style.spellicon.enabled and LocalVars.SpellIconEnable)
 	style.spelltarget.show = (style.spelltarget.enabled and LocalVars.SpellTargetEnable)
 	style.customtext.shadow = LocalVars.TextStatusForceShadow or defaults.customtext.shadow

@@ -1224,7 +1224,8 @@ do
 	-- UpdateIndicator_EliteIcon: Updates the border overlay art and threat glow to Elite or Non-Elite art
 	function UpdateIndicator_EliteIcon()
 		threatborder = visual.threatborder
-		if (unit.isElite or unit.isRare) and not unit.isBoss and style.eliteicon.show and style.eliteicon.enabled then visual.eliteicon:Show() else visual.eliteicon:Hide() end
+		isNotBoss = style.eliteicon.showBoss or not unit.isBoss
+		if (unit.isElite or unit.isRare) and isNotBoss and style.eliteicon.show and style.eliteicon.enabled then visual.eliteicon:Show() else visual.eliteicon:Hide() end
 		visual.eliteicon:SetDesaturated(unit.isRare) -- Desaturate if rare elite
 	end
 
