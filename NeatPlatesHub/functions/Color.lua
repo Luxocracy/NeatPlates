@@ -311,7 +311,8 @@ local function PowerColorDelegate(unit, powerType)
 
 	color = PowerBarColor[powerType]	-- FrameXML/UnitFrame.lua
 
-	return color.r, color.g, color.b, 1
+	if color then return color.r, color.g, color.b, 1
+	else return 0,0,1,1 end
 end
 
 ------------------------------------------------------------------------------
