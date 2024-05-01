@@ -119,7 +119,7 @@ StyleDefault.spelltext = {
 	y = CastBarVerticalAdjustment - 16,
 	align = "CENTER",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = true,
 	show = true,
 }
@@ -134,7 +134,7 @@ StyleDefault.spelltarget = {
 	y = CastBarVerticalAdjustment - 26,
 	align = "CENTER",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = true,
 	show = true,
 }
@@ -149,7 +149,7 @@ StyleDefault.durationtext = {
 	y = CastBarVerticalAdjustment - 5,
 	align = "RIGHT",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = true,
 	show = true,
 }
@@ -284,7 +284,7 @@ StyleDefault.name = {
 	y = NameTextVerticalAdjustment,
 	align = "CENTER",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = true,
 	flags = "NONE",
 }
@@ -299,7 +299,7 @@ StyleDefault.subtext = {
 	yOffset = 0,
 	align = "CENTER",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = true,
 	flags = "NONE",
 }
@@ -358,7 +358,7 @@ StyleDefault.customtext = {
 	y = VerticalAdjustment + 1,
 	align = "CENTER",
 	anchor = "CENTER",
-	vertical = "CENTER",
+	vertical = "MIDDLE",
 	shadow = false,
 	flags = "OUTLINE",
 	show = true,

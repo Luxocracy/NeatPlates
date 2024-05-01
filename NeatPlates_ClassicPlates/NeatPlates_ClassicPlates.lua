@@ -167,7 +167,7 @@ StyleDefault.name = {
 	x = 6,
 	align = "CENTER",
 	--anchor = "CENTER",
-	--vertical = "CENTER",
+	--vertical = "MIDDLE",
 	shadow = true,
 }
 
