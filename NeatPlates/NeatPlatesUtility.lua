@@ -1039,7 +1039,7 @@ do
 	local function ShowColorPicker(frame, onOkay)
 		local r,g,b,a = frame:GetBackdropColor()
 		workingFrame = frame
-		ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 	ChangeColor, function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end, ChangeColor;
+		ColorPickerFrame.swatchFunc, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 	ChangeColor, function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end, ChangeColor;
 		ColorPickerFrame.startingval  = {r,g,b,a}
 		ColorPickerFrame:SetColorRGB(r,g,b);
 		ColorPickerFrame.hasOpacity = true
@@ -1360,7 +1360,7 @@ local function CreateScrollList(parent, name, lists, buttonFunc, width, height)
 						end
 						actionFrame.text = actionFrame:GetFontString()
 						actionFrame.text:SetJustifyH("CENTER")
-						actionFrame.text:SetJustifyV("CENTER")
+						actionFrame.text:SetJustifyV("MIDDLE")
 					end
 				end
 

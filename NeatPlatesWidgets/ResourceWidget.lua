@@ -77,7 +77,7 @@ local t = {
 
             -- Iterate through the runes in the order they appear in the UI
             local runeOrder = {1,2,3,4,5,6} -- Actually sorted by duration in retail
-            if NEATPLATES_IS_CLASSIC_WOTLKC then
+            if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
                 runeOrder =  {1,2,5,6,3,4}
             end
 
@@ -93,7 +93,7 @@ local t = {
                 if runeReady ~= nil then
                     local expiration = start + duration
                     local runeType = ""
-                    if NEATPLATES_IS_CLASSIC_WOTLKC then
+                    if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
                         runeTypeIndex = GetRuneType(i)
                         runeType = runeMap[runeTypeIndex]
                         point.ICON = point.ICON .. "-" .. runeType
@@ -260,7 +260,7 @@ local t = {
 };
 
 -- Set DK points for retail/classic
-if NEATPLATES_IS_CLASSIC_WOTLKC then
+if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
     t['DEATHKNIGHT'].POINT = "DK-Rune-Classic"
 else
     t['DEATHKNIGHT'].POINT = "DK-Rune"
@@ -516,7 +516,7 @@ end
 -- Watcher Frame
 local WatcherFrame = CreateFrame("Frame", nil, WorldFrame)
 WatcherFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-if not NEATPLATES_IS_CLASSIC or NEATPLATES_IS_CLASSIC_WOTLKC then
+if not NEATPLATES_IS_CLASSIC or NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
 	WatcherFrame:RegisterEvent("RUNE_POWER_UPDATE")
 end
 WatcherFrame:RegisterEvent("UNIT_POWER_FREQUENT")
