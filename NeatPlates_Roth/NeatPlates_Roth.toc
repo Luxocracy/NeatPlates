@@ -1,4 +1,4 @@
-## Interface: 100200
+## Interface: 100206
 ## Title: NeatPlates: Roth
 ## Notes: Vanilla-Style Plates.
 ## Author: Reinhart

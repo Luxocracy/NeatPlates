@@ -1024,22 +1024,44 @@ local CreateColorBox
 do
 
 	local workingFrame
-	local function ChangeColor(cancel)
+	local function ChangeColorRetail(cancel)
 		local a, r, g, b
 		if cancel then
-			--r,g,b,a = unpack(ColorPickerFrame.startingval )
-			workingFrame:SetBackdropColor(unpack(ColorPickerFrame.startingval ))
+			workingFrame:SetBackdropColor(ColorPickerFrame:GetPreviousValues())
 		else
-			a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
-			workingFrame:SetBackdropColor(r,g,b,1-a)
+			a, r, g, b = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
+			workingFrame:SetBackdropColor(r,g,b,a)
 			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
 		end
 	end
 
-	local function ShowColorPicker(frame, onOkay)
+	local function ChangeColorClassic(cancel)
+		local a, r, g, b
+		if cancel then
+			r,g,b,a = unpack(ColorPickerFrame.startingval )
+			workingFrame:SetBackdropColor(r,g,b,a)
+		else
+			a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+			workingFrame:SetBackdropColor(r,g,b,a)
+			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
+		end
+	end
+
+	local function ChangeColor(cancel)
+		if NEATPLATES_IS_CLASSIC then
+			ChangeColorClassic(cancel)
+		else
+			ChangeColorRetail(cancel)
+		end
+	end
+
+
+	local function ShowColorPickerClassic(frame, onOkay)
 		local r,g,b,a = frame:GetBackdropColor()
 		workingFrame = frame
-		ColorPickerFrame.swatchFunc, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 	ChangeColor, function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end, ChangeColor;
+		ColorPickerFrame.swatchFunc = ChangeColor
+		ColorPickerFrame.opacityFunc = function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end
+		ColorPickerFrame.cancelFunc = ChangeColor
 		ColorPickerFrame.startingval  = {r,g,b,a}
 		ColorPickerFrame:SetColorRGB(r,g,b);
 		ColorPickerFrame.hasOpacity = true
@@ -1047,6 +1069,42 @@ do
 		ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
 		ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
+	end
+
+	local function ShowColorPickerRetail(frame, onOkay)
+		local r,g,b,a = frame:GetBackdropColor()
+
+		local handler = function(cancel)
+			ChangeColor(cancel)
+			if onOkay then
+				onOkay(RGBToHex(ColorPickerFrame:GetColorRGB()))
+			end
+		end
+
+		workingFrame = frame
+		ColorPickerFrame:SetupColorPickerAndShow({
+			swatchFunc = handler,
+			opacityFunc = handler,
+			cancelFunc = function()
+				handler(true)
+			end,
+			r = r,
+			g = g,
+			b = b,
+			opacity = a,
+			hasOpacity = true,
+		})
+		ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
+		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
+		ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
+	end
+
+	local function ShowColorPicker(frame, onOkay)
+		if NEATPLATES_IS_CLASSIC then
+			ShowColorPickerClassic(frame, onOkay)
+		else
+			ShowColorPickerRetail(frame, onOkay)
+		end
 	end
 
 	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
