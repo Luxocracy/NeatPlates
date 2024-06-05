@@ -276,7 +276,7 @@ local function UpdateNameplateSize(plate, show, cWidth, cHeight)
 				if NEATPLATES_IS_CLASSIC then
 					SetNamePlateFriendlySize(128 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))
 				else
-					SetNamePlateFriendlySize(145 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))
+					SetNamePlateFriendlySize(110 * horizontalScale, 45 * Lerp(1.0, 1.25, zeroBasedScale))
 				end
 			else SetNamePlateFriendlySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) end -- Clickable area of the nameplate
 			SetNamePlateEnemySize(hitbox.width * scaleStandard, hitbox.height * scaleStandard) -- Clickable area of the nameplate
