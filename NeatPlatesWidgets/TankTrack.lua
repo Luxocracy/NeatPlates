@@ -78,7 +78,11 @@ local function HasClassicTankAura()
 			end
 		end
 	elseif playerClass == "DEATHKNIGHT" then
-		return GetShapeshiftForm() == 2 -- Frost Presence
+		if NEATPLATES_IS_CLASSIC_CATA then
+			return GetShapeshiftForm() == 1 -- Blood Presence
+		else
+			return GetShapeshiftForm() == 2 -- Frost Presence
+		end
 	elseif playerClass == "WARLOCK" then
 		return NEATPLATES_IS_CLASSIC_ERA and GetShapeshiftForm() == 1 -- SoD: Metamorphosis
 	elseif playerClass == "SHAMAN" then
