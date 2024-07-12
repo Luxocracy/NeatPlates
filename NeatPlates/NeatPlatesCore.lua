@@ -972,7 +972,7 @@ do
 		unit.level = UnitEffectiveLevel(unitid)
 
 		local c = GetCreatureDifficultyColor(unit.level)
-		unit.levelcolorRed, unit.levelcolorGreen, unit.levelcolorBlue = c.r, c.g, c.b
+		unit.levelcolorRed, unit.levelcolorGreen, unit.levelcolorBlue = c.r or 0.5, c.g or 0.5, c.b or 0.5 -- Default to grey if no color is found
 
 		unit.isTrivial = (c.r == 0.5 and c.g == 0.5 and c.b == 0.5)
 

@@ -96,6 +96,9 @@ local t = {
                     if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
                         runeTypeIndex = GetRuneType(i)
                         runeType = runeMap[runeTypeIndex]
+                        if runeType == nil then
+                            runeType = "Blood"
+                        end
                         point.ICON = point.ICON .. "-" .. runeType
                         point.SWIPE = point.ICON .. "-On"
                         if runeReady then
@@ -107,6 +110,9 @@ local t = {
                         end
                     else
                         runeType = runeMap[GetSpecialization()]
+                        if runeType == nil then
+                            runeType = "Blood"
+                        end
                         point.SWIPE = point.ICON .. "-" .. runeType .. "-On"
                         if runeReady then
                             point.ICON = point.ICON .. "-" .. runeType
