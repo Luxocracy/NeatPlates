@@ -1345,12 +1345,12 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
     panel:SetScript("OnShow", RefreshPanel)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
 
-	local category
+	local subcategory
 	if Settings and not NEATPLATES_IS_CLASSIC then
-		category = Settings.RegisterCanvasLayoutSubcategory(Settings.GetCategory(panel.parent), panel, panelTitle, panelTitle)
-		-- category:Init(category.name)
+		subcategory = Settings.RegisterCanvasLayoutSubcategory(NeatPlatesPanel.Category, panel, panelTitle, panelTitle)
+		Settings.RegisterAddOnCategory(subcategory);
 	else
-		category = InterfaceOptions_AddCategory(panel)
+		subcategory = InterfaceOptions_AddCategory(panel)
 	end
 	----------------
 	-- Return a pointer to the whole thingy
