@@ -1295,7 +1295,13 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	end
 
         local function OpenNeatPlatesConfig()
-            InterfaceOptionsFrame_OpenToCategory("NeatPlates")
+			if Settings and not NEATPLATES_IS_CLASSIC then
+				local category = NeatPlatesPanel.Category
+				category.expanded = true
+				Settings.OpenToCategory(category.ID, "NeatPlates")
+			else
+				InterfaceOptionsFrame_OpenToCategory("NeatPlates")
+			end
         end
 
         local RefreshPanel = function(self)

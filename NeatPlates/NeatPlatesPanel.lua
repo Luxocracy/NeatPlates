@@ -1167,7 +1167,11 @@ local function BuildInterfacePanel(panel)
 
 	-- Blizzard Nameplate Options Button
 	BlizzOptionsButton:SetScript("OnClick", function()
-		InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
+		if Settings and not NEATPLATES_IS_CLASSIC then
+			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID)
+		else
+			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
+		end
 	end)
 
 	-- Reset Button

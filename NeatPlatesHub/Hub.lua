@@ -684,7 +684,13 @@ local function BuildHubPanel(panel)
 	--BlizzOptionsButton:SetPoint("TOPLEFT", panel.AdvancedCustomCodeTextbox, "BOTTOMLEFT",-6, -18)
 	BlizzOptionsButton:SetWidth(300)
 	BlizzOptionsButton:SetText(L["Blizzard Nameplate Motion & Visibility..."])
-	BlizzOptionsButton:SetScript("OnClick", function() InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"]) end)
+	BlizzOptionsButton:SetScript("OnClick", function()
+		if Settings and not NEATPLATES_IS_CLASSIC then
+			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID)
+		else
+			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
+		end
+	end)
 	local ThemeCustomization = CreateQuickCustomization(objectName.."CustomizationButton", AlignmentColumn, "TOPLEFT", BlizzOptionsButton, "BOTTOMLEFT", 0, -4)
 
 	------------------------------

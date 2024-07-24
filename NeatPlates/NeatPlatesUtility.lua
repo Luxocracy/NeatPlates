@@ -1933,9 +1933,9 @@ do
 		end
 
 		if Settings and not NEATPLATES_IS_CLASSIC then
-			local category = Settings.GetCategory("NeatPlates")
+			local category = NeatPlatesPanel.Category
 			category.expanded = true
-			Settings.OpenToCategory(panel.name)
+			Settings.OpenToCategory(category.ID, panel.name)
 		else
 			InterfaceOptionsFrame_OpenToCategory(panel)
 		end
