@@ -156,13 +156,17 @@ local function RemoveProfile(panel)
 			if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
 		end)
 	else
-		local category = Settings.GetCategory(panel.parent)
+		local category = NeatPlatesPanel.Category
 		table.foreach(category.subcategories, function(i, c)
 			if c.name == panel.name then
 				c:SetParentCategory(nil)
 				table.remove(category.subcategories, i)
 			end
 		end)
+
+		-- Bit of a hack to force a reload (There is probably a better way...)
+		Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
+		Settings.OpenToCategory(category.ID, "NeatPlates")
 	end
 
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
