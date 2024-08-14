@@ -919,6 +919,7 @@ local function ImportSettingsPrompt()
 end
 
 local function VersionWarning()
+	local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 	local frame = CreateFrame("Frame", "VersionWarningPrompt", UIParent, NeatPlatesBackdrop)
 	local version = GetAddOnMetadata("NeatPlates", "version")
 	local versionString = "|cFF666666"..version
@@ -968,6 +969,7 @@ end
 
 local HubHandler = CreateFrame("Frame")
 HubHandler:SetScript("OnEvent", function(...)
+	local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState or GetAddOnEnableState
 	local _,_,addon = ...
 	local version, build, date, tocversion = GetBuildInfo()
 	local player = UnitName("player");

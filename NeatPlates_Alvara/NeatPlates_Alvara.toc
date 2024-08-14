@@ -1,4 +1,4 @@
-## Interface: 110000
+## Interface: 110002
 ## Title: NeatPlates: Alvara
 ## Notes: Made to Alvara's specifications. Very Simple.
 ## Author: Alvara - Zul'Jin

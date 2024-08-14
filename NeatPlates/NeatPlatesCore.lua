@@ -59,6 +59,7 @@ local HealthTicker = nil
 local SpellSchoolByGUID = {}
 local SpellCastCache = {} -- Classic era
 local CTICache = {} -- Classic era
+local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
 -- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
 
 -- Raid Icon Reference

@@ -9,6 +9,12 @@
 
 local LibClassicDurations
 local _UnitAura = UnitAura
+if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
+	_UnitAura = function(...)
+		return AuraUtil.UnpackAuraData(C_UnitAuras.GetAuraDataByIndex(...))
+	end
+end
+
 if NEATPLATES_IS_CLASSIC_ERA then
 	LibClassicDurations = LibStub("LibClassicDurations", true)
 	if LibClassicDurations then
