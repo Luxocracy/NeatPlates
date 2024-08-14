@@ -27,8 +27,17 @@ local cachedAura = false
 local cachedRole = false
 local TankWatcher
 local white, orange, blue, green, red = "|cffffffff", "|cFFFF6906", "|cFF3782D1", "|cFF60E025", "|cFFFF1100"
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
 
+local function GetSpellID(spellname)
+	local id
+	if C_Spell and C_Spell.GetSpellID then
+		id = C_Spell.GetSpellID(spellname)
+	else
+		id = select(7, GetSpellInfo(spellname))
+	end
+
+	return id
+end
 
 local function IsEnemyTanked(unit)
 	if NEATPLATES_IS_CLASSIC then
@@ -202,7 +211,7 @@ local function TankWatcherEvents(self, event, ...)
 		if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local _,event,_,sourceGUID,sourceName,sourceFlags,_,destGUID,destName,_,_,spellId,spellName = CombatLogGetCurrentEventInfo()
 			if (event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_APPLIED") and sourceGUID == playerGUID and destGUID == playerGUID then
-				spellId = select(7, GetSpellInfo(spellName))
+				spellId = GetSpellID(spellName)
 				if rfSpellId[spellId] or woeSpellId == spellId then
 					if event == "SPELL_AURA_APPLIED" then tankAura = true end
 					triggerUpdate = true

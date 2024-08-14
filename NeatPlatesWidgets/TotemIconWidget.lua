@@ -7,12 +7,24 @@ local classWidgetPath = "Interface\\Addons\\NeatPlatesWidgets\\ClassWidget\\"
 local TotemIcons, TotemTypes, TotemDurations = {}, {}, {}
 local TotemFont = "FONTS\\ARIALN.TTF"
 local TotemWatcher
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
+
+local function GetSpellNameAndIcon(spellidentifier)
+	if C_Spell and C_Spell.GetSpellInfo then
+		info = C_Spell.GetSpellInfo(spellidentifier)
+		if info == nil then
+			return nil, nil
+		end
+		return info.name, info.iconID
+	end
+
+	local name, _, icon = GetSpellInfo(spellidentifier)
+	return name, icon
+end
 
 local AIR_TOTEM, EARTH_TOTEM, FIRE_TOTEM, WATER_TOTEM = 1, 2, 3, 4
 
 local function SetTotemInfo(spellid, totemType)
-	local name, _, icon = GetSpellInfo(spellid)
+	local name, icon = GetSpellNameAndIcon(spellid)
 	if name and icon then --and totemType
 		TotemIcons[name] = icon
 		TotemTypes[name] = totemType

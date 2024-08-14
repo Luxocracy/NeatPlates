@@ -59,8 +59,18 @@ local HealthTicker = nil
 local SpellSchoolByGUID = {}
 local SpellCastCache = {} -- Classic era
 local CTICache = {} -- Classic era
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
 -- local NameplateOccludedAlphaMult = tonumber(GetCVar("nameplateOccludedAlphaMult"))
+
+local function GetSpellName(spellidentifier)
+	local name
+	if C_Spell and C_Spell.GetSpellName then
+		name = C_Spell.GetSpellName(spellidentifier)
+	else
+		name = GetSpellInfo(spellidentifier)
+	end
+
+	return name
+end
 
 -- Raid Icon Reference
 local RaidIconCoordinate = {
@@ -79,108 +89,108 @@ local spellBlacklist, spellCCList, spellCTI
 if NEATPLATES_IS_CLASSIC_ERA then
 	-- Special case spells
 	spellBlacklist = {
-		[GetSpellInfo(75)] = true, 				-- Auto Shot
-		[GetSpellInfo(5019)] = true, 			-- Shoot
-		[GetSpellInfo(2480)] = true, 			-- Shoot Bow
-		[GetSpellInfo(7918)] = true, 			-- Shoot Gun
-		[GetSpellInfo(7919)] = true, 			-- Shoot Crossbow
-		[GetSpellInfo(2764)] = true, 			-- Throw
+		[GetSpellName(75)] = true, 				-- Auto Shot
+		[GetSpellName(5019)] = true, 			-- Shoot
+		[GetSpellName(2480)] = true, 			-- Shoot Bow
+		[GetSpellName(7918)] = true, 			-- Shoot Gun
+		[GetSpellName(7919)] = true, 			-- Shoot Crossbow
+		[GetSpellName(2764)] = true, 			-- Throw
 	}
 
 	spellCCList = {
-		[GetSpellInfo(118)] = true,				-- Polymorph
-		[GetSpellInfo(408)] = true,				-- Kidney Shot
-		[GetSpellInfo(605)] = true,				-- Mind Control
-		[GetSpellInfo(853)] = true,				-- Hammer of Justice
-		[GetSpellInfo(1090)] = true,			-- Sleep
-		[GetSpellInfo(1513)] = true,			-- Scare Beast
-		[GetSpellInfo(1776)] = true,			-- Gouge
-		[GetSpellInfo(1833)] = true,			-- Cheap Shot
-		[GetSpellInfo(2094)] = true,			-- Blind
-		[GetSpellInfo(2637)] = true,			-- Hibernate
-		[GetSpellInfo(3355)] = true,			-- Freezing Trap
-		[GetSpellInfo(5211)] = true,			-- Bash
-		[GetSpellInfo(5246)] = true,			-- Intimidating Shout
-		[GetSpellInfo(5484)] = true,			-- Howl of Terror
-		[GetSpellInfo(5530)] = true,			-- Mace Stun
-		[GetSpellInfo(5782)] = true,			-- Fear
-		[GetSpellInfo(6358)] = true,			-- Seduction
-		[GetSpellInfo(6770)] = true,			-- Sap
-		[GetSpellInfo(6789)] = true,			-- Death Coil
-		[GetSpellInfo(7922)] = true,			-- Charge Stun
-		[GetSpellInfo(8122)] = true,			-- Psychic Scream
-		[GetSpellInfo(9005)] = true,			-- Pounce
-		[GetSpellInfo(12355)] = true,			-- Impact
-		[GetSpellInfo(12798)] = true,			-- Revenge Stun
-		[GetSpellInfo(12809)] = true,			-- Concussion Blow
-		[GetSpellInfo(15269)] = true,			-- Blackout
-		[GetSpellInfo(15487)] = true,			-- Silence
-		[GetSpellInfo(16922)] = true,			-- Improved Starfire
-		[GetSpellInfo(18093)] = true,			-- Pyroclasm
-		[GetSpellInfo(18425)] = true,			-- Kick - Silenced
-		[GetSpellInfo(18469)] = true,			-- Counterspell - Silenced
-		[GetSpellInfo(18498)] = true,			-- Shield Bash - Silenced
-		[GetSpellInfo(19386)] = true,			-- Wyvern Sting
-		[GetSpellInfo(19410)] = true,			-- Improved Concussive Shot
-		[GetSpellInfo(19503)] = true,			-- Scatter Shot
-		[GetSpellInfo(20066)] = true,			-- Repentance
-		[GetSpellInfo(20170)] = true,			-- Seal of Justice Stun
-		[GetSpellInfo(20253)] = true,			-- Intercept Stun
-		[GetSpellInfo(20549)] = true,			-- War Stomp
-		[GetSpellInfo(22703)] = true,			-- Inferno Effect (Summon Infernal)
-		[GetSpellInfo(24259)] = true,			-- Spell Lock
-		[GetSpellInfo(24394)] = true,			-- Intimidation
-		[GetSpellInfo(28271)] = true,			-- Polymorph: Turtle
-		[GetSpellInfo(28272)] = true,			-- Polymorph: Pig
+		[GetSpellName(118)] = true,				-- Polymorph
+		[GetSpellName(408)] = true,				-- Kidney Shot
+		[GetSpellName(605)] = true,				-- Mind Control
+		[GetSpellName(853)] = true,				-- Hammer of Justice
+		[GetSpellName(1090)] = true,			-- Sleep
+		[GetSpellName(1513)] = true,			-- Scare Beast
+		[GetSpellName(1776)] = true,			-- Gouge
+		[GetSpellName(1833)] = true,			-- Cheap Shot
+		[GetSpellName(2094)] = true,			-- Blind
+		[GetSpellName(2637)] = true,			-- Hibernate
+		[GetSpellName(3355)] = true,			-- Freezing Trap
+		[GetSpellName(5211)] = true,			-- Bash
+		[GetSpellName(5246)] = true,			-- Intimidating Shout
+		[GetSpellName(5484)] = true,			-- Howl of Terror
+		[GetSpellName(5530)] = true,			-- Mace Stun
+		[GetSpellName(5782)] = true,			-- Fear
+		[GetSpellName(6358)] = true,			-- Seduction
+		[GetSpellName(6770)] = true,			-- Sap
+		[GetSpellName(6789)] = true,			-- Death Coil
+		[GetSpellName(7922)] = true,			-- Charge Stun
+		[GetSpellName(8122)] = true,			-- Psychic Scream
+		[GetSpellName(9005)] = true,			-- Pounce
+		[GetSpellName(12355)] = true,			-- Impact
+		[GetSpellName(12798)] = true,			-- Revenge Stun
+		[GetSpellName(12809)] = true,			-- Concussion Blow
+		[GetSpellName(15269)] = true,			-- Blackout
+		[GetSpellName(15487)] = true,			-- Silence
+		[GetSpellName(16922)] = true,			-- Improved Starfire
+		[GetSpellName(18093)] = true,			-- Pyroclasm
+		[GetSpellName(18425)] = true,			-- Kick - Silenced
+		[GetSpellName(18469)] = true,			-- Counterspell - Silenced
+		[GetSpellName(18498)] = true,			-- Shield Bash - Silenced
+		[GetSpellName(19386)] = true,			-- Wyvern Sting
+		[GetSpellName(19410)] = true,			-- Improved Concussive Shot
+		[GetSpellName(19503)] = true,			-- Scatter Shot
+		[GetSpellName(20066)] = true,			-- Repentance
+		[GetSpellName(20170)] = true,			-- Seal of Justice Stun
+		[GetSpellName(20253)] = true,			-- Intercept Stun
+		[GetSpellName(20549)] = true,			-- War Stomp
+		[GetSpellName(22703)] = true,			-- Inferno Effect (Summon Infernal)
+		[GetSpellName(24259)] = true,			-- Spell Lock
+		[GetSpellName(24394)] = true,			-- Intimidation
+		[GetSpellName(28271)] = true,			-- Polymorph: Turtle
+		[GetSpellName(28272)] = true,			-- Polymorph: Pig
 
 		-- Items, Talents etc.
-		[GetSpellInfo(56)] = true,				-- Stun (Weapon Proc)
-		[GetSpellInfo(835)] = true,				-- Tidal Charm
-		[GetSpellInfo(4064)] = true,			-- Rough Copper Bomb
-		[GetSpellInfo(4065)] = true,			-- Large Copper Bomb
-		[GetSpellInfo(4066)] = true,			-- Small Bronze Bomb
-		[GetSpellInfo(4067)] = true,			-- Big Bronze Bomb
-		[GetSpellInfo(4068)] = true,			-- Iron Grenade
-		[GetSpellInfo(4069)] = true,			-- Big Iron Bomb
-		[GetSpellInfo(5134)] = true,			-- Flash Bomb Fear
-		[GetSpellInfo(12421)] = true,			-- Mithril Frag Bomb
-		[GetSpellInfo(12543)] = true,			-- Hi-Explosive Bomb
-		[GetSpellInfo(12562)] = true,			-- The Big One
-		[GetSpellInfo(13181)] = true,			-- Gnomish Mind Control Cap
-		[GetSpellInfo(13237)] = true,			-- Goblin Mortar
-		[GetSpellInfo(13327)] = true,			-- Reckless Charge
-		[GetSpellInfo(13808)] = true,			-- M73 Frag Grenade
-		[GetSpellInfo(15283)] = true,			-- Stunning Blow (Weapon Proc)
-		[GetSpellInfo(19769)] = true,			-- Thorium Grenade
-		[GetSpellInfo(19784)] = true,			-- Dark Iron Bomb
-		[GetSpellInfo(19821)] = true,			-- Arcane Bomb Silence
-		[GetSpellInfo(26108)] = true,			-- Glimpse of Madness
+		[GetSpellName(56)] = true,				-- Stun (Weapon Proc)
+		[GetSpellName(835)] = true,				-- Tidal Charm
+		[GetSpellName(4064)] = true,			-- Rough Copper Bomb
+		[GetSpellName(4065)] = true,			-- Large Copper Bomb
+		[GetSpellName(4066)] = true,			-- Small Bronze Bomb
+		[GetSpellName(4067)] = true,			-- Big Bronze Bomb
+		[GetSpellName(4068)] = true,			-- Iron Grenade
+		[GetSpellName(4069)] = true,			-- Big Iron Bomb
+		[GetSpellName(5134)] = true,			-- Flash Bomb Fear
+		[GetSpellName(12421)] = true,			-- Mithril Frag Bomb
+		[GetSpellName(12543)] = true,			-- Hi-Explosive Bomb
+		[GetSpellName(12562)] = true,			-- The Big One
+		[GetSpellName(13181)] = true,			-- Gnomish Mind Control Cap
+		[GetSpellName(13237)] = true,			-- Goblin Mortar
+		[GetSpellName(13327)] = true,			-- Reckless Charge
+		[GetSpellName(13808)] = true,			-- M73 Frag Grenade
+		[GetSpellName(15283)] = true,			-- Stunning Blow (Weapon Proc)
+		[GetSpellName(19769)] = true,			-- Thorium Grenade
+		[GetSpellName(19784)] = true,			-- Dark Iron Bomb
+		[GetSpellName(19821)] = true,			-- Arcane Bomb Silence
+		[GetSpellName(26108)] = true,			-- Glimpse of Madness
 	}
 
 	spellCTI = {
-		[GetSpellInfo(1714)] = 1.6,				-- Curse of Tongues
-		[GetSpellInfo(1098)] = 1.3,				-- Enslave Demon
-		[GetSpellInfo(5760)] = 1.6,				-- Mind-Numbing Poison
-		[GetSpellInfo(17331)] = 1.1,			-- Fang of the Crystal Spider
+		[GetSpellName(1714)] = 1.6,				-- Curse of Tongues
+		[GetSpellName(1098)] = 1.3,				-- Enslave Demon
+		[GetSpellName(5760)] = 1.6,				-- Mind-Numbing Poison
+		[GetSpellName(17331)] = 1.1,			-- Fang of the Crystal Spider
 
 		-- NPC Abilities
-		[GetSpellInfo(3603)] = 1.35,			-- Distracting Pain
-		[GetSpellInfo(7102)] = 1.25,			-- Contagion of Rot
-		[GetSpellInfo(7127)] = 1.2,				-- Wavering Will
-		[GetSpellInfo(8140)] = 1.5,				-- Befuddlement
-		[GetSpellInfo(8272)] = 1.2,				-- Mind Tremor
-		[GetSpellInfo(10651)] = 1.2,			-- Curse of the Eye
-		[GetSpellInfo(12255)] = 1.15,			-- Curse of Tuten'kash
-		[GetSpellInfo(19365)] = 1.5,			-- Ancient Dread
-		[GetSpellInfo(22247)] = 1.8,			-- Suppression Aura
-		[GetSpellInfo(22642)] = 1.5,			-- Brood Power: Bronze
-		[GetSpellInfo(22909)] = 1.5,			-- Eye of Immol'thar
-		[GetSpellInfo(23153)] = 1.5,			-- Brood Power: Blue
-		[GetSpellInfo(28732)] = 1.25,			-- Widow's Embrace
+		[GetSpellName(3603)] = 1.35,			-- Distracting Pain
+		[GetSpellName(7102)] = 1.25,			-- Contagion of Rot
+		[GetSpellName(7127)] = 1.2,				-- Wavering Will
+		[GetSpellName(8140)] = 1.5,				-- Befuddlement
+		[GetSpellName(8272)] = 1.2,				-- Mind Tremor
+		[GetSpellName(10651)] = 1.2,			-- Curse of the Eye
+		[GetSpellName(12255)] = 1.15,			-- Curse of Tuten'kash
+		[GetSpellName(19365)] = 1.5,			-- Ancient Dread
+		[GetSpellName(22247)] = 1.8,			-- Suppression Aura
+		[GetSpellName(22642)] = 1.5,			-- Brood Power: Bronze
+		[GetSpellName(22909)] = 1.5,			-- Eye of Immol'thar
+		[GetSpellName(23153)] = 1.5,			-- Brood Power: Blue
+		[GetSpellName(28732)] = 1.25,			-- Widow's Embrace
 
 		-- Uncategorized (Not sure if they are used)
-		[GetSpellInfo(14538)] = 1.35,			-- Aural Shock
-		--[GetSpellInfo(24415)] = 1.5,   	-- Slow
+		[GetSpellName(14538)] = 1.35,			-- Aural Shock
+		--[GetSpellName(24415)] = 1.5,   	-- Slow
 	}
 end
 
@@ -2081,12 +2091,24 @@ local function CleanSpellDB()
 	checkTable(NeatPlatesSpellDB)
 end
 
+local function GetSpellInfoUnpacked(spellidentifier)
+	if C_Spell and C_Spell.GetSpellInfo then
+		info = C_Spell.GetSpellInfo(spellname)
+		if info == nil then
+			return nil, nil
+		end
+		return info.name, nil, info.iconID, info.castTime
+	end
+
+	return GetSpellInfo(spellidentifier)
+end
+
 -- Build classic texture DB
 local function BuildDefaultSpellDB()
 	NeatPlatesSpellDB.texture = nil
 	NeatPlatesSpellDB.default = {}
 	for i = 1, 1000000 do
-		local spellName,_,icon,castTime = GetSpellInfo(i)
+		local spellName,_,icon,castTime = GetSpellInfoUnpacked(i)
 		-- 136235(Default Placeholder Icon)
 		if spellName then
 			if not NeatPlatesSpellDB.default[spellName] then NeatPlatesSpellDB.default[spellName] = {} end
