@@ -1175,6 +1175,9 @@ do
 						widget = C_UIWidgetManager.GetCaptureBarWidgetVisualizationInfo(widgetID)
 					elseif widgetType == 8 then
 						-- Do nothing
+					elseif widgetType == 13 then
+						-- Display blizzard plate for now
+						nameplate.showBlizzardPlate = true
 					else
 						if not _G['NeatPlatesWidgetError'] then
 							_G['NeatPlatesWidgetError'] = true
