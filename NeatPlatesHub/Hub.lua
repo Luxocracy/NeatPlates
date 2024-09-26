@@ -685,7 +685,7 @@ local function BuildHubPanel(panel)
 	BlizzOptionsButton:SetWidth(300)
 	BlizzOptionsButton:SetText(L["Blizzard Nameplate Motion & Visibility..."])
 	BlizzOptionsButton:SetScript("OnClick", function()
-		if Settings and not NEATPLATES_IS_CLASSIC then
+		if Settings then
 			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
 		else
 			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])

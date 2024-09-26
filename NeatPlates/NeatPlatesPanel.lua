@@ -24,7 +24,7 @@ NeatPlatesInterfacePanel.OnCommit = NeatPlatesInterfacePanel.okay;
 NeatPlatesInterfacePanel.OnDefault = NeatPlatesInterfacePanel.default;
 NeatPlatesInterfacePanel.OnRefresh = NeatPlatesInterfacePanel.refresh;
 local category, layout
-if Settings and not NEATPLATES_IS_CLASSIC then
+if Settings then
 	category, layout = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
 	category.expanded = true
 	Settings.RegisterAddOnCategory(category);

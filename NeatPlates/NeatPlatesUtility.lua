@@ -696,7 +696,7 @@ end
 
 local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode, width, infinite)
 	local value, multiplier, minimum, maximum, current
-	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate2')
 	local EditBox = CreateFrame("EditBox", reference, slider)
 	slider.isActual = (mode and mode == "ACTUAL")
 
@@ -1932,7 +1932,7 @@ do
 			fixed = true
 		end
 
-		if Settings and not NEATPLATES_IS_CLASSIC then
+		if Settings then
 			local category = NeatPlatesPanel.Category
 			category.expanded = true
 			Settings.OpenToCategory(category.ID, panel.name)

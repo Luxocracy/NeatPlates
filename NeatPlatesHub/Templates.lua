@@ -1295,7 +1295,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	end
 
         local function OpenNeatPlatesConfig()
-			if Settings and not NEATPLATES_IS_CLASSIC then
+			if Settings then
 				local category = NeatPlatesPanel.Category
 				category.expanded = true
 				Settings.OpenToCategory(category.ID, "NeatPlates")
@@ -1352,7 +1352,7 @@ local function CreateInterfacePanel( objectName, panelTitle, parentFrameName)
 	UnlinkButton:SetScript("OnClick", UnLinkPanel)
 
 	local subcategory
-	if Settings and not NEATPLATES_IS_CLASSIC then
+	if Settings then
 		subcategory = Settings.RegisterCanvasLayoutSubcategory(NeatPlatesPanel.Category, panel, panelTitle, panelTitle)
 		Settings.RegisterAddOnCategory(subcategory);
 	else

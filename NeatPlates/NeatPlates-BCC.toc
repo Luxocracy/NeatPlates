@@ -6,6 +6,7 @@
 ## SavedVariables: NeatPlatesSettings
 ## SavedVariablesPerCharacter: NeatPlatesOptions
 
+temporary-because-blizzard-forgot-an-include.xml
 embeds.xml
 locales.xml
 NeatPlates.xml

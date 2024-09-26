@@ -149,7 +149,7 @@ NeatPlatesHubMenus.StyleOptions = {
 	--},
 	{
 		text = L["eliteicon"],
-		value = "eliteicon",
+			value = "eliteicon",
 		tooltip = L["eliteicon_tooltip"],
 	},
 	{
@@ -696,7 +696,7 @@ local function OnContextUpdateDelegate(extended, unit)
 	if LocalVars.WidgetDebuff and widgets.AuraWidgetHub then
 		-- Reposition if combo widget is enabled for some themes
 		local config = copytable(extended.widgetParent.config)
-		if EnableComboWidget and unit.isTarget then
+		if (EnableComboWidget or EnableResourceWidget) and unit.isTarget then
 			config.anchor = config.anchor2 or config.anchor
 			config.anchorRel = config.anchorRel2 or config.anchorRel
 			config.x = config.x2 or config.x
