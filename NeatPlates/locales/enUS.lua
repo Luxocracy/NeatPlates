@@ -42,6 +42,7 @@ L["General Aura Filters"] = true
 L["Other Options"] = true
 L["Emulate Target Nameplate"] = true
 L["Disable Cast Bars"] = true
+L["Disable Channeling Cast Bars"] = true
 L["Force Multi-Lingual Font (Requires /reload)"] = true
 L["Force Health Updates"] = true
 L["Forces health to update every .25sec, try this if you are having health update issues"] = true
