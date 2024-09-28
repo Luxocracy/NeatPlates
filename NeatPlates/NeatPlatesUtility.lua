@@ -1023,56 +1023,70 @@ end
 local CreateColorBox
 do
 
+	-- For some reason alpha is inverse in some version...
+	local function CorrectAlphaValue(a)
+		if NEATPLATES_IS_CLASSIC then
+			return 1 - a
+		else
+			return a
+		end
+	end
+
 	local workingFrame
 	local function ChangeColorRetail(cancel)
 		local a, r, g, b
 		if cancel then
-			workingFrame:SetBackdropColor(ColorPickerFrame:GetPreviousValues())
+			r, g, b, a = ColorPickerFrame:GetPreviousValues()
+			a = CorrectAlphaValue(a)
+			workingFrame:SetBackdropColor(r, g, b, a)
 		else
 			a, r, g, b = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
+			a = CorrectAlphaValue(a)
 			workingFrame:SetBackdropColor(r,g,b,a)
 			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
 		end
 	end
 
-	local function ChangeColorClassic(cancel)
-		local a, r, g, b
-		if cancel then
-			r,g,b,a = unpack(ColorPickerFrame.startingval )
-			workingFrame:SetBackdropColor(r,g,b,a)
-		else
-			a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
-			workingFrame:SetBackdropColor(r,g,b,a)
-			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
-		end
-	end
+	-- local function ChangeColorClassic(cancel)
+	-- 	local a, r, g, b
+	-- 	if cancel then
+	-- 		r,g,b,a = unpack(ColorPickerFrame.startingval )
+	-- 		workingFrame:SetBackdropColor(r,g,b,a)
+	-- 	else
+	-- 		a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+	-- 		workingFrame:SetBackdropColor(r,g,b,a)
+	-- 		if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
+	-- 	end
+	-- end
 
 	local function ChangeColor(cancel)
-		if NEATPLATES_IS_CLASSIC then
-			ChangeColorClassic(cancel)
-		else
+		-- if NEATPLATES_IS_CLASSIC and not NEATPLATES_IS_CLASSIC_ERA then
+		-- 	ChangeColorClassic(cancel)
+		-- else
 			ChangeColorRetail(cancel)
-		end
+		-- end
 	end
 
 
-	local function ShowColorPickerClassic(frame, onOkay)
-		local r,g,b,a = frame:GetBackdropColor()
-		workingFrame = frame
-		ColorPickerFrame.swatchFunc = ChangeColor
-		ColorPickerFrame.opacityFunc = function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end
-		ColorPickerFrame.cancelFunc = ChangeColor
-		ColorPickerFrame.startingval  = {r,g,b,a}
-		ColorPickerFrame:SetColorRGB(r,g,b);
-		ColorPickerFrame.hasOpacity = true
-		ColorPickerFrame.opacity = 1 - a
-		ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
-		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
-		ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
-	end
+	-- local function ShowColorPickerClassic(frame, onOkay)
+	-- 	local r,g,b,a = frame:GetBackdropColor()
+	-- 	workingFrame = frame
+	-- 	ColorPickerFrame.swatchFunc = ChangeColor
+	-- 	ColorPickerFrame.opacityFunc = function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end
+	-- 	ColorPickerFrame.cancelFunc = ChangeColor
+	-- 	ColorPickerFrame.startingval  = {r,g,b,a}
+	-- 	ColorPickerFrame:SetColorRGB(r,g,b);
+	-- 	ColorPickerFrame.hasOpacity = true
+	-- 	ColorPickerFrame.opacity = 1 - a
+	-- 	ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
+	-- 	ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
+	-- 	ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
+	-- end
 
 	local function ShowColorPickerRetail(frame, onOkay)
 		local r,g,b,a = frame:GetBackdropColor()
+
+		a = CorrectAlphaValue(a)
 
 		local handler = function(cancel)
 			ChangeColor(cancel)
@@ -1100,11 +1114,11 @@ do
 	end
 
 	local function ShowColorPicker(frame, onOkay)
-		if NEATPLATES_IS_CLASSIC then
-			ShowColorPickerClassic(frame, onOkay)
-		else
+		-- if NEATPLATES_IS_CLASSIC and not NEATPLATES_IS_CLASSIC_ERA then
+		-- 	ShowColorPickerClassic(frame, onOkay)
+		-- else
 			ShowColorPickerRetail(frame, onOkay)
-		end
+		-- end
 	end
 
 	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
@@ -1122,8 +1136,14 @@ do
 		colorbox.Label:SetPoint("TOPLEFT", colorbox, "TOPRIGHT", 4, -7)
 		colorbox.Label:SetText(label)
 
-		colorbox.GetValue = function() local color = {}; color.r, color.g, color.b, color.a = colorbox:GetBackdropColor(); return color end
-		colorbox.SetValue = function(self, color) colorbox:SetBackdropColor(color.r, color.g, color.b, color.a); end
+		colorbox.GetValue = function()
+			local color = {};
+			color.r, color.g, color.b, color.a = colorbox:GetBackdropColor();
+			return color
+		end
+		colorbox.SetValue = function(self, color)
+			colorbox:SetBackdropColor(color.r, color.g, color.b, color.a);
+		end
 		--colorbox.tooltipText = "Colorbox"
 		return colorbox
 	end
