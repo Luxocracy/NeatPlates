@@ -113,6 +113,7 @@ NeatPlatesOptions = {
 	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
 	ForceHealthUpdates = false,
+	NameplateThrottleUpdate = 0,
 
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
@@ -268,6 +269,7 @@ local function ApplyAutomationSettings()
 	SetChannelingCastBars(not NeatPlatesOptions.DisableChannelingCastBars)
 	NeatPlates.OverrideFonts(NeatPlatesOptions.ForceBlizzardFont)
 	NeatPlates.ToggleHealthTicker(NeatPlatesOptions.ForceHealthUpdates)
+	NeatPlatesUtility.SetThrottle(NeatPlatesOptions.NameplateThrottleUpdate)
 	if NEATPLATES_IS_CLASSIC then
 		NeatPlates:ToggleEmulatedTargetPlate(NeatPlatesOptions.EmulatedTargetPlate)
 	end
@@ -423,6 +425,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.ForceHealthUpdates = panel.ForceHealthUpdates:GetChecked()
+	NeatPlatesOptions.NameplateThrottleUpdate = panel.NameplateThrottleUpdate:GetValue()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
 	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
@@ -464,6 +467,7 @@ local function SetPanelValues(panel)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.ForceHealthUpdates:SetChecked(NeatPlatesOptions.ForceHealthUpdates)
+	panel.NameplateThrottleUpdate:SetValue(NeatPlatesOptions.NameplateThrottleUpdate)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
 	panel.FriendlyAutomation:SetValue(NeatPlatesOptions.FriendlyAutomation)
@@ -970,11 +974,18 @@ local function BuildInterfacePanel(panel)
 	panel.OverrideOutline = PanelHelpers:CreateDropdownFrame("NeatPlatesOverrideOutline", panel, OutlineStyleItems, 1, nil, true)
 	panel.OverrideOutline:SetPoint("TOPLEFT", panel.OverrideOutlineLabel, "BOTTOMLEFT", -15, -2)
 
+	panel.NameplateThrottleUpdate = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateThrottleUpdate", panel, L["Nameplate Update Rate (ms)"], 0, 0, 150, 1, "ACTUAL", 170)
+	panel.NameplateThrottleUpdate:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 22, -20)
+	panel.NameplateThrottleUpdate.Callback = function(self) NeatPlatesUtility.SetThrottle(self.ceil(self:GetValue())) end
+
+	panel.NameplateThrottleUpdateTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_NameplateThrottleUpdateTip", L["NAMEPLATE_THROTTLE_TIP"], panel, "BOTTOMRIGHT", panel.NameplateThrottleUpdate, "TOPRIGHT", 35, -20)
+
+
 	-- Class Colors
 	panel.ClassColorLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ClassColorLabel:SetFont(font, 22, "")
 	panel.ClassColorLabel:SetText(L["Class Colors"])
-	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -30)
+	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.NameplateThrottleUpdate, "BOTTOMLEFT", -7, -30)
 	panel.ClassColorLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	local F = panel.ClassColorLabel

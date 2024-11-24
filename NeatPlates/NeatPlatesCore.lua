@@ -430,7 +430,7 @@ do
 		-- Poll Loop
 		local plate, curChildren
 
-    -- Detect when cursor leaves the mouseover unit
+    	-- Detect when cursor leaves the mouseover unit
 		if HasMouseover and not UnitExists("mouseover") then
 			HasMouseover = false
 			SetUpdateAll()
@@ -450,10 +450,24 @@ do
 
 			-- Check for an Update Request
 			if UpdateMe or UpdateHealth then
-				if not UpdateMe then
-					OnHealthUpdate(plate)
+				-- Check if we should throttle or not (Don't throttle init, target or mouseover)
+				if plate.initialize or UnitIsUnit("target", unitid) or UnitIsUnit("mouseover", unitid) then
+					if not UpdateMe then
+						OnHealthUpdate(plate)
+					else
+						OnUpdateNameplate(plate)
+					end
+					plate.initialize = false
 				else
-					OnUpdateNameplate(plate)
+					if not UpdateMe then
+						NeatPlatesUtility.SimpleThrottle('NeatPlatesCore_OnUpdate_Health'..unitid, function()
+							OnHealthUpdate(plate)
+						end)
+					else
+						NeatPlatesUtility.SimpleThrottle('NeatPlatesCore_OnUpdate_Plate'..unitid, function()
+							OnUpdateNameplate(plate)
+						end)
+					end
 				end
 				plate.UpdateMe = false
 				plate.UpdateHealth = false
@@ -842,6 +856,7 @@ do
 		-- Skip the initial data gather and let the second cycle do the work.
 		plate.UpdateMe = true
 		plate.UpdateCastbar = true -- Classic era
+		plate.initialize = true
 
 		-- Register events
 		RegisterNameplateEvents(plate, unitid)
@@ -881,6 +896,9 @@ do
 
 		-- Gather Information
 		local unitid = PlatesVisible[plate]
+		if not unitid then
+			return -- Because throttling is now an option, this could be false by the time it runs
+		end
 		UpdateReferences(plate)
 
 		UpdateUnitIdentity(plate, unitid)

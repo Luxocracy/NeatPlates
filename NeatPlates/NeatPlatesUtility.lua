@@ -1885,6 +1885,25 @@ end
 
 NeatPlatesUtility.SetupClassColors = SetupClassColors
 
+-- Simple Debounce
+local throttleAmount = 0 --in milliseconds
+local throttles = {}
+local function SimpleThrottle(key, callback)
+	if throttles[key] ~= nil then
+		return
+	end
+
+	-- Setup throttle
+	throttles[key] = callback
+	C_Timer.After(throttleAmount / 1000, function()
+		throttles[key]()
+		throttles[key] = nil
+	end);
+end
+NeatPlatesUtility.SimpleThrottle = SimpleThrottle
+NeatPlatesUtility.SetThrottle = function(amount) throttleAmount = amount or 0 end
+
+
 ----------------------
 -- Call In() - Registers a callback, which hides the specified frame in X seconds
 ----------------------
