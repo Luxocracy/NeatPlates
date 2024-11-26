@@ -396,6 +396,7 @@ L["Text Color"] = true
 	L["Hostile NPC"] = true
 	L["Hostile Player"] = true
 	L["Guild Member"] = true
+	L["Battle.net Friend"] = true
 	L["Party Member"] = true
 	L["Elite"] = true
 	L["Boss"] = true

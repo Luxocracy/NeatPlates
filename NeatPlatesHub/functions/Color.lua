@@ -78,7 +78,7 @@ unit.threatValue
 local function ColorFunctionByReaction(unit)
 	if unit.unitid and unit.reaction == "FRIENDLY" and unit.type == "PLAYER" then
 		if IsGuildmate(unit.unitid) then return LocalVars.ColorGuildMember
-		elseif IsFriend(unit.guid) then return LocalVars.ColorGuildMember
+		elseif IsFriend(unit.guid) then return LocalVars.ColorBattleNetFriend
 		elseif IsPartyMember(unit.unitid) then return LocalVars.ColorPartyMember end
 	end
 
@@ -474,7 +474,7 @@ end
 local function NameColorByReaction(unit)
 	if unit.unitid and unit.reaction == "FRIENDLY" and unit.type == "PLAYER" then
 		if IsGuildmate(unit.unitid) then return LocalVars.TextColorGuildMember
-		elseif IsFriend(unit.guid) then return LocalVars.TextColorGuildMember
+		elseif IsFriend(unit.guid) then return LocalVars.TextColorBattleNetFriend
 		elseif IsPartyMember(unit.unitid) then return LocalVars.TextColorPartyMember end
 	end
 
