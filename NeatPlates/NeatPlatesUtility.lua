@@ -34,7 +34,14 @@ NeatPlatesUtility.Colors = {
 	green = "|cFF60E025",
 }
 
-NeatPlatesUtility.IsFriend = function(...) end
+
+NeatPlatesUtility.IsFriend = function(guid)
+	info = C_BattleNet.GetGameAccountInfoByGUID(guid)
+	if info == nil then
+		return false
+	end
+	return true
+end
 --NeatPlatesUtility.IsHealer =
 --NeatPlatesUtility.IsGuildmate = function(...) end
 --NeatPlatesUtility.IsPartyMember = function(...) end
@@ -209,6 +216,7 @@ NeatPlatesUtility.ParseGUID = ParseGUID
 ------------------------------------------
 -- GameTooltipScanner
 ------------------------------------------
+-- TODO: Remove scanner and use C_TooltipInfo.GetUnit(unitid) instead
 local ScannerName = "NeatPlatesScanningTooltip"
 local TooltipScanner = CreateFrame( "GameTooltip", ScannerName , nil, "GameTooltipTemplate" ); -- Tooltip name cannot be nil
 TooltipScanner:SetOwner( WorldFrame, "ANCHOR_NONE" );
@@ -322,7 +330,7 @@ local function GetTooltipLineText(lineNumber)
         return tooltipText, r, g, b
 end
 
-local function GetUnitQuestInfo(unit)
+local function GetUnitQuestInfoOld(unit)
     local unitid = unit.unitid
     local questName, questUnit, questProgress
     local questList = {}
@@ -382,6 +390,78 @@ local function GetUnitQuestInfo(unit)
 	  end
 
 	  return {}
+end
+
+-- Enum.TooltipDataLineType.QuestTitle = 17
+-- Enum.TooltipDataLineType.QuestPlayer = 18
+-- Enum.TooltipDataLineType.QuestObjective = 8
+local function GetUnitQuestInfo(unit)
+	local unitid = unit.unitid
+	local questList = {}
+	local tooltipData = C_TooltipInfo.GetUnit(unitid)
+	local playerName = UnitName("player")
+	local lastQuestTitle = nil
+	local lastQuestPlayer = nil
+	local lastObjectiveTitle = nil
+	local lastObjectivePlayer = nil
+	local lastObjectiveLine = 0
+	local inGroup = GetNumGroupMembers() > 1 -- alone in a group does count as not in group for tooltip data
+	local lines = tooltipData and tooltipData.lines
+	if lines then
+		for i, line  in pairs(lines) do
+			-- When alone:
+			-- QuestTitle
+			-- QuestObjective
+
+			-- When in group
+			-- QuestTitle
+			-- PlayerName
+			-- QuestObjective
+			-- PlayerName
+			-- QuestObjective
+
+			local lineType = line.type
+			if lineType == Enum.TooltipDataLineType.QuestTitle then
+				lastQuestTitle = line.leftText
+				questList[lastQuestTitle] = questList[lastQuestTitle] or {}
+			elseif lineType == Enum.TooltipDataLineType.QuestPlayer then
+				lastQuestPlayer = line.leftText
+			elseif lineType == Enum.TooltipDataLineType.QuestObjective then
+				if lastQuestPlayer == nil or lastQuestPlayer == playerName then
+					questList[lastQuestTitle][line.leftText] = line.completed
+				end
+			end
+			-- Event Objective detection
+			if i > 1 and lineType == 0 then
+				local color = line.leftColor
+				if color.r > 0.99 and color.g >= 0.81 and color.b == 0 then -- QuestYellow
+					local text = line.leftText
+					if lastObjectiveTitle ~= nil and inGroup and UnitGUID(text) then
+						lastObjectivePlayer = text
+					else
+						lastObjectiveTitle = text
+						questList[lastObjectiveTitle] = questList[lastObjectiveTitle] or {}
+					end
+					lastObjectiveLine = i
+				elseif lastObjectiveTitle and lastObjectiveLine == (i - 1) then
+					if lastObjectivePlayer == nil or lastObjectivePlayer == playerName then
+						questList[lastObjectiveTitle][line.leftText] = false
+					end
+					lastObjectiveLine = i
+				else
+					lastObjectiveTitle = nil
+					lastObjectivePlayer = nil
+				end
+			end
+		end
+	end
+	-- remove quests without objectives
+	for i, objectives in pairs(questList) do
+		if next(objectives) == nil then
+			questList[i] = nil
+		end
+	end
+	return questList
 end
 
 local arenaUnitIDs = {"arena1", "arena2", "arena3", "arena4", "arena5"}

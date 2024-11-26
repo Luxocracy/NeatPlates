@@ -1031,6 +1031,7 @@ do
 		if UnitIsPlayer(unitid) then
 			_, unit.class = UnitClass(unitid)
 			unit.type = "PLAYER"
+			unit.isPVPFlagged = UnitIsPVP(unitid)
 		else
 			unit.class = ""
 			unit.type = "NPC"

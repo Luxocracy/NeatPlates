@@ -153,7 +153,13 @@ local function StyleNameDelegate(unit)
 	if unit.reaction == "FRIENDLY" then
 		if IsUnitActive(unit) and LocalVars.StyleFriendlyBarsOnActive then return "Default"
 		elseif unit.isElite and LocalVars.StyleFriendlyBarsOnElite then return "Default"
-		elseif unit.type == "PLAYER" and LocalVars.StyleFriendlyBarsOnPlayers then return "Default"
+		elseif unit.type == "PLAYER" and LocalVars.StyleFriendlyBarsOnPlayers then
+			if unit.isPVPFlagged and LocalVars.StyleFriendlyBarsOnPlayersExcludeFlagged then
+				return "NameOnly"
+			elseif LocalVars.StyleFriendlyBarsOnPlayersExcludeNonFlagged then
+				return "NameOnly"
+			end
+			return "Default"
 		elseif unit.type ~= "PLAYER" and LocalVars.StyleFriendlyBarsOnNPC then
 			if LocalVars.StyleFriendlyBarsInstanceMode and IsInInstance() then return "NameOnly"
 			elseif unit.isPet and LocalVars.StyleFriendlyBarsNoMinions then return "NameOnly"
@@ -170,7 +176,13 @@ local function StyleNameDelegate(unit)
 	else
 		if IsUnitActive(unit) and LocalVars.StyleEnemyBarsOnActive then return "Default"
 		elseif unit.isElite and LocalVars.StyleEnemyBarsOnElite then return "Default"
-		elseif unit.type == "PLAYER" and LocalVars.StyleEnemyBarsOnPlayers then return "Default"
+		elseif unit.type == "PLAYER" and LocalVars.StyleEnemyBarsOnPlayers then
+			if unit.isPVPFlagged and LocalVars.StyleEnemyBarsOnPlayersExcludeFlagged then
+				return "NameOnly"
+			elseif LocalVars.StyleEnemyBarsOnPlayersExcludeNonFlagged then
+				return "NameOnly"
+			end
+			return "Default"
 		elseif unit.type ~= "PLAYER" and LocalVars.StyleEnemyBarsOnNPC then
 			if LocalVars.StyleEnemyBarsInstanceMode and IsInInstance() then return "NameOnly"
 			elseif unit.isPet and LocalVars.StyleEnemyBarsNoMinions then return "NameOnly"

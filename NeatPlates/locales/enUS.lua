@@ -124,6 +124,8 @@ L["Friendly Health Bars"] = true
 	L["Exclude Totems"] = true
 	L["Elite Units"] = true
 	L["Players"] = true
+	L["Exclude PvP-Flagged"] = true
+	L["Exclude Non PvP-Flagged"] = true
 	L["Active/Damaged Units"] = true
 	L["Clickthrough"] = true
 

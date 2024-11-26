@@ -23,6 +23,8 @@ NeatPlatesHubDefaults = {
 	StyleFriendlyBarsOnElite = false,
 	StyleFriendlyBarsInstanceMode = false,
 	StyleFriendlyBarsOnPlayers = true,
+	StyleFriendlyBarsOnPlayersExcludeFlagged = true,
+	StyleFriendlyBarsOnPlayersExcludeNonFlagged = true,
 	StyleFriendlyBarsNoMinions = false,
 	StyleFriendlyBarsNoTotem = false,
 	StyleFriendlyBarsOnNPC = false,
@@ -34,6 +36,8 @@ NeatPlatesHubDefaults = {
 	StyleEnemyBarsNoMinions = false,
 	StyleEnemyBarsNoTotem = false,
 	StyleEnemyBarsOnPlayers = true,
+	StyleEnemyBarsOnPlayersExcludeFlagged = true,
+	StyleEnemyBarsOnPlayersExcludeNonFlagged = true,
 	StyleEnemyBarsOnNPC = true,
 	StyleEnemyBarsClickThrough = false,
 
