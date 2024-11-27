@@ -154,9 +154,9 @@ local function StyleNameDelegate(unit)
 		if IsUnitActive(unit) and LocalVars.StyleFriendlyBarsOnActive then return "Default"
 		elseif unit.isElite and LocalVars.StyleFriendlyBarsOnElite then return "Default"
 		elseif unit.type == "PLAYER" and LocalVars.StyleFriendlyBarsOnPlayers then
-			if unit.isPVPFlagged and LocalVars.StyleFriendlyBarsOnPlayersExcludeFlagged then
+			if unit.isPVPFlagged and LocalVars.StyleFriendlyBarsOnPlayersExcludePvPFlagged then
 				return "NameOnly"
-			elseif LocalVars.StyleFriendlyBarsOnPlayersExcludeNonFlagged then
+			elseif LocalVars.StyleFriendlyBarsOnPlayersExcludePvPNonFlagged then
 				return "NameOnly"
 			end
 			return "Default"
@@ -177,9 +177,9 @@ local function StyleNameDelegate(unit)
 		if IsUnitActive(unit) and LocalVars.StyleEnemyBarsOnActive then return "Default"
 		elseif unit.isElite and LocalVars.StyleEnemyBarsOnElite then return "Default"
 		elseif unit.type == "PLAYER" and LocalVars.StyleEnemyBarsOnPlayers then
-			if unit.isPVPFlagged and LocalVars.StyleEnemyBarsOnPlayersExcludeFlagged then
+			if unit.isPVPFlagged and LocalVars.StyleEnemyBarsOnPlayersExcludePvPFlagged then
 				return "NameOnly"
-			elseif LocalVars.StyleEnemyBarsOnPlayersExcludeNonFlagged then
+			elseif LocalVars.StyleEnemyBarsOnPlayersExcludePvPNonFlagged then
 				return "NameOnly"
 			end
 			return "Default"
