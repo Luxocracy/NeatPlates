@@ -330,7 +330,7 @@ local function GetTooltipLineText(lineNumber)
         return tooltipText, r, g, b
 end
 
-local function GetUnitQuestInfoOld(unit)
+local function GetUnitQuestInfoClassic(unit)
     local unitid = unit.unitid
     local questName, questUnit, questProgress
     local questList = {}
@@ -478,8 +478,11 @@ local function GetArenaIndex(unitname)
 	end
 end
 
-
-NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfo
+if NEATPLATES_IS_CLASSIC then
+	NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfoClassic
+else
+	NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfo
+end
 NeatPlatesUtility.GetArenaIndex = GetArenaIndex
 
 ------------------------

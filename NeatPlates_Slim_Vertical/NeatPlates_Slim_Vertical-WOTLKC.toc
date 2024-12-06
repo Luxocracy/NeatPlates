@@ -1,4 +1,4 @@
-## Interface: 30400
+## Interface: 30403
 ## Title: NeatPlates: Slim Vertical|r
 ## Author: Dotfix
 ## Version: 2.2
