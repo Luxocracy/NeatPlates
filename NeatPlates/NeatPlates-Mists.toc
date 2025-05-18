@@ -1,0 +1,12 @@
+## Interface: 50500
+## Title: NeatPlates
+## Notes: Enjoys long walks on Darkshore
+## Author: Luxocracy and friends
+## Version: @project-version@
+## SavedVariables: NeatPlatesSettings
+## SavedVariablesPerCharacter: NeatPlatesOptions
+
+temporary-because-blizzard-forgot-an-include.xml
+embeds.xml
+locales.xml
+NeatPlates.xml

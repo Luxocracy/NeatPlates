@@ -1,0 +1,7 @@
+## Interface: 50500
+## Title: NeatPlates: Grey Theme
+## Notes: Use apostrophes wisely.
+## Author: Binny
+## Dependencies: NeatPlates, NeatPlatesHub
+
+Grey.lua
