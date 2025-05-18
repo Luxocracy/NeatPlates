@@ -1,4 +1,4 @@
-## Interface: 11505
+## Interface: 11507
 ## Title: NeatPlates Widgets
 ## Notes: Library of Widgets
 ## Dependencies: NeatPlates

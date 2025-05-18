@@ -1,4 +1,4 @@
-## Interface: 40401
+## Interface: 40402
 ## Title: NeatPlates: |cffffffffSimple|r
 ## Notes: Simple NeatPlates skin with some built-in Healer functionality.
 ## Author: FunkyCold
