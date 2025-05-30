@@ -3,6 +3,16 @@ NeatPlatesWidgetSettings = {
 	RaidTankList = {}
 }
 
+local function _IsEquippedItemType(type)
+	local result
+	if C_Item and C_Item.IsEquippedItemType then
+		result = C_Item.IsEquippedItemType(type)
+	else
+		result = IsEquippedItemType(type)
+	end
+	return result or false
+end
+
 ------------------------------
 -- Tank Aura/Role Tracking
 ------------------------------
@@ -76,7 +86,7 @@ end
 
 local function HasClassicTankAura()
 	if playerClass == "WARRIOR" then
-		return GetShapeshiftForm() == 2 or IsEquippedItemType("Shields") -- Defensive Stance or shield
+		return GetShapeshiftForm() == 2 or _IsEquippedItemType("Shields") -- Defensive Stance or shield
 	elseif playerClass == "DRUID" then
 		return GetShapeshiftForm() == 1 -- Bear Form
 	elseif playerClass == "PALADIN" then
