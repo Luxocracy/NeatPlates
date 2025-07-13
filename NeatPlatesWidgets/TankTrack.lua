@@ -121,7 +121,7 @@ local function HasClassicTankAura()
 end
 
 local function UpdatePlayerRole(playerTankAura)
-	if NEATPLATES_IS_CLASSIC then
+	if NEATPLATES_IS_CLASSIC and not NEATPLATES_IS_CLASSIC_MISTS then
 		if playerTankAura or HasClassicTankAura() then
 			playerTankRole = true
 		else
