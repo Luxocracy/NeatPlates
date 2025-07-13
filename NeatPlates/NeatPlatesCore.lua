@@ -1717,7 +1717,10 @@ do
 				-- Unhook UnitFrame events
 				if plate.UnitFrame then
 					plate.UnitFrame:Hide()
-					plate.UnitFrame:UnregisterAllEvents()
+					-- Only un-register these events for classic, as retail might need them
+					if NEATPLATES_IS_CLASSIC then
+						plate.UnitFrame:UnregisterAllEvents()
+					end
 				end
 
 		 		OnShowNameplate(plate, unitid)
@@ -2205,6 +2208,17 @@ function NeatPlates.OverrideFonts(enable) OverrideFonts = enable; end
 function NeatPlates.OverrideOutline(enable) OverrideOutline = enable; end
 
 function NeatPlates.UpdateNameplateSize() UpdateNameplateSize() end
+function NeatPlates.GetPlateByUnit(unitid)
+	if PlatesByUnit[unitid] ~= nil then
+		return PlatesByUnit[unitid]
+	else
+		local guid = UnitGUID(unitid)
+		if PlatesByGUID[guid] ~= nil then
+			return PlatesByGUID[guid]
+		end
+	end
+	return nil
+end
 
 -- Old and needing deleting - Just here to avoid errors
 function NeatPlates:EnableFadeIn() EnableFadeIn = true; end

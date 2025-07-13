@@ -1362,6 +1362,13 @@ SlashCmdList['NeatPlatesDebug'] = function(arg)
 
 	if arg == "quest" then
 		NeatPlatesWidgets.DebugQuests()
+	elseif arg == "blizzardplate" then
+		local plate = NeatPlates.GetPlateByUnit("target")
+		if plate ~= nil then
+			plate.showBlizzardPlate = not plate.showBlizzardPlate
+		else
+			print("No target plate to debug")
+		end
 	end
 end;
 
