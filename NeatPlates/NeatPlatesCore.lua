@@ -420,6 +420,12 @@ do
 		if DisplayingBlizzardPlate(plate) then
 			plate.UnitFrame:Show()
 			plate.extended:Hide()
+
+			-- Re-register unitframe events, if needed
+			if CompactUnitFrame_OnLoad and plate.UnitFrame.IsEventRegistered and not plate.UnitFrame:IsEventRegistered("PLAYER_ENTERING_WORLD") then
+				CompactUnitFrame_OnLoad(plate.UnitFrame)
+				CompactUnitFrame_UpdateUnitEvents(plate.UnitFrame)
+			end
 		elseif plate.UnitFrame then
 			plate.UnitFrame:Hide()
 		end
@@ -1717,10 +1723,7 @@ do
 				-- Unhook UnitFrame events
 				if plate.UnitFrame then
 					plate.UnitFrame:Hide()
-					-- Only un-register these events for classic, as retail might need them
-					if NEATPLATES_IS_CLASSIC then
-						plate.UnitFrame:UnregisterAllEvents()
-					end
+					plate.UnitFrame:UnregisterAllEvents()
 				end
 
 		 		OnShowNameplate(plate, unitid)
