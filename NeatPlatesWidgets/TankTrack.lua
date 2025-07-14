@@ -13,6 +13,15 @@ local function _IsEquippedItemType(type)
 	return result or false
 end
 
+local function _GetSpecialization(...)
+    if GetSpecialization then
+        return GetSpecialization(...)
+    elseif GetPrimaryTalentTree then
+        return GetPrimaryTalentTree(...)
+    end
+    return nil
+end
+
 ------------------------------
 -- Tank Aura/Role Tracking
 ------------------------------
@@ -129,7 +138,7 @@ local function UpdatePlayerRole(playerTankAura)
 		end
 	else
 		-- Look at the Player's Specialization
-		local specializationIndex = tonumber(GetSpecialization())
+		local specializationIndex = tonumber(_GetSpecialization())
 
 		if specializationIndex and GetSpecializationRole(specializationIndex) == "TANK" then
 			playerTankRole = true
