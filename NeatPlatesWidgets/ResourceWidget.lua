@@ -77,7 +77,7 @@ local t = {
 
             -- Iterate through the runes in the order they appear in the UI
             local runeOrder = {1,2,3,4,5,6} -- Actually sorted by duration in retail
-            if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
+            if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA or NEATPLATES_IS_CLASSIC_MISTS then
                 runeOrder =  {1,2,5,6,3,4}
             end
 
@@ -93,7 +93,7 @@ local t = {
                 if runeReady ~= nil then
                     local expiration = start + duration
                     local runeType = ""
-                    if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA then
+                    if NEATPLATES_IS_CLASSIC_WOTLKC or NEATPLATES_IS_CLASSIC_CATA or NEATPLATES_IS_CLASSIC_MISTS then
                         runeTypeIndex = GetRuneType(i)
                         runeType = runeMap[runeTypeIndex]
                         if runeType == nil then
