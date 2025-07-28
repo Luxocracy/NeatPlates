@@ -416,16 +416,46 @@ do
 		end
 	end
 
+	function MustDisplayBlizzardPlate(unitid)
+		local widgetSetID = UnitWidgetSet(unitid);
+		if widgetSetID then
+			local widgetSet = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)
+			if not widgetSet or not widgetSet[1] then
+				return false
+			end
+
+			for i = 1, #widgetSet do
+				local widgetID = widgetSet[i].widgetID
+				local widgetType = widgetSet[i].widgetType
+
+				if NeatPlatesOptions.BlizzardWidgets then
+					return true
+				else
+					if widgetType == 2 then
+						return false
+					elseif widgetType == 1 then
+						return false
+					elseif widgetType == 8 then
+						return false
+					else
+						return true
+					end
+				end
+			end
+		end
+		return false
+	end
+
 	function ShouldShowBlizzardPlate(plate)
 		if DisplayingBlizzardPlate(plate) then
 			plate.UnitFrame:Show()
 			plate.extended:Hide()
 
-			-- Re-register unitframe events, if needed
-			if CompactUnitFrame_OnLoad and plate.UnitFrame.IsEventRegistered and not plate.UnitFrame:IsEventRegistered("PLAYER_ENTERING_WORLD") then
-				CompactUnitFrame_OnLoad(plate.UnitFrame)
-				CompactUnitFrame_UpdateUnitEvents(plate.UnitFrame)
-			end
+			-- -- Re-register unitframe events, if needed (Note: This can cause taint, so disabled for now)
+			-- if CompactUnitFrame_OnLoad and plate.UnitFrame.IsEventRegistered and not plate.UnitFrame:IsEventRegistered("PLAYER_ENTERING_WORLD") then
+			-- 	CompactUnitFrame_OnLoad(plate.UnitFrame)
+			-- 	CompactUnitFrame_UpdateUnitEvents(plate.UnitFrame)
+			-- end
 		elseif plate.UnitFrame then
 			plate.UnitFrame:Hide()
 		end
@@ -1714,14 +1744,14 @@ do
 				ShouldShowBlizzardPlate(plate)
 				OnHideNameplate(plate, unitid)
 			else
-				plate.showBlizzardPlate = false
+				plate.showBlizzardPlate = MustDisplayBlizzardPlate(unitid)
 				--local children = plate:GetChildren() -- Do children even need to be hidden anymore when UnitFrame is unhooked
 				--if children then children:Hide() end
 				--if plate._frame then plate._frame:Show() end -- Show Questplates frame
 				if NEATPLATES_IS_CLASSIC and NeatPlatesTarget and unitid and UnitGUID(unitid) == NeatPlatesTarget.unitGUID then toggleNeatPlatesTarget(false) end
 
 				-- Unhook UnitFrame events
-				if plate.UnitFrame then
+				if plate.UnitFrame and not plate.showBlizzardPlate then
 					plate.UnitFrame:Hide()
 					plate.UnitFrame:UnregisterAllEvents()
 				end
