@@ -417,6 +417,10 @@ do
 	end
 
 	function MustDisplayBlizzardPlate(unitid)
+		if NEATPLATES_IS_CLASSIC then
+			return false
+		end
+
 		local widgetSetID = UnitWidgetSet(unitid);
 		if widgetSetID then
 			local widgetSet = C_UIWidgetManager.GetAllWidgetsBySetID(widgetSetID)
