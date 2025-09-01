@@ -203,6 +203,7 @@ L["Additional settings"] = true
 	L["Show Status Text on Target & Mouseover"] = true
 	L["Show Status Text on Active/Damaged Units"] = true
 	L["Prevent Friendly Nameplate Stacking *"] = true
+	L["Keep original width"] = true
 	L["Health Percent Precision"] = true
 
 	L["Use Custom Target Color"] = true
@@ -815,6 +816,7 @@ L["Display Scale Options"] = true
 L["Hides the aura widget when in 'Headline/Text-Only' mode"] = true
 L["When aura durations should start to display tenths of a second"] = true
 L["nameplate_no_stacking_friendly_tooltip"] = "This option also makes the nameplates clickthrough"
+L["nameplate_no_stacking_keep_width_friendly_tooltip"] = "Enable this to prevent the default nameplates from shrinking"
 
 
 -- Warnings about unfinished stuff

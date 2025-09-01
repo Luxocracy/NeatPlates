@@ -180,6 +180,8 @@ local function BuildHubPanel(panel)
 	panel.TextShowOnlyOnActive, F = CreateQuickCheckbutton(objectName.."TextShowOnlyOnActive", L["Show Status Text on Active/Damaged Units"], AlignmentColumn, F, 16)
 	panel.NameplateNoStackingFriendly, F = CreateQuickCheckbutton(objectName.."NameplateNoStackingFriendly", L["Prevent Friendly Nameplate Stacking *"], AlignmentColumn, F, 16)
 	F.tooltipText = L["nameplate_no_stacking_friendly_tooltip"]
+	panel.NameplateNoStackingFriendlyKeepWidth, F = CreateQuickCheckbutton(objectName.."NameplateNoStackingFriendlyKeepWidth", L["Keep original width"], AlignmentColumn, F, 32)
+	F.tooltipText = L["nameplate_no_stacking_keep_width_friendly_tooltip"]
 	panel.TextHealthPercentPrecision, F = CreateQuickSlider(objectName.."TextHealthPercentPrecision", L["Health Percent Precision"]..':', "ACTUAL", 160, AlignmentColumn, F, 16)
 
 

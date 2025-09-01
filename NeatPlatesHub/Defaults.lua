@@ -61,6 +61,7 @@ NeatPlatesHubDefaults = {
 	TextShowOnlyOnActive = false,
 
 	NameplateNoStackingFriendly = false,
+	NameplateNoStackingFriendlyKeepWidth = false,
 
 
 	StyleForceBarsOnTargets = false,

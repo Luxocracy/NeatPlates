@@ -26,7 +26,12 @@ local CreateNeatPlatesStatusbar = CreateNeatPlatesStatusbar			    -- Local funct
 local WorldFrame, UIParent = WorldFrame, UIParent
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateFriendlySize = function(x,y)
-	if NameplateNoStackingFriendly then x, y = 1, 1 end
+	if NameplateNoStackingFriendly then
+		y = 1
+		if not NameplateNoStackingFriendlyKeepWidth then
+			x = 1
+		end
+	end
 	C_NamePlate.SetNamePlateFriendlySize(x,y)
 end
 local SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -2215,6 +2220,7 @@ function NeatPlates:SetCoreVariables(LocalVars)
 	ThreatSoloEnable = LocalVars.ThreatSoloEnable
 	ReplaceUnitNameArenaID = LocalVars.TextUnitNameArenaID
 	NameplateNoStackingFriendly = LocalVars.NameplateNoStackingFriendly
+	NameplateNoStackingFriendlyKeepWidth = LocalVars.NameplateNoStackingFriendlyKeepWidth
 
 	ForceDefaultNameplates = {
 		["HOSTILE"] = {
