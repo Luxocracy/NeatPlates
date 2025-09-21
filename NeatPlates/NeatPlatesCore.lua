@@ -1748,7 +1748,7 @@ do
 
 		-- Ignore if plate is Personal Display
 		if plate then
-			if UnitIsUnit("player", unitid) then
+			if UnitIsUnit("player", unitid) or UnitIsUnit("softinteract", unitid) then
 				plate.showBlizzardPlate = true
 				ShouldShowBlizzardPlate(plate)
 				OnHideNameplate(plate, unitid)
